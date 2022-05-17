@@ -1,12 +1,12 @@
 import React from 'react';
 import {Block, Text} from '@components';
 
-const PointScreenMyAp = () => {
+const MoreMyApp = () => {
   return (
     <Block flex alignCenter justifyCenter>
-      <Text>Point</Text>
+      <Text>Thong tin them</Text>
     </Block>
   );
 };
 
-export default PointScreenMyAp;
+export default MoreMyApp;
