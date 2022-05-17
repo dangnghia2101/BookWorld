@@ -1,0 +1,51 @@
+import {Platform} from 'react-native';
+
+export const theme = {
+  colors: {
+    text: '#242424',
+    background: '#f5f5f5',
+    orange: '#FE930F',
+    orangeBol: '#FF6500',
+    lightGray: '#A5A5A5',
+    gray: '#424242',
+    smoke: '#E6E6E6',
+    white: '#ffffff',
+    black: '#000000',
+    placeholder: '#707070',
+    blue: '#0d5cb6',
+    red: '#E83625',
+    gradient: ['#F04831', '#E73222', '#D9100C'],
+    green: '#088A08',
+    lightGreen: '#29bb89',
+    yellow: '#FFDF00',
+    dark: '#00000060',
+    bg_opacity: '#00000020',
+    gray2: '#9A9A9A',
+    darkRed: '#BF0404',
+    darkBlue: '#304FDF',
+    lightRed: '#FA634D',
+    btnColor: ['#002366', '#002366', '#002366'],
+    lightBlue: '#3E79F7',
+    orangeTranparent: 'rgba(245, 155,0,0.2)',
+    gray3: '#E0E0E0',
+    backgroundOpacity: 'rgba(0, 0, 0, 0.4)',
+    blueTitle: '#092C4C',
+    orange2: '#F95B00',
+  },
+
+  fonts: {
+    fontWeight: {
+      heavy: '700',
+      bold: 'bold',
+      semibold: Platform.OS === 'android' ? 'bold' : '600',
+      regular: 'normal',
+      light: '300',
+    },
+    fontFamily: {
+      bold: 'Lato-Bold',
+      medium: 'Lato-Medium',
+      regular: 'Lato-Regular',
+      semibold: 'Lato-Semibold',
+    },
+  },
+};
