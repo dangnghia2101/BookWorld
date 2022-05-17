@@ -140,7 +140,7 @@ const BottomTabMyAp = () => {
         name={routes.SCHEDULE_SCREEN_MY_AP}
         component={bottom.SCHEDULE_MY_AP}
         options={{
-          tabBarLabel: 'Lịch học',
+          tabBarLabel: 'Lịch sử đọc',
           tabBarIcon: 'layers',
         }}
       />
@@ -149,23 +149,16 @@ const BottomTabMyAp = () => {
         name={routes.POINT_SCREEN_MY_AP}
         component={bottom.POINT_MY_AP}
         options={{
-          tabBarLabel: 'Điểm',
+          tabBarLabel: 'Đang cập nhật',
           tabBarIcon: 'table',
         }}
       />
-      <Tab.Screen
-        name={routes.PROFILE_SCREEN_MY_AP}
-        component={bottom.PROFILE_MY_AP}
-        options={{
-          tabBarLabel: 'Tài khoản',
-          tabBarIcon: 'account-outline',
-        }}
-      />
+
       <Tab.Screen
         name={routes.HOME_ALL_APP}
-        component={bottom.HOME_ALL_APP}
+        component={bottom.MORE_MY_APP}
         options={{
-          tabBarLabel: 'Ứng dụng',
+          tabBarLabel: 'Thông tin thêm',
           tabBarIcon: 'apps',
         }}
       />

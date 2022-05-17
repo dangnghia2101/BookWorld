@@ -1,16 +1,11 @@
 import React from 'react';
-import {useSelector} from 'react-redux';
-import HeaderScheduleMyAp from '../components/HeaderScheduleMyAp';
-import ScheduleContainer from './components/ScheduleContainer';
+import {Block, Text} from '@components';
 
 const ScheduleScreenMyAp = () => {
-  const login = useSelector(state => state.login);
-
   return (
-    <>
-      <HeaderScheduleMyAp data={login.data?.user} />
-      <ScheduleContainer />
-    </>
+    <Block flex alignCenter justifyCenter>
+      <Text>Lịch sử đọc</Text>
+    </Block>
   );
 };
 
