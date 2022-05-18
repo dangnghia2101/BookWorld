@@ -12,14 +12,9 @@ const screenOptionStyle = {
 const ScheduleMyApNavigator = ({navigation, route}) => {
   navigation.setOptions({tabBarVisible: false});
   return (
-    // <Stack.Navigator screenOptions={screenOptionStyle}>
-    //   <Stack.Screen
-    //     name={routes.SCHEDULE_SCREEN_MY_AP}
-    //     component={ScheduleScreenMyAp}
-    //   />
-    // </Stack.Navigator>
-
-    <ScheduleScreenMyAp />
+    <Stack.Navigator screenOptions={screenOptionStyle}>
+      <Stack.Screen name={'SCHEDULE_SCREEN'} component={ScheduleScreenMyAp} />
+    </Stack.Navigator>
   );
 };
 

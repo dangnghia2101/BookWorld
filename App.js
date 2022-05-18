@@ -7,13 +7,16 @@ import {Provider} from 'react-redux';
 
 const App = () => {
   return (
-    <Provider store={store}>
-      <SafeAreaProvider>
-        <RootStack />
-        <Loading />
-        <ModalCodePush />
-      </SafeAreaProvider>
-    </Provider>
+    // <Provider>
+    //   <SafeAreaProvider>
+    //     <RootStack />
+    //     <Loading />
+    //   </SafeAreaProvider>
+    // </Provider>
+    <SafeAreaProvider>
+      <RootStack />
+      <Loading />
+    </SafeAreaProvider>
   );
 };
 
