@@ -5,6 +5,7 @@ export default {
   LOGOUT_ACCOUNT: 'LOGOUT_ACCOUNT',
   IS_LOGIN: 'IS_LOGIN',
   DISTANCE_LOCATION: 'DISTANCE_LOCATION',
+  LOGIN_ACCOUNT: 'LOGIN_ACCOUNT',
 };
 
 export const _onSuccess = action => action + '_SUCCESS';
