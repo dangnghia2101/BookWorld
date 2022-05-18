@@ -9,21 +9,21 @@ const getDeviceToken = async () => {
   return await messaging().getToken();
 };
 function* login(actions) {
-  const body = actions.body;
-  try {
-    const res = yield API.post('auth/login', body);
-    if (res.statusCode === 200) {
-      Storage.setItem('tokenId', res);
-      console.log('=>', res);
-      yield put({type: _onSuccess(Actions.LOGIN_ACCOUNT), data: res.data});
-      yield put({type: _onSuccess(Actions.IS_LOGIN), data: true});
-      yield put({type: HIDE});
-    }
-  } catch (error) {
-    yield put({type: HIDE});
-    yield put({type: _onFail(Actions.LOGIN_ACCOUNT)});
-    hanldeError(error);
-  }
+  // const body = actions.body;
+  // try {
+  //   const res = yield API.post('auth/login', body);
+  //   if (res.statusCode === 200) {
+  //     Storage.setItem('tokenId', res);
+  //     console.log('=>', res);
+  //     yield put({type: _onSuccess(Actions.LOGIN_ACCOUNT), data: res.data});
+  //     yield put({type: _onSuccess(Actions.IS_LOGIN), data: true});
+  //     yield put({type: HIDE});
+  //   }
+  // } catch (error) {
+  //   yield put({type: HIDE});
+  //   yield put({type: _onFail(Actions.LOGIN_ACCOUNT)});
+  //   hanldeError(error);
+  // }
 }
 
 function* fetchListDepartment() {
@@ -78,8 +78,8 @@ function* location(actions) {
 
 export function* watchUserSagas() {
   yield takeLatest(Actions.LOGIN_ACCOUNT, login);
-  yield takeLatest(Actions.INFOR_USER, getInforUser);
-  yield takeLatest(Actions.FETCH_DEPARTMENTS, fetchListDepartment);
-  yield takeLatest(Actions.LOGOUT_ACCOUNT, logout);
-  yield takeLatest(Actions.DISTANCE_LOCATION, location);
+  // yield takeLatest(Actions.INFOR_USER, getInforUser);
+  // yield takeLatest(Actions.FETCH_DEPARTMENTS, fetchListDepartment);
+  // yield takeLatest(Actions.LOGOUT_ACCOUNT, logout);
+  // yield takeLatest(Actions.DISTANCE_LOCATION, location);
 }

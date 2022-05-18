@@ -27,6 +27,7 @@ export const theme = {
     btnColor: ['#002366', '#002366', '#002366'],
     lightBlue: '#3E79F7',
     orangeTranparent: 'rgba(245, 155,0,0.2)',
+    redTranparent: '#e8a5a5',
     gray3: '#E0E0E0',
     backgroundOpacity: 'rgba(0, 0, 0, 0.4)',
     blueTitle: '#092C4C',

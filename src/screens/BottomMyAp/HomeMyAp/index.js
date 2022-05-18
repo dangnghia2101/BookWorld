@@ -10,13 +10,12 @@ const screenOptionStyle = {
 };
 
 const HomeMyApNavigator = ({navigation, route}) => {
-  navigation.setOptions({tabBarVisible: false});
+  // navigation.setOptions({tabBarVisible: false});
   return (
-    // <Stack.Navigator screenOptions={screenOptionStyle}>
-    //   <Stack.Screen name={routes.HOME_MY_AP} component={HomeScreenMyAp} />
-    //   <Stack.Screen name={routes.MENU_DETAIL} component={Detail} />
-    // </Stack.Navigator>
-    <HomeScreenMyAp />
+    <Stack.Navigator screenOptions={screenOptionStyle}>
+      <Stack.Screen name={'HOME'} component={HomeScreenMyAp} />
+      <Stack.Screen name={routes.MENU_DETAIL} component={Detail} />
+    </Stack.Navigator>
   );
 };
 

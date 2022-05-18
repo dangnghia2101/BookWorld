@@ -1,4 +1,4 @@
-import HomeMyAp from './HomeMyAp';
+import HomeMyAp from './HomeMyAp/HomeScreenMyAp';
 import ScheduleMyAp from './ScheduleMyAp';
 import PointMyAp from './PointMyAp';
 import NotificationMyAp from './NotificationMyAp';
