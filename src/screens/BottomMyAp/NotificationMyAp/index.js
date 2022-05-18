@@ -14,7 +14,7 @@ const NotificationMyApNavigator = ({navigation, route}) => {
   return (
     <Stack.Navigator screenOptions={screenOptionStyle}>
       <Stack.Screen
-        name={routes.NOTIFICATION_SCREEN_MY_AP}
+        name={'NOTIFICATION_SCREEN'}
         component={NotificationScreenMyAp}
       />
     </Stack.Navigator>

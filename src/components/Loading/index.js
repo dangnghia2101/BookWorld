@@ -6,7 +6,8 @@ import {ActivityIndicator} from 'react-native';
 import {useSelector} from 'react-redux';
 
 const Loading = () => {
-  const {isShow} = useSelector(state => state.handlerLoadingReducer);
+  // const {isShow} = useSelector(state => state.handlerLoadingReducer);
+  const isShow = false;
   if (!isShow) {
     return <Block />;
   }
