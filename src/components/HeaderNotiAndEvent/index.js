@@ -19,16 +19,16 @@ const Title = ({title}) => {
 
 const HeaderNotiAndEvent = props => {
   const {children, title, search = false} = props;
-  const dispatch = useDispatch();
-  const handlerSearch = () => {
-    dispatch(handleSearch());
-  };
+  // const dispatch = useDispatch();
+  // const handlerSearch = () => {
+  //   dispatch(handleSearch());
+  // };
   return (
     <Block flex paddingTop={57} backgroundColor={theme.colors.orange}>
       <Block row paddingHorizontal={20}>
         <Title title={title} />
         {search && (
-          <Button onPress={handlerSearch}>
+          <Button>
             <Icon name="search" size={20} color={theme.colors.white} />
           </Button>
         )}

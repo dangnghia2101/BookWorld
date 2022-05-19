@@ -12,13 +12,9 @@ const screenOptionStyle = {
 const PointMyApNavigator = ({navigation, route}) => {
   navigation.setOptions({tabBarVisible: false});
   return (
-    // <Stack.Navigator screenOptions={screenOptionStyle}>
-    //   <Stack.Screen
-    //     name={routes.POINT_SCREEN_MY_AP}
-    //     component={PointScreenMyAp}
-    //   />
-    // </Stack.Navigator>
-    <PointScreenMyAp />
+    <Stack.Navigator screenOptions={screenOptionStyle}>
+      <Stack.Screen name={'POINT_SCREEN'} component={PointScreenMyAp} />
+    </Stack.Navigator>
   );
 };
 
