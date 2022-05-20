@@ -30,8 +30,8 @@ const BottomTabMyAp = () => {
       />
 
       <Tab.Screen
-        name={routes.SCHEDULE_SCREEN_MY_AP}
-        component={bottom.SCHEDULE_MY_AP}
+        name={routes.READING_MY_APP}
+        component={bottom.READING_MY_APP}
         options={{
           tabBarLabel: 'Đang đọc',
           tabBarIcon: 'book-open-page-variant-outline',
@@ -39,16 +39,16 @@ const BottomTabMyAp = () => {
       />
 
       <Tab.Screen
-        name={routes.POINT_SCREEN_MY_AP}
-        component={bottom.POINT_MY_AP}
+        name={routes.INFORM_MY_AP}
+        component={bottom.INFORM_MY_AP}
         options={{
-          tabBarLabel: 'Đánh dấu',
-          tabBarIcon: 'bookmark-outline',
+          tabBarLabel: 'Thông báo',
+          tabBarIcon: 'bell',
         }}
       />
 
       <Tab.Screen
-        name={routes.HOME_ALL_APP}
+        name={routes.MORE_MY_APP}
         component={bottom.MORE_MY_APP}
         options={{
           tabBarLabel: 'Cài đặt',
