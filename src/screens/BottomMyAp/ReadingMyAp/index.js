@@ -1,7 +1,7 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import {routes} from '@navigation/routes';
-import PointScreenMyAp from './PointScreenMyAp';
+import ReadingScreenMyAp from './ReadingScreenMyAp';
 
 const Stack = createStackNavigator();
 
@@ -9,13 +9,13 @@ const screenOptionStyle = {
   headerShown: false,
 };
 
-const PointMyApNavigator = ({navigation, route}) => {
+const ScheduleMyApNavigator = ({navigation, route}) => {
   navigation.setOptions({tabBarVisible: false});
   return (
     <Stack.Navigator screenOptions={screenOptionStyle}>
-      <Stack.Screen name={'POINT_SCREEN'} component={PointScreenMyAp} />
+      <Stack.Screen name={'READING_SCREEN'} component={ReadingScreenMyAp} />
     </Stack.Navigator>
   );
 };
 
-export default PointMyApNavigator;
+export default ScheduleMyApNavigator;

@@ -1,12 +1,12 @@
 import React from 'react';
 import {Block, Text} from '@components';
 
-const PointScreenMyAp = () => {
+const InformScreenMyApp = () => {
   return (
     <Block flex alignCenter justifyCenter>
-      <Text>Point</Text>
+      <Text>Thông báo</Text>
     </Block>
   );
 };
 
-export default PointScreenMyAp;
+export default InformScreenMyApp;

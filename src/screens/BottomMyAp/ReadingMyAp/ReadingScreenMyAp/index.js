@@ -1,12 +1,12 @@
 import React from 'react';
 import {Block, Text} from '@components';
 
-const ScheduleScreenMyAp = () => {
+const ReadingScreenMyAp = () => {
   return (
     <Block flex alignCenter justifyCenter>
-      <Text>Lịch sử đọc</Text>
+      <Text>Sách đang đọc</Text>
     </Block>
   );
 };
 
-export default ScheduleScreenMyAp;
+export default ReadingScreenMyAp;
