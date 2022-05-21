@@ -24,6 +24,7 @@ export const theme = {
     darkRed: '#BF0404',
     darkBlue: '#304FDF',
     lightRed: '#FA634D',
+    lightGreen1: '#00CA2C',
     btnColor: ['#002366', '#002366', '#002366'],
     lightBlue: '#3E79F7',
     orangeTranparent: 'rgba(245, 155,0,0.2)',

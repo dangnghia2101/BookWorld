@@ -18,40 +18,42 @@ function IconView(props) {
   const {name, component, color, size} = props;
 
   const showIcon = () => {
-    let html = null;
     let colorConfig = color ? color : 'black';
-    if (component === NameIconComponents.AntDesign) {
-      html = <AntDesign name={name} size={size} color={colorConfig} />;
-    } else if (component === NameIconComponents.Entypo) {
-      html = <Entypo name={name} size={size} color={colorConfig} />;
-    } else if (component === NameIconComponents.EvilIcons) {
-      html = <EvilIcons name={name} size={size} color={colorConfig} />;
-    } else if (component === NameIconComponents.Feather) {
-      html = <Feather name={name} size={size} color={colorConfig} />;
-    } else if (component === NameIconComponents.FontAwesome) {
-      html = <FontAwesome name={name} size={size} color={colorConfig} />;
-    } else if (component === NameIconComponents.FontAwesome5) {
-      html = <FontAwesome5 name={name} size={size} color={colorConfig} />;
-    } else if (component === NameIconComponents.Fontisto) {
-      html = <Fontisto name={name} size={size} color={colorConfig} />;
-    } else if (component === NameIconComponents.Foundation) {
-      html = <Foundation name={name} size={size} color={colorConfig} />;
-    } else if (component === NameIconComponents.Ionicons) {
-      html = <Ionicons name={name} size={size} color={colorConfig} />;
-    } else if (component === NameIconComponents.MaterialCommunityIcons) {
-      html = (
-        <MaterialCommunityIcons name={name} size={size} color={colorConfig} />
-      );
-    } else if (component === NameIconComponents.MaterialIcons) {
-      html = <MaterialIcons name={name} size={size} color={colorConfig} />;
-    } else if (component === NameIconComponents.Octicons) {
-      html = <Octicons name={name} size={size} color={colorConfig} />;
-    } else if (component === NameIconComponents.SimpleLineIcons) {
-      html = <SimpleLineIcons name={name} size={size} color={colorConfig} />;
-    } else if (component === NameIconComponents.Zocial) {
-      html = <Zocial name={name} size={size} color={colorConfig} />;
+
+    switch (component) {
+      case NameIconComponents.AntDesign:
+        return <AntDesign name={name} size={size} color={colorConfig} />;
+      case NameIconComponents.Entypo:
+        return <Entypo name={name} size={size} color={colorConfig} />;
+      case NameIconComponents.EvilIcons:
+        return <EvilIcons name={name} size={size} color={colorConfig} />;
+      case NameIconComponents.Feather:
+        return <Feather name={name} size={size} color={colorConfig} />;
+      case NameIconComponents.FontAwesome:
+        return <FontAwesome name={name} size={size} color={colorConfig} />;
+      case NameIconComponents.FontAwesome5:
+        return <FontAwesome5 name={name} size={size} color={colorConfig} />;
+      case NameIconComponents.Fontisto:
+        return <Fontisto name={name} size={size} color={colorConfig} />;
+      case NameIconComponents.Foundation:
+        return <Foundation name={name} size={size} color={colorConfig} />;
+      case NameIconComponents.Ionicons:
+        return <Ionicons name={name} size={size} color={colorConfig} />;
+      case NameIconComponents.MaterialCommunityIcons:
+        return (
+          <MaterialCommunityIcons name={name} size={size} color={colorConfig} />
+        );
+      case NameIconComponents.MaterialIcons:
+        return <MaterialIcons name={name} size={size} color={colorConfig} />;
+      case NameIconComponents.Octicons:
+        return <Octicons name={name} size={size} color={colorConfig} />;
+      case NameIconComponents.SimpleLineIcons:
+        return <SimpleLineIcons name={name} size={size} color={colorConfig} />;
+      case NameIconComponents.Zocial:
+        return <Zocial name={name} size={size} color={colorConfig} />;
+      default:
+        return <AntDesign name={name} size={size} color={colorConfig} />;
     }
-    return html;
   };
 
   return showIcon();
