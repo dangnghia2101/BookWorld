@@ -7,13 +7,7 @@ const icons = {
 };
 
 const images = {
-  login_image: require('./images/login.png'),
-  slide1_iamge: require('./images/slide1.png'),
-  slide2_iamge: require('./images/slide2.jpg'),
-  slide3_iamge: require('./images/slide3.jpg'),
-  notification_image: require('./images/IconNotification.png'),
-  Bee: require('./images/bee.png'),
-  beePoly: require('./images/beepoly.png'),
+  bg_sell: require('./images/bg_sell.png'),
 };
 
 export {icons, images};
