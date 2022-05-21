@@ -8,7 +8,7 @@ const TabSceneCategoryBook = ({route}) => {
   const _renderItem = ({item}) => {
     return <ItemCateBook item={item} />;
   };
-
+  
   return route?.bookList?.length > 0 ? (
     <Block>
       <FlatList
