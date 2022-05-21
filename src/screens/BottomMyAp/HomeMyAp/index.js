@@ -2,7 +2,6 @@ import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import {routes} from '@navigation/routes';
 import HomeScreenMyAp from './HomeScreenMyAp';
-import Detail from '@screens/BottomMyAp/HomeMyAp/HomeScreenMyAp/components/Detail';
 const Stack = createStackNavigator();
 
 const screenOptionStyle = {
@@ -14,7 +13,6 @@ const HomeMyApNavigator = ({navigation, route}) => {
   return (
     <Stack.Navigator screenOptions={screenOptionStyle}>
       <Stack.Screen name={'HOME'} component={HomeScreenMyAp} />
-      <Stack.Screen name={routes.MENU_DETAIL} component={Detail} />
     </Stack.Navigator>
   );
 };

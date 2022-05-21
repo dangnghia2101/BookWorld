@@ -21,6 +21,7 @@ import TextInput from './TextInput';
 import HeaderNotiAndEvent from './HeaderNotiAndEvent';
 import Button from './Button';
 import NoData from './NoData';
+import AnimatedImage from './AnimatedImage';
 
 export {
   HeaderNotiAndEvent,
@@ -31,6 +32,7 @@ export {
   ModalCodePush,
   TextInput,
   Loading,
+  AnimatedImage,
   //   RadioButton,
   //   ModalBox,
   //   FormContainer,
