@@ -11,11 +11,11 @@ import {theme} from '@theme';
 import IconView from '@components/Icon';
 import {useNavigation, useRoute} from '@react-navigation/native';
 
-const Topbar = ({route}) => {
-  const navigation = useNavigation();
-
+const Topbar = ({bookmark}) => {
   const [paddingTop, setPaddingTop] = useState(0);
   const [height, setHeight] = useState(0);
+  const navigation = useNavigation();
+  console.log('bookmark', bookmark);
 
   useEffect(() => {
     if (Platform.OS === 'ios') {
@@ -38,12 +38,37 @@ const Topbar = ({route}) => {
       height={height}
       paddingTop={paddingTop}
       paddingHorizontal={10}
-      alignCenter
       justifyCenter>
-      <Block style={styles.container}>
-        <TouchableOpacity style={styles.iconBack}>
-          <IconView name="arrow-left" size={20} color={theme.colors.black} />
+      <Block row style={styles.container} space={'between'}>
+        <TouchableOpacity
+          style={styles.iconBack}
+          onPress={() => navigation.goBack()}>
+          <IconView
+            component={'MaterialIcons'}
+            name="keyboard-backspace"
+            size={30}
+            color={theme.colors.black}
+          />
         </TouchableOpacity>
+        {bookmark !== undefined && (
+          <TouchableOpacity style={styles.iconBookmark}>
+            {bookmark === true ? (
+              <IconView
+                component={'Ionicons'}
+                name={'bookmark'}
+                size={25}
+                color={theme.colors.red}
+              />
+            ) : (
+              <IconView
+                component={'Ionicons'}
+                name={'bookmark-outline'}
+                size={25}
+                color={theme.colors.black}
+              />
+            )}
+          </TouchableOpacity>
+        )}
       </Block>
     </Block>
   );
