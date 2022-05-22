@@ -4,6 +4,8 @@ const icons = {
   star: require('./icons/Star.png'),
   back: require('./icons/back.png'),
   google: require('./icons/google.png'),
+  star_happy: require('./icons/star_happy.png'),
+  star_sad: require('./icons/star_sad.png'),
 };
 
 const images = {
