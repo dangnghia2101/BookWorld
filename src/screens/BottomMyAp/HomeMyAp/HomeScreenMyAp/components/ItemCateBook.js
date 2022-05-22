@@ -9,7 +9,6 @@ const {colors} = theme;
 const PADDING_ITEM = 15;
 
 const ItemCateBook = ({item}) => {
-  console.log('============> ItemCateBook');
   // const navigation = useNavigation();
   return (
     <TouchableOpacity
