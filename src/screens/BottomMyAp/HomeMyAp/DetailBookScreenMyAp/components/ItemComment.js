@@ -1,39 +1,57 @@
-import {Block, Text} from '@components';
+import {Block, Text, Button} from '@components';
 import React from 'react';
 import {Image, StyleSheet, TouchableOpacity} from 'react-native';
-import {useNavigation} from '@react-navigation/native';
-import {routes} from '@navigation/routes';
+import Icon from '@components/Icon';
 
 import {theme} from '@theme';
+import {images} from '@assets';
+import {startCase} from 'lodash';
+
 const {colors} = theme;
 const PADDING_ITEM = 15;
 
-const ItemMostBookRead = ({item, props}) => {
-  const navigation = useNavigation();
+const _renderStar = num => {
+  let star = [];
+  for (let i = 0; i < num; i++) {
+    star.push(
+      <Icon
+        component={'AntDesign'}
+        name="star"
+        color={theme.colors.yellow}
+        size={16}
+      />,
+    );
+  }
+  return star;
+};
+
+const ItemComment = ({item}) => {
   return (
-    <TouchableOpacity
-      onPress={() =>
-        navigation.navigate(routes.DETAIL_BOOK_MY_AP, {bookmark: true, item})
-      }>
-      <Block marginRight={PADDING_ITEM}>
+    <Block>
+      <Block marginRight={PADDING_ITEM} row marginTop={20}>
         <Image
           style={styles.image}
           source={{
-            uri: item.banner,
+            uri: item.Image,
           }}
         />
-        <Text marginTop={10} size={14} fontType="bold">
-          {item.name}
-        </Text>
-        <Text size={11} color={colors.dark}>
-          {item.name_author}
-        </Text>
+        <Block marginHorizontal={10}>
+          <Text size={15} fontType="regular">
+            {item.UserName}
+          </Text>
+          <Block row marginTop={5}>
+            {_renderStar(item.Evaluate)}
+          </Block>
+        </Block>
       </Block>
-    </TouchableOpacity>
+      <Block marginTop={5} marginLeft={5}>
+        <Text color={colors.gray}>{item.Content}</Text>
+      </Block>
+    </Block>
   );
 };
 
-export default ItemMostBookRead;
+export default ItemComment;
 
 const styles = StyleSheet.create({
   inputSection: {
@@ -69,10 +87,11 @@ const styles = StyleSheet.create({
     color: colors.orange,
   },
   image: {
-    height: 230,
-    width: 150,
-    borderRadius: 15,
+    height: 50,
+    width: 50,
+    borderRadius: 25,
     resizeMode: 'center',
+    backgroundColor: colors.gray2,
   },
   title_InView: {
     paddingTop: 10,
@@ -97,5 +116,10 @@ const styles = StyleSheet.create({
     color: colors.blueTitle,
     fontWeight: 'bold',
     fontSize: 16,
+  },
+  btnItemCate: {
+    borderRadius: 12,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
   },
 });

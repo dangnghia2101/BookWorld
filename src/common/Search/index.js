@@ -1,5 +1,5 @@
 import React from 'react';
-import {Block, Text} from '@components';
+import {Block} from '@components';
 import {TextInput, StyleSheet, Keyboard} from 'react-native';
 import {theme} from '@theme';
 import MaterialIconsI from 'react-native-vector-icons/MaterialIcons';
@@ -20,7 +20,7 @@ const Search = ({
         {/* Input field */}
         <TextInput
           style={[styles.input, width ? {width: width} : {width: '97%'}]}
-          placeholder="Search"
+          placeholder="Tìm kiếm"
           value={searchPhrase}
           onChangeText={setSearchPhrase}
           onFocus={() => {
@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
     padding: 5,
     flexDirection: 'row',
     width: '97%',
-    backgroundColor: '#d9dbda',
+    backgroundColor: colors.gray3,
     borderRadius: 10,
     alignItems: 'center',
     paddingLeft: 10,
