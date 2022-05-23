@@ -3,6 +3,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {routes} from '@navigation/routes';
 import HomeScreenMyAp from './HomeScreenMyAp';
 import DetailBookScreenMyAp from './DetailBookScreenMyAp';
+import PlayBookScreenMyAp from './PlayBookScreenMyAp';
 const Stack = createStackNavigator();
 
 const screenOptionStyle = {
