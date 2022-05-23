@@ -22,6 +22,10 @@ const HomeMyApNavigator = ({navigation, route}) => {
         name={routes.DETAIL_BOOK_MY_AP}
         component={DetailBookScreenMyAp}
       />
+      <Stack.Screen
+        name={routes.PLAY_BOOK_MY_AP}
+        component={PlayBookScreenMyAp}
+      />
     </Stack.Navigator>
   );
 };

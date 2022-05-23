@@ -5,8 +5,8 @@ import ItemCateBook from './ItemCateBook';
 const TabSceneCategoryBook = ({route}) => {
   return route?.bookList?.length > 0 ? (
     <Block>
-      {route?.bookList.map(item => (
-        <ItemCateBook item={item} />
+      {route?.bookList.map((item, index) => (
+        <ItemCateBook key={index} item={item} />
       ))}
     </Block>
   ) : (
