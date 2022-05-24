@@ -3,6 +3,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {routes} from '@navigation/routes';
 import HomeScreenMyAp from './HomeScreenMyAp';
 import DetailBookScreenMyAp from './DetailBookScreenMyAp';
+import PlayBookScreenMyAp from './PlayBookScreenMyAp';
 const Stack = createStackNavigator();
 
 const screenOptionStyle = {
@@ -20,6 +21,10 @@ const HomeMyApNavigator = ({navigation, route}) => {
       <Stack.Screen
         name={routes.DETAIL_BOOK_MY_AP}
         component={DetailBookScreenMyAp}
+      />
+      <Stack.Screen
+        name={routes.PLAY_BOOK_MY_AP}
+        component={PlayBookScreenMyAp}
       />
     </Stack.Navigator>
   );
