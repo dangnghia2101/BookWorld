@@ -88,8 +88,8 @@ const EvaluateBook = ({item}) => {
       </Block>
 
       {/* List comment */}
-      {listComment?.map((item, index) => (
-        <ItemComment key={index} item={item} />
+      {listComment?.map(item => (
+        <ItemComment item={item} />
       ))}
     </Block>
   );

@@ -20,7 +20,6 @@ export const theme = {
     yellow: '#FFDF00',
     dark: '#00000060',
     dark1: '#261E27',
-    dark2: '#06001a',
     bg_opacity: '#00000020',
     gray2: '#9A9A9A',
     darkRed: '#BF0404',

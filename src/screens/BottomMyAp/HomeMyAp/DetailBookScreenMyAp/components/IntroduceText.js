@@ -4,8 +4,6 @@ import React from 'react';
 import {theme} from '@theme';
 import Icon from '@components/Icon';
 import * as Progress from 'react-native-progress';
-import {useNavigation} from '@react-navigation/native';
-import {routes} from '@navigation/routes';
 
 const _renderStar = num => {
   let star = [];
@@ -23,13 +21,10 @@ const _renderStar = num => {
 };
 
 const IntroduceText = ({item}) => {
-  const navigation = useNavigation();
-
   return (
     <Block marginHorizontal={10} marginTop={20}>
       <Block row alignCenter>
         <Button
-          onPress={() => navigation.navigate(routes.PLAY_BOOK_MY_AP)}
           style={[
             styles.btnItemCate,
             {backgroundColor: theme.colors.lightRed},
