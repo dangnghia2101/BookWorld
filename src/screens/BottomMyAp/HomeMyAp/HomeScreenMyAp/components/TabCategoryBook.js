@@ -1,11 +1,11 @@
-import {Block, Text} from '@components';
-import {theme} from '@theme';
-import React, {useState, useEffect} from 'react';
-import {StyleSheet} from 'react-native';
-import {TabBar, TabView} from 'react-native-tab-view';
+import { Block, Text } from '@components';
+import { theme } from '@theme';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet } from 'react-native';
+import { TabBar, TabView } from 'react-native-tab-view';
 import TabSceneCategoryBook from './TabSceneCategoryBook';
 
-const _renderLabel = ({route, focused, color}) => {
+const _renderLabel = ({ route, focused, color }) => {
   return (
     <Block>
       <Text color={focused ? theme.colors.dark : theme.colors.lightGray}>
@@ -16,7 +16,7 @@ const _renderLabel = ({route, focused, color}) => {
 };
 
 const TabCategoryBook = () => {
-  const [routes, setRoutes] = useState([{key: 'Default', title: 'Default'}]);
+  const [routes, setRoutes] = useState([{ key: 'Default', title: 'Default' }]);
   const [index, setIndex] = useState(0);
 
   const dataListCate = {
@@ -107,13 +107,13 @@ const TabCategoryBook = () => {
   return (
     <TabView
       lazy
-      navigationState={{index, routes}}
-      renderScene={({route}) => {
+      navigationState={{ index, routes }}
+      renderScene={({ route }) => {
         return <TabSceneCategoryBook route={route} />;
       }}
       renderTabBar={renderTabBar}
       onIndexChange={setIndex}
-      style={{height: 500}}
+      style={{ height: 500 }}
     />
   );
 };
@@ -124,5 +124,5 @@ const styles = StyleSheet.create({
   indicatorStyle: {
     opacity: 0,
   },
-  tabStyle: {width: 'auto'},
+  tabStyle: { width: 'auto' },
 });
