@@ -1,10 +1,14 @@
 import React from 'react';
-import {Block, Text} from '@components';
+import { Block, Text } from '@components';
+import Header from 'common/Header';
+import { theme } from '@theme';
+import TapReadingStatus from '../components/TapReadingStatus';
 
 const ReadingScreenMyAp = () => {
   return (
-    <Block flex alignCenter justifyCenter>
-      <Text>Sách đang đọc</Text>
+    <Block flex paddingHorizontal={20} backgroundColor={theme.colors.white}>
+      <Header />
+      <TapReadingStatus />
     </Block>
   );
 };
