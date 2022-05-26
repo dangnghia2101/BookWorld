@@ -1,14 +1,15 @@
-import { Block, Text } from '@components';
-import { theme } from '@theme';
-import React, { useState, useEffect } from 'react';
-import { StyleSheet } from 'react-native';
-import { TabBar, TabView } from 'react-native-tab-view';
+import {Block, Text} from '@components';
+import {theme} from '@theme';
+import React, {useState, useEffect} from 'react';
+import {StyleSheet, ScrollView} from 'react-native';
+import {color} from 'react-native-reanimated';
+import {TabBar, TabView} from 'react-native-tab-view';
 import TabSceneCategoryBook from './TabSceneCategoryBook';
 
 const _renderLabel = ({ route, focused, color }) => {
   return (
     <Block>
-      <Text color={focused ? theme.colors.dark : theme.colors.lightGray}>
+      <Text color={focused ? theme.colors.black : theme.colors.lightGray}>
         {route.title}
       </Text>
     </Block>
@@ -44,7 +45,7 @@ const TabCategoryBook = () => {
     ],
     book: [
       {
-        _id: 'cate01',
+        _id: '12',
         categoryId: 'cate01',
         banner:
           'https://uploads-ssl.webflow.com/5ee67a4ca605db1097d0d827/612b5cf9e84a8fb37e685919_Rich-Dad-Poor-Dad-1000x1000.jpg',
@@ -55,7 +56,51 @@ const TabCategoryBook = () => {
         numView: 21000,
       },
       {
-        _id: 'cate01',
+        _id: '21',
+        categoryId: 'cate01',
+        banner:
+          'https://uploads-ssl.webflow.com/5ee67a4ca605db1097d0d827/612b5cf9e84a8fb37e685919_Rich-Dad-Poor-Dad-1000x1000.jpg',
+        name: 'Rich Dad Poor Dad',
+        name_author: 'Robert T.Kiyosaki',
+        evalue: '4.5',
+        numPage: 234,
+        numView: 21000,
+      },
+      {
+        _id: '12',
+        categoryId: 'cate01',
+        banner:
+          'https://uploads-ssl.webflow.com/5ee67a4ca605db1097d0d827/612b5cf9e84a8fb37e685919_Rich-Dad-Poor-Dad-1000x1000.jpg',
+        name: 'Rich Dad Poor Dad',
+        name_author: 'Robert T.Kiyosaki',
+        evalue: '4.5',
+        numPage: 234,
+        numView: 21000,
+      },
+      {
+        _id: '12',
+        categoryId: 'cate01',
+        banner:
+          'https://uploads-ssl.webflow.com/5ee67a4ca605db1097d0d827/612b5cf9e84a8fb37e685919_Rich-Dad-Poor-Dad-1000x1000.jpg',
+        name: 'Rich Dad Poor Dad',
+        name_author: 'Robert T.Kiyosaki',
+        evalue: '4.5',
+        numPage: 234,
+        numView: 21000,
+      },
+      {
+        _id: '21',
+        categoryId: 'cate01',
+        banner:
+          'https://uploads-ssl.webflow.com/5ee67a4ca605db1097d0d827/612b5cf9e84a8fb37e685919_Rich-Dad-Poor-Dad-1000x1000.jpg',
+        name: 'Rich Dad Poor Dad',
+        name_author: 'Robert T.Kiyosaki',
+        evalue: '4.5',
+        numPage: 234,
+        numView: 21000,
+      },
+      {
+        _id: '12',
         categoryId: 'cate01',
         banner:
           'https://uploads-ssl.webflow.com/5ee67a4ca605db1097d0d827/612b5cf9e84a8fb37e685919_Rich-Dad-Poor-Dad-1000x1000.jpg',
@@ -75,7 +120,9 @@ const TabCategoryBook = () => {
         key: item._id,
         title: item.name,
         bookList:
-          item._id === dataListCate?.book[0]?._id ? dataListCate.book : [],
+          item._id === dataListCate?.book[1]?.categoryId
+            ? dataListCate.book
+            : [],
         ...item,
       };
     });
@@ -91,10 +138,12 @@ const TabCategoryBook = () => {
         {!dataListCate.isLoading && (
           <TabBar
             {...props}
-            scrollEnabled
-            indicatorStyle={styles.indicator}
+            indicatorStyle={styles.indicatorStyle}
             renderLabel={_renderLabel}
             tabStyle={styles.tabStyle}
+            pressColor={theme.colors.white}
+            scrollEnabled={true}
+            labelStyle={{color: 'red'}}
             style={{
               backgroundColor: theme.colors.white,
             }}
@@ -104,16 +153,20 @@ const TabCategoryBook = () => {
     );
   };
 
+  const height =
+    dataListCate?.book?.length > 0
+      ? (dataListCate?.book?.length + 1) * 140
+      : 20;
+
   return (
     <TabView
-      lazy
-      navigationState={{ index, routes }}
-      renderScene={({ route }) => {
+      navigationState={{index, routes}}
+      renderScene={({route}) => {
         return <TabSceneCategoryBook route={route} />;
       }}
       renderTabBar={renderTabBar}
       onIndexChange={setIndex}
-      style={{ height: 500 }}
+      style={{height: height}}
     />
   );
 };
@@ -122,7 +175,7 @@ export default TabCategoryBook;
 
 const styles = StyleSheet.create({
   indicatorStyle: {
-    opacity: 0,
+    backgroundColor: theme.colors.dark,
   },
   tabStyle: { width: 'auto' },
 });

@@ -1,7 +1,9 @@
 import {Block, Text, Button} from '@components';
 import React from 'react';
 import {Image, StyleSheet, TouchableOpacity} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 import Icon from '@components/Icon';
+import {routes} from '@navigation/routes';
 
 import {theme} from '@theme';
 
@@ -9,12 +11,12 @@ const {colors} = theme;
 const PADDING_ITEM = 15;
 
 const ItemCateBook = ({item}) => {
-  console.log('============> ItemCateBook');
-  // const navigation = useNavigation();
+  const navigation = useNavigation();
   return (
     <TouchableOpacity
-    // onPress={() => navigation.navigate(routes.EVENT_DETAIL, {event: item})}
-    >
+      onPress={() =>
+        navigation.navigate(routes.DETAIL_BOOK_MY_AP, {bookmark: true, item})
+      }>
       <Block marginRight={PADDING_ITEM} row marginTop={20}>
         <Image
           style={styles.image}
@@ -86,7 +88,8 @@ const ItemCateBook = ({item}) => {
               style={[
                 styles.btnItemCate,
                 {backgroundColor: theme.colors.lightRed},
-              ]}>
+              ]}
+              onPress={() => navigation.navigate(routes.PLAY_BOOK_MY_AP)}>
               <Text fontType="bold" color="white">
                 Doc sach
               </Text>
