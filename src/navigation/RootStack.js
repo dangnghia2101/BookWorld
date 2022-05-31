@@ -19,7 +19,7 @@ import Auth from '../screens/Auth';
 import Welcome from '../screens/Auth/Welcome';
 
 export default function MainContainer() {
-  const [isLogin, setIsLogin] = useState(true);
+  const [isLogin, setIsLogin] = useState(false);
 
   return (
     <>

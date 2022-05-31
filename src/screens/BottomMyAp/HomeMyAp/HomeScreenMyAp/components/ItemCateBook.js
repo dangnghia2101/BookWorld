@@ -89,7 +89,9 @@ const ItemCateBook = ({item}) => {
                 styles.btnItemCate,
                 {backgroundColor: theme.colors.lightRed},
               ]}
-              onPress={() => navigation.navigate(routes.PLAY_BOOK_MY_AP)}>
+              onPress={() =>
+                navigation.navigate(routes.PLAY_BOOK_MY_AP, {item})
+              }>
               <Text fontType="bold" color="white">
                 Doc sach
               </Text>

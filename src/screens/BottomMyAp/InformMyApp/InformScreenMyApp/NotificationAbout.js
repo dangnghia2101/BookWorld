@@ -9,18 +9,23 @@ const NotificationAbout = () => {
       item.push(
         <Block style={styles.notificationAbout}>
           <Image
-            style={styles.imageNoti} 
-            source={{uri:'https://res.cloudinary.com/cao-ng-fpt-polytechnic/image/upload/v1653318098/pbpjvsmyxcjumr9pgk7j.jpg'}}/>
+            style={styles.imageNoti}
+            source={{
+              uri: 'https://res.cloudinary.com/cao-ng-fpt-polytechnic/image/upload/v1653318098/pbpjvsmyxcjumr9pgk7j.jpg',
+            }}
+          />
           <Block>
-            <Text style={styles.text}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. </Text>
+            <Text style={styles.text}>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit.{' '}
+            </Text>
             <Text style={styles.text}>1m ago</Text>
           </Block>
-        </Block>
-)
+        </Block>,
+      );
     }
     return item;
-}
-  return ( 
+  };
+  return (
     <Block>
       <ScrollView>{renderItem(20)}</ScrollView>
     </Block>

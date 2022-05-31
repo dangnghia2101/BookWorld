@@ -6,8 +6,8 @@ import HeaderNotification from './HeaderNotification';
 const InformScreenMyApp = () => {
   return (
     <Block>
-      <HeaderNotification/>
-      <NotificationAbout/>
+      <HeaderNotification />
+      <NotificationAbout />
     </Block>
   );
 };
