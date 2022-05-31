@@ -39,11 +39,12 @@ const BottomTabMyAp = () => {
       />
 
       <Tab.Screen
-        name={routes.INFORM_MY_AP}
-        component={bottom.INFORM_MY_AP}
+        name={routes.CHAT_MY_AP}
+        component={bottom.CHAT_MY_AP}
         options={{
-          tabBarLabel: 'Thông báo',
-          tabBarIcon: 'bell',
+          tabBarLabel: 'Nhắn tin',
+          tabBarIcon: 'chat-outline',
+          tabBarStyle: {display: 'none'},
         }}
       />
 
