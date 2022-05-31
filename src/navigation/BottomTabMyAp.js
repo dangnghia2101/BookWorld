@@ -44,6 +44,7 @@ const BottomTabMyAp = () => {
         options={{
           tabBarLabel: 'Thông báo',
           tabBarIcon: 'bell',
+          tabBarStyle: {display: 'none'},
         }}
       />
 
