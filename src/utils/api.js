@@ -38,7 +38,7 @@ axios.interceptors.request.use(
     return {...config, data};
   },
   error => {
-    return Promise.reject(error);
+    return Promise.reject(true);
   },
 );
 

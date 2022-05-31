@@ -14,9 +14,12 @@ import BottomTabMyAp from './BottomTabMyAp';
 // import {routes} from './routes';
 // import ContentDrawer from './ContentDrawer';
 // const Drawer = createDrawerNavigator();
+import Login from '@screens/Auth/Login';
+import Auth from '../screens/Auth';
+import Welcome from '../screens/Auth/Welcome';
 
 export default function MainContainer() {
-  // const [isLogin, setIsLogin] = useState(true);
+  const [isLogin, setIsLogin] = useState(true);
 
   return (
     <>
@@ -26,7 +29,7 @@ export default function MainContainer() {
           barStyle="dark-content"
           backgroundColor="transparent"
         />
-        <BottomTabMyAp />
+        {isLogin ? <Auth /> : <BottomTabMyAp />}
       </NavigationContainer>
     </>
   );
