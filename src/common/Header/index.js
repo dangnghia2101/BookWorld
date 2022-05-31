@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import {Block, Text} from '@components';
+import React, { useState, useEffect } from 'react';
+import { Block, Text } from '@components';
 import {
   Platform,
   NativeModules,
@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import Search from 'common/Search';
 
-const Header = ({clicked, searchPhrase, setSearchPhrase, setClicked}) => {
+const Header = ({ clicked, searchPhrase, setSearchPhrase, setClicked }) => {
   const [paddingTop, setPaddingTop] = useState(0);
 
   useEffect(() => {
@@ -25,7 +25,7 @@ const Header = ({clicked, searchPhrase, setSearchPhrase, setClicked}) => {
   }, []);
 
   return (
-    <Block style={[styles.container, {paddingTop: paddingTop}]}>
+    <Block style={[styles.container, { paddingTop: paddingTop }]}>
       <Search
         clicked={clicked}
         setClicked={setClicked}
