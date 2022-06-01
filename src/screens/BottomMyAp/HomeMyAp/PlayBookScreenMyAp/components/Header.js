@@ -10,8 +10,30 @@ import {
 import {theme} from '@theme';
 import IconView from '@components/Icon';
 import {useNavigation, useRoute} from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const Header = ({themeBack, setThemeBack, size, setSize}) => {
+const storeData = async (scrollY, scrollYSize, _idBook) => {
+  try {
+    const data = {
+      scrollY: scrollY,
+      scrollYSize: scrollYSize,
+    };
+
+    await AsyncStorage.setItem(_idBook, JSON.stringify(data));
+  } catch (err) {
+    console.warn(`ERROR in seedStorage: ${err}`);
+  }
+};
+
+const Header = ({
+  themeBack,
+  setThemeBack,
+  size,
+  setSize,
+  _idBook,
+  scrollY,
+  scrollYSize,
+}) => {
   const [paddingTop, setPaddingTop] = useState(0);
   const [height, setHeight] = useState(0);
   const navigation = useNavigation();
@@ -43,7 +65,10 @@ const Header = ({themeBack, setThemeBack, size, setSize}) => {
       <Block row style={styles.container} space={'between'}>
         <TouchableOpacity
           style={styles.iconBack}
-          onPress={() => navigation.goBack()}>
+          onPress={() => {
+            storeData(scrollY, scrollYSize, _idBook);
+            navigation.goBack();
+          }}>
           <IconView
             component={'MaterialIcons'}
             name="keyboard-backspace"
@@ -52,20 +77,34 @@ const Header = ({themeBack, setThemeBack, size, setSize}) => {
           />
         </TouchableOpacity>
         <Block row>
-          <Button onPress={() => setSize(size + 2)} style={{marginRight: 20}}>
+          <Button
+            onPress={() => setSize(size + 2)}
+            style={[
+              !themeBack
+                ? {backgroundColor: theme.colors.gray4}
+                : {backgroundColor: theme.colors.dark2},
+              {marginRight: 20, borderRadius: 8, padding: 2},
+            ]}>
             <IconView
               component={'AntDesign'}
-              name={'pluscircleo'}
+              name={'plus'}
               size={25}
-              color={!themeBack ? theme.colors.white : theme.colors.dark2}
+              color={themeBack ? theme.colors.white : theme.colors.dark2}
             />
           </Button>
-          <Button onPress={() => setSize(size - 2)}>
+          <Button
+            onPress={() => setSize(size - 2)}
+            style={[
+              !themeBack
+                ? {backgroundColor: theme.colors.gray4}
+                : {backgroundColor: theme.colors.dark2},
+              {marginRight: 20, borderRadius: 8, padding: 2},
+            ]}>
             <IconView
               component={'AntDesign'}
-              name={'minuscircleo'}
+              name={'minus'}
               size={25}
-              color={!themeBack ? theme.colors.white : theme.colors.dark2}
+              color={themeBack ? theme.colors.white : theme.colors.dark2}
             />
           </Button>
         </Block>

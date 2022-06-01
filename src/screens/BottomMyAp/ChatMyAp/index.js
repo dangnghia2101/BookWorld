@@ -1,20 +1,23 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import {routes} from '@navigation/routes';
-import InformScreenMyApp from './InformScreenMyApp';
+import ChatScreenMyApp from './ChatScreenMyAp';
 const Stack = createStackNavigator();
 
 const screenOptionStyle = {
   headerShown: false,
 };
 
-const InformMyApNavigator = ({navigation, route}) => {
+const ChatMyApNavigator = ({navigation}) => {
   navigation.setOptions({tabBarVisible: false});
   return (
     <Stack.Navigator screenOptions={screenOptionStyle}>
-      <Stack.Screen name={'POINT_SCREEN'} component={InformScreenMyApp} />
+      <Stack.Screen
+        name={routes.CHAT_SCREEN_MY_AP}
+        component={ChatScreenMyApp}
+      />
     </Stack.Navigator>
   );
 };
 
-export default InformMyApNavigator;
+export default ChatMyApNavigator;
