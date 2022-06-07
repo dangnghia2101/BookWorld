@@ -6,7 +6,7 @@ import {color} from 'react-native-reanimated';
 import {TabBar, TabView} from 'react-native-tab-view';
 import TabSceneCategoryBook from './TabSceneCategoryBook';
 
-const _renderLabel = ({ route, focused, color }) => {
+const _renderLabel = ({route, focused, color}) => {
   return (
     <Block>
       <Text color={focused ? theme.colors.black : theme.colors.lightGray}>
@@ -17,7 +17,7 @@ const _renderLabel = ({ route, focused, color }) => {
 };
 
 const TabCategoryBook = () => {
-  const [routes, setRoutes] = useState([{ key: 'Default', title: 'Default' }]);
+  const [routes, setRoutes] = useState([{key: 'Default', title: 'Default'}]);
   const [index, setIndex] = useState(0);
 
   const dataListCate = {
@@ -177,5 +177,5 @@ const styles = StyleSheet.create({
   indicatorStyle: {
     backgroundColor: theme.colors.dark,
   },
-  tabStyle: { width: 'auto' },
+  tabStyle: {width: 'auto'},
 });

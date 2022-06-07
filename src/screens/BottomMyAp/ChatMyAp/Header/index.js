@@ -31,11 +31,11 @@ const Header = ({clicked, searchPhrase, setSearchPhrase, setClicked}) => {
         setClicked={setClicked}
         searchPhrase={searchPhrase}
         setSearchPhrase={setSearchPhrase}
-        width={'85%'}
+        width={'90%'}
       />
       <Image
         source={{
-          uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqoZIv4bZRmotVtFu_lFN9L_3Y4G_Cm9wLMA&usqp=CAU',
+          uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRPAPdtQvHvvclT0AKfnXfxaKLhD9jjdmPfNA6N256edqM3AELzuS5_wA19ftromR5K76I&usqp=CAU',
         }}
         style={styles.avatar_iamge}
       />
@@ -65,9 +65,10 @@ const styles = StyleSheet.create({
     width: '90%',
   },
   avatar_iamge: {
-    height: 40,
-    width: 40,
+    height: 25,
+    width: 25,
     borderRadius: 20,
+    marginLeft: 10,
   },
 });
 

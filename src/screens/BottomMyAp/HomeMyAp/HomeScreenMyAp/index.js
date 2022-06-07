@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
-import { Block, Text } from '@components';
-import { ScrollView, StyleSheet } from 'react-native';
+import React, {useState} from 'react';
+import {Block, Text} from '@components';
+import {ScrollView, StyleSheet} from 'react-native';
 import Header from '../../../../common/Header/index';
 import SellPremire from 'common/Sell/SellPremire';
 import HeaderListBook from './components/HeaderListEvent';
-import { FlatList } from 'react-native-gesture-handler';
-import { width } from '@utils/responsive';
+import {FlatList} from 'react-native-gesture-handler';
+import {width} from '@utils/responsive';
 import ItemMostBookRead from './components/ItemMostBookRead';
 import TabCategoryBook from './components/TabCategoryBook';
-import { theme } from '@theme';
+import {theme} from '@theme';
 
 const listMostReadBook = {
   data: [
@@ -49,7 +49,7 @@ const HomeScreenMyAp = () => {
   const [clicked, setClicked] = useState(false);
   const [searchPhrase, setSearchPhrase] = useState('');
 
-  const _renderItemMostBookRead = ({ item }) => {
+  const _renderItemMostBookRead = ({item}) => {
     return <ItemMostBookRead item={item} />;
   };
 
