@@ -9,7 +9,7 @@ const Header = ({title, action, titleAction}) => {
   return (
     <Block style={[styles.container]}>
       <Text style={styles.titleSection}>{title}</Text>
-      <TouchableOpacity style={styles.titleEdit}>
+      <TouchableOpacity>
         <Text style={styles.edit}>Edit</Text>
       </TouchableOpacity>
     </Block>
@@ -30,7 +30,6 @@ const styles = StyleSheet.create({
     color: colors.blueTitle,
     fontWeight: 'bold',
   },
-  titleEdit: {},
   edit: {
     color: colors.orange,
     fontSize: 18,

@@ -1,9 +1,11 @@
-import {Image, StyleSheet, TextInput} from 'react-native';
+import {Image, StyleSheet, TextInput, Dimensions} from 'react-native';
 import {Block, Text, Button} from '@components';
 import React, {useState} from 'react';
 import {theme} from '@theme';
 import {icons} from '@assets';
 import ItemComment from './ItemComment';
+import * as Progress from 'react-native-progress';
+import Icon from '@components/Icon';
 
 const listComment = [
   {
@@ -24,12 +26,127 @@ const listComment = [
   },
 ];
 
-const EvaluateBook = ({item}) => {
+const _renderStar = num => {
+  let star = [];
+  for (let i = 0; i < num; i++) {
+    star.push(
+      <Icon
+        component={'AntDesign'}
+        name="star"
+        color={theme.colors.yellow}
+        size={20}
+      />,
+    );
+  }
+  return star;
+};
+
+const EvaluateBook = ({}) => {
   const [evaluate, setEvaluate] = useState(0);
   const [comment, setComment] = useState('');
   return (
     <Block marginHorizontal={10} marginTop={40}>
-      <Text center color={theme.colors.black} size={18}>
+      <Text center marginTop={30} color={theme.colors.black} size={18}>
+        Xếp hạng đánh giá
+      </Text>
+      <Text
+        center
+        marginTop={20}
+        fontType={'bold'}
+        color={theme.colors.black}
+        size={50}>
+        4.3
+      </Text>
+      {/* Star */}
+      <Block row alignCenter justifyCenter width={'100%'}>
+        {_renderStar(4)}
+      </Block>
+      <Text center marginTop={10} color={theme.black}>
+        1000
+      </Text>
+      {/* Danh gia progress */}
+      <Block row marginLeft={40} alignCenter marginTop={20}>
+        <Text color={theme.colors.lightGray} size={14}>
+          5
+        </Text>
+        <Block marginLeft={10}>
+          <Progress.Bar
+            color={theme.colors.black}
+            height={12}
+            progress={0.8}
+            width={Dimensions.get('window').width - 200}
+          />
+        </Block>
+        <Text marginLeft={10} color={theme.colors.lightGray} size={14}>
+          75%
+        </Text>
+      </Block>
+
+      <Block row marginLeft={40} alignCenter marginTop={10}>
+        <Text color={theme.colors.lightGray} size={14}>
+          4
+        </Text>
+        <Block marginLeft={10}>
+          <Progress.Bar
+            color={theme.colors.black}
+            height={12}
+            progress={0.8}
+            width={Dimensions.get('window').width - 200}
+          />
+        </Block>
+        <Text marginLeft={10} color={theme.colors.lightGray} size={14}>
+          4%
+        </Text>
+      </Block>
+      <Block row marginLeft={40} alignCenter marginTop={10}>
+        <Text color={theme.colors.lightGray} size={14}>
+          3
+        </Text>
+        <Block marginLeft={10}>
+          <Progress.Bar
+            color={theme.colors.black}
+            height={12}
+            progress={0.8}
+            width={Dimensions.get('window').width - 200}
+          />
+        </Block>
+        <Text marginLeft={10} color={theme.colors.lightGray} size={14}>
+          25%
+        </Text>
+      </Block>
+      <Block row marginLeft={40} alignCenter marginTop={10}>
+        <Text color={theme.colors.lightGray} size={14}>
+          2
+        </Text>
+        <Block marginLeft={10}>
+          <Progress.Bar
+            color={theme.colors.black}
+            height={12}
+            progress={0.8}
+            width={Dimensions.get('window').width - 200}
+          />
+        </Block>
+        <Text marginLeft={10} color={theme.colors.lightGray} size={14}>
+          15%
+        </Text>
+      </Block>
+      <Block row marginLeft={40} alignCenter marginTop={10}>
+        <Text color={theme.colors.lightGray} size={14}>
+          1
+        </Text>
+        <Block marginLeft={10}>
+          <Progress.Bar
+            color={theme.colors.black}
+            height={12}
+            progress={0.8}
+            width={Dimensions.get('window').width - 200}
+          />
+        </Block>
+        <Text marginLeft={10} color={theme.colors.lightGray} size={14}>
+          13%
+        </Text>
+      </Block>
+      <Text center color={theme.colors.black} size={18} marginTop={30}>
         Đánh giá sách
       </Text>
       <Text center color={theme.colors.dark} size={14}>

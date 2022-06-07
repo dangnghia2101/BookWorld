@@ -90,7 +90,7 @@ const ItemCateBook = ({item}) => {
                 {backgroundColor: theme.colors.lightRed},
               ]}
               onPress={() =>
-                navigation.navigate(routes.PLAY_BOOK_MY_AP, {item})
+                navigation.navigate(routes.DETAIL_BOOK_MY_AP, {item})
               }>
               <Text fontType="bold" color="white">
                 Doc sach
