@@ -31,7 +31,7 @@ const Header = ({clicked, searchPhrase, setSearchPhrase, setClicked}) => {
         setClicked={setClicked}
         searchPhrase={searchPhrase}
         setSearchPhrase={setSearchPhrase}
-        width={'85%'}
+        width={'90%'}
       />
       <Image
         source={{

@@ -1,10 +1,13 @@
 import {Block, Text} from '@components';
 import React from 'react';
 import {StyleSheet, Pressable} from 'react-native';
+import {useDispatch} from 'react-redux';
+import actions from '@redux/actions';
 
 import IconView from '@components/Icon';
 
 const ItemLastMoreMy = () => {
+  const dispatch = useDispatch();
   return (
     <Block marginHorizontal={40} style={styles.itemContainer2}>
       <Pressable row marginVertical={20}>
@@ -16,7 +19,7 @@ const ItemLastMoreMy = () => {
         />
         <Text style={styles.textLastMoreMy2}>About</Text>
       </Pressable>
-      <Pressable>
+      <Pressable onPress={() => dispatch({type: actions.LOGOUT_ACCOUNT})}>
         <Text style={styles.textLastMoreMy}>Đăng xuất</Text>
       </Pressable>
       <Pressable style={[styles.buttonLastMoreMy, styles.shadowColor]}>
