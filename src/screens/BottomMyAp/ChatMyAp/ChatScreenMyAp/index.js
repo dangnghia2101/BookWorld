@@ -1,11 +1,23 @@
 import {StyleSheet, Text, View} from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
+import {Block} from '@components';
+import {theme} from '@theme';
+import Header from '../Header';
+import TabChat from './components/TabChat';
 
 const ChatScreenMyApp = () => {
+  const [clicked, setClicked] = useState(false);
+  const [searchPhrase, setSearchPhrase] = useState('');
   return (
-    <View>
-      <Text>ChatScreenMyApp</Text>
-    </View>
+    <Block flex paddingHorizontal={20} backgroundColor={theme.colors.white}>
+      <Header
+        clicked={clicked}
+        setClicked={setClicked}
+        searchPhrase={searchPhrase}
+        setSearchPhrase={setSearchPhrase}
+      />
+      <TabChat />
+    </Block>
   );
 };
 
