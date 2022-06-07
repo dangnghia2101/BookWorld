@@ -6,6 +6,9 @@ export default {
   IS_LOGIN: 'IS_LOGIN',
   DISTANCE_LOCATION: 'DISTANCE_LOCATION',
   LOGIN_ACCOUNT: 'LOGIN_ACCOUNT',
+  GET_ALL_BOOK: 'GET_ALL_BOOK',
+
+  GET_ALL_AUTHOR: 'GET_ALL_AUTHOR',
 };
 
 export const _onSuccess = action => action + '_SUCCESS';

@@ -35,9 +35,7 @@ const IntroduceText = ({item}) => {
         Giới thiệu về tác giả
       </Text>
       <Text color={theme.colors.lightGray} size={15}>
-        J.D. Salinger was an American writer, best known for his 1951 novel The
-        Catcher in the Rye. Before its publi cation, Salinger published several
-        short stories in Story magazine
+        {item?.item?.introduction}
       </Text>
       {/* Tổng quan đánh giá */}
       <Text
