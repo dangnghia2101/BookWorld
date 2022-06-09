@@ -5,8 +5,7 @@ import store from 'redux/store';
 // axios.defaults.baseURL = 'https://emotion-passport.herokuapp.com/api/';
 // axios.defaults.baseURL = 'https://myap.poly.edu.vn/api/';
 
-axios.defaults.baseURL = Config.API_STAGING_SERVER_URL;
-
+axios.defaults.baseURL = 'https://bookofword.herokuapp.com/api/';
 const getDataBody = config => {
   let data = '';
   if (
@@ -38,7 +37,7 @@ axios.interceptors.request.use(
     return {...config, data};
   },
   error => {
-    return Promise.reject(error);
+    return Promise.reject(true);
   },
 );
 

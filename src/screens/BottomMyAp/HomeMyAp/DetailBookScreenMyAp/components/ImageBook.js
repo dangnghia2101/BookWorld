@@ -23,12 +23,12 @@ const _renderStar = num => {
 const ImageBook = ({item}) => {
   return (
     <Block alignCenter>
-      <Image source={{uri: item.item.banner}} style={styles.image} />
+      <Image source={{uri: item.item.image}} style={styles.image} />
       <Text fontType="bold" size={20} marginTop={10}>
         {item.item.name}
       </Text>
       <Text fontType="regular" size={16} color={theme.colors.lightGray}>
-        {item.item.name_author}
+        {item.item.name}
       </Text>
       {/* Star */}
       <Block row marginTop={5}>

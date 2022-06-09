@@ -6,7 +6,9 @@ import { TabBar, TabView } from 'react-native-tab-view';
 import TabSceneReadingStatus from './TabSceneReadingStatus';
 import TapScenceAuthor from './TapScenceAuthor';
 
+
 const _renderLabel = ({ route, focused, color }) => {
+
   return (
     <Block>
       <Text color={focused ? theme.colors.dark : theme.colors.lightGray}>
@@ -17,7 +19,9 @@ const _renderLabel = ({ route, focused, color }) => {
 };
 
 const TapReadingStatus = () => {
+
   const [routes, setRoutes] = useState([{ key: 'Default', title: 'Default' }]);
+
   const [index, setIndex] = useState(0);
 
   const dataListCate = {
@@ -189,6 +193,7 @@ const TapReadingStatus = () => {
     ],
     isLoading: false,
   };
+
   const formatRouter = data => {
     return data?.map(item => {
       return {
@@ -199,56 +204,38 @@ const TapReadingStatus = () => {
             ? dataListCate.book
             : dataListCate.author,
         ...item,
-      };
-    });
-  };
-  useEffect(() => {
-    setRoutes(formatRouter(dataListCate.data));
-  }, []);
-
-  const rednderTabBar = props => {
-    return (
-      <>
-        {!dataListCate.isLoading && (
-          <TabBar
-            {...props}
-            scrollEnabled
-            // indicatorStyle={styles.indicator}
-            renderLabel={_renderLabel}
-            tabStyle={styles.tabStyle}
-            style={{ backgroundColor: theme.colors.white }}
-          />
-        )}
-      </>
-    );
-  };
-  const renderScene = ({ route }) => {
-    switch (route.key) {
-      case 'cate01':
-        return index === 0 ? <TabSceneReadingStatus route={route} /> : null;
-      case 'cate02':
-        return index === 1 ? <TapScenceAuthor /> : null;
-      case 'cate03':
-        return index === 2 ? <TapScenceAuthor route={route} /> : null;
-      default:
-        return <TabSceneReadingStatus />;
-    }
-  };
-  return (
-    <TabView
-      lazy
-      navigationState={{ index, routes }}
-      renderScene={renderScene}
-      renderTabBar={rednderTabBar}
-      onIndexChange={setIndex}
-      style={{ height: 500 }}
-      backgroundColor={theme.colors.red}
-    />
-  );
+      }
+    })
+  }
 };
+const renderScene = ({ route }) => {
+  switch (route.key) {
+    case 'cate01':
+      return index === 0 ? <TabSceneReadingStatus route={route} /> : null;
+    case 'cate02':
+      return index === 1 ? <TapScenceAuthor /> : null;
+    case 'cate03':
+      return index === 2 ? <TapScenceAuthor route={route} /> : null;
+    default:
+      return <TabSceneReadingStatus />;
+  }
+};
+return (
+  <TabView
+    lazy
+    navigationState={{ index, routes }}
+    renderScene={renderScene}
+    renderTabBar={rednderTabBar}
+    onIndexChange={setIndex}
+    style={{ height: 500 }}
+    backgroundColor={theme.colors.red}
+  />
+);
+
 
 export default TapReadingStatus;
 
 const styles = StyleSheet.create({
+
   tabStyle: { width: 'auto' },
 });
