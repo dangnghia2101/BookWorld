@@ -1,4 +1,4 @@
-import {Platform} from 'react-native';
+import { Platform } from 'react-native';
 
 export const theme = {
   colors: {
@@ -36,6 +36,8 @@ export const theme = {
     backgroundOpacity: 'rgba(0, 0, 0, 0.4)',
     blueTitle: '#092C4C',
     orange2: '#F95B00',
+    darkGray: '#F1F1F1',
+    creamRed: '#D45555',
   },
 
   fonts: {
