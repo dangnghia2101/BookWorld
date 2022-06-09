@@ -19,14 +19,14 @@ const ItemMostBookRead = ({item, props}) => {
         <Image
           style={styles.image}
           source={{
-            uri: item.banner,
+            uri: item.image,
           }}
         />
         <Text marginTop={10} size={14} fontType="bold">
           {item.name}
         </Text>
         <Text size={11} color={colors.dark}>
-          {item.name_author}
+          {item.name}
         </Text>
       </Block>
     </TouchableOpacity>

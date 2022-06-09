@@ -5,8 +5,10 @@ import {StyleSheet, ScrollView} from 'react-native';
 import {color} from 'react-native-reanimated';
 import {TabBar, TabView} from 'react-native-tab-view';
 import TabSceneCategoryBook from './TabSceneCategoryBook';
+import {useDispatch, useSelector} from 'react-redux';
+import actions from '@redux/actions';
 
-const _renderLabel = ({ route, focused, color }) => {
+const _renderLabel = ({route, focused, color}) => {
   return (
     <Block>
       <Text color={focused ? theme.colors.black : theme.colors.lightGray}>
@@ -17,8 +19,13 @@ const _renderLabel = ({ route, focused, color }) => {
 };
 
 const TabCategoryBook = () => {
-  const [routes, setRoutes] = useState([{ key: 'Default', title: 'Default' }]);
+  const [routes, setRoutes] = useState([{key: 'Default', title: 'Default'}]);
   const [index, setIndex] = useState(0);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch({type: actions.GET_ALL_AUTHOR});
+  }, []);
 
   const dataListCate = {
     data: [
@@ -177,5 +184,5 @@ const styles = StyleSheet.create({
   indicatorStyle: {
     backgroundColor: theme.colors.dark,
   },
-  tabStyle: { width: 'auto' },
+  tabStyle: {width: 'auto'},
 });

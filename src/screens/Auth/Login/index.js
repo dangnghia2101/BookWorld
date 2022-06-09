@@ -1,8 +1,59 @@
 import {Block, Text} from '@components';
-import React from 'react';
-import {StyleSheet, TextInput, Pressable, Image} from 'react-native';
+import React, {useState} from 'react';
+import {
+  StyleSheet,
+  TextInput,
+  Pressable,
+  Image,
+  TouchableOpacity,
+} from 'react-native';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import {useDispatch, useSelector} from 'react-redux';
+import actions from '@redux/actions';
+import messaging from '@react-native-firebase/messaging';
+import auth from '@react-native-firebase/auth';
+import API from '@utils/api';
 
 const Login = () => {
+  const dispatch = useDispatch();
+
+  GoogleSignin.configure({
+    webClientId:
+      '1078600024718-r4kttklrp4av6li4mqs9b5ctnhbm6aob.apps.googleusercontent.com',
+  });
+
+  async function getToken() {
+    return await messaging().getToken();
+  }
+
+  const _signIn = async () => {
+    await GoogleSignin.revokeAccess();
+    // await GoogleSignin.signOut();
+    try {
+      // Get the users ID token
+      const {idToken} = await GoogleSignin.signIn();
+      // get fcm token
+      const fcmToken = await getToken();
+
+      _handleLogin(idToken, fcmToken);
+
+      const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+      return auth().signInWithCredential(googleCredential);
+    } catch (error) {
+      console.log('=========> id error login', error);
+
+      // await API.post('logs/write', {message: error});
+    }
+  };
+
+  const _handleLogin = (token, fcmToken) => {
+    const body = {
+      token: token,
+      token_fcm: fcmToken,
+    };
+    dispatch({type: 'LOGIN', body: body});
+  };
+
   return (
     <Block flex alignCenter paddingTop={56} backgroundColor={'white'}>
       <Text h1 bold size={30} style={styles.textWelcomLogin}>
@@ -27,14 +78,11 @@ const Login = () => {
         <Text size={12}> Hoặc </Text>
       </Block>
       <Block style={styles.loginContainer}>
-        <Block
-          marginTop={32}
-          width={25}
-          height={25}
-          style={styles.Ellip}
-          marginHorizontal={10}>
+        <TouchableOpacity
+          onPress={_signIn}
+          style={[styles.iconLogin, styles.Ellip]}>
           <Image source={require('../../../assets/images/GG.png')} />
-        </Block>
+        </TouchableOpacity>
         <Block
           marginTop={32}
           width={25}
@@ -161,5 +209,11 @@ const styles = StyleSheet.create({
   textDescribe: {
     marginTop: 12,
     fontWeight: '500',
+  },
+  iconLogin: {
+    marginTop: 32,
+    width: 25,
+    height: 25,
+    marginHorizontal: 10,
   },
 });
