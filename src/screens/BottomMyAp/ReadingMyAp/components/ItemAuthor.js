@@ -7,12 +7,7 @@ import React from 'react';
 const ItemAuthor = ({ item }) => {
     return (
         <TouchableOpacity>
-            <Block
-                width="100%"
-                height={200}
-                alignCenter
-                marginTop={20}
-                relative>
+            <Block width="100%" height={200} alignCenter marginTop={20} relative>
                 <Block
                     width="100%"
                     height={145}
@@ -55,8 +50,10 @@ const ItemAuthor = ({ item }) => {
                         </Block>
                     </Block>
 
-                    <Block width='50%' height='100%' alignCenter>
-                        <Text numberOfLines={2} style={styles.textQuantity}>Số lượng sách xuất bản</Text>
+                    <Block width="50%" height="100%" alignCenter>
+                        <Text numberOfLines={2} style={styles.textQuantity}>
+                            Số lượng sách xuất bản
+                        </Text>
                         <Text style={styles.totalRead}>23</Text>
                         <Text style={styles.textName}>Tổng lượt đọc</Text>
                         <Text style={styles.totalRead}>23</Text>
@@ -96,7 +93,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         marginTop: 14,
         marginLeft: 11,
-        width: 122
+        width: 122,,
     },
     totalRate: {
         fontWeight: '400',
