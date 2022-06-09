@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         marginTop: 14,
         marginLeft: 11,
-        width: 122,,
+        width: 122,
     },
     totalRate: {
         fontWeight: '400',

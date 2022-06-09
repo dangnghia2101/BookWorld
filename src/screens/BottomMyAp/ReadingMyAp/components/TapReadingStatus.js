@@ -6,9 +6,7 @@ import { TabBar, TabView } from 'react-native-tab-view';
 import TabSceneReadingStatus from './TabSceneReadingStatus';
 import TapScenceAuthor from './TapScenceAuthor';
 
-
 const _renderLabel = ({ route, focused, color }) => {
-
   return (
     <Block>
       <Text color={focused ? theme.colors.dark : theme.colors.lightGray}>
@@ -19,7 +17,6 @@ const _renderLabel = ({ route, focused, color }) => {
 };
 
 const TapReadingStatus = () => {
-
   const [routes, setRoutes] = useState([{ key: 'Default', title: 'Default' }]);
 
   const [index, setIndex] = useState(0);
@@ -204,9 +201,20 @@ const TapReadingStatus = () => {
             ? dataListCate.book
             : dataListCate.author,
         ...item,
-      }
-    })
-  }
+      };
+    });
+  };
+  return (
+    <TabView
+      lazy
+      navigationState={{ index, routes }}
+      renderScene={renderScene}
+      // renderTabBar={rednderTabBar}
+      onIndexChange={setIndex}
+      style={{ height: 500 }}
+      backgroundColor={theme.colors.red}
+    />
+  );
 };
 const renderScene = ({ route }) => {
   switch (route.key) {
@@ -220,22 +228,8 @@ const renderScene = ({ route }) => {
       return <TabSceneReadingStatus />;
   }
 };
-return (
-  <TabView
-    lazy
-    navigationState={{ index, routes }}
-    renderScene={renderScene}
-    renderTabBar={rednderTabBar}
-    onIndexChange={setIndex}
-    style={{ height: 500 }}
-    backgroundColor={theme.colors.red}
-  />
-);
-
-
 export default TapReadingStatus;
 
 const styles = StyleSheet.create({
-
   tabStyle: { width: 'auto' },
 });
