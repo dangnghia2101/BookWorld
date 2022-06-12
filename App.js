@@ -1,9 +1,9 @@
-import {Loading, ModalCodePush} from '@components';
+import { Loading, ModalCodePush } from '@components';
 import React from 'react';
 import RootStack from './src/navigation/RootStack';
 import store from '@redux/store';
-import {SafeAreaProvider} from 'react-native-safe-area-context';
-import {Provider} from 'react-redux';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { Provider } from 'react-redux';
 
 const App = () => {
   return (
@@ -12,6 +12,7 @@ const App = () => {
         <RootStack />
       </SafeAreaProvider>
     </Provider>
+
     // <SafeAreaProvider>
     //   <RootStack />
     //   <Loading />

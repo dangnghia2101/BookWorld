@@ -14,7 +14,7 @@ const indexDetailAuthor = ({ route }) => {
                     backgroundColor={theme.colors.darkPurple}>
                     <Image
                         style={styles.iconBack}
-                        source={require('@assets/icons/iconBack.png')}
+                        source={require('@assets/icons/iconback.png')}
                     />
                 </Block>
                 <Block absolute top={158} left={91}>

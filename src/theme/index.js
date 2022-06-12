@@ -38,7 +38,7 @@ export const theme = {
     orange2: '#F95B00',
     darkGray: '#F1F1F1',
     creamRed: '#D45555',
-
+    darkPurple: '#331A45',
   },
 
   fonts: {

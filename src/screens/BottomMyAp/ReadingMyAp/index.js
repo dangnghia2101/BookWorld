@@ -3,6 +3,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { routes } from '@navigation/routes';
 import ReadingScreenMyAp from './ReadingScreenMyAp';
 import indexDetailAuthor from './DetailAuthor/indexDetailAuthor';
+
 const Stack = createStackNavigator();
 
 const screenOptionStyle = {
@@ -15,7 +16,7 @@ const ScheduleMyApNavigator = ({ navigation, route }) => {
     <Stack.Navigator screenOptions={screenOptionStyle}>
       <Stack.Screen name={'READING_SCREEN'} component={ReadingScreenMyAp} />
       <Stack.Screen
-        name={'DETAIL_AUTHOR_MY_AP'}
+        name={routes.DETAIL_AUTHOR_MY_AP}
         component={indexDetailAuthor}
       />
     </Stack.Navigator>

@@ -15,7 +15,7 @@ export default function MainContainer() {
     if (isLoginSelector) {
       setIsLogin(false);
     } else {
-      setIsLogin(true);
+      setIsLogin(false);
     }
   }, [isLoginSelector]);
 
