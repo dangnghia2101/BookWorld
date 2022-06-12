@@ -2,11 +2,15 @@ import { StyleSheet, Text, TouchableOpacity, Image } from 'react-native';
 import { Block } from '@components';
 import { theme } from '@theme';
 import Icon from '@components/Icon';
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
+import { routes } from '@navigation/routes';
 
 const ItemAuthor = ({ item }) => {
+    const navigation = useNavigation();
     return (
-        <TouchableOpacity>
+        <TouchableOpacity
+            onPress={() => navigation.navigate(routes.DETAIL_AUTHOR_MY_AP)}>
             <Block width="100%" height={200} alignCenter marginTop={20} relative>
                 <Block
                     width="100%"
