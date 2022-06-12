@@ -22,7 +22,12 @@ export const routes = {
   MORE_MY_APP: 'MORE_MY_APP',
   INFORM_MY_AP: 'INFORM_MY_AP',
   PLAY_BOOK_MY_AP: 'PLAY_BOOK_MY_AP',
+
   DETAIL_AUTHOR_MY_AP: 'DETAIL_AUTHOR_MY_AP',
+
+  SCREEN_SETTINGS: 'SCREEN_SETTINGS',
+  SCREEN_EDIT_SETTINGS: 'SCREEN_EDIT_SETTINGS',
+
 };
 
 export const APP_PREFIX = ['emotion://', 'https://emotion.com'];
