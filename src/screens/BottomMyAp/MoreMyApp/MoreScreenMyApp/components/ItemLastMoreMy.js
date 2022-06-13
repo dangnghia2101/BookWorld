@@ -1,30 +1,39 @@
 import {Block, Text} from '@components';
 import React from 'react';
-import {StyleSheet, Pressable} from 'react-native';
-import {useDispatch} from 'react-redux';
-import actions from '@redux/actions';
-
-import IconView from '@components/Icon';
+import {StyleSheet, View, Image} from 'react-native';
 
 const ItemLastMoreMy = () => {
-  const dispatch = useDispatch();
   return (
-    <Block marginHorizontal={40} style={styles.itemContainer2}>
-      <Pressable row marginVertical={20}>
-        <IconView
-          component={'AntDesigns'}
-          name={'infocirlceo'}
-          size={20}
-          style={styles.iconLastMoreMy}
-        />
-        <Text style={styles.textLastMoreMy2}>About</Text>
-      </Pressable>
-      <Pressable onPress={() => dispatch({type: actions.LOGOUT_ACCOUNT})}>
-        <Text style={styles.textLastMoreMy}>Đăng xuất</Text>
-      </Pressable>
-      <Pressable style={[styles.buttonLastMoreMy, styles.shadowColor]}>
-        <Text style={styles.text2}>Update</Text>
-      </Pressable>
+    <Block marginHorizontal={26}>
+      <Text style={styles.textLastMoreMy}>Bảng xếp hạng</Text>
+      <Block row style={styles.itemContainer} padding={10}>
+        <Block row justifyContent={'center'} alignItems={'center'}>
+          <Image source={require('../../../../../assets/images/Vector.png')} />
+          <Image
+            style={styles.imageRank}
+            source={require('../../../../../assets/images/rank.png')}
+          />
+        </Block>
+        <View style={styles.item}>
+          <Text color="white" size={15}>
+            Hồ Hoàng Phúc
+          </Text>
+          <Block marginVertical={10}>
+            <Text color="#9A9B9B" size={10}>
+              Tổng thời gian đọc
+            </Text>
+            <Text color="#9A9B9B" size={10}>
+              Số sách đã đọc
+            </Text>
+          </Block>
+        </View>
+        <Block row justifyContent={'center'}>
+          <View style={styles.rankContainer} opacity={0.15} />
+          <Text style={styles.sttRank} fontSize={15} color="#FA4D96">
+            1
+          </Text>
+        </Block>
+      </Block>
     </Block>
   );
 };
@@ -32,37 +41,34 @@ const ItemLastMoreMy = () => {
 export default ItemLastMoreMy;
 
 const styles = StyleSheet.create({
-  itemContainer2: {
-    marginVertical: 40,
-  },
-  buttonLastMoreMy: {
-    width: '100%',
-    height: 60,
-    flexDirection: 'row',
-    marginTop: 50,
-    backgroundColor: '#D45555',
-    borderRadius: 30,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  iconInformation2: {},
-  text2: {
-    color: 'white',
-    fontSize: 17,
-    fontWeight: 'bold',
-  },
-  iconLastMoreMy: {
-    position: 'absolute',
-  },
   textLastMoreMy: {
+    marginVertical: 10,
     color: 'black',
-    fontSize: 17,
+    fontSize: 20,
+  },
+  itemContainer: {
+    backgroundColor: '#242042',
+    justifyContent: 'space-between',
+    width: '100%',
+    height: 100,
+    borderRadius: 20,
+  },
+  imageRank: {
     position: 'absolute',
   },
-  textLastMoreMy2: {
-    color: 'black',
-    fontSize: 17,
+  item: {
+    width: '35%',
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+  },
+  rankContainer: {
+    width: 30,
+    height: 30,
+    backgroundColor: '#FA4D96',
+    borderRadius: 8,
+  },
+  sttRank: {
     position: 'absolute',
-    left: 35,
+    top: 4.5,
   },
 });
