@@ -27,8 +27,10 @@ const Login = () => {
   }
 
   const _signIn = async () => {
-    await GoogleSignin.revokeAccess();
-    // await GoogleSignin.signOut();
+    await GoogleSignin.signOut();
+    const currentUser = await GoogleSignin.getCurrentUser();
+    // await GoogleSignin.revokeAccess();
+    if (currentUser) await GoogleSignin.revokeAccess();
     try {
       // Get the users ID token
       const {idToken} = await GoogleSignin.signIn();
