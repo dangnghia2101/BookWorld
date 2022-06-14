@@ -25,12 +25,8 @@ const TabCategoryBook = () => {
   const listCategoryBook = useSelector(state => state.getAllCategory);
 
   useEffect(() => {
-    dispatch({type: actions.GET_ALL_AUTHOR});
-    dispatch({type: actions.GET_ALL_CATEGORY});
-    if (listCategoryBook) {
-      setRoutes(formatRouter(listCategoryBook.data));
-    }
-  }, []);
+    setRoutes(formatRouter(listCategoryBook.data));
+  }, [listCategoryBook]);
 
   const formatRouter = data => {
     return data?.map(item => {

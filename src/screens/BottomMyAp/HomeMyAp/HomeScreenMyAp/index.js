@@ -20,10 +20,13 @@ const HomeScreenMyAp = () => {
   const dispatch = useDispatch();
 
   const listMostReadBook = useSelector(state => state.getAllBook);
+  const listCategoryBook = useSelector(state => state.getAllCategory);
   const myInfo = useSelector(state => state.login.data);
 
   useEffect(() => {
     dispatch({type: actions.GET_ALL_BOOK});
+    dispatch({type: actions.GET_ALL_AUTHOR});
+    dispatch({type: actions.GET_ALL_CATEGORY});
   }, []);
 
   const _renderItemMostBookRead = ({item}) => {
@@ -58,7 +61,11 @@ const HomeScreenMyAp = () => {
               }
             />
           </Block>
-          <TabCategoryBook />
+          {listCategoryBook?.data?.length > 0 ? (
+            <TabCategoryBook />
+          ) : (
+            <Text>Loading</Text>
+          )}
         </Block>
       </ScrollView>
     </Block>
