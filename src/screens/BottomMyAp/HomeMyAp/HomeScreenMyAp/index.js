@@ -11,38 +11,6 @@ import HeaderHome from './components/HeaderHome';
 import {useDispatch, useSelector} from 'react-redux';
 import actions from '@redux/actions';
 
-// const listMostReadBook = {
-//   data: [
-//     {
-//       _id: '5f0b8f9b9b9b9b9b9b9b9b9',
-//       banner:
-//         'https://uploads-ssl.webflow.com/5ee67a4ca605db1097d0d827/612b5cf9e84a8fb37e685919_Rich-Dad-Poor-Dad-1000x1000.jpg',
-//       name: 'Rich Dad Poor Dad',
-//       name_author: 'Robert T.Kiyosaki',
-//     },
-//     {
-//       _id: '32',
-//       banner:
-//         'https://uploads-ssl.webflow.com/5ee67a4ca605db1097d0d827/612b5cf9e84a8fb37e685919_Rich-Dad-Poor-Dad-1000x1000.jpg',
-//       name: 'Rich Dad Poor Dad',
-//       name_author: 'Robert T.Kiyosaki',
-//     },
-//     {
-//       _id: '5f0b8f9b9b9b9b9b9b9b9b29',
-//       banner:
-//         'https://uploads-ssl.webflow.com/5ee67a4ca605db1097d0d827/612b5cf9e84a8fb37e685919_Rich-Dad-Poor-Dad-1000x1000.jpg',
-//       name: 'Rich Dad Poor Dad',
-//       name_author: 'Robert T.Kiyosaki',
-//     },
-//     {
-//       _id: '322',
-//       banner:
-//         'https://uploads-ssl.webflow.com/5ee67a4ca605db1097d0d827/612b5cf9e84a8fb37e685919_Rich-Dad-Poor-Dad-1000x1000.jpg',
-//       name: 'Rich Dad Poor Dad',
-//       name_author: 'Robert T.Kiyosaki',
-//     },
-//   ],
-// };
 const widthItemEventIncoming = width - width / 3;
 const WIDTH_ITEM_INVIEW = widthItemEventIncoming - 20;
 
@@ -52,11 +20,13 @@ const HomeScreenMyAp = () => {
   const dispatch = useDispatch();
 
   const listMostReadBook = useSelector(state => state.getAllBook);
+  const listCategoryBook = useSelector(state => state.getAllCategory);
   const myInfo = useSelector(state => state.login.data);
-  console.log('=========> myInfo', myInfo);
 
   useEffect(() => {
     dispatch({type: actions.GET_ALL_BOOK});
+    dispatch({type: actions.GET_ALL_AUTHOR});
+    dispatch({type: actions.GET_ALL_CATEGORY});
   }, []);
 
   const _renderItemMostBookRead = ({item}) => {
@@ -65,13 +35,6 @@ const HomeScreenMyAp = () => {
 
   return (
     <Block flex backgroundColor={theme.colors.white}>
-      {/* <Header
-        clicked={clicked}
-        setClicked={setClicked}
-        searchPhrase={searchPhrase}
-        setSearchPhrase={setSearchPhrase}
-      /> */}
-
       <ScrollView showsVerticalScrollIndicator={false}>
         <HeaderHome
           name={myInfo?.account?.name}
@@ -98,7 +61,11 @@ const HomeScreenMyAp = () => {
               }
             />
           </Block>
-          <TabCategoryBook />
+          {listCategoryBook?.data?.length > 0 ? (
+            <TabCategoryBook />
+          ) : (
+            <Text>Loading</Text>
+          )}
         </Block>
       </ScrollView>
     </Block>
