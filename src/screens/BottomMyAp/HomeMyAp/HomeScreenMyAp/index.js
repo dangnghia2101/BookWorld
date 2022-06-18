@@ -23,6 +23,8 @@ const HomeScreenMyAp = () => {
   const listCategoryBook = useSelector(state => state.getAllCategory);
   const myInfo = useSelector(state => state.login.data);
 
+  console.log('====> myInfo ', myInfo);
+
   useEffect(() => {
     dispatch({type: actions.GET_ALL_BOOK});
     dispatch({type: actions.GET_ALL_AUTHOR});

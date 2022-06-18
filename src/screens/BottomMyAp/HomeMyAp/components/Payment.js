@@ -17,22 +17,22 @@ import {theme} from '@theme';
 import {useDispatch, useSelector} from 'react-redux';
 import actions from '@redux/actions';
 
-import CryptoJS from 'crypto-js';
+// import CryptoJS from 'crypto-js';
 const {PayZaloBridge} = NativeModules;
 const payZaloBridgeEmitter = new NativeEventEmitter(PayZaloBridge);
 
-const subscription = payZaloBridgeEmitter.addListener('EventPayZalo', data => {
-  console.log('Kết quả giao dịch: ' + data.returnCode);
-  if (data.returnCode == -1) {
-    let payZP = NativeModules.PayZaloBridge;
-    payZP.installApp();
-    alert('Pay success!');
-  } else if (data.retturnCode == -1) {
-    alert('Pay success! ');
-  } else {
-    alert('Pay errror! ' + data.returnCode);
-  }
-});
+// const subscription = payZaloBridgeEmitter.addListener('EventPayZalo', data => {
+//   console.log('Kết quả giao dịch: ' + data.returnCode);
+//   if (data.returnCode == -1) {
+//     let payZP = NativeModules.PayZaloBridge;
+//     payZP.installApp();
+//     alert('Pay success!');
+//   } else if (data.retturnCode == -1) {
+//     alert('Pay success! ');
+//   } else {
+//     alert('Pay errror! ' + data.returnCode);
+//   }
+// });
 
 const Payment = () => {
   const [money, setMoney] = React.useState('10000');
@@ -68,57 +68,57 @@ const Payment = () => {
       embeddata +
       '|' +
       item;
-    let mac = CryptoJS.HmacSHA256(
-      hmacInput,
-      'PcY4iZIKFCIdgZvA6ueMcMHHUbRLYjPL',
-    );
-    console.log('====================================');
-    console.log('hmacInput: ' + hmacInput);
-    console.log('mac: ' + mac);
-    console.log('====================================');
-    var order = {
-      app_id: appid,
-      app_user: appuser,
-      app_time: apptime,
-      amount: amount,
-      app_trans_id: apptransid,
-      embed_data: embeddata,
-      item: item,
-      description: description,
-      mac: mac,
-    };
+    // let mac = CryptoJS.HmacSHA256(
+    //   hmacInput,
+    //   'PcY4iZIKFCIdgZvA6ueMcMHHUbRLYjPL',
+    // );
+    //   console.log('====================================');
+    //   console.log('hmacInput: ' + hmacInput);
+    //   console.log('mac: ' + mac);
+    //   console.log('====================================');
+    //   var order = {
+    //     app_id: appid,
+    //     app_user: appuser,
+    //     app_time: apptime,
+    //     amount: amount,
+    //     app_trans_id: apptransid,
+    //     embed_data: embeddata,
+    //     item: item,
+    //     description: description,
+    //     mac: mac,
+    //   };
 
-    console.log(order);
+    //   console.log(order);
 
-    let formBody = [];
-    for (let i in order) {
-      var encodedKey = encodeURIComponent(i);
-      var encodedValue = encodeURIComponent(order[i]);
-      formBody.push(encodedKey + '=' + encodedValue);
-    }
-    formBody = formBody.join('&');
-    await fetch('https://sb-openapi.zalopay.vn/v2/create', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
-      },
-      body: formBody,
-    })
-      .then(response => response.json())
-      .then(resJson => {
-        setToken(resJson.zp_trans_token);
-        setReturnCode(resJson.return_code);
-      })
-      .catch(error => {
-        console.log('error ', error);
-      });
+    //   let formBody = [];
+    //   for (let i in order) {
+    //     var encodedKey = encodeURIComponent(i);
+    //     var encodedValue = encodeURIComponent(order[i]);
+    //     formBody.push(encodedKey + '=' + encodedValue);
+    //   }
+    //   formBody = formBody.join('&');
+    //   await fetch('https://sb-openapi.zalopay.vn/v2/create', {
+    //     method: 'POST',
+    //     headers: {
+    //       'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+    //     },
+    //     body: formBody,
+    //   })
+    //     .then(response => response.json())
+    //     .then(resJson => {
+    //       setToken(resJson.zp_trans_token);
+    //       setReturnCode(resJson.return_code);
+    //     })
+    //     .catch(error => {
+    //       console.log('error ', error);
+    //     });
   }
 
-  function payOrder() {
-    let payZP = PayZaloBridge;
-    console.log('====? payOrder ====', NativeModules.PayZaloBridge);
-    payZP.payOrder(token);
-  }
+  // function payOrder() {
+  //   let payZP = PayZaloBridge;
+  //   console.log('====? payOrder ====', NativeModules.PayZaloBridge);
+  //   payZP.payOrder(token);
+  // }
 
   return (
     <Block flex backgroundColor={theme.colors.white}>
