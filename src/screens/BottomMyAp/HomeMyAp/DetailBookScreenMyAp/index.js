@@ -66,7 +66,7 @@ const DetailBookScreenMyAp = ({ route }) => {
           <Topbar bookmark={bookmark} />
           <ImageBook item={route.params} />
           <IntroduceText item={route.params} />
-          <ChapterBook detailBook={route.params.chapter} />
+          <ChapterBook detailBook={route.params?.chapter} />
         </Block>
       </ScrollView>
     </Block>
