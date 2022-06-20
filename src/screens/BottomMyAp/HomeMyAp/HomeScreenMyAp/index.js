@@ -42,7 +42,7 @@ const HomeScreenMyAp = () => {
         />
         <Block paddingHorizontal={20}>
           <HeaderListBook title={'Sách xem nhiều nhất'} />
-          <Block height={280}>
+          <Block height={290}>
             <FlatList
               data={listMostReadBook?.data}
               keyExtractor={item => item._id}

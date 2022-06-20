@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
-import { Block } from '@components';
-import { ScrollView, FlatList } from 'react-native';
+import React, {useState} from 'react';
+import {Block} from '@components';
+import {ScrollView, FlatList} from 'react-native';
 import ImageBook from './components/ImageBook';
 import IntroduceText from './components/IntroduceText';
 import ChapterBook from './components/ChapterBook';
 
-import { theme } from '@theme';
+import {theme} from '@theme';
 import Topbar from 'common/Topbar';
 
 // const detailBook = {
@@ -56,8 +56,8 @@ import Topbar from 'common/Topbar';
 //   ],
 // };
 
-const DetailBookScreenMyAp = ({ route }) => {
-  const { bookmark } = route.params;
+const DetailBookScreenMyAp = ({route}) => {
+  const {bookmark} = route.params;
   console.log('route ', route.params);
   return (
     <Block>
