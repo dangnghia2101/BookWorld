@@ -2,6 +2,7 @@ package com.bookworld.zpmodule;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.util.Log;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.BaseActivityEventListener;
@@ -38,24 +39,26 @@ public class ZPModule extends ReactContextBaseJavaModule {
         public void onPaymentCanceled(String transToken, String appTransID) {
             // Handle Cancel
             WritableMap params = Arguments.createMap();
-            params.putString("returnCode",  PAYMENTCANCELED);
+            params.putString("returnCode", PAYMENTCANCELED);
             params.putString("zpTranstoken", transToken);
             params.putString("appTransID", appTransID);
             sendEvent(mReactContext, "EventPayZalo", params);
+
         }
 
         @Override
         public void onPaymentError(ZaloPayError zaloPayError, String transToken, String appTransID) {
             // Handle Error
             WritableMap params = Arguments.createMap();
-            params.putString("returnCode",  PAYMENTFAILED);
+            params.putString("returnCode", PAYMENTFAILED);
             params.putString("zpTranstoken", transToken);
             params.putString("appTransID", appTransID);
             sendEvent(mReactContext, "EventPayZalo", params);
+
         }
     };
 
-    BaseActivityEventListener activityEventListener = new BaseActivityEventListener(){
+    BaseActivityEventListener activityEventListener = new BaseActivityEventListener() {
         @Override
         public void onNewIntent(Intent intent) {
             super.onNewIntent(intent);
@@ -88,6 +91,5 @@ public class ZPModule extends ReactContextBaseJavaModule {
         reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
                 .emit(eventName, params);
     }
-
 
 }
