@@ -40,9 +40,9 @@ const HomeScreenMyAp = () => {
           name={myInfo?.account?.name}
           image={myInfo?.account?.image}
         />
-        <Block paddingHorizontal={20}>
+        <Block paddingHorizontal={20} marginTop={15}>
           <HeaderListBook title={'Sách xem nhiều nhất'} />
-          <Block height={290}>
+          <Block height={290} marginTop={15} marginBottom={10}>
             <FlatList
               data={listMostReadBook?.data}
               keyExtractor={item => item._id}
