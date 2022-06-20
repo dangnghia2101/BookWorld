@@ -2,7 +2,7 @@ import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { routes } from '@navigation/routes';
 import ReadingScreenMyAp from './ReadingScreenMyAp';
-import indexDetailAuthor from './DetailAuthor/indexDetailAuthor';
+import DetailAuthor from './DetailAuthor/DetailAuthor';
 
 const Stack = createStackNavigator();
 
@@ -17,7 +17,7 @@ const ScheduleMyApNavigator = ({ navigation, route }) => {
       <Stack.Screen name={'READING_SCREEN'} component={ReadingScreenMyAp} />
       <Stack.Screen
         name={routes.DETAIL_AUTHOR_MY_AP}
-        component={indexDetailAuthor}
+        component={DetailAuthor}
       />
     </Stack.Navigator>
   );
