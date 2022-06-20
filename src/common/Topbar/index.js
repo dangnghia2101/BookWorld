@@ -15,7 +15,6 @@ const Topbar = ({bookmark}) => {
   const [paddingTop, setPaddingTop] = useState(0);
   const [height, setHeight] = useState(0);
   const navigation = useNavigation();
-  console.log('bookmark', bookmark);
 
   useEffect(() => {
     if (Platform.OS === 'ios') {

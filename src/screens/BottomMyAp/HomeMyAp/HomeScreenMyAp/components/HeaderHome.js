@@ -11,10 +11,13 @@ import {
 import {images} from '@assets';
 import {theme} from '@theme';
 import IconView from '@components/Icon';
+import {useNavigation} from '@react-navigation/native';
+import {routes} from '@navigation/routes';
 
 const {colors, fonts} = theme;
 
 const HeaderHome = ({name, image}) => {
+  const navigation = useNavigation();
   const [paddingTop, setPaddingTop] = useState(0);
   const [showMoney, setShowMoney] = useState(false);
 
@@ -105,7 +108,8 @@ const HeaderHome = ({name, image}) => {
             </Block>
 
             <Block marginRight={20} alignCenter>
-              <Button>
+              <Button
+                onPress={() => navigation.navigate(routes.SCREEN_PAYMENT)}>
                 <Block
                   backgroundColor={theme.colors.white}
                   radius={12}

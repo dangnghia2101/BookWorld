@@ -1,9 +1,9 @@
-import { Block, Text } from '@components';
-import { theme } from '@theme';
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, ScrollView } from 'react-native';
-import { color } from 'react-native-reanimated';
-import { TabBar, TabView } from 'react-native-tab-view';
+import {Block, Text} from '@components';
+import {theme} from '@theme';
+import React, {useState, useEffect} from 'react';
+import {StyleSheet, ScrollView} from 'react-native';
+import {color} from 'react-native-reanimated';
+import {TabBar, TabView} from 'react-native-tab-view';
 import TabSceneCategoryBook from './TabSceneCategoryBook';
 import {useDispatch, useSelector} from 'react-redux';
 import actions from '@redux/actions';
@@ -53,7 +53,7 @@ const TabCategoryBook = () => {
             tabStyle={styles.tabStyle}
             pressColor={theme.colors.white}
             scrollEnabled={true}
-            labelStyle={{ color: 'red' }}
+            labelStyle={{color: 'red'}}
             style={{
               backgroundColor: theme.colors.white,
             }}
@@ -70,14 +70,13 @@ const TabCategoryBook = () => {
 
   return (
     <TabView
-      navigationState={{ index, routes }}
-      renderScene={({ route }) => {
+      navigationState={{index, routes}}
+      renderScene={({route}) => {
         return <TabSceneCategoryBook route={route} />;
       }}
       renderTabBar={renderTabBar}
       onIndexChange={setIndex}
       // style={{height: height}}
-
     />
   );
 };

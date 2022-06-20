@@ -4,6 +4,7 @@ import {routes} from '@navigation/routes';
 import HomeScreenMyAp from './HomeScreenMyAp';
 import DetailBookScreenMyAp from './DetailBookScreenMyAp';
 import PlayBookScreenMyAp from './PlayBookScreenMyAp';
+import Payment from './components/Payment';
 const Stack = createStackNavigator();
 
 const screenOptionStyle = {
@@ -11,7 +12,7 @@ const screenOptionStyle = {
 };
 
 const HomeMyApNavigator = ({navigation, route}) => {
-  navigation.setOptions({tabBarVisible: false});
+  // navigation.setOptions({tabBarVisible: false});
   return (
     <Stack.Navigator screenOptions={screenOptionStyle}>
       <Stack.Screen
@@ -26,6 +27,7 @@ const HomeMyApNavigator = ({navigation, route}) => {
         name={routes.PLAY_BOOK_MY_AP}
         component={PlayBookScreenMyAp}
       />
+      <Stack.Screen name={routes.SCREEN_PAYMENT} component={Payment} />
     </Stack.Navigator>
   );
 };
