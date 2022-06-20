@@ -35,101 +35,101 @@ const HeaderHome = ({name, image}) => {
 
   return (
     <Block style={[styles.container, {paddingTop: paddingTop}]}>
-      <ImageBackground
+      {/* <ImageBackground
         source={images.bg_sell}
         style={styles.bg_sell}
-        imageStyle={styles.border_bg_sell}>
-        <Block width={'100%'} alignCenter marginTop={20}>
-          <Block space={'between'} row width={'100%'}>
-            <Block alignCenter row marginLeft={10}>
-              <Image
-                source={{uri: image}}
-                style={{width: 40, height: 40, borderRadius: 100}}
-              />
+        imageStyle={styles.border_bg_sell}
+        > */}
+      <Block width={'100%'} alignCenter marginTop={20}>
+        <Block space={'between'} row width={'100%'}>
+          <Block alignCenter row marginLeft={10}>
+            <Image
+              source={{uri: image}}
+              style={{width: 40, height: 40, borderRadius: 100}}
+            />
+            <Text
+              marginLeft={10}
+              size={18}
+              marginHorizontal={5}
+              color={colors.white}
+              fontType={'regular'}>
+              {name}
+            </Text>
+          </Block>
+
+          <Block row marginRight={20}>
+            <IconView
+              component={'MaterialCommunityIcons'}
+              name={'bell-outline'}
+              size={25}
+              color={colors.white}
+            />
+          </Block>
+        </Block>
+
+        <Block space={'between'} row width={'100%'} marginTop={10}>
+          <Block>
+            <Block row marginLeft={7}>
               <Text
                 marginLeft={10}
-                size={18}
+                size={14}
                 marginHorizontal={5}
                 color={colors.white}
                 fontType={'regular'}>
-                {name}
+                Số dư tài khoản
               </Text>
+              <Button onPress={() => setShowMoney(!showMoney)}>
+                <IconView
+                  component={'Ionicons'}
+                  name={showMoney ? 'md-eye' : 'md-eye-off'}
+                  size={20}
+                  color={colors.white}
+                />
+              </Button>
             </Block>
-
-            <Block row marginRight={20}>
-              <IconView
-                component={'MaterialCommunityIcons'}
-                name={'bell-outline'}
-                size={25}
-                color={colors.white}
-              />
-            </Block>
-          </Block>
-
-          <Block space={'between'} row width={'100%'} marginTop={10}>
-            <Block>
-              <Block row marginLeft={7}>
+            <Block justifyCenter height={40} marginLeft={10}>
+              {showMoney ? (
                 <Text
-                  marginLeft={10}
-                  size={14}
+                  size={25}
                   marginHorizontal={5}
                   color={colors.white}
-                  fontType={'regular'}>
-                  Số dư tài khoản
+                  fontType={'bold'}>
+                  *********
                 </Text>
-                <Button onPress={() => setShowMoney(!showMoney)}>
-                  <IconView
-                    component={'Ionicons'}
-                    name={showMoney ? 'md-eye' : 'md-eye-off'}
-                    size={20}
-                    color={colors.white}
-                  />
-                </Button>
-              </Block>
-              <Block justifyCenter height={35} marginLeft={10}>
-                {showMoney ? (
-                  <Text
-                    size={25}
-                    marginHorizontal={5}
-                    color={colors.white}
-                    fontType={'bold'}>
-                    *********
-                  </Text>
-                ) : (
-                  <Text
-                    size={25}
-                    marginHorizontal={5}
-                    color={colors.white}
-                    fontType={'bold'}>
-                    1.200.000
-                  </Text>
-                )}
-              </Block>
-            </Block>
-
-            <Block marginRight={20} alignCenter>
-              <Button
-                onPress={() => navigation.navigate(routes.SCREEN_PAYMENT)}>
-                <Block
-                  backgroundColor={theme.colors.white}
-                  radius={12}
-                  width={40}
-                  height={40}
-                  justifyCenter
-                  alignCenter>
-                  <IconView
-                    component={'Ionicons'}
-                    name={'add'}
-                    size={25}
-                    color={colors.gray}
-                  />
-                </Block>
-              </Button>
-              <Text color={theme.colors.gray4}>Nap tien</Text>
+              ) : (
+                <Text
+                  size={25}
+                  marginHorizontal={5}
+                  color={colors.white}
+                  fontType={'bold'}>
+                  1.200.000
+                </Text>
+              )}
             </Block>
           </Block>
+
+          <Block marginRight={20} alignCenter>
+            <Button onPress={() => navigation.navigate(routes.SCREEN_PAYMENT)}>
+              <Block
+                backgroundColor={theme.colors.white}
+                radius={12}
+                width={40}
+                height={40}
+                justifyCenter
+                alignCenter>
+                <IconView
+                  component={'Ionicons'}
+                  name={'add'}
+                  size={25}
+                  color={colors.gray}
+                />
+              </Block>
+            </Button>
+            <Text color={theme.colors.gray4}>Nap tien</Text>
+          </Block>
         </Block>
-      </ImageBackground>
+      </Block>
+      {/* </ImageBackground> */}
     </Block>
   );
 };
@@ -138,6 +138,9 @@ const styles = StyleSheet.create({
   container: {
     height: 200,
     paddingHorizontal: -20,
+    backgroundColor: theme.colors.red,
+    borderBottomLeftRadius: 15,
+    borderBottomRightRadius: 15,
   },
   bg_sell: {
     width: '100%',

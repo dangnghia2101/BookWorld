@@ -24,11 +24,11 @@ const subscription = payZaloBridgeEmitter.addListener('EventPayZalo', data => {
   if (data.returnCode == -1) {
     let payZP = NativeModules.PayZaloBridge;
     payZP.installApp();
-    alert('Pay success!');
-  } else if (data.retturnCode == -1) {
-    alert('Pay success! ');
+    console.log('pay success');
+  } else if (data.retturnCode == 1) {
+    console.log('pay success');
   } else {
-    alert('Pay errror! ' + data.returnCode);
+    console.log('pay success', data.returnCode);
   }
 });
 
@@ -39,8 +39,6 @@ const Payment = () => {
   const [token, setToken] = React.useState('');
   const [returncode, setReturnCode] = React.useState('');
   const [showMoney, setShowMoney] = React.useState(false);
-
-  subscription;
 
   function getCurrentDateYYMMDD() {
     var todayDate = new Date().toISOString().slice(2, 10);
@@ -120,7 +118,6 @@ const Payment = () => {
 
   function payOrder() {
     let payZP = PayZaloBridge;
-    console.log('====? payOrder ====', NativeModules.PayZaloBridge);
     payZP.payOrder(token);
   }
 
