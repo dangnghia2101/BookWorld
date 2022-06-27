@@ -1,8 +1,7 @@
 import {Block, Text} from '@components';
 import {theme} from '@theme';
-import React, {useState, useEffect, useLayoutEffect} from 'react';
-import {StyleSheet, ScrollView} from 'react-native';
-import {color} from 'react-native-reanimated';
+import React, {useState, useLayoutEffect} from 'react';
+import {StyleSheet} from 'react-native';
 import {TabBar, TabView} from 'react-native-tab-view';
 import TabSceneCategoryBook from './TabSceneCategoryBook';
 import {useDispatch, useSelector} from 'react-redux';
@@ -31,8 +30,6 @@ const TabCategoryBook = () => {
 
   //Cập nhật mỗi lần thay đổi TabView
   React.useLayoutEffect(() => {
-    // if (routes[index]?.eventList?.length > 0) return;
-    console.log('==============> routes[index]._id ', routes[index]._id);
     dispatch({type: actions.GET_ALL_BOOK_BY_CATEGORY, body: routes[index]._id});
     // dispatch(handleShowLoading());
   }, [index]);
@@ -42,10 +39,6 @@ const TabCategoryBook = () => {
       return {
         key: item._id,
         title: item.name,
-        // bookList:
-        //   item._id === listBookByCategory?.data[0]?._id
-        //     ? listBookByCategory.data
-        //     : [],
         ...item,
       };
     });
@@ -72,11 +65,6 @@ const TabCategoryBook = () => {
     );
   };
 
-  // const height =
-  //   dataListCate?.book?.length > 0
-  //     ? (dataListCate?.book?.length + 1) * 140
-  //     : 20;
-
   return (
     <TabView
       lazy
@@ -86,7 +74,6 @@ const TabCategoryBook = () => {
       }}
       renderTabBar={renderTabBar}
       onIndexChange={setIndex}
-      // style={{height: height}}
     />
   );
 };
