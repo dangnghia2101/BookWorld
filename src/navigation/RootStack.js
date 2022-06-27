@@ -1,23 +1,40 @@
 import {NavigationContainer} from '@react-navigation/native';
-import {auth} from '@screens/Auth';
 import React, {useState, useEffect} from 'react';
 import {StatusBar, StyleSheet} from 'react-native';
 import BottomTabMyAp from './BottomTabMyAp';
-import Login from '@screens/Auth/Login';
 import Auth from '../screens/Auth';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
+import Storage from '@utils/storage';
+import actions, {_onSuccess} from '@redux/actions';
+import {put} from 'redux-saga/effects';
+import {SHOW, HIDE} from '@redux/actions/HandlerLoading';
 
 export default function MainContainer() {
-  const [isLogin, setIsLogin] = useState(true);
+  const dispatch = useDispatch();
+  const [isLogin, setIsLogin] = useState(false);
   const isLoginSelector = useSelector(state => state.login.data);
 
   useEffect(() => {
     if (isLoginSelector) {
-      setIsLogin(false);
-    } else {
       setIsLogin(true);
+    } else {
+      setIsLogin(false);
     }
   }, [isLoginSelector]);
+
+  useEffect(() => {
+    dispatch({type: SHOW});
+    Storage.getItem('tokenId').then(item => {
+      if (item !== null) {
+        setIsLogin(true);
+        dispatch({type: HIDE});
+        dispatch({type: _onSuccess(actions.LOGIN), data: item.data});
+        dispatch({type: _onSuccess(actions.IS_LOGIN), data: true});
+      } else {
+        setIsLogin(false);
+      }
+    });
+  }, [dispatch]);
 
   return (
     <>
@@ -27,7 +44,7 @@ export default function MainContainer() {
           barStyle="dark-content"
           backgroundColor="transparent"
         />
-        {isLogin ? <Auth /> : <BottomTabMyAp />}
+        {isLogin ? <BottomTabMyAp /> : <Auth />}
       </NavigationContainer>
     </>
   );

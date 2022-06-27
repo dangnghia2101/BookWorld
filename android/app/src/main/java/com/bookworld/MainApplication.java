@@ -72,7 +72,6 @@ public class MainApplication extends Application implements ReactApplication {
     ZaloPaySDK.init(2553, Environment.SANDBOX);
   }
 
-
   /**
    * Loads Flipper in React Native templates. Call this in the onCreate method
    * with something like

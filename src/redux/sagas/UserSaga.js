@@ -4,6 +4,7 @@ import {call, put, takeLatest} from 'redux-saga/effects';
 import Actions, {_onFail, _onSuccess} from '../actions';
 import Storage from '@utils/storage';
 import messaging from '@react-native-firebase/messaging';
+import {SHOW, HIDE} from '../actions/HandlerLoading';
 
 const getDeviceToken = async () => {
   return await messaging().getToken();
@@ -12,11 +13,13 @@ const getDeviceToken = async () => {
 function* login(actions) {
   const body = actions.body;
   try {
+    yield put({type: SHOW});
     const res = yield API.post('auth/login', body);
     if (res.statusCode === 200) {
       Storage.setItem('tokenId', res);
       yield put({type: _onSuccess('LOGIN'), data: res.data});
       yield put({type: _onSuccess(Actions.IS_LOGIN), data: true});
+      yield put({type: HIDE});
     }
   } catch (error) {
     yield put({type: _onFail('LOGIN')});

@@ -5,7 +5,7 @@ import {theme} from '@theme';
 
 const {colors} = theme;
 
-const HeaderListBook = ({title, action, titleAction}) => {
+const HeaderListBook = ({title, action}) => {
   return (
     <Block row justifyContent={'space-between'} height={50} alignCenter>
       <Text style={styles.titleSection}>{title}</Text>

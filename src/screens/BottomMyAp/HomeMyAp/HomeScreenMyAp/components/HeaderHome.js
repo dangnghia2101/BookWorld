@@ -35,11 +35,6 @@ const HeaderHome = ({name, image}) => {
 
   return (
     <Block style={[styles.container, {paddingTop: paddingTop}]}>
-      {/* <ImageBackground
-        source={images.bg_sell}
-        style={styles.bg_sell}
-        imageStyle={styles.border_bg_sell}
-        > */}
       <Block width={'100%'} alignCenter marginTop={20}>
         <Block space={'between'} row width={'100%'}>
           <Block alignCenter row marginLeft={10}>
@@ -52,7 +47,7 @@ const HeaderHome = ({name, image}) => {
               size={18}
               marginHorizontal={5}
               color={colors.white}
-              fontType={'regular'}>
+              style={{fontFamily: 'Lato-Bold'}}>
               {name}
             </Text>
           </Block>
@@ -75,7 +70,7 @@ const HeaderHome = ({name, image}) => {
                 size={14}
                 marginHorizontal={5}
                 color={colors.white}
-                fontType={'regular'}>
+                fontType={'bold1'}>
                 Số dư tài khoản
               </Text>
               <Button onPress={() => setShowMoney(!showMoney)}>
@@ -136,7 +131,7 @@ const HeaderHome = ({name, image}) => {
 
 const styles = StyleSheet.create({
   container: {
-    height: 200,
+    height: 180,
     paddingHorizontal: -20,
     backgroundColor: theme.colors.red,
     borderBottomLeftRadius: 15,
