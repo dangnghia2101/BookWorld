@@ -10,6 +10,7 @@ const icons = {
 
 const images = {
   bg_sell: require('./images/bg_sell.png'),
+  ic_book: require('./images/open-book.png'),
 };
 
 const lotties = {

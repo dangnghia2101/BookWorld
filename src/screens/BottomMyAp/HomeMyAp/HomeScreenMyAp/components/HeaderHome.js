@@ -131,7 +131,7 @@ const HeaderHome = ({name, image}) => {
 
 const styles = StyleSheet.create({
   container: {
-    height: 200,
+    height: 180,
     paddingHorizontal: -20,
     backgroundColor: theme.colors.red,
     borderBottomLeftRadius: 15,

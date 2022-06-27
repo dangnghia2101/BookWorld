@@ -15,18 +15,15 @@ function* getAllBook() {
 
 function* getAllBookByCategory(actions) {
   try {
-    console.log('===========> routes ', actions.body);
     const res = yield API.get(`books/${actions.body}/getBookByIdCategory`);
     if (res.statusCode === 200) {
-      console.log('===============> result ', actions, res.data);
       yield put({
         type: _onSuccess(Actions.GET_ALL_BOOK_BY_CATEGORY),
         data: res.data,
       });
     }
   } catch (error) {
-    yield put({type: _onFail(Actions.GET_ALL_BOOK)});
-    console.log('===============> error ', error);
+    yield put({type: _onFail(Actions.GET_ALL_BOOK_BY_CATEGORY)});
   }
 }
 

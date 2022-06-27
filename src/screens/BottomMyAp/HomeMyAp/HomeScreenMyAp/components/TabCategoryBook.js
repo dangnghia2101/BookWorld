@@ -23,38 +23,19 @@ const TabCategoryBook = () => {
   const [index, setIndex] = useState(0);
   const dispatch = useDispatch();
 
-  const listBookByCategory = useSelector(state => state.getAllBookByCategory);
   const listCategoryBook = useSelector(state => state.getAllCategory);
 
-  // useEffect(() => {
-  //   if (listCategoryBook != null) {
-  //     dispatch({
-  //       type: actions.GET_ALL_BOOK_BY_CATEGORY,
-  //       body: listCategoryBook[index],
-  //     });
-  //   }
-  // }, []);
+  useLayoutEffect(() => {
+    setRoutes(formatRouter(listCategoryBook.data));
+  }, [listCategoryBook.data]);
 
   //Cập nhật mỗi lần thay đổi TabView
-  useLayoutEffect(() => {
-    if (routes[index]?.eventList?.length > 0) return;
+  React.useLayoutEffect(() => {
+    // if (routes[index]?.eventList?.length > 0) return;
+    console.log('==============> routes[index]._id ', routes[index]._id);
     dispatch({type: actions.GET_ALL_BOOK_BY_CATEGORY, body: routes[index]._id});
     // dispatch(handleShowLoading());
   }, [index]);
-
-  useLayoutEffect(() => {
-    // if (!listBookByCategory.data) return;
-    if (listBookByCategory?.data?.length > 0) {
-      setRoutes(formatRouter(listCategoryBook.data));
-    }
-  }, [listBookByCategory.data]);
-
-  //   useLayoutEffect(() => {
-  //     if (!listBookByCategory.data) return;
-  //     if (listBookByCategory.data.length === 0) return;
-  //     const newRouters = addEvent(listBookByCategory.data);
-  //     setRoutes(newRouters);
-  // }, [listBookByCategory.data]);
 
   const formatRouter = data => {
     return data?.map(item => {
@@ -98,6 +79,7 @@ const TabCategoryBook = () => {
 
   return (
     <TabView
+      lazy
       navigationState={{index, routes}}
       renderScene={({route}) => {
         return <TabSceneCategoryBook route={route} />;

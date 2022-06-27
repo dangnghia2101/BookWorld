@@ -21,6 +21,7 @@ const HomeScreenMyAp = () => {
 
   const listMostReadBook = useSelector(state => state.getAllBook);
   const listCategoryBook = useSelector(state => state.getAllCategory);
+
   const myInfo = useSelector(state => state.login.data);
 
   useEffect(() => {
@@ -56,16 +57,18 @@ const HomeScreenMyAp = () => {
                   height={WIDTH_ITEM_INVIEW}
                   justifyCenter
                   alignCenter>
-                  <Text>Chưa có sự kiện</Text>
+                  <Text>Chưa có sach</Text>
                 </Block>
               }
             />
           </Block>
-          {listCategoryBook?.data?.length > 0 ? (
-            <TabCategoryBook />
-          ) : (
-            <Text>Loading</Text>
-          )}
+          <Block height={650}>
+            {listCategoryBook?.data?.length > 0 ? (
+              <TabCategoryBook />
+            ) : (
+              <Text>Loading</Text>
+            )}
+          </Block>
         </Block>
       </ScrollView>
     </Block>
