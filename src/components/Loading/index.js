@@ -2,14 +2,15 @@ import {Block, Text} from '@components';
 import {theme} from '@theme';
 import {height, width} from '@utils/responsive';
 import React from 'react';
-import {ActivityIndicator} from 'react-native';
+import {StyleSheet} from 'react-native';
+import LottieView from 'lottie-react-native';
+import {lotties} from '@assets';
 import {useSelector} from 'react-redux';
 
 const Loading = () => {
-  // const {isShow} = useSelector(state => state.handlerLoadingReducer);
-  const isShow = false;
+  const {isShow} = useSelector(state => state.handlerLoadingReducer);
   if (!isShow) {
-    return <Block />;
+    return null;
   }
   return (
     <Block
@@ -22,10 +23,22 @@ const Loading = () => {
       justifyCenter
       alignCenter>
       <Text color={theme.colors.white} marginBottom={10}>
-        Loading...
+        Wait me seconds...
       </Text>
-      <ActivityIndicator size="small" color={theme.colors.white} />
+      <LottieView
+        source={lotties.loading_data}
+        style={styles.animation}
+        autoPlay
+      />
     </Block>
   );
 };
+
+const styles = StyleSheet.create({
+  animation: {
+    width: 100,
+    height: 100,
+  },
+});
+
 export default Loading;

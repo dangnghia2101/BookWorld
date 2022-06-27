@@ -22,7 +22,7 @@ const ItemCateBook = ({item}) => {
         <Image
           style={styles.image}
           source={{
-            uri: item.banner,
+            uri: item.image,
           }}
         />
         <Block marginHorizontal={10}>
