@@ -15,8 +15,8 @@ const widthItemEventIncoming = width - width / 3;
 const WIDTH_ITEM_INVIEW = widthItemEventIncoming - 20;
 
 const HomeScreenMyAp = () => {
-  const [clicked, setClicked] = useState(false);
-  const [searchPhrase, setSearchPhrase] = useState('');
+  // const [clicked, setClicked] = useState(false);
+  // const [searchPhrase, setSearchPhrase] = useState('');
   const dispatch = useDispatch();
 
   const listMostReadBook = useSelector(state => state.getAllBook);

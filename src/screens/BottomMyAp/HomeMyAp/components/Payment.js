@@ -24,7 +24,7 @@ const subscription = payZaloBridgeEmitter.addListener('EventPayZalo', data => {
   if (data.returnCode == -1) {
     let payZP = NativeModules.PayZaloBridge;
     payZP.installApp();
-    console.log('pay success');
+    console.log('pay install');
   } else if (data.retturnCode == 1) {
     console.log('pay success');
   } else {
@@ -120,6 +120,23 @@ const Payment = () => {
     let payZP = PayZaloBridge;
     payZP.payOrder(token);
   }
+
+  // useEffect(() => {
+  //   console.log('Vô nè');
+  //   const subscription = payZaloBridgeEmitter.addListener(
+  //     'EventPayZalo',
+  //     data => {
+  //       if (data.returnCode == 1) {
+  //         // handle action
+  //         console.log('Pay success');
+  //       } else if (data.returnCode == -1) {
+  //         PayZaloBridge.installApp();
+  //         console.log('Pay errror! ' + data.returnCode);
+  //       }
+  //     },
+  //   );
+  //   return () => subscription?.remove();
+  // });
 
   return (
     <Block flex backgroundColor={theme.colors.white}>

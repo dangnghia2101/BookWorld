@@ -1,6 +1,6 @@
 import {Block, Text} from '@components';
 import {theme} from '@theme';
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useLayoutEffect} from 'react';
 import {StyleSheet, ScrollView} from 'react-native';
 import {color} from 'react-native-reanimated';
 import {TabBar, TabView} from 'react-native-tab-view';
@@ -22,11 +22,39 @@ const TabCategoryBook = () => {
   const [routes, setRoutes] = useState([{key: 'Default', title: 'Default'}]);
   const [index, setIndex] = useState(0);
   const dispatch = useDispatch();
+
+  const listBookByCategory = useSelector(state => state.getAllBookByCategory);
   const listCategoryBook = useSelector(state => state.getAllCategory);
 
-  useEffect(() => {
-    setRoutes(formatRouter(listCategoryBook.data));
-  }, [listCategoryBook]);
+  // useEffect(() => {
+  //   if (listCategoryBook != null) {
+  //     dispatch({
+  //       type: actions.GET_ALL_BOOK_BY_CATEGORY,
+  //       body: listCategoryBook[index],
+  //     });
+  //   }
+  // }, []);
+
+  //Cập nhật mỗi lần thay đổi TabView
+  useLayoutEffect(() => {
+    if (routes[index]?.eventList?.length > 0) return;
+    dispatch({type: actions.GET_ALL_BOOK_BY_CATEGORY, body: routes[index]._id});
+    // dispatch(handleShowLoading());
+  }, [index]);
+
+  useLayoutEffect(() => {
+    // if (!listBookByCategory.data) return;
+    if (listBookByCategory?.data?.length > 0) {
+      setRoutes(formatRouter(listCategoryBook.data));
+    }
+  }, [listBookByCategory.data]);
+
+  //   useLayoutEffect(() => {
+  //     if (!listBookByCategory.data) return;
+  //     if (listBookByCategory.data.length === 0) return;
+  //     const newRouters = addEvent(listBookByCategory.data);
+  //     setRoutes(newRouters);
+  // }, [listBookByCategory.data]);
 
   const formatRouter = data => {
     return data?.map(item => {
@@ -34,8 +62,8 @@ const TabCategoryBook = () => {
         key: item._id,
         title: item.name,
         // bookList:
-        //   item._id === dataListCate?.book[1]?.categoryId
-        //     ? dataListCate.book
+        //   item._id === listBookByCategory?.data[0]?._id
+        //     ? listBookByCategory.data
         //     : [],
         ...item,
       };
