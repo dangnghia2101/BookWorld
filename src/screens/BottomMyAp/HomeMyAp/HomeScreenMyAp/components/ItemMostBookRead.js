@@ -15,18 +15,18 @@ const ItemMostBookRead = ({item, props}) => {
       onPress={() =>
         navigation.navigate(routes.DETAIL_BOOK_MY_AP, {bookmark: true, item})
       }>
-      <Block marginRight={PADDING_ITEM}>
+      <Block width={160} marginRight={PADDING_ITEM}>
         <Image
           style={styles.image}
           source={{
             uri: item.image,
           }}
         />
-        <Text marginTop={10} size={14} fontType="bold">
+        <Text numberOfLines={1} marginTop={10} size={14} fontType="bold">
           {item.name}
         </Text>
-        <Text size={11} color={colors.dark}>
-          {item.name}
+        <Text numberOfLines={1} size={11} color={colors.dark}>
+          {item.isPrice} lượt xem
         </Text>
       </Block>
     </TouchableOpacity>

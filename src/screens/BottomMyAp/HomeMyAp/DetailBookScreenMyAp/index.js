@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
-import { Block } from '@components';
-import { ScrollView, FlatList } from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {Block} from '@components';
+import {ScrollView, FlatList} from 'react-native';
 import ImageBook from './components/ImageBook';
 import IntroduceText from './components/IntroduceText';
 import ChapterBook from './components/ChapterBook';
-
-import { theme } from '@theme';
+import {useDispatch, useSelector} from 'react-redux';
+import actions from '@redux/actions';
+import {theme} from '@theme';
 import Topbar from 'common/Topbar';
 
 // const detailBook = {
@@ -56,9 +57,18 @@ import Topbar from 'common/Topbar';
 //   ],
 // };
 
-const DetailBookScreenMyAp = ({ route }) => {
-  const { bookmark } = route.params;
-  console.log('route ', route.params);
+const DetailBookScreenMyAp = ({route}) => {
+  const {bookmark} = route.params;
+  const dispatch = useDispatch();
+  const listChapters = useSelector(item => item.getAllChapterBookById);
+
+  useEffect(() => {
+    dispatch({
+      type: actions.GET_ALL_CHAPTER_BY_ID,
+      dody: bookmark.item,
+    });
+  }, []);
+
   return (
     <Block>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -66,7 +76,7 @@ const DetailBookScreenMyAp = ({ route }) => {
           <Topbar bookmark={bookmark} />
           <ImageBook item={route.params} />
           <IntroduceText item={route.params} />
-          <ChapterBook detailBook={route.params?.chapter} />
+          <ChapterBook detailBook={listChapters?.data} />
         </Block>
       </ScrollView>
     </Block>

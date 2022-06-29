@@ -21,7 +21,7 @@ const CustomTabBar = ({state, descriptors, navigation}) => {
       paddingVertical={10}
       paddingBottom={PADDING_BOTTOM}
       flexDirection="row"
-      backgroundColor={'#fff'}>
+      backgroundColor={theme.colors.white}>
       {state.routes.map((route, index) => {
         const {options} = descriptors[route.key];
         const label =
@@ -53,7 +53,7 @@ const CustomTabBar = ({state, descriptors, navigation}) => {
             target: route.key,
           });
         };
-        const backgroundColor = isFocused ? colors.lightRed : colors.white;
+        const backgroundColor = isFocused ? colors.red : colors.white;
         const color = isFocused ? colors.white : colors.gray;
         const flex = isFocused ? 3.5 : 0;
         return (
@@ -84,10 +84,10 @@ const CustomTabBar = ({state, descriptors, navigation}) => {
 const styles = StyleSheet.create({
   container: {
     paddingVertical: 10,
-    borderRadius: 50,
+    borderRadius: 15,
     padding: 5,
     flex: 1,
-    marginHorizontal: 15,
+    marginHorizontal: 20,
     // paddingBottom: PADDING_BOTTOM,
   },
   bottomTabSection: {

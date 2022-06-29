@@ -10,6 +10,17 @@ const icons = {
 
 const images = {
   bg_sell: require('./images/bg_sell.png'),
+  ic_book: require('./images/open-book.png'),
 };
 
-export {icons, images};
+const lotties = {
+  loading_data: require('./lotties/lf30_editor_k6mz7lsk.json'),
+};
+
+const fonts = {
+  FiraSansLight: require('./fonts/FiraSans-Light.ttf'),
+  FiraSansRegular: require('./fonts/FiraSans-Regular.ttf'),
+  FiraSansBold: require('./fonts/FiraSans-SemiBold.ttf'),
+};
+
+export {icons, images, lotties, fonts};

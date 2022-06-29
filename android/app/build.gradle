@@ -82,7 +82,10 @@ project.ext.react = [
     enableHermes: false,  // clean and rebuild if changing
 ]
 
+apply from: '../../node_modules/react-native-unimodules/gradle.groovy'
 apply from: "../../node_modules/react-native/react.gradle"
+//apply from: "../../node_modules/expo-updates/scripts/create-manifest-android.gradle"
+
 
 /**
  * Set this to true to create two separate APKs instead of one:
@@ -130,6 +133,8 @@ def reactNativeArchitectures() {
 }
 
 android {
+
+    namespace 'com.bookworld'
     ndkVersion rootProject.ext.ndkVersion
 
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -269,7 +274,12 @@ dependencies {
     //noinspection GradleDynamicVersion
     implementation "com.facebook.react:react-native:+"  // From node_modules
 
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.2.71"
+
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
+    implementation fileTree(dir: 'E:\\Test', include: ['*.aar', '*.jar'], exclude: [])
+
+    implementation 'com.squareup.okhttp3:okhttp:4.6.0'
 
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
         exclude group:'com.facebook.fbjni'

@@ -52,10 +52,10 @@ export const theme = {
       light: '300',
     },
     fontFamily: {
-      bold: 'Lato-Bold',
-      medium: 'Lato-Medium',
-      regular: 'Lato-Regular',
-      semibold: 'Lato-Semibold',
+      bold1: 'Lato-Bold',
+      medium1: 'Lato-Medium',
+      regular1: 'Lato-Regular',
+      semibold1: 'Lato-Semibold',
     },
   },
 };

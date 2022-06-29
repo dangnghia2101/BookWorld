@@ -15,12 +15,13 @@ const widthItemEventIncoming = width - width / 3;
 const WIDTH_ITEM_INVIEW = widthItemEventIncoming - 20;
 
 const HomeScreenMyAp = () => {
-  const [clicked, setClicked] = useState(false);
-  const [searchPhrase, setSearchPhrase] = useState('');
+  // const [clicked, setClicked] = useState(false);
+  // const [searchPhrase, setSearchPhrase] = useState('');
   const dispatch = useDispatch();
 
   const listMostReadBook = useSelector(state => state.getAllBook);
   const listCategoryBook = useSelector(state => state.getAllCategory);
+
   const myInfo = useSelector(state => state.login.data);
 
   useEffect(() => {
@@ -40,9 +41,9 @@ const HomeScreenMyAp = () => {
           name={myInfo?.account?.name}
           image={myInfo?.account?.image}
         />
-        <Block paddingHorizontal={20}>
+        <Block paddingHorizontal={20} marginTop={15}>
           <HeaderListBook title={'Sách xem nhiều nhất'} />
-          <Block height={280}>
+          <Block height={290} marginTop={15} marginBottom={10}>
             <FlatList
               data={listMostReadBook?.data}
               keyExtractor={item => item._id}
@@ -56,16 +57,18 @@ const HomeScreenMyAp = () => {
                   height={WIDTH_ITEM_INVIEW}
                   justifyCenter
                   alignCenter>
-                  <Text>Chưa có sự kiện</Text>
+                  <Text>Chưa có sach</Text>
                 </Block>
               }
             />
           </Block>
-          {listCategoryBook?.data?.length > 0 ? (
-            <TabCategoryBook />
-          ) : (
-            <Text>Loading</Text>
-          )}
+          <Block height={650}>
+            {listCategoryBook?.data?.length > 0 ? (
+              <TabCategoryBook />
+            ) : (
+              <Text>Loading</Text>
+            )}
+          </Block>
         </Block>
       </ScrollView>
     </Block>

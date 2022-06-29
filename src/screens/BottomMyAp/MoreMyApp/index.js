@@ -11,7 +11,7 @@ const screenOptionStyle = {
 };
 
 const MoreAppNavigator = ({navigation, route}) => {
-  navigation.setOptions({tabBarVisible: false});
+  // navigation.setOptions({tabBarVisible: false});
   return (
     <Stack.Navigator screenOptions={screenOptionStyle}>
       <Stack.Screen name={routes.SCREEN_SETTINGS} component={MoreScreenMyApp} />
