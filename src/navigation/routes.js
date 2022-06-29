@@ -25,6 +25,7 @@ export const routes = {
   DETAIL_AUTHOR_MY_AP: 'DETAIL_AUTHOR_MY_AP',
   SCREEN_SETTINGS: 'SCREEN_SETTINGS',
   SCREEN_EDIT_SETTINGS: 'SCREEN_EDIT_SETTINGS',
+  DETAIL_GROUP_CHAT_MY_APP: 'DETAIL_GROUP_CHAT_MY_APP',
 };
 
 export const APP_PREFIX = ['emotion://', 'https://emotion.com'];

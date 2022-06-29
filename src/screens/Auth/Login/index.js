@@ -1,5 +1,5 @@
-import { Block, Text } from '@components';
-import React, { useState } from 'react';
+import {Block, Text} from '@components';
+import React, {useState} from 'react';
 import {
   StyleSheet,
   TextInput,
@@ -7,8 +7,8 @@ import {
   Image,
   TouchableOpacity,
 } from 'react-native';
-import { GoogleSignin } from '@react-native-google-signin/google-signin';
-import { useDispatch, useSelector } from 'react-redux';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import {useDispatch, useSelector} from 'react-redux';
 import actions from '@redux/actions';
 import messaging from '@react-native-firebase/messaging';
 import auth from '@react-native-firebase/auth';
@@ -33,7 +33,7 @@ const Login = () => {
     if (currentUser) await GoogleSignin.revokeAccess();
     try {
       // Get the users ID token
-      const { idToken } = await GoogleSignin.signIn();
+      const {idToken} = await GoogleSignin.signIn();
       // get fcm token
       const fcmToken = await getToken();
 
@@ -53,7 +53,7 @@ const Login = () => {
       token: token,
       token_fcm: fcmToken,
     };
-    dispatch({ type: 'LOGIN', body: body });
+    dispatch({type: 'LOGIN', body: body});
   };
 
   return (
@@ -80,16 +80,14 @@ const Login = () => {
         <Text size={12}> Hoặc </Text>
       </Block>
       <Block style={styles.loginContainer}>
-        <TouchableOpacity
-          onPress={_signIn}
-          style={[styles.iconLogin, styles.Ellip]}>
+        <TouchableOpacity onPress={_signIn} style={styles.iconLogin}>
           <Image source={require('../../../assets/images/GG.png')} />
         </TouchableOpacity>
         <Block
           marginTop={32}
           width={25}
           height={25}
-          style={styles.Ellip}
+          // style={styles.Ellip}
           marginHorizontal={10}>
           <Image source={require('../../../assets/images/Facbook.png')} />
         </Block>
