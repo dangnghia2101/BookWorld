@@ -1,7 +1,7 @@
-import {StyleSheet, Image, Dimensions} from 'react-native';
-import {Block, Text} from '@components';
+import { StyleSheet, Image, Dimensions } from 'react-native';
+import { Block, Text } from '@components';
 import React from 'react';
-import {theme} from '@theme';
+import { theme } from '@theme';
 import Icon from '@components/Icon';
 const widthPhone = Dimensions.get('window').width;
 
@@ -20,10 +20,10 @@ const _renderStar = num => {
   return star;
 };
 
-const ImageBook = ({item}) => {
+const ImageBook = ({ item }) => {
   return (
     <Block alignCenter>
-      <Image source={{uri: item.item.image}} style={styles.image} />
+      <Image source={{ uri: item.item.image }} style={styles.image} />
       <Text fontType="bold" size={20} marginTop={10}>
         {item.item.name}
       </Text>

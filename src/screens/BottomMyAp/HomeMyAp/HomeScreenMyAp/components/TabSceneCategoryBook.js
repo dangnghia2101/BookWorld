@@ -1,10 +1,10 @@
-import {Block, Text} from '@components';
+import { Block, Text } from '@components';
 import React from 'react';
 import ItemCateBook from './ItemCateBook';
-import {useSelector} from 'react-redux';
-import {NoData} from '@components';
+import { useSelector } from 'react-redux';
+import { NoData } from '@components';
 
-const TabSceneCategoryBook = ({route}) => {
+const TabSceneCategoryBook = ({ route }) => {
   const listBookByCategory = useSelector(state => state.getAllBookByCategory);
 
   return listBookByCategory?.data?.length > 0 &&

@@ -1,13 +1,13 @@
-import {Block, Text} from '@components';
-import {theme} from '@theme';
-import React, {useState, useLayoutEffect} from 'react';
-import {StyleSheet} from 'react-native';
-import {TabBar, TabView} from 'react-native-tab-view';
+import { Block, Text } from '@components';
+import { theme } from '@theme';
+import React, { useState, useLayoutEffect } from 'react';
+import { StyleSheet } from 'react-native';
+import { TabBar, TabView } from 'react-native-tab-view';
 import TabSceneCategoryBook from './TabSceneCategoryBook';
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import actions from '@redux/actions';
 
-const _renderLabel = ({route, focused, color}) => {
+const _renderLabel = ({ route, focused, color }) => {
   return (
     <Block>
       <Text color={focused ? theme.colors.black : theme.colors.lightGray}>
@@ -18,7 +18,7 @@ const _renderLabel = ({route, focused, color}) => {
 };
 
 const TabCategoryBook = () => {
-  const [routes, setRoutes] = useState([{key: 'Default', title: 'Default'}]);
+  const [routes, setRoutes] = useState([{ key: 'Default', title: 'Default' }]);
   const [index, setIndex] = useState(0);
   const dispatch = useDispatch();
 
@@ -30,7 +30,7 @@ const TabCategoryBook = () => {
 
   //Cập nhật mỗi lần thay đổi TabView
   React.useLayoutEffect(() => {
-    dispatch({type: actions.GET_ALL_BOOK_BY_CATEGORY, body: routes[index]._id});
+    dispatch({ type: actions.GET_ALL_BOOK_BY_CATEGORY, body: routes[index]._id });
     // dispatch(handleShowLoading());
   }, [index]);
 
@@ -55,7 +55,7 @@ const TabCategoryBook = () => {
             tabStyle={styles.tabStyle}
             pressColor={theme.colors.white}
             scrollEnabled={true}
-            labelStyle={{color: 'red'}}
+            labelStyle={{ color: 'red' }}
             style={{
               backgroundColor: theme.colors.white,
             }}
@@ -68,8 +68,8 @@ const TabCategoryBook = () => {
   return (
     <TabView
       lazy
-      navigationState={{index, routes}}
-      renderScene={({route}) => {
+      navigationState={{ index, routes }}
+      renderScene={({ route }) => {
         return <TabSceneCategoryBook route={route} />;
       }}
       renderTabBar={renderTabBar}
@@ -84,5 +84,5 @@ const styles = StyleSheet.create({
   indicatorStyle: {
     backgroundColor: theme.colors.dark,
   },
-  tabStyle: {width: 'auto'},
+  tabStyle: { width: 'auto' },
 });
