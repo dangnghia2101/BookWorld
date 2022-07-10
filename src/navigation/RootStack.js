@@ -27,12 +27,12 @@ export default function MainContainer() {
     Storage.getItem('tokenId').then(item => {
       if (item !== null) {
         setIsLogin(true);
-        dispatch({type: HIDE});
         dispatch({type: _onSuccess(actions.LOGIN), data: item.data});
         dispatch({type: _onSuccess(actions.IS_LOGIN), data: true});
       } else {
         setIsLogin(false);
       }
+      dispatch({type: HIDE});
     });
   }, [dispatch]);
 
