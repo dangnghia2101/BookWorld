@@ -1,4 +1,10 @@
 rootProject.name = 'BookWorld'
+// include ':zpdk-release-28052021'
+
+// apply from: '../node_modules/react-native-unimodules/gradle.groovy'
+// includeUnimodulesProjects()
+// applyNativeModulesSettingsGradle(settings)
+
 
 apply from: file("../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesSettingsGradle(settings)
 include ':app'

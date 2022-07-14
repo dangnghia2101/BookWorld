@@ -8,6 +8,7 @@ import com.facebook.react.ReactRootView;
 import com.swmansion.gesturehandler.react.RNGestureHandlerEnabledRootView;
 
 import vn.zalopay.sdk.ZaloPaySDK;
+import vn.zalopay.sdk.Environment;
 
 public class MainActivity extends ReactActivity {
 
@@ -57,4 +58,5 @@ public class MainActivity extends ReactActivity {
     super.onNewIntent(intent);
     ZaloPaySDK.getInstance().onResult(intent);
   }
+
 }
