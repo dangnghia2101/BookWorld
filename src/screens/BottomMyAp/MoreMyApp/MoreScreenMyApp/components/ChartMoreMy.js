@@ -56,6 +56,41 @@ const ChartMoreMy = () => {
     },
   ];
 
+  const data2 = [
+    {
+      month: 'January',
+      time: 500,
+    },
+    {
+      month: 'February',
+      time: 400,
+    },
+    {
+      month: 'March',
+      time: 450,
+    },
+    {
+      month: 'April',
+      time: 480,
+    },
+    {
+      month: 'May',
+      time: 500,
+    },
+    {
+      month: 'June',
+      time: 500,
+    },
+    {
+      month: 'July',
+      time: 500,
+    },
+    {
+      month: 'August',
+      time: 500,
+    },
+  ];
+
   return (
     <Block column justifyCenter>
       <Block
