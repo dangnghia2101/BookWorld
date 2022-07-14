@@ -2,30 +2,94 @@ import {StyleSheet, TouchableOpacity, Dimensions} from 'react-native';
 import React from 'react';
 import {Block, Text} from '@components';
 
-import {BarChart} from 'react-native-chart-kit';
+import {VictoryBar, VictoryChart, VictoryTheme} from 'victory-native';
 const screenWidth = Dimensions.get('window').width;
 const ChartMoreMy = () => {
-  const data = {
-    labels: ['January', 'February', 'March', 'April', 'May', 'June'],
-    datasets: [
-      {
-        data: [20, 45, 28, 80, 99, 43],
-      },
-    ],
-  };
+  const data = [
+    {
+      month: 'January',
+      time: 500,
+    },
+    {
+      month: 'February',
+      time: 400,
+    },
+    {
+      month: 'March',
+      time: 450,
+    },
+    {
+      month: 'April',
+      time: 480,
+    },
+    {
+      month: 'May',
+      time: 500,
+    },
+    {
+      month: 'June',
+      time: 500,
+    },
+    {
+      month: 'July',
+      time: 500,
+    },
+    {
+      month: 'August',
+      time: 500,
+    },
+    {
+      month: 'Setember',
+      time: 500,
+    },
+    {
+      month: 'October',
+      time: 200,
+    },
+    {
+      month: 'November',
+      time: 500,
+    },
+    {
+      month: 'December',
+      time: 500,
+    },
+  ];
 
-  const chartConfig = {
-    backgroundGradientFrom: '#FFFFFF',
-    backgroundGradientFromOpacity: 0.1,
-    backgroundGradientTo: '#206cf6',
-    backgroundGradientToOpacity: 0.2,
-    color: (opacity = 0) => `rgba(3, 131, 250, ${opacity})`,
-    //strokeWidth: 2, // optional, default 3
-    fillShadowGradientFrom: '#0D7EF9',
-    fillShadowGradientTo: '#0D7EF9',
-    barPercentage: 0.5,
-    useShadowColorFromDataset: false, // optional
-  };
+  const data2 = [
+    {
+      month: 'January',
+      time: 500,
+    },
+    {
+      month: 'February',
+      time: 400,
+    },
+    {
+      month: 'March',
+      time: 450,
+    },
+    {
+      month: 'April',
+      time: 480,
+    },
+    {
+      month: 'May',
+      time: 500,
+    },
+    {
+      month: 'June',
+      time: 500,
+    },
+    {
+      month: 'July',
+      time: 500,
+    },
+    {
+      month: 'August',
+      time: 500,
+    },
+  ];
 
   return (
     <Block column justifyCenter>
@@ -46,13 +110,20 @@ const ChartMoreMy = () => {
         </TouchableOpacity>
       </Block>
 
-      <BarChart
-        data={data}
-        width={screenWidth}
-        height={250}
-        yAxisLabel="$"
-        chartConfig={chartConfig}
-      />
+      <VictoryChart theme={VictoryTheme.material}>
+        <VictoryBar
+          style={{data: {fill: '#0D7EF9', width: 15}}}
+          animate={{
+            duration: 3000,
+            onLoad: {
+              duration: 3000,
+            },
+          }}
+          data={data}
+          x="month"
+          y="time"
+        />
+      </VictoryChart>
     </Block>
   );
 };
