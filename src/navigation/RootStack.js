@@ -6,7 +6,6 @@ import Auth from '../screens/Auth';
 import {useSelector, useDispatch} from 'react-redux';
 import Storage from '@utils/storage';
 import actions, {_onSuccess} from '@redux/actions';
-import {put} from 'redux-saga/effects';
 import {SHOW, HIDE} from '@redux/actions/HandlerLoading';
 
 export default function MainContainer() {
@@ -33,6 +32,15 @@ export default function MainContainer() {
         setIsLogin(false);
       }
       dispatch({type: HIDE});
+    });
+
+    // GET THEME APP
+    Storage.getItem('theme').then(item => {
+      if (item === null) {
+        dispatch({type: actions.CHANGE_THEME, theme: 'light'});
+      } else {
+        dispatch({type: actions.CHANGE_THEME, theme: item});
+      }
     });
   }, [dispatch]);
 

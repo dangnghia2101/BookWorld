@@ -1,5 +1,5 @@
 import API from '@utils/api';
-import {call, put, takeLatest} from 'redux-saga/effects';
+import {put, takeLatest} from 'redux-saga/effects';
 import Actions, {_onFail, _onSuccess} from '../actions';
 
 function* getAllBook() {

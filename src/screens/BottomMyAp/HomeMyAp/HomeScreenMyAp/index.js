@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useCallback} from 'react';
 import {Block, Text} from '@components';
 import {ScrollView, StyleSheet} from 'react-native';
 import HeaderListBook from './components/HeaderListEvent';
@@ -21,6 +21,8 @@ const HomeScreenMyAp = () => {
 
   const listMostReadBook = useSelector(state => state.getAllBook);
   const listCategoryBook = useSelector(state => state.getAllCategory);
+  const changeTheme = useSelector(state => state.changeTheme);
+  console.log('========> ', changeTheme);
 
   const myInfo = useSelector(state => state.login.data);
 
@@ -28,11 +30,50 @@ const HomeScreenMyAp = () => {
     dispatch({type: actions.GET_ALL_BOOK});
     dispatch({type: actions.GET_ALL_AUTHOR});
     dispatch({type: actions.GET_ALL_CATEGORY});
+  }, [dispatch]);
+
+  const _renderItemMostBookRead = useCallback(({item}) => {
+    return <ItemMostBookRead item={item} />;
   }, []);
 
-  const _renderItemMostBookRead = ({item}) => {
-    return <ItemMostBookRead item={item} />;
-  };
+  const renderListMostRead = useCallback(() => {
+    console.log('== renderListMostRead ', listMostReadBook);
+
+    // console.log('====> data ', listMostReadBook?.data);
+    return (
+      <Block height={290} marginTop={15} marginBottom={10}>
+        <FlatList
+          data={listMostReadBook?.data}
+          keyExtractor={item => item._id}
+          renderItem={_renderItemMostBookRead}
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
+          pagingEnabled={true}
+          ListEmptyComponent={
+            <Block
+              width={width}
+              height={WIDTH_ITEM_INVIEW}
+              justifyCenter
+              alignCenter>
+              <Text>Chưa có sach</Text>
+            </Block>
+          }
+        />
+      </Block>
+    );
+  }, [_renderItemMostBookRead, listMostReadBook]);
+
+  const renderListCategory = useCallback(() => {
+    return (
+      <Block height={650}>
+        {listCategoryBook?.data?.length > 0 ? (
+          <TabCategoryBook />
+        ) : (
+          <Text>Loading</Text>
+        )}
+      </Block>
+    );
+  }, [listCategoryBook]);
 
   return (
     <Block flex backgroundColor={theme.colors.white}>
@@ -43,32 +84,8 @@ const HomeScreenMyAp = () => {
         />
         <Block paddingHorizontal={20} marginTop={15}>
           <HeaderListBook title={'Sách xem nhiều nhất'} />
-          <Block height={290} marginTop={15} marginBottom={10}>
-            <FlatList
-              data={listMostReadBook?.data}
-              keyExtractor={item => item._id}
-              renderItem={_renderItemMostBookRead}
-              horizontal={true}
-              showsHorizontalScrollIndicator={false}
-              pagingEnabled={true}
-              ListEmptyComponent={
-                <Block
-                  width={width}
-                  height={WIDTH_ITEM_INVIEW}
-                  justifyCenter
-                  alignCenter>
-                  <Text>Chưa có sach</Text>
-                </Block>
-              }
-            />
-          </Block>
-          <Block height={650}>
-            {listCategoryBook?.data?.length > 0 ? (
-              <TabCategoryBook />
-            ) : (
-              <Text>Loading</Text>
-            )}
-          </Block>
+          {renderListMostRead()}
+          {renderListCategory()}
         </Block>
       </ScrollView>
     </Block>

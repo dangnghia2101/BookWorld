@@ -18,6 +18,8 @@ export default {
 
   GET_ALL_CHAPTER_BY_ID: 'GET_ALL_CHAPTER_BY_ID',
   GET_ALL_BOOK_BY_CATEGORY: 'GET_ALL_BOOK_BY_CATEGORY',
+
+  CHANGE_THEME: 'CHANGE_THEME',
 };
 
 export const _onSuccess = action => action + '_SUCCESS';
