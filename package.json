@@ -38,7 +38,6 @@
     "moment": "^2.29.3",
     "prop-types": "^15.8.1",
     "react": "17.0.2",
-    "react-dom": "^18.2.0",
     "react-native": "0.68.2",
     "react-native-chart-kit": "^6.12.0",
     "react-native-code-push": "^7.0.4",
@@ -94,5 +93,10 @@
   },
   "jest": {
     "preset": "react-native"
+  },
+  "rnpm": {
+    "assets": [
+      "./src/assets/fonts/"
+    ]
   }
 }

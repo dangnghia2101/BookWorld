@@ -1,22 +1,20 @@
-import React, {useState, useEffect} from 'react';
-import {Block, Text, Button} from '@components';
+import React, { useState, useEffect } from 'react';
+import { Block, Text, Button } from '@components';
 import {
   StyleSheet,
-  ImageBackground,
   Platform,
   NativeModules,
   StatusBar,
   Image,
 } from 'react-native';
-import {images} from '@assets';
-import {theme} from '@theme';
+import { theme } from '@theme';
 import IconView from '@components/Icon';
-import {useNavigation} from '@react-navigation/native';
-import {routes} from '@navigation/routes';
+import { useNavigation } from '@react-navigation/native';
+import { routes } from '@navigation/routes';
 
-const {colors, fonts} = theme;
+const { colors, fonts } = theme;
 
-const HeaderHome = ({name, image}) => {
+const HeaderHome = ({ name, image }) => {
   const navigation = useNavigation();
   const [paddingTop, setPaddingTop] = useState(0);
   const [showMoney, setShowMoney] = useState(false);
@@ -34,20 +32,20 @@ const HeaderHome = ({name, image}) => {
   }, []);
 
   return (
-    <Block style={[styles.container, {paddingTop: paddingTop}]}>
+    <Block style={[styles.container, { paddingTop: paddingTop, zIndex: 100 }]}>
       <Block width={'100%'} alignCenter marginTop={20}>
         <Block space={'between'} row width={'100%'}>
           <Block alignCenter row marginLeft={10}>
             <Image
-              source={{uri: image}}
-              style={{width: 40, height: 40, borderRadius: 100}}
+              source={{ uri: image }}
+              style={{ width: 40, height: 40, borderRadius: 100 }}
             />
             <Text
               marginLeft={10}
               size={18}
               marginHorizontal={5}
               color={colors.white}
-              style={{fontFamily: 'Lato-Bold'}}>
+              style={{ fontFamily: 'Lato-Bold' }}>
               {name}
             </Text>
           </Block>
@@ -67,10 +65,13 @@ const HeaderHome = ({name, image}) => {
             <Block row marginLeft={7}>
               <Text
                 marginLeft={10}
-                size={14}
+                size={24}
                 marginHorizontal={5}
                 color={colors.white}
-                fontType={'bold1'}>
+                // fontType={'bold'}
+                // fontType={fonts.fontFamily.bold1}
+                style={{ fontFamily: fonts.fontFamily.bold1, fontWeight: 'normal' }}
+              >
                 Số dư tài khoản
               </Text>
               <Button onPress={() => setShowMoney(!showMoney)}>
