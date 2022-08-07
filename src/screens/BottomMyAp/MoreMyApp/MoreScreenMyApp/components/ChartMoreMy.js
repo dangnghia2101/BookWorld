@@ -1,8 +1,8 @@
-import {StyleSheet, TouchableOpacity, Dimensions} from 'react-native';
+import { StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
 import React from 'react';
-import {Block, Text} from '@components';
+import { Block, Text } from '@components';
 
-import {BarChart} from 'react-native-chart-kit';
+import { BarChart } from 'react-native-chart-kit';
 const screenWidth = Dimensions.get('window').width;
 const ChartMoreMy = () => {
   const data = {

@@ -82,7 +82,7 @@ const HomeScreenMyAp = () => {
       <Block height={height * 0.65}>
         <Animated.FlatList
           data={listMostReadBook?.data}
-          keyExtractor={item => item._id}
+          keyExtractor={item => Math.random() + item._id}
           renderItem={_renderItemMostBookRead}
           decelerationRate={Platform.OS === 'ios' ? 0 : 0.98}
           renderToHardwareTextureAndroid
@@ -174,7 +174,7 @@ const HomeScreenMyAp = () => {
 
   return (
     <Block flex backgroundColor={theme.colors.white}>
-      <ScrollView
+      <Block
         showsVerticalScrollIndicator={false}
         style={{ position: 'relative' }}>
         <HeaderHome
@@ -189,7 +189,7 @@ const HomeScreenMyAp = () => {
           {renderListMostRead()}
           {renderListCategory()}
         </Block>
-      </ScrollView>
+      </Block>
     </Block>
   );
 };

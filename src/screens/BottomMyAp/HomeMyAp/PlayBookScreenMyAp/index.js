@@ -4,9 +4,6 @@ import { Block, Text } from '@components';
 import { WebView } from 'react-native-webview';
 import Header from './components/Header';
 import * as Progress from 'react-native-progress';
-import { useNavigation } from '@react-navigation/core';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import EvaluateBook from '../DetailBookScreenMyAp/components/EvaluateBook';
 
 import { theme } from '@theme';
 

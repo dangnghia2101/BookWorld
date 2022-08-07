@@ -1,7 +1,7 @@
 import React from 'react';
-import {Block} from '@components';
+import { Block } from '@components';
 import Header from './components/Header';
-import {ScrollView} from 'react-native';
+import { ScrollView } from 'react-native';
 import ChartMoreMy from './components/ChartMoreMy';
 import BodyEditMoreMy from '../EditMoreMyApp/components/BodyEditMoreMy';
 import ItemMoreMy from './components/ItemMoreMy';
