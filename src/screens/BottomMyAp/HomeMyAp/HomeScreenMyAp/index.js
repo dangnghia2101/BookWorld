@@ -1,6 +1,13 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback, useState } from 'react';
 import { Block, Text } from '@components';
-import { ScrollView, Animated, Platform, View, Image } from 'react-native';
+import {
+  ScrollView,
+  Animated,
+  Platform,
+  View,
+  Image,
+  StyleSheet,
+} from 'react-native';
 import HeaderListBook from './components/HeaderListEvent';
 import { FlatList } from 'react-native-gesture-handler';
 import { width, height } from '@utils/responsive';
@@ -10,8 +17,7 @@ import { theme } from '@theme';
 import HeaderHome from './components/HeaderHome';
 import { useDispatch, useSelector } from 'react-redux';
 import actions from '@redux/actions';
-import { LinearGradient } from 'react-native-svg';
-
+import LinearGradient from 'react-native-linear-gradient';
 
 const ITEM_WITH = width * 0.6;
 
@@ -20,14 +26,22 @@ const WIDTH_ITEM_INVIEW = widthItemEventIncoming - 20;
 const BACKDROP_HEIGHT = height * 0.65;
 
 const author = [
-  { image: 'http://encyclopediaofalabama.org/images/m-2477.jpg' },
-  { image: 'https://bnnfeed.com/wp-content/uploads/2021/02/186.jpg' },
-  { image: 'https://scontent.fsgn12-1.fna.fbcdn.net/v/t1.6435-9/160623841_274437330713385_6140920492295108645_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=_vbpplnTIi0AX96j1ta&_nc_ht=scontent.fsgn12-1.fna&oh=00_AT_iTkUVCSh_novn6Ee7b8zJ_mRFA4Q1-387Kcu4fPKDxg&oe=63011824' },
-  { image: 'https://static01.nyt.com/images/2016/10/17/t-magazine/zadie-smith-slide-NRAT/zadie-smith-slide-NRAT-jumbo.jpg' },
-  { image: 'https://bnnfeed.com/wp-content/uploads/2021/02/186.jpg' },
-  { image: 'https://bnnfeed.com/wp-content/uploads/2021/02/186.jpg' },
-  { image: 'https://bnnfeed.com/wp-content/uploads/2021/02/186.jpg' },
-]
+  { _id: 1, image: 'http://encyclopediaofalabama.org/images/m-2477.jpg' },
+  { _id: 2, image: 'https://bnnfeed.com/wp-content/uploads/2021/02/186.jpg' },
+  {
+    _id: 3,
+    image:
+      'https://scontent.fsgn12-1.fna.fbcdn.net/v/t1.6435-9/160623841_274437330713385_6140920492295108645_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=_vbpplnTIi0AX96j1ta&_nc_ht=scontent.fsgn12-1.fna&oh=00_AT_iTkUVCSh_novn6Ee7b8zJ_mRFA4Q1-387Kcu4fPKDxg&oe=63011824',
+  },
+  {
+    _id: 4,
+    image:
+      'https://static01.nyt.com/images/2016/10/17/t-magazine/zadie-smith-slide-NRAT/zadie-smith-slide-NRAT-jumbo.jpg',
+  },
+  { _id: 5, image: 'https://bnnfeed.com/wp-content/uploads/2021/02/186.jpg' },
+  { _id: 6, image: 'https://bnnfeed.com/wp-content/uploads/2021/02/186.jpg' },
+  { _id: 7, image: 'https://bnnfeed.com/wp-content/uploads/2021/02/186.jpg' },
+];
 
 const HomeScreenMyAp = () => {
   // const [clicked, setClicked] = useState(false);
@@ -37,14 +51,11 @@ const HomeScreenMyAp = () => {
   const listMostReadBook = useSelector(state => state.getAllBook);
   const listCategoryBook = useSelector(state => state.getAllCategory);
   const changeTheme = useSelector(state => state.changeTheme);
+  const [isCollapsible, setIsCollapsible] = useState(true);
 
   const scrollX = React.useRef(new Animated.Value(0)).current;
 
   const myInfo = useSelector(state => state.login.data);
-
-  React.useEffect(() => {
-
-  }, [listMostReadBook]);
 
   useEffect(() => {
     dispatch({ type: actions.GET_ALL_BOOK });
@@ -52,14 +63,23 @@ const HomeScreenMyAp = () => {
     dispatch({ type: actions.GET_ALL_CATEGORY });
   }, [dispatch]);
 
-  const _renderItemMostBookRead = useCallback(({ item, index }) => {
-    return <ItemMostBookRead item={item} index={index} scrollX={scrollX} size={listMostReadBook.size} />;
-  }, []);
+  const _renderItemMostBookRead = useCallback(
+    ({ item, index }) => {
+      return (
+        <ItemMostBookRead
+          item={item}
+          index={index}
+          scrollX={scrollX}
+          size={listMostReadBook.size}
+        />
+      );
+    },
+    [listMostReadBook.size, scrollX],
+  );
 
   const renderListMostRead = useCallback(() => {
-    // console.log('====> data ', listMostReadBook?.data);
     return (
-      <Block height={height * 0.55}>
+      <Block height={height * 0.65}>
         <Animated.FlatList
           data={listMostReadBook?.data}
           keyExtractor={item => item._id}
@@ -72,10 +92,10 @@ const HomeScreenMyAp = () => {
           horizontal
           showsHorizontalScrollIndicator={false}
           snapToInterval={ITEM_WITH}
-          snapToAlignment='start'
+          snapToAlignment="start"
           onScroll={Animated.event(
             [{ nativeEvent: { contentOffset: { x: scrollX } } }],
-            { useNativeDriver: false }
+            { useNativeDriver: false },
           )}
           scrollEventThrottle={16}
           ListEmptyComponent={
@@ -90,7 +110,7 @@ const HomeScreenMyAp = () => {
         />
       </Block>
     );
-  }, [_renderItemMostBookRead, listMostReadBook]);
+  }, [_renderItemMostBookRead, listMostReadBook?.data, scrollX]);
 
   const renderListCategory = useCallback(() => {
     return (
@@ -104,13 +124,12 @@ const HomeScreenMyAp = () => {
     );
   }, [listCategoryBook]);
 
-
   const Backdrop = () => {
     return (
       <View style={{ height: BACKDROP_HEIGHT, width, position: 'absolute' }}>
         <FlatList
           data={author}
-          keyExtractor={(item) => item._id + '-backdrop'}
+          keyExtractor={(item, index) => item._id + '-backdrop'}
           removeClippedSubviews={false}
           contentContainerStyle={{ width, height: BACKDROP_HEIGHT }}
           renderItem={({ item, index }) => {
@@ -121,7 +140,7 @@ const HomeScreenMyAp = () => {
             const translateX = scrollX.interpolate({
               inputRange: [(index - 2) * ITEM_WITH, (index - 1) * ITEM_WITH],
               outputRange: [0, width],
-              extrapolate: 'clamp'
+              extrapolate: 'clamp',
             });
             return (
               <Animated.View
@@ -131,42 +150,40 @@ const HomeScreenMyAp = () => {
                   width: translateX,
                   height,
                   overflow: 'hidden',
-                }}
-              >
+                }}>
                 <Image
                   source={{ uri: item.image }}
                   style={{
                     width,
                     height: BACKDROP_HEIGHT,
                     position: 'absolute',
+                    top: -40,
                   }}
                 />
               </Animated.View>
             );
           }}
         />
-        {/* <LinearGradient
+        <LinearGradient
           colors={['rgba(0, 0, 0, 0)', 'white']}
-          style={{
-            height: BACKDROP_HEIGHT,
-            width,
-            position: 'absolute',
-            bottom: 0,
-          }}
-        /> */}
+          style={styles.linearGradient}
+        />
       </View>
     );
   };
 
-
   return (
     <Block flex backgroundColor={theme.colors.white}>
-      <ScrollView showsVerticalScrollIndicator={false} style={{ position: 'relative' }}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        style={{ position: 'relative' }}>
         <HeaderHome
           name={myInfo?.account?.name}
           image={myInfo?.account?.image}
+          setIsCollapsible={setIsCollapsible}
+          isCollapsible={isCollapsible}
         />
-        <Block marginTop={-15}>
+        <Block marginTop={75}>
           <HeaderListBook title={'Sách xem nhiều nhất'} />
           {Backdrop()}
           {renderListMostRead()}
@@ -176,5 +193,14 @@ const HomeScreenMyAp = () => {
     </Block>
   );
 };
+
+const styles = StyleSheet.create({
+  linearGradient: {
+    height: 200,
+    width: width,
+    position: 'absolute',
+    bottom: 40,
+  },
+});
 
 export default HomeScreenMyAp;
