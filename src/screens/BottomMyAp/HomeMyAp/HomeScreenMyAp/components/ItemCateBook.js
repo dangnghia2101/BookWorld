@@ -1,22 +1,23 @@
-import {Block, Text, Button} from '@components';
+import { Block, Text, Button } from '@components';
 import React from 'react';
-import {Image, StyleSheet, TouchableOpacity, Dimensions} from 'react-native';
-import {useNavigation} from '@react-navigation/native';
+import { Image, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import Icon from '@components/Icon';
-import {routes} from '@navigation/routes';
+import { routes } from '@navigation/routes';
 
-import {theme} from '@theme';
-const {width, height} = Dimensions.get('window');
+import { theme } from '@theme';
+const { width, height } = Dimensions.get('window');
 
-const {colors} = theme;
+const { colors } = theme;
 const PADDING_ITEM = 15;
 
-const ItemCateBook = ({item}) => {
+const ItemCateBook = ({ item }) => {
   const navigation = useNavigation();
   return (
     <TouchableOpacity
+      style={{ marginHorizontal: 20 }}
       onPress={() =>
-        navigation.navigate(routes.DETAIL_BOOK_MY_AP, {bookmark: true, item})
+        navigation.navigate(routes.DETAIL_BOOK_MY_AP, { bookmark: true, item })
       }>
       <Block width={width} marginRight={PADDING_ITEM} row marginTop={20}>
         <Image
@@ -88,10 +89,10 @@ const ItemCateBook = ({item}) => {
             <Button
               style={[
                 styles.btnItemCate,
-                {backgroundColor: theme.colors.lightRed},
+                { backgroundColor: theme.colors.lightRed },
               ]}
               onPress={() =>
-                navigation.navigate(routes.DETAIL_BOOK_MY_AP, {item})
+                navigation.navigate(routes.DETAIL_BOOK_MY_AP, { item })
               }>
               <Text size={12} fontType="bold" color="white">
                 Đọc sách
@@ -100,7 +101,7 @@ const ItemCateBook = ({item}) => {
             <Button
               style={[
                 styles.btnItemCate,
-                {backgroundColor: theme.colors.black, marginLeft: 10},
+                { backgroundColor: theme.colors.black, marginLeft: 10 },
               ]}>
               <Text size={12} fontType="bold" color="white">
                 Sách nói
