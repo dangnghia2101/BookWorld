@@ -12,13 +12,9 @@ import com.facebook.react.config.ReactFeatureFlags;
 import com.facebook.soloader.SoLoader;
 import com.bookworld.newarchitecture.MainApplicationReactNativeHost;
 import java.lang.reflect.InvocationTargetException;
-import com.bookworld.zpmodule.PayZaloBridge;
 import java.util.List;
 
 import javax.annotation.Nullable;
-
-import vn.zalopay.sdk.Environment;
-import vn.zalopay.sdk.ZaloPaySDK;
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -35,7 +31,6 @@ public class MainApplication extends Application implements ReactApplication {
       // Packages that cannot be autolinked yet can be added manually here, for
       // example:
       // packages.add(new MyReactNativePackage());
-      packages.add(new PayZaloBridge());
       return packages;
     }
 
@@ -69,7 +64,6 @@ public class MainApplication extends Application implements ReactApplication {
     ReactFeatureFlags.useTurboModules = BuildConfig.IS_NEW_ARCHITECTURE_ENABLED;
     SoLoader.init(this, /* native exopackage */ false);
     initializeFlipper(this);
-    ZaloPaySDK.init(2553, Environment.SANDBOX);
   }
 
   /**

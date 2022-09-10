@@ -6,7 +6,7 @@ install! 'cocoapods', :deterministic_uuids => false
 
 target 'BookWorld' do
   config = use_native_modules!
-
+  pod 'GoogleSignIn', '~> 6.1.0'
   # Flags change depending on the env values.
   flags = get_default_flags()
 
@@ -20,6 +20,8 @@ target 'BookWorld' do
   )
 
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
+
+  pod 'RNPermissions', :path => '../node_modules/react-native-permissions'
 
   target 'BookWorldTests' do
     inherit! :complete

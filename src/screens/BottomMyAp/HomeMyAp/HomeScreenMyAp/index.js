@@ -79,7 +79,7 @@ const HomeScreenMyAp = () => {
 
   const renderListMostRead = useCallback(() => {
     return (
-      <Block height={height * 0.65}>
+      <ScrollView nestedScrollEnabled={true} height={height * 0.65}>
         <Animated.FlatList
           data={listMostReadBook?.data}
           keyExtractor={item => Math.random() + item._id}
@@ -108,7 +108,7 @@ const HomeScreenMyAp = () => {
             </Block>
           }
         />
-      </Block>
+      </ScrollView>
     );
   }, [_renderItemMostBookRead, listMostReadBook?.data, scrollX]);
 
@@ -174,9 +174,10 @@ const HomeScreenMyAp = () => {
 
   return (
     <Block flex backgroundColor={theme.colors.white}>
-      <Block
+      <ScrollView
         showsVerticalScrollIndicator={false}
-        style={{ position: 'relative' }}>
+        style={{ position: 'relative' }}
+        nestedScrollEnabled={true}>
         <HeaderHome
           name={myInfo?.account?.name}
           image={myInfo?.account?.image}
@@ -189,7 +190,7 @@ const HomeScreenMyAp = () => {
           {renderListMostRead()}
           {renderListCategory()}
         </Block>
-      </Block>
+      </ScrollView>
     </Block>
   );
 };

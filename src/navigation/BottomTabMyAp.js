@@ -1,15 +1,12 @@
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 // import actions from '@redux/actions';
 // import { bottom } from '@screens/Bottom';
 import { bottom } from '../screens/BottomMyAp';
 import React, { useEffect, useState } from 'react';
-import CustomTabar from './CustomTabar';
 // import {useDispatch, useSelector} from 'react-redux';
 import { routes } from './routes';
 import IconView from '@components/Icon';
-import { View, I18nManage, Text, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import Tabbar from '@mindinventory/react-native-tab-bar-interaction';
-import HomeScreenMyAp from '@screens/BottomMyAp/HomeMyAp/HomeScreenMyAp';
 import { createStackNavigator } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
 import { theme } from '@theme';
@@ -19,8 +16,6 @@ const Stack = createStackNavigator();
 const screenOptionStyle = {
   headerShown: false,
 };
-
-const Tab = createBottomTabNavigator();
 
 const activeHome = isPlay => {
   return (
