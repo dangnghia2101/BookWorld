@@ -98,6 +98,7 @@ const HomeScreenMyAp = () => {
             { useNativeDriver: false },
           )}
           scrollEventThrottle={16}
+          nestedScrollEnabled={true}
           ListEmptyComponent={
             <Block
               width={width}
@@ -132,6 +133,7 @@ const HomeScreenMyAp = () => {
           keyExtractor={(item, index) => item._id + '-backdrop'}
           removeClippedSubviews={false}
           contentContainerStyle={{ width, height: BACKDROP_HEIGHT }}
+          scrollEnabled={true}
           renderItem={({ item, index }) => {
             // console.log("+====", item);
             // if (!item.backdrop) {
@@ -163,6 +165,7 @@ const HomeScreenMyAp = () => {
               </Animated.View>
             );
           }}
+          key={() => Math.random()}
         />
         <LinearGradient
           colors={['rgba(0, 0, 0, 0)', 'white']}
@@ -174,8 +177,9 @@ const HomeScreenMyAp = () => {
 
   return (
     <Block flex backgroundColor={theme.colors.white}>
-      <Block
+      <ScrollView
         showsVerticalScrollIndicator={false}
+        nestedScrollEnabled={true}
         style={{ position: 'relative' }}>
         <HeaderHome
           name={myInfo?.account?.name}
@@ -189,7 +193,7 @@ const HomeScreenMyAp = () => {
           {renderListMostRead()}
           {renderListCategory()}
         </Block>
-      </Block>
+      </ScrollView>
     </Block>
   );
 };

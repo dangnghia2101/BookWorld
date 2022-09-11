@@ -1,36 +1,23 @@
-import React, {useEffect, useState} from 'react';
-import {Block, Text, Button} from '@components';
+import React, { useEffect, useState } from 'react';
+import { Block, Text, Button } from '@components';
 import {
   StyleSheet,
-  NativeModules,
+  // NativeModules,
   NativeEventEmitter,
   TextInput,
   Image,
 } from 'react-native';
 import Topbar from 'common/Topbar';
-import {FlatList} from 'react-native-gesture-handler';
+import { FlatList } from 'react-native-gesture-handler';
 import CurrencyInput from 'react-native-currency-input';
-import {theme} from '@theme';
-import {useDispatch, useSelector} from 'react-redux';
+import { theme } from '@theme';
+import { useDispatch, useSelector } from 'react-redux';
 import actions from '@redux/actions';
 import IconView from '@components/Icon';
 
 import CryptoJS from 'crypto-js';
-const {PayZaloBridge} = NativeModules;
-const payZaloBridgeEmitter = new NativeEventEmitter(PayZaloBridge);
-
-const subscription = payZaloBridgeEmitter.addListener('EventPayZalo', data => {
-  console.log('Kết quả giao dịch: ' + data.returnCode);
-  if (data.returnCode == -1) {
-    let payZP = NativeModules.PayZaloBridge;
-    payZP.installApp();
-    console.log('pay install');
-  } else if (data.retturnCode == 1) {
-    console.log('pay success');
-  } else {
-    console.log('pay success', data.returnCode);
-  }
-});
+// const {PayZaloBridge} = NativeModules;
+// const payZaloBridgeEmitter = new NativeEventEmitter(PayZaloBridge);
 
 const Payment = () => {
   const [money, setMoney] = React.useState(0);
@@ -39,87 +26,6 @@ const Payment = () => {
   const [token, setToken] = React.useState('');
   const [returncode, setReturnCode] = React.useState('');
   const [showMoney, setShowMoney] = React.useState(false);
-
-  function getCurrentDateYYMMDD() {
-    var todayDate = new Date().toISOString().slice(2, 10);
-    return todayDate.split('-').join('');
-  }
-
-  async function createOrder(money) {
-    setColorZalopay(1);
-    let apptransid = getCurrentDateYYMMDD() + '_' + new Date().getTime();
-
-    let appid = 2553;
-    let amount = parseInt(money);
-    let appuser = 'ZaloPayDemo';
-    let apptime = new Date().getTime();
-    let embeddata = '{}';
-    let item = '[]';
-    let description = 'Merchant description for order #' + apptransid;
-    let hmacInput =
-      appid +
-      '|' +
-      apptransid +
-      '|' +
-      appuser +
-      '|' +
-      amount +
-      '|' +
-      apptime +
-      '|' +
-      embeddata +
-      '|' +
-      item;
-    let mac = CryptoJS.HmacSHA256(
-      hmacInput,
-      'PcY4iZIKFCIdgZvA6ueMcMHHUbRLYjPL',
-    );
-    console.log('====================================');
-    console.log('hmacInput: ' + hmacInput);
-    console.log('mac: ' + mac);
-    console.log('====================================');
-    var order = {
-      app_id: appid,
-      app_user: appuser,
-      app_time: apptime,
-      amount: amount,
-      app_trans_id: apptransid,
-      embed_data: embeddata,
-      item: item,
-      description: description,
-      mac: mac,
-    };
-
-    console.log(order);
-
-    let formBody = [];
-    for (let i in order) {
-      var encodedKey = encodeURIComponent(i);
-      var encodedValue = encodeURIComponent(order[i]);
-      formBody.push(encodedKey + '=' + encodedValue);
-    }
-    formBody = formBody.join('&');
-    await fetch('https://sb-openapi.zalopay.vn/v2/create', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
-      },
-      body: formBody,
-    })
-      .then(response => response.json())
-      .then(resJson => {
-        setToken(resJson.zp_trans_token);
-        setReturnCode(resJson.return_code);
-      })
-      .catch(error => {
-        console.log('error ', error);
-      });
-  }
-
-  function payOrder() {
-    let payZP = PayZaloBridge;
-    payZP.payOrder(token);
-  }
 
   // useEffect(() => {
   //   console.log('Vô nè');
@@ -176,7 +82,7 @@ const Payment = () => {
 
           <Block
             width={'100%'}
-            style={{flexWrap: 'wrap'}}
+            style={{ flexWrap: 'wrap' }}
             row
             paddingHorizontal={20}
             paddingBottom={15}>
@@ -257,9 +163,7 @@ const Payment = () => {
         </Block>
 
         {returncode > 0 ? (
-          <Button
-            onPress={payOrder}
-            style={{width: '90%', justifyContent: 'center'}}>
+          <Button style={{ width: '90%', justifyContent: 'center' }}>
             <Block
               marginTop={20}
               style={styles.shadow1}
