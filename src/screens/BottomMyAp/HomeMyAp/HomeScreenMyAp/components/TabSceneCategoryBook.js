@@ -1,16 +1,21 @@
-import {Block, Text} from '@components';
+import { Block, Text } from '@components';
 import React from 'react';
 import ItemCateBook from './ItemCateBook';
+import { useSelector } from 'react-redux';
+import { NoData } from '@components';
 
-const TabSceneCategoryBook = ({route}) => {
-  return route?.bookList?.length > 0 ? (
+const TabSceneCategoryBook = ({ route }) => {
+  const listBookByCategory = useSelector(state => state.getAllBookByCategory);
+
+  return listBookByCategory?.data?.length > 0 &&
+    route._id === listBookByCategory?.data[0]?.categoryId ? (
     <Block>
-      {route?.bookList.map((item, index) => (
-        <ItemCateBook key={index} item={item} />
+      {listBookByCategory?.data.map((item, index) => (
+        <ItemCateBook key={item._id} item={item} />
       ))}
     </Block>
   ) : (
-    <Text> Khong co sach </Text>
+    <NoData title={'Không có sách'} />
   );
 };
 

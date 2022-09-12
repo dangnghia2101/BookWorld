@@ -1,6 +1,6 @@
 import React from 'react';
-import {createStackNavigator} from '@react-navigation/stack';
-import {routes} from '@navigation/routes';
+import { createStackNavigator } from '@react-navigation/stack';
+import { routes } from '@navigation/routes';
 import MoreScreenMyApp from './MoreScreenMyApp';
 import EditMoreMyApp from './EditMoreMyApp';
 
@@ -10,8 +10,8 @@ const screenOptionStyle = {
   headerShown: false,
 };
 
-const MoreAppNavigator = ({navigation, route}) => {
-  navigation.setOptions({tabBarVisible: false});
+const MoreAppNavigator = () => {
+  // navigation.setOptions({tabBarVisible: false});
   return (
     <Stack.Navigator screenOptions={screenOptionStyle}>
       <Stack.Screen name={routes.SCREEN_SETTINGS} component={MoreScreenMyApp} />

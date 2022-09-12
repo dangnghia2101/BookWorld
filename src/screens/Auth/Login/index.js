@@ -29,10 +29,16 @@ const Login = () => {
   const _signIn = async () => {
     await GoogleSignin.signOut();
     const currentUser = await GoogleSignin.getCurrentUser();
-    // await GoogleSignin.revokeAccess();
-    if (currentUser) await GoogleSignin.revokeAccess();
+    console.log('+++++> ERORR LOGIN ', currentUser);
+
+    if (currentUser) {
+      await GoogleSignin.revokeAccess();
+    }
+
     try {
       // Get the users ID token
+      // await GoogleSignin.hasPlayServices();
+
       const { idToken } = await GoogleSignin.signIn();
       // get fcm token
       const fcmToken = await getToken();

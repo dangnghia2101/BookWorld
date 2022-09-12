@@ -7,9 +7,15 @@
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "pod:reinstall": "(rm -rf ios/Pods; rm -rf ios/Podfile.lock) && yarn pod:install",
+    "android:clean": "(cd android; ./gradlew clean)",
+    "pod:install": "(cd ios; pod install)",
+    "clean:babel": "rm -rf ./node_modules/.cache/babel-loader",
+    "reinstall": "(rm -rf ./node_modules; yarn install)"
   },
   "dependencies": {
+    "@mindinventory/react-native-tab-bar-interaction": "^2.2.3",
     "@react-native-async-storage/async-storage": "^1.17.4",
     "@react-native-community/cameraroll": "^4.1.2",
     "@react-native-community/geolocation": "^2.1.0",
@@ -29,10 +35,13 @@
     "appcenter-analytics": "^4.4.4",
     "appcenter-crashes": "^4.4.4",
     "axios": "^0.27.2",
+    "crypto-js": "^4.1.1",
+    "d3-shape": "^3.1.0",
     "deprecated-react-native-prop-types": "^2.2.0",
     "expo-linear-gradient": "^11.3.0",
     "fbjs": "^3.0.4",
     "lodash": "^4.17.21",
+    "lottie-react-native": "^5.1.3",
     "moment": "^2.29.3",
     "prop-types": "^15.8.1",
     "react": "17.0.2",
@@ -41,12 +50,15 @@
     "react-native-code-push": "^7.0.4",
     "react-native-collapsible": "^1.6.0",
     "react-native-config": "^1.4.5",
+    "react-native-currency-input": "^1.0.1",
     "react-native-date-picker": "^4.2.1",
     "react-native-device-info": "^8.7.1",
     "react-native-dialog": "^9.2.1",
     "react-native-document-picker": "^8.1.0",
+    "react-native-elements": "^3.4.2",
     "react-native-fast-image": "^8.5.11",
     "react-native-gesture-handler": "^2.4.2",
+    "react-native-linear-gradient": "^2.6.2",
     "react-native-modal": "^13.0.1",
     "react-native-pager-view": "^5.4.15",
     "react-native-permissions": "^3.3.1",
@@ -62,9 +74,10 @@
     "react-native-simple-toast": "^1.1.3",
     "react-native-snap-carousel": "^3.9.1",
     "react-native-splash-screen": "^3.3.0",
-    "react-native-svg": "^12.3.0",
+    "react-native-svg": "^13.1.0",
     "react-native-tab-view": "^3.1.1",
     "react-native-table-component": "^1.2.2",
+    "react-native-unimodules": "^0.14.10",
     "react-native-vector-icons": "^9.1.0",
     "react-native-webview": "^11.18.2",
     "react-navigation": "^4.4.4",
@@ -72,7 +85,7 @@
     "react-table": "^7.8.0",
     "redux": "^4.2.0",
     "redux-saga": "^1.1.3",
-    "rn-fetch-blob": "^0.12.0"
+    "victory-native": "36.5.2"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
@@ -88,5 +101,10 @@
   },
   "jest": {
     "preset": "react-native"
+  },
+  "rnpm": {
+    "assets": [
+      "./src/assets/fonts/"
+    ]
   }
 }

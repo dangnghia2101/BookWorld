@@ -3,21 +3,21 @@ import React from 'react';
 import {Block, Text} from '@components';
 import IconView from '@components/Icon';
 
-const BodyMoreMy = () => {
+const BodyMoreMy = ({name, image, email}) => {
   return (
     <Block flex marginHorizontal={20} style={styles.container}>
       <View style={[styles.itemMyContainer, styles.shadowColor]}>
         <View style={styles.imageContainer}>
           <Image
             source={{
-              uri: 'https://png.pngtree.com/png-vector/20190704/ourlarge/pngtree-businessman-user-avatar-free-vector-png-image_1538405.jpg',
+              uri: image,
             }}
             style={styles.imageInformation}
           />
         </View>
         <View style={styles.informationContainer}>
-          <Text size={18}>Đặng Tuấn Nghĩa</Text>
-          <Text style={styles.textInformation}>nghia@gmail.com</Text>
+          <Text size={18}>{name}</Text>
+          <Text style={styles.textInformation}>{email}</Text>
           <View style={styles.borderBottom} />
           <Text style={styles.textInformation}>+84 xxxxxxxxxx</Text>
           <View style={styles.borderBottom} />

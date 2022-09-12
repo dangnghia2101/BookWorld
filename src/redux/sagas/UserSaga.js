@@ -42,7 +42,7 @@ function* logout() {
     console.log('========> fcm token', fcmtoken);
     const res = yield API.post('auth/logout', {fcmtoken});
     if (res.data?.logout === true && res.statusCode === 200) {
-      // Storage.removeItem('tokenId');
+      Storage.removeItem('tokenId');
       yield put({type: _onSuccess(Actions.IS_LOGIN), data: null});
       yield put({type: _onSuccess('LOGIN'), data: null});
     }

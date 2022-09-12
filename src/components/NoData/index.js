@@ -3,7 +3,7 @@ import {theme} from '@theme';
 import React from 'react';
 import {Image} from 'react-native';
 import {images} from '@assets';
-const NaData = ({title}) => {
+const NoData = ({title}) => {
   return (
     <Block flex>
       <Block justifyCenter alignCenter flex>
@@ -15,11 +15,11 @@ const NaData = ({title}) => {
             width: 50,
             height: 50,
           }}
-          source={images.Bee}
+          source={images.ic_book}
         />
       </Block>
     </Block>
   );
 };
 
-export default NaData;
+export default NoData;

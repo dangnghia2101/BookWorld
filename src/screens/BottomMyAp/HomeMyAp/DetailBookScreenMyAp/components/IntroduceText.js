@@ -22,8 +22,6 @@ const _renderStar = num => {
 };
 
 const IntroduceText = ({item}) => {
-  const navigation = useNavigation();
-
   return (
     <Block marginHorizontal={10} marginTop={20}>
       {/* Giới thiệu tác giả */}
