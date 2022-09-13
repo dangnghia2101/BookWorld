@@ -1,5 +1,5 @@
-import {Block, Text} from '@components';
-import React, {useState} from 'react';
+import { Block, Text } from '@components';
+import React, { useState } from 'react';
 import {
   StyleSheet,
   TextInput,
@@ -7,8 +7,8 @@ import {
   Image,
   TouchableOpacity,
 } from 'react-native';
-import {GoogleSignin} from '@react-native-google-signin/google-signin';
-import {useDispatch, useSelector} from 'react-redux';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import { useDispatch, useSelector } from 'react-redux';
 import actions from '@redux/actions';
 import messaging from '@react-native-firebase/messaging';
 import auth from '@react-native-firebase/auth';
@@ -29,11 +29,17 @@ const Login = () => {
   const _signIn = async () => {
     await GoogleSignin.signOut();
     const currentUser = await GoogleSignin.getCurrentUser();
-    // await GoogleSignin.revokeAccess();
-    if (currentUser) await GoogleSignin.revokeAccess();
+    console.log('+++++> ERORR LOGIN ', currentUser);
+
+    if (currentUser) {
+      await GoogleSignin.revokeAccess();
+    }
+
     try {
       // Get the users ID token
-      const {idToken} = await GoogleSignin.signIn();
+      // await GoogleSignin.hasPlayServices();
+
+      const { idToken } = await GoogleSignin.signIn();
       // get fcm token
       const fcmToken = await getToken();
 
@@ -53,7 +59,7 @@ const Login = () => {
       token: token,
       token_fcm: fcmToken,
     };
-    dispatch({type: 'LOGIN', body: body});
+    dispatch({ type: 'LOGIN', body: body });
   };
 
   return (

@@ -1,6 +1,6 @@
-import {StyleSheet, TouchableOpacity, Dimensions} from 'react-native';
+import { StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
 import React from 'react';
-import {Block, Text} from '@components';
+import { Block, Text } from '@components';
 
 import {VictoryBar, VictoryChart, VictoryTheme} from 'victory-native';
 const screenWidth = Dimensions.get('window').width;

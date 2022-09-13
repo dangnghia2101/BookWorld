@@ -11,7 +11,7 @@ import Block from './Block';
 // import Header from './Header';
 import Icon from './Icon';
 // import ListWrapper from './ListWrapper';
-// import ModalBox from './ModalBox';
+import ModalBox from './ModalBox';
 // import NetWork from './NetWork';
 // import RadioButton from './RadioButton';
 import ModalCodePush from './CodePushUpdate/ModalCodePush';
@@ -22,6 +22,7 @@ import HeaderNotiAndEvent from './HeaderNotiAndEvent';
 import Button from './Button';
 import NoData from './NoData';
 import AnimatedImage from './AnimatedImage';
+import Evaluate from './Evaluate';
 
 export {
   HeaderNotiAndEvent,
@@ -33,6 +34,8 @@ export {
   TextInput,
   Loading,
   AnimatedImage,
+  Evaluate,
+  ModalBox,
   //   RadioButton,
   //   ModalBox,
   //   FormContainer,

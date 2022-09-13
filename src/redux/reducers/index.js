@@ -4,6 +4,7 @@ import {BookReducer} from './BookReducer';
 import {AuthorReducer} from './AuthorReducer';
 import {NotificationReducer} from './NotificationReducer';
 import {handlerLoadingReducer} from './HandlerLoadingReducer';
+import {ThemeReducer} from './ThemeReducer';
 
 const rootReducer = combineReducers({
   ...UserReducer,
@@ -11,6 +12,7 @@ const rootReducer = combineReducers({
   ...AuthorReducer,
   ...NotificationReducer,
   handlerLoadingReducer,
+  ...ThemeReducer,
 });
 
 export default rootReducer;
