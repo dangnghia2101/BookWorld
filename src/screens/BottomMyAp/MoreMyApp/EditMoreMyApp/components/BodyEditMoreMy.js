@@ -40,6 +40,8 @@ const styles = StyleSheet.create({
   },
   ItemUser: {
     width: '100%',
+    height: 500,
+    backgroundColor: 'black',
     position: 'absolute',
     top: 140,
     alignItems: 'center',

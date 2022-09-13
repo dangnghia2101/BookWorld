@@ -6,29 +6,30 @@ import IconView from '@components/Icon';
 const ItemEditMoreMy = () => {
   return (
     <Block marginHorizontal={25} style={styles.itemContainer2}>
-      <Pressable style={[styles.button2, styles.shadowColor]}>
+      <Pressable style={[styles.btnItem, styles.shadowColor]}>
+        <Block>
+          <IconView component={'Ionicons'} name={'settings'} size={15} />
+        </Block>
         <Block style={styles.iconItemMoreMy}>
           <IconView component={'AntDesigns'} name={'right'} size={15} />
         </Block>
-        <Text style={styles.text2}>Chỉnh sửa thông tin</Text>
+        <Block column>
+          <Text style={styles.text2}>Chỉnh sửa thông tin</Text>
+          <Text style={styles.text2}>Cập nhật và chỉnh sửa thông tin</Text>
+        </Block>
       </Pressable>
-      <Pressable style={[styles.button2, styles.shadowColor]}>
+
+      <Pressable style={[styles.btnItem, styles.shadowColor]}>
         <Block style={styles.iconItemMoreMy}>
           <IconView component={'AntDesigns'} name={'right'} size={15} />
         </Block>
         <Text style={styles.text2}>Phản hồi và chia sẻ</Text>
       </Pressable>
-      <Pressable style={[styles.button2, styles.shadowColor]}>
+      <Pressable style={[styles.btnItem, styles.shadowColor]}>
         <Block style={styles.iconItemMoreMy}>
           <IconView component={'AntDesigns'} name={'right'} size={15} />
         </Block>
         <Text style={styles.text2}>Lịch sử thanh toán</Text>
-      </Pressable>
-      <Pressable style={[styles.button2, styles.shadowColor]}>
-        <Block style={styles.iconItemMoreMy}>
-          <IconView component={'AntDesigns'} name={'right'} size={15} />
-        </Block>
-        <Text style={styles.text2}>Chính sách</Text>
       </Pressable>
     </Block>
   );
@@ -40,12 +41,12 @@ const styles = StyleSheet.create({
   itemContainer2: {
     top: 100,
   },
-  button2: {
+  btnItem: {
     width: '100%',
     height: 55,
     marginVertical: 8,
     backgroundColor: 'white',
-    borderRadius: 20,
+    borderRadius: 10,
     justifyContent: 'center',
   },
   shadowColor: {
