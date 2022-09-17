@@ -5,8 +5,13 @@ import { StyleSheet } from 'react-native';
 import { TabBar, TabView } from 'react-native-tab-view';
 import TabSceneReadingStatus from './TabSceneReadingStatus';
 import TapScenceAuthor from './TapScenceAuthor';
+<<<<<<< Updated upstream
 import { useSelector, useDispatch } from 'react-redux';
 import actions from '@redux/actions';
+=======
+import { useSelector } from 'react-redux';
+
+>>>>>>> Stashed changes
 const _renderLabel = ({ route, focused, color }) => {
   return (
     <Block>
@@ -107,6 +112,7 @@ const TapReadingStatus = () => {
     ],
     isLoading: false,
   };
+  const listAuthor = useSelector(state => state.getAllAuthor);
 
 
   const formatRouter = data => {
@@ -127,10 +133,13 @@ const TapReadingStatus = () => {
     setRoutes(formatRouter(dataListCate.data));
   }, []);
 
+<<<<<<< Updated upstream
   React.useLayoutEffect(() => {
     dispatch({ type: actions.GET_ALL_AUTHOR, body: routes[index]._id });
   }, [index]);
 
+=======
+>>>>>>> Stashed changes
   const rednderTabBar = props => {
     return (
       <>

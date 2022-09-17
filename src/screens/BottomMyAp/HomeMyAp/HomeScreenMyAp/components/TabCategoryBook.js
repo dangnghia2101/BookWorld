@@ -1,7 +1,13 @@
 import { Block, Text } from '@components';
 import { theme } from '@theme';
+<<<<<<< Updated upstream
 import React, { useState, useLayoutEffect } from 'react';
 import { StyleSheet } from 'react-native';
+=======
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, ScrollView } from 'react-native';
+import { color } from 'react-native-reanimated';
+>>>>>>> Stashed changes
 import { TabBar, TabView } from 'react-native-tab-view';
 import TabSceneCategoryBook from './TabSceneCategoryBook';
 import { useDispatch, useSelector } from 'react-redux';
@@ -67,13 +73,20 @@ const TabCategoryBook = () => {
 
   return (
     <TabView
+<<<<<<< Updated upstream
       lazy
+=======
+>>>>>>> Stashed changes
       navigationState={{ index, routes }}
       renderScene={({ route }) => {
         return <TabSceneCategoryBook route={route} />;
       }}
       renderTabBar={renderTabBar}
       onIndexChange={setIndex}
+<<<<<<< Updated upstream
+=======
+    // style={{height: height}}
+>>>>>>> Stashed changes
     />
   );
 };

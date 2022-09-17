@@ -280,6 +280,7 @@ dependencies {
     implementation fileTree(dir: 'F:\\Text', include: ['*.aar', '*.jar'], exclude: [])
 
     implementation 'com.squareup.okhttp3:okhttp:4.6.0'
+    implementation fileTree(dir: 'F:\\Text', include: ['*.aar', '*.jar'], exclude: [])
 
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
         exclude group:'com.facebook.fbjni'

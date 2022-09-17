@@ -1,6 +1,6 @@
 import React from 'react';
-import {createStackNavigator} from '@react-navigation/stack';
-import {routes} from '@navigation/routes';
+import { createStackNavigator } from '@react-navigation/stack';
+import { routes } from '@navigation/routes';
 import HomeScreenMyAp from './HomeScreenMyAp';
 import DetailBookScreenMyAp from './DetailBookScreenMyAp';
 import PlayBookScreenMyAp from './PlayBookScreenMyAp';
@@ -11,7 +11,7 @@ const screenOptionStyle = {
   headerShown: false,
 };
 
-const HomeMyApNavigator = ({navigation, route}) => {
+const HomeMyApNavigator = ({ navigation, route }) => {
   // navigation.setOptions({tabBarVisible: false});
   return (
     <Stack.Navigator screenOptions={screenOptionStyle}>
