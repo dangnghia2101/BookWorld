@@ -1,10 +1,11 @@
-import {useFCM} from '@hooks';
-import React, {useEffect} from 'react';
+import { useFCM } from '@hooks';
+import React, { useEffect } from 'react';
 import RootStack from './src/navigation/RootStack';
-import store from '@redux/store';
-import {SafeAreaProvider} from 'react-native-safe-area-context';
-import {Provider} from 'react-redux';
-import {Loading} from '@components';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { Provider } from 'react-redux';
+// import { Loading } from '@components';
+import { PersistGate } from 'redux-persist/lib/integration/react';
+import { persistor, store } from '@redux/storeNew';
 
 const App = () => {
   const fcm = useFCM();
@@ -23,11 +24,20 @@ const App = () => {
 
 const AppWrapper = () => {
   return (
+    // <Provider store={store}>
+    //   <SafeAreaProvider>
+    //     <App />
+    //     <Loading />
+    //   </SafeAreaProvider>
+    // </Provider>
+
     <Provider store={store}>
-      <SafeAreaProvider>
-        <App />
-        <Loading />
-      </SafeAreaProvider>
+      <PersistGate loading={null} persistor={persistor}>
+        <SafeAreaProvider>
+          <App />
+          {/* <Loading /> */}
+        </SafeAreaProvider>
+      </PersistGate>
     </Provider>
   );
 };

@@ -15,9 +15,9 @@ import ItemMostBookRead from './components/ItemMostBookRead';
 import TabCategoryBook from './components/TabCategoryBook';
 import { theme } from '@theme';
 import HeaderHome from './components/HeaderHome';
-import { useDispatch, useSelector } from 'react-redux';
-import actions from '@redux/actions';
 import LinearGradient from 'react-native-linear-gradient';
+import { useAppSelector } from 'hooks';
+import { useGetAllBookQuery, useGetAllCategoryQuery } from '@redux/servicesNew';
 
 const ITEM_WITH = width * 0.6;
 
@@ -46,22 +46,29 @@ const author = [
 const HomeScreenMyAp = () => {
   // const [clicked, setClicked] = useState(false);
   // const [searchPhrase, setSearchPhrase] = useState('');
-  const dispatch = useDispatch();
 
-  const listMostReadBook = useSelector(state => state.getAllBook);
-  const listCategoryBook = useSelector(state => state.getAllCategory);
-  const changeTheme = useSelector(state => state.changeTheme);
+  useGetAllBookQuery();
+  useGetAllCategoryQuery();
+
+  // useEffect(() => {
+  //   if (allBooks) {
+  //     dispatch(addBookReducer(allBooks));
+  //   }
+  // }, []);
+
   const [isCollapsible, setIsCollapsible] = useState(true);
 
   const scrollX = React.useRef(new Animated.Value(0)).current;
 
-  const myInfo = useSelector(state => state.login.data);
+  const myInfo = useAppSelector(state => state.root.auth);
+  const allBooks = useAppSelector(state => state.root.book.bookList);
+  const allCategories = useAppSelector(state => state.root.book.categoryList);
 
-  useEffect(() => {
-    dispatch({ type: actions.GET_ALL_BOOK });
-    dispatch({ type: actions.GET_ALL_AUTHOR });
-    dispatch({ type: actions.GET_ALL_CATEGORY });
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch({ type: actions.GET_ALL_BOOK });
+  //   dispatch({ type: actions.GET_ALL_AUTHOR });
+  //   dispatch({ type: actions.GET_ALL_CATEGORY });
+  // }, [dispatch]);
 
   const _renderItemMostBookRead = useCallback(
     ({ item, index }) => {
@@ -70,18 +77,18 @@ const HomeScreenMyAp = () => {
           item={item}
           index={index}
           scrollX={scrollX}
-          size={listMostReadBook.size}
+          size={allBooks}
         />
       );
     },
-    [listMostReadBook.size, scrollX],
+    [allBooks, scrollX],
   );
 
   const renderListMostRead = useCallback(() => {
     return (
       <Block height={height * 0.65}>
         <Animated.FlatList
-          data={listMostReadBook?.data}
+          data={allBooks}
           keyExtractor={item => Math.random() + item._id}
           renderItem={_renderItemMostBookRead}
           decelerationRate={Platform.OS === 'ios' ? 0 : 0.98}
@@ -111,19 +118,15 @@ const HomeScreenMyAp = () => {
         />
       </Block>
     );
-  }, [_renderItemMostBookRead, listMostReadBook?.data, scrollX]);
+  }, [_renderItemMostBookRead, allBooks, scrollX]);
 
   const renderListCategory = useCallback(() => {
     return (
       <Block height={650}>
-        {listCategoryBook?.data?.length > 0 ? (
-          <TabCategoryBook />
-        ) : (
-          <Text>Loading</Text>
-        )}
+        {allCategories?.length > 0 ? <TabCategoryBook /> : <Text>Loading</Text>}
       </Block>
     );
-  }, [listCategoryBook]);
+  }, [allCategories]);
 
   const Backdrop = () => {
     return (
@@ -182,8 +185,8 @@ const HomeScreenMyAp = () => {
         nestedScrollEnabled={true}
         style={{ position: 'relative' }}>
         <HeaderHome
-          name={myInfo?.account?.name}
-          image={myInfo?.account?.image}
+          name={myInfo?.name}
+          image={myInfo?.image}
           setIsCollapsible={setIsCollapsible}
           isCollapsible={isCollapsible}
         />

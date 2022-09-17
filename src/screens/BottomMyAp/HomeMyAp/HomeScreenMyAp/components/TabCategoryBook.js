@@ -1,17 +1,11 @@
 import { Block, Text } from '@components';
 import { theme } from '@theme';
-<<<<<<< Updated upstream
-import React, { useState, useLayoutEffect } from 'react';
-import { StyleSheet } from 'react-native';
-=======
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, ScrollView } from 'react-native';
-import { color } from 'react-native-reanimated';
->>>>>>> Stashed changes
+import { StyleSheet } from 'react-native';
 import { TabBar, TabView } from 'react-native-tab-view';
 import TabSceneCategoryBook from './TabSceneCategoryBook';
-import { useDispatch, useSelector } from 'react-redux';
-import actions from '@redux/actions';
+import { useAppSelector } from 'hooks';
+import { useGetAllBookByCategoryQuery } from '@redux/servicesNew';
 
 const _renderLabel = ({ route, focused, color }) => {
   return (
@@ -26,19 +20,17 @@ const _renderLabel = ({ route, focused, color }) => {
 const TabCategoryBook = () => {
   const [routes, setRoutes] = useState([{ key: 'Default', title: 'Default' }]);
   const [index, setIndex] = useState(0);
-  const dispatch = useDispatch();
 
-  const listCategoryBook = useSelector(state => state.getAllCategory);
+  const allCategories = useAppSelector(state => state.root.book.categoryList);
 
-  useLayoutEffect(() => {
-    setRoutes(formatRouter(listCategoryBook.data));
-  }, [listCategoryBook.data]);
+  useEffect(() => {
+    if (routes.length === 1) {
+      setRoutes(formatRouter(allCategories));
+    }
+  }, [allCategories, routes]);
 
   //Cập nhật mỗi lần thay đổi TabView
-  React.useLayoutEffect(() => {
-    dispatch({ type: actions.GET_ALL_BOOK_BY_CATEGORY, body: routes[index]._id });
-    // dispatch(handleShowLoading());
-  }, [index]);
+  useGetAllBookByCategoryQuery(routes[index]?._id);
 
   const formatRouter = data => {
     return data?.map(item => {
@@ -53,7 +45,7 @@ const TabCategoryBook = () => {
   const renderTabBar = props => {
     return (
       <>
-        {!listCategoryBook.isLoading && (
+        {allCategories && (
           <TabBar
             {...props}
             indicatorStyle={styles.indicatorStyle}
@@ -73,20 +65,13 @@ const TabCategoryBook = () => {
 
   return (
     <TabView
-<<<<<<< Updated upstream
       lazy
-=======
->>>>>>> Stashed changes
       navigationState={{ index, routes }}
       renderScene={({ route }) => {
         return <TabSceneCategoryBook route={route} />;
       }}
       renderTabBar={renderTabBar}
       onIndexChange={setIndex}
-<<<<<<< Updated upstream
-=======
-    // style={{height: height}}
->>>>>>> Stashed changes
     />
   );
 };

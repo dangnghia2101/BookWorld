@@ -1,17 +1,16 @@
 import { NavigationContainer } from '@react-navigation/native';
 import React, { useState, useEffect } from 'react';
-import { StatusBar, StyleSheet } from 'react-native';
+import { StatusBar } from 'react-native';
 import BottomTabMyAp from './BottomTabMyAp';
 import Auth from '../screens/Auth';
-import { useSelector, useDispatch } from 'react-redux';
 import Storage from '@utils/storage';
-import actions, { _onSuccess } from '@redux/actions';
 import { SHOW, HIDE } from '@redux/actions/HandlerLoading';
+import { useAppSelector } from 'hooks';
 
 export default function MainContainer() {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const [isLogin, setIsLogin] = useState(false);
-  const isLoginSelector = useSelector(state => state.login.data);
+  const isLoginSelector = useAppSelector(state => state.root.auth.isLogin);
 
   useEffect(() => {
     if (isLoginSelector) {
@@ -22,27 +21,27 @@ export default function MainContainer() {
   }, [isLoginSelector]);
 
   useEffect(() => {
-    dispatch({ type: SHOW });
+    // dispatch({ type: SHOW });
     Storage.getItem('tokenId').then(item => {
       if (item !== null) {
         setIsLogin(true);
-        dispatch({ type: _onSuccess(actions.LOGIN), data: item.data });
-        dispatch({ type: _onSuccess(actions.IS_LOGIN), data: true });
+        // dispatch({ type: _onSuccess(actions.LOGIN), data: item.data });
+        // dispatch({ type: _onSuccess(actions.IS_LOGIN), data: true });
       } else {
         setIsLogin(false);
       }
-      dispatch({ type: HIDE });
+      // dispatch({ type: HIDE });
     });
 
     // GET THEME APP
-    Storage.getItem('theme').then(item => {
-      if (item === null) {
-        dispatch({ type: actions.CHANGE_THEME, theme: 'light' });
-      } else {
-        dispatch({ type: actions.CHANGE_THEME, theme: item });
-      }
-    });
-  }, [dispatch]);
+    // Storage.getItem('theme').then(item => {
+    //   if (item === null) {
+    //     dispatch({ type: actions.CHANGE_THEME, theme: 'light' });
+    //   } else {
+    //     dispatch({ type: actions.CHANGE_THEME, theme: item });
+    //   }
+    // });
+  }, []);
 
   return (
     <>
@@ -52,7 +51,7 @@ export default function MainContainer() {
           barStyle="dark-content"
           backgroundColor="transparent"
         />
-        {isLogin ? <BottomTabMyAp /> : <BottomTabMyAp />}
+        {!isLoginSelector ? <Auth /> : <BottomTabMyAp />}
       </NavigationContainer>
     </>
   );
