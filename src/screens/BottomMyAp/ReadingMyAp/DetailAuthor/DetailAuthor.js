@@ -1,10 +1,36 @@
-import {StyleSheet, Text, ScrollView, Image} from 'react-native';
-import React, {useState} from 'react';
-import {Block} from '@components';
-import {theme} from '@theme';
+import {
+  StyleSheet,
+  Text,
+  ScrollView,
+  Image,
+  TouchableOpacity,
+} from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { Block } from '@components';
+import { theme } from '@theme';
+import { width } from '@utils/responsive';
+import ListBookOfAuthor from '../components/ListBookOfAuthor';
+import { useSelector, useDispatch } from 'react-redux';
+import actions from '@redux/actions';
+import { FlatList } from 'react-native-gesture-handler';
+import { useNavigation } from '@react-navigation/core';
 import TabSceneReadingStatus from '../components/TabSceneReadingStatus';
+const widthItemEventIncoming = width - width / 3;
+const WIDTH_ITEM_INVIEW = widthItemEventIncoming - 20;
 
-const indexDetailAuthor = ({route}) => {
+const DetailAuthor = ({ route }) => {
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
+  const listBookOfAuthor = useSelector(state => state.getAllBookAuthor);
+
+  useEffect(() => {
+    dispatch({ type: actions.GET_ALL_BOOK_AUTHOR });
+  }, []);
+
+  const _renderItemBookOfAuthor = ({ item }) => {
+    return <ListBookOfAuthor item={item} />;
+  };
+
   return (
     <Block backgroundColor={theme.colors.white} flex>
       <Block width="100%" height="60%">
@@ -12,10 +38,12 @@ const indexDetailAuthor = ({route}) => {
           width="100%"
           height={371}
           backgroundColor={theme.colors.darkPurple}>
-          <Image
-            style={styles.iconBack}
-            source={require('@assets/icons/iconback.png')}
-          />
+          <TouchableOpacity style={styles.iconBack}>
+            <Image
+              source={require('@assets/icons/iconback.png')}
+              onPress={() => navigation.goBack()}
+            />
+          </TouchableOpacity>
         </Block>
         <Block absolute top={158} left={91}>
           <Image
@@ -54,6 +82,19 @@ const indexDetailAuthor = ({route}) => {
           </Block>
           <Block marginTop={42}>
             <Text style={styles.textBook}>Sách của tác giả</Text>
+            {/* <FlatList
+              data={listBookOfAuthor?.data}
+              keyExtractor={item => item._id}
+              renderItem={_renderItemBookOfAuthor}
+              ListEmptyComponent={
+                <Block
+                  width={width}
+                  height={WIDTH_ITEM_INVIEW}
+                  justifyCenter
+                  alignCenter>
+                  <Text>Chưa có sach</Text>
+                </Block>
+              } */}
             <TabSceneReadingStatus route={route} />
           </Block>
         </Block>
@@ -62,9 +103,12 @@ const indexDetailAuthor = ({route}) => {
   );
 };
 
-export default indexDetailAuthor;
+export default DetailAuthor;
 
 const styles = StyleSheet.create({
+  // listBookOfAuthor: {
+  //   height: 500,
+  // },
   textBook: {
     lineHeight: 36,
     fontWeight: '600',
@@ -95,7 +139,7 @@ const styles = StyleSheet.create({
   },
   iconBack: {
     position: 'absolute',
-    top: '6%',
+    top: '10%',
     left: '6%',
   },
 });
