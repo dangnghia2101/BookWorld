@@ -11,7 +11,7 @@ const TabSceneCategoryBook = ({ route }) => {
     route._id === listBookByCategory?.data[0]?.categoryId ? (
     <Block>
       {listBookByCategory?.data.map((item, index) => (
-        <ItemCateBook key={index} item={item} />
+        <ItemCateBook key={item._id} item={item} />
       ))}
     </Block>
   ) : (

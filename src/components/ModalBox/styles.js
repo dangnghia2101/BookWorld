@@ -1,5 +1,5 @@
-import {getSize} from '@utils/responsive';
-import {StyleSheet} from 'react-native';
+import { getSize } from '@utils/responsive';
+import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
   container: {
@@ -19,8 +19,9 @@ export default StyleSheet.create({
     opacity: 0,
   },
   content: position => ({
-    flex: 1,
     justifyContent: position === 'center' ? 'center' : 'flex-end',
     paddingHorizontal: position === 'center' ? getSize.m(12) : 0,
+    top: position === 'top-right' ? -130 : null,
+    alignSeft: 'right',
   }),
 });

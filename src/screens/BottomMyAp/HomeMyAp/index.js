@@ -14,7 +14,9 @@ const screenOptionStyle = {
 const HomeMyApNavigator = ({ navigation, route }) => {
   // navigation.setOptions({tabBarVisible: false});
   return (
-    <Stack.Navigator screenOptions={screenOptionStyle}>
+    <Stack.Navigator
+      screenOptions={screenOptionStyle}
+      initialRouteName={routes.HOME_SCREEN_MY_AP}>
       <Stack.Screen
         name={routes.HOME_SCREEN_MY_AP}
         component={HomeScreenMyAp}

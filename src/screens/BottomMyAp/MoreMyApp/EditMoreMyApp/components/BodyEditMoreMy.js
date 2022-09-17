@@ -2,7 +2,7 @@ import {Block, Text} from '@components';
 import React from 'react';
 import {StyleSheet, Image} from 'react-native';
 
-const BodyEditMoreMy = () => {
+const BodyEditMoreMy = ({name, image, email}) => {
   return (
     <Block>
       <Image
@@ -12,14 +12,14 @@ const BodyEditMoreMy = () => {
       <Block style={styles.ItemUser}>
         <Image
           source={{
-            uri: 'https://png.pngtree.com/png-vector/20190704/ourlarge/pngtree-businessman-user-avatar-free-vector-png-image_1538405.jpg',
+            uri: image,
           }}
           style={styles.imageInformation}
         />
         <Text fontSize={18} center>
-          Đặng Tuấn Nghĩa
+          {name}
         </Text>
-        <Text fontSize={13}>sumanyak@gmail.com</Text>
+        <Text fontSize={13}>{email}</Text>
       </Block>
     </Block>
   );
