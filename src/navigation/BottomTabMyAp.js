@@ -6,9 +6,128 @@ import React from 'react';
 import CustomTabar from './CustomTabar';
 // import {useDispatch, useSelector} from 'react-redux';
 import {routes} from './routes';
+import {StyleSheet, View} from 'react-native';
+import IconView from '@components/Icon';
+// import {useDispatch, useSelector} from 'react-redux';
+import {theme} from '../theme';
 
 const Tab = createBottomTabNavigator();
 
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  container_icon: {
+    width: 50,
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 60,
+  },
+});
+
+const activeHome = isPlay => {
+  return (
+    <View
+      style={[
+        styles.container_icon,
+        {
+          backgroundColor: isPlay ? theme.colors.red : theme.colors.gray4,
+        },
+      ]}>
+      <IconView
+        component={'MaterialIcons'}
+        name={'home'}
+        size={25}
+        color={isPlay ? 'white' : 'black'}
+      />
+    </View>
+  );
+};
+
+const activeStore = isPlay => {
+  return (
+    <View
+      style={[
+        styles.container_icon,
+        {
+          backgroundColor: isPlay ? theme.colors.red : theme.colors.gray4,
+        },
+      ]}>
+      <IconView
+        component={'MaterialIcons'}
+        name={'book-open-page-variant-outline'}
+        size={25}
+        color={isPlay ? 'white' : 'black'}
+      />
+    </View>
+  );
+};
+
+const activeChat = isPlay => {
+  return (
+    <View
+      style={[
+        styles.container_icon,
+        {
+          backgroundColor: isPlay ? theme.colors.red : theme.colors.gray4,
+        },
+      ]}>
+      <IconView
+        component={'MaterialIcons'}
+        name={'chat'}
+        size={25}
+        color={isPlay ? 'white' : 'black'}
+      />
+    </View>
+  );
+};
+
+const activeSetting = isPlay => {
+  return (
+    <View
+      style={[
+        styles.container_icon,
+        {
+          backgroundColor: isPlay ? theme.colors.red : theme.colors.gray4,
+        },
+      ]}>
+      <IconView
+        component={'MaterialIcons'}
+        name={'settings'}
+        size={25}
+        color={isPlay ? 'white' : 'black'}
+      />
+    </View>
+  );
+};
+
+const tabData = [
+  {
+    name: 'Nhà',
+    activeIcon: activeHome(true),
+    inactiveIcon: activeHome(false),
+    key: 1,
+  },
+  // {
+  //   name: 'Lưu trữ',
+  //   activeIcon: activeStore(true),
+  //   inactiveIcon: activeStore(false),
+  //   key: 2,
+  // },
+  // {
+  //   name: 'Nhắn tin',
+  //   activeIcon: activeChat(true),
+  //   inactiveIcon: activeChat(false),
+  //   key: 3,
+  // },
+  // {
+  //   name: 'Cài đặt',
+  //   activeIcon: activeSetting(true),
+  //   inactiveIcon: activeSetting(false),
+  //   key: 4,
+  // },
+];
 const BottomTabMyAp = () => {
   // const dispatch = useDispatch();
   // const res = useSelector(state => state.notificationPrivateNotRead);
@@ -26,6 +145,7 @@ const BottomTabMyAp = () => {
         options={{
           tabBarLabel: 'Trang chủ',
           tabBarIcon: 'home',
+          component: 'AntDesign',
         }}
       />
 
@@ -34,7 +154,8 @@ const BottomTabMyAp = () => {
         component={bottom.READING_MY_APP}
         options={{
           tabBarLabel: 'Đang đọc',
-          tabBarIcon: 'book-open-page-variant-outline',
+          tabBarIcon: 'book-open-variant',
+          component: 'MaterialCommunityIcons',
         }}
       />
 
@@ -53,7 +174,8 @@ const BottomTabMyAp = () => {
         component={bottom.MORE_MY_APP}
         options={{
           tabBarLabel: 'Cài đặt',
-          tabBarIcon: 'account-outline',
+          tabBarIcon: 'ios-settings-outline',
+          component: 'Ionicons',
         }}
       />
     </Tab.Navigator>

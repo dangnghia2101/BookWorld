@@ -2,9 +2,9 @@ import {Block, Text} from '@components';
 import React, {useState} from 'react';
 import {
   StyleSheet,
+  Image,
   TextInput,
   Pressable,
-  Image,
   TouchableOpacity,
 } from 'react-native';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
@@ -33,6 +33,7 @@ const Login = () => {
     if (currentUser) await GoogleSignin.revokeAccess();
     try {
       // Get the users ID token
+      // await GoogleSignin.hasPlayServices();
       const {idToken} = await GoogleSignin.signIn();
       // get fcm token
       const fcmToken = await getToken();
@@ -57,6 +58,48 @@ const Login = () => {
   };
 
   return (
+    // <Block flex paddingTop={56} backgroundColor={'white'}>
+    //   <Block style={styles.logo}>
+    //     <Image
+    //       style={styles.image}
+    //       source={require('../../../assets/images/Logo.png')}
+    //     />
+    //   </Block>
+    //   <Block alignStart>
+    //     <Text h1 bold size={30} paddingHorizontal={20} style={styles.textLogo}>
+    //       Xin chào!
+    //     </Text>
+    //     <Block style={styles.textWelcome}>
+    //       <Text h1 bold size={20} paddingLeft={20} style={styles.textLogo}>
+    //         Chào mừng đến với
+    //       </Text>
+    //       <Text h1 bold size={25} paddingLeft={5} style={styles.textLogo}>
+    //         BookWorld
+    //       </Text>
+    //     </Block>
+    //     <Text paddingHorizontal={20} size={14} style={styles.textDescribes}>
+    //       {' '}
+    //       Bạn cần đăng nhập để sử dụng{' '}
+    //     </Text>
+    //   </Block>
+    //   <Block alignCenter style={styles.loginContainer}>
+    //     <TouchableOpacity
+    //       onPress={_signIn}
+    //       style={[styles.iconLogin, styles.loginGoogle]}>
+    //       <Image source={require('../../../assets/images/gmail.png')} />
+    //       <Text style={styles.textLoginGmail}>Log in with Google</Text>
+    //     </TouchableOpacity>
+    //     <Block
+    //       marginTop={32}
+    //       width={25}
+    //       height={25}
+    //       style={styles.loginFacebook}
+    //       marginHorizontal={10}>
+    //       <Image source={require('../../../assets/images/facebook.png')} />
+    //       <Text style={styles.textLoginGmail}>Log in with Facebook</Text>
+    //     </Block>
+    //   </Block>
+    // </Block>
     <Block flex alignCenter paddingTop={56} backgroundColor={'white'}>
       <Text h1 bold size={30} style={styles.textWelcomLogin}>
         {' '}
@@ -76,21 +119,35 @@ const Login = () => {
       <Pressable style={styles.buttomLogin}>
         <Text style={styles.textButtomLogin}>Đăng nhập</Text>
       </Pressable>
-      <Block marginTop={22}>
+      <Block marginTop={30} style={styles.or}>
+        <Image
+          style={styles.lien}
+          source={require('../../../assets/images/left.png')}
+        />
         <Text size={12}> Hoặc </Text>
+        <Image
+          style={styles.lien}
+          source={require('../../../assets/images/right.png')}
+        />
       </Block>
       <Block style={styles.loginContainer}>
-        <TouchableOpacity onPress={_signIn} style={styles.iconLogin}>
-          <Image source={require('../../../assets/images/GG.png')} />
+        <TouchableOpacity
+          onPress={_signIn}
+          style={styles.Ellip}
+          marginHorizontal={10}>
+          <Image
+            style={styles.icon}
+            source={require('../../../assets/images/GG.png')}
+          />
         </TouchableOpacity>
-        <Block
+        <TouchableOpacity
           marginTop={32}
           width={25}
           height={25}
           // style={styles.Ellip}
           marginHorizontal={10}>
           <Image source={require('../../../assets/images/Facbook.png')} />
-        </Block>
+        </TouchableOpacity>
       </Block>
     </Block>
   );
@@ -99,19 +156,82 @@ const Login = () => {
 export default Login;
 
 const styles = StyleSheet.create({
+  // textWelcome: {
+  //   flexDirection: 'row',
+  // },
+  // textDescribes: {
+  //   marginTop: 5,
+  //   fontWeight: '600',
+  //   color: '#859398',
+  // },
+  // textLoginGmail: {
+  //   marginLeft: '20%',
+  //   fontSize: 18,
+  //   color: '#ffff',
+  //   fontWeight: '700',
+  // },
+  // logo: {
+  //   justifyContent: 'center',
+  //   flexDirection: 'row',
+  //   marginTop: 20,
+  // },
+  // loginContainer: {
+  //   marginTop: '25%',
+  // },
+  // loginFacebook: {
+  //   width: 340,
+  //   height: 65,
+  //   borderRadius: 10,
+  //   paddingHorizontal: '5%',
+  //   alignItems: 'center',
+  //   backgroundColor: '#4267B2',
+  //   flexDirection: 'row',
+  //   justifyContent: 'flex-start',
+  // },
+  // loginGoogle: {
+  //   width: 340,
+  //   height: 65,
+  //   borderRadius: 10,
+  //   paddingHorizontal: '5%',
+  //   alignItems: 'center',
+  //   backgroundColor: '#f12711',
+  //   flexDirection: 'row',
+  //   justifyContent: 'flex-start',
+  // },
+  // image: {
+  //   marginTop: 20,
+  //   width: 160,
+  //   height: 160,
+  // },
+  // textLogo: {
+  //   fontFamily: 'Poppins',
+  //   fontWeight: 'bold',
+  //   lineHeight: 45,
+  //   color: '#464444',
+  // },
+  lien: {
+    marginTop: 7,
+    marginHorizontal: 20,
+  },
+  or: {
+    justifyContent: 'center',
+    flexDirection: 'row',
+  },
   loginContainer: {
     justifyContent: 'center',
     flexDirection: 'row',
+    marginTop: 32,
   },
   Ellip: {
     width: 47,
     height: 47,
     borderRadius: 52,
-    borderColor: '#923D47',
-    borderWidth: 1,
+    marginHorizontal: 10,
+    // borderColor: 'gray',
+    // borderWidth: 0.5,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#ECE9EC',
+    // backgroundColor: '#ECE9EC',
   },
   image: {
     marginTop: 42,
@@ -165,11 +285,12 @@ const styles = StyleSheet.create({
   textInput2: {
     borderRadius: 15,
     width: '88%',
-    color: '#818181',
+    color: '#000',
     height: 59,
     fontWeight: '600',
     backgroundColor: '#F3F3F3',
     marginTop: 16,
+    fontSize: 16,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -184,7 +305,8 @@ const styles = StyleSheet.create({
   textInput: {
     borderRadius: 15,
     width: '88%',
-    color: '#818181',
+    color: '#000',
+    fontSize: 16,
     height: 59,
     fontWeight: '600',
     backgroundColor: '#F3F3F3',
@@ -209,11 +331,5 @@ const styles = StyleSheet.create({
   textDescribe: {
     marginTop: 12,
     fontWeight: '500',
-  },
-  iconLogin: {
-    marginTop: 32,
-    width: 25,
-    height: 25,
-    marginHorizontal: 10,
   },
 });

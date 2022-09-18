@@ -1,7 +1,7 @@
 import {Block, Text} from '@components';
 import React, {memo, useRef} from 'react';
 import {Animated, Platform, StyleSheet, TouchableOpacity} from 'react-native';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import IconView from '@components/Icon';
 // import {useDispatch, useSelector} from 'react-redux';
 import {theme} from '../theme';
 
@@ -54,8 +54,9 @@ const CustomTabBar = ({state, descriptors, navigation}) => {
           });
         };
         const backgroundColor = isFocused ? colors.red : colors.white;
-        const color = isFocused ? colors.white : colors.gray;
-        const flex = isFocused ? 3.5 : 0;
+        const color = isFocused ? colors.red : colors.gray;
+        const flex = isFocused ? 2.5 : 2.5;
+
         return (
           <TouchableOpacity
             key={index}
@@ -64,15 +65,18 @@ const CustomTabBar = ({state, descriptors, navigation}) => {
               {
                 transform: [isFocused ? {scaleX: scaleBotTabBar} : {scale: 1}],
                 flex,
-                backgroundColor,
               },
             ]}
             testID={options.tabBarTestID}
             onPress={onPress}
             onLongPress={onLongPress}>
             <Block style={[styles.bottomTabSection]}>
-              <MaterialCommunityIcons color={color} size={20} name={iconName} />
-              {isFocused && <Text style={[{color}]}>{label}</Text>}
+              <IconView
+                component={options.component}
+                color={color}
+                size={20}
+                name={iconName}
+              />
             </Block>
           </TouchableOpacity>
         );
