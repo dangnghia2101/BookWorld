@@ -1,51 +1,45 @@
-import {StyleSheet, Image, TouchableOpacity, FlatList} from 'react-native';
+import {StyleSheet, Image, FlatList} from 'react-native';
 import React from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {Block, Text} from '@components';
 import {theme} from '@theme';
-import {routes} from '@navigation/routes';
 
 const ListMyGroup = () => {
-  const navigation = useNavigation();
+  const {navigation} = useNavigation();
+
   const renderItem = ({item}) => {
     const {name, avatar, newMessage, time, status} = item;
-    console.log('---------->' + avatar);
-    console.log('---------->' + status);
+
     return (
-      <TouchableOpacity
-        onPress={() => navigation.navigate(routes.DETAIL_GROUP_CHAT_MY_APP)}>
-        <Block row marginTop={30}>
-          <Image
-            style={styles.image}
-            source={{uri: avatar}}
-            resizeMode="cover"
-          />
-          <Block marginHorizontal={20} marginTop={10} width={'55%'}>
-            <Text size={16} fontType={'bold'}>
-              {name}
-            </Text>
-            <Text size={12} numberOfLines={1} marginTop={5}>
-              {newMessage}
-            </Text>
-          </Block>
-          <Block alignCenter marginTop={10}>
-            {status == true ? (
-              <Block
-                backgroundColor={theme.colors.green}
-                height={12}
-                width={12}
-                radius={15}></Block>
-            ) : (
-              <Block
-                backgroundColor={theme.colors.red}
-                height={12}
-                width={12}
-                radius={15}></Block>
-            )}
-            <Text marginTop={10}>{time}</Text>
-          </Block>
+      <Block row marginTop={30}>
+        <Image style={styles.image} source={{uri: avatar}} resizeMode="cover" />
+        <Block marginHorizontal={20} marginTop={10} width={'55%'}>
+          <Text size={16} fontType={'bold'}>
+            {name}
+          </Text>
+          <Text size={12} numberOfLines={1} marginTop={5}>
+            {newMessage}
+          </Text>
         </Block>
-      </TouchableOpacity>
+        <Block alignCenter marginTop={10}>
+          {status == true ? (
+            <Block
+              backgroundColor={theme.colors.green}
+              height={12}
+              width={12}
+              radius={15}
+            />
+          ) : (
+            <Block
+              backgroundColor={theme.colors.red}
+              height={12}
+              width={12}
+              radius={15}
+            />
+          )}
+          <Text marginTop={10}>{time}</Text>
+        </Block>
+      </Block>
     );
   };
 

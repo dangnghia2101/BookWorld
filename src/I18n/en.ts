@@ -1,0 +1,20 @@
+export default {
+  hello: `hello`,
+  accountBalance: 'Account Balance',
+  recharge: 'Recharge',
+  view: 'View',
+  readBook: 'Read',
+  listenBook: 'Listening',
+  categories: {
+    TT: 'Illusion',
+    HD: 'Venturos',
+    TC: 'Lovely',
+    CS: 'Reincarnation',
+    XK: 'Through the air',
+    TL: 'Self-help',
+    CMD: 'Comedy',
+    CMI: 'Comic',
+    TRT: 'Detective',
+    CK: 'Cook',
+  },
+};

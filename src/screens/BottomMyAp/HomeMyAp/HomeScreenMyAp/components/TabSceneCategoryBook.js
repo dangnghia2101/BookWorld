@@ -1,17 +1,17 @@
-import {Block, Text} from '@components';
+import { Block } from '@components';
 import React from 'react';
 import ItemCateBook from './ItemCateBook';
-import {useSelector} from 'react-redux';
-import {NoData} from '@components';
+import { NoData } from '@components';
+import { useAppSelector } from 'hooks';
 
-const TabSceneCategoryBook = ({route}) => {
-  const listBookByCategory = useSelector(state => state.getAllBookByCategory);
+const TabSceneCategoryBook = ({ route }) => {
+  const listBookByCategory = useAppSelector(state => state.root.book.tabList);
 
-  return listBookByCategory?.data?.length > 0 &&
-    route._id === listBookByCategory?.data[0]?.categoryId ? (
+  return listBookByCategory?.length > 0 &&
+    route._id === listBookByCategory[0]?.categoryId ? (
     <Block>
-      {listBookByCategory?.data.map((item, index) => (
-        <ItemCateBook key={index} item={item} />
+      {listBookByCategory?.map((item, index) => (
+        <ItemCateBook key={item._id} item={item} />
       ))}
     </Block>
   ) : (

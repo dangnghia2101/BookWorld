@@ -1,41 +1,94 @@
-import {Block, Text} from '@components';
+import { Block, Text, Evaluate } from '@components';
 import React from 'react';
-import {Image, StyleSheet, TouchableOpacity} from 'react-native';
-import {useNavigation} from '@react-navigation/native';
-import {routes} from '@navigation/routes';
+import { Image, TouchableOpacity, Animated, View } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { routes } from '@navigation/routes';
+import { width, height } from '@utils/responsive';
+import { makeStyles, useTheme } from 'themeNew';
+import { useAppSelector } from '@hooks';
+import { withNamespaces } from 'react-i18next';
 
-import {theme} from '@theme';
-const {colors} = theme;
 const PADDING_ITEM = 15;
+const ITEM_WITH = width * 0.6;
+const SPACER_ITEM_SIZE = (width - ITEM_WITH) / 3;
 
-const ItemMostBookRead = ({item, props}) => {
+const ItemMostBookRead = ({ item, index, scrollX, size, t }) => {
+  const themeStore = useAppSelector(state => state.root.themeApp.theme);
+  const theme = useTheme(themeStore);
+  const styles = useStyle(themeStore);
+
+  const inputRange = [
+    (index - 2) * ITEM_WITH,
+    (index - 1) * ITEM_WITH,
+    index * ITEM_WITH,
+  ];
+
+  const translateY = scrollX.interpolate({
+    inputRange,
+    outputRange: [0, -50, 0],
+    extrapolate: 'clamp',
+  });
+
   const navigation = useNavigation();
+  if (index === 0 || index === size - 1) {
+    return <View style={{ width: SPACER_ITEM_SIZE + 20 }} />;
+  }
   return (
     <TouchableOpacity
+      style={styles.container}
       onPress={() =>
-        navigation.navigate(routes.DETAIL_BOOK_MY_AP, {bookmark: true, item})
+        navigation.navigate(routes.DETAIL_BOOK_MY_AP, {
+          bookmark: true,
+          item: item,
+        })
       }>
-      <Block width={160} marginRight={PADDING_ITEM}>
+      <Animated.View
+        // eslint-disable-next-line react-native/no-inline-styles
+        style={{
+          alignItems: 'center',
+          transform: [{ translateY }],
+          borderRadius: 34,
+          backgroundColor: theme.colors.text,
+          justifyContent: 'center',
+          paddingVertical: 20,
+          marginHorizontal: 10,
+        }}>
+        {/* <Block width={width / 2} marginRight={PADDING_ITEM}> */}
         <Image
           style={styles.image}
           source={{
             uri: item.image,
           }}
         />
-        <Text numberOfLines={1} marginTop={10} size={14} fontType="bold">
+        <Text
+          color={theme.colors.textInBox}
+          marginHorizontal={10}
+          numberOfLines={1}
+          marginTop={10}
+          size={14}
+          fontType="bold">
           {item.name}
         </Text>
-        <Text numberOfLines={1} size={11} color={colors.dark}>
-          {item.isPrice} lượt xem
+        <Text
+          marginBottom={10}
+          numberOfLines={1}
+          size={11}
+          color={theme.colors.textInBox}>
+          {item.isPrice} {t('view')}
         </Text>
-      </Block>
+
+        <Evaluate sizeIcon={15} colorIcon={theme.colors.yellow} />
+        {/* </Block> */}
+      </Animated.View>
     </TouchableOpacity>
   );
 };
 
-export default ItemMostBookRead;
-
-const styles = StyleSheet.create({
+const useStyle = makeStyles()(({ colors }) => ({
+  container: {
+    width: ITEM_WITH,
+    marginTop: 100,
+  },
   inputSection: {
     color: colors.white,
     height: 40,
@@ -69,10 +122,10 @@ const styles = StyleSheet.create({
     color: colors.orange,
   },
   image: {
-    height: 230,
-    width: 150,
+    height: height / 3,
+    width: ITEM_WITH * 0.8,
     borderRadius: 15,
-    resizeMode: 'center',
+    resizeMode: 'cover',
   },
   title_InView: {
     paddingTop: 10,
@@ -98,4 +151,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 16,
   },
-});
+}));
+
+export default withNamespaces()(ItemMostBookRead);

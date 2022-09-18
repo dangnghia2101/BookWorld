@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   Animated,
   Dimensions,
@@ -12,7 +12,7 @@ import styles from './styles';
 const DEVICE_WIDTH = Dimensions.get('window').width;
 const DEVICE_HEIGHT = Dimensions.get('window').height;
 const MODAL_ANIM_DURATION = 300;
-const MODAL_BACKDROP_OPACITY = 0.4;
+const MODAL_BACKDROP_OPACITY = 0.1;
 
 const ModalBox = ({
   isVisible,
@@ -59,26 +59,26 @@ const ModalBox = ({
   const contentAnimatedStyle =
     position === 'center'
       ? {
-          transform: [
-            {
-              scale: animatedValue.interpolate({
-                inputRange: [0, 1],
-                outputRange: [0, 1],
-              }),
-            },
-          ],
-        }
+        transform: [
+          {
+            scale: animatedValue.interpolate({
+              inputRange: [0, 1],
+              outputRange: [0, 1],
+            }),
+          },
+        ],
+      }
       : {
-          transform: [
-            {
-              translateY: animatedValue.interpolate({
-                inputRange: [0, 1],
-                outputRange: [DEVICE_HEIGHT, 0],
-                extrapolate: 'clamp',
-              }),
-            },
-          ],
-        };
+        transform: [
+          {
+            translateY: animatedValue.interpolate({
+              inputRange: [0, 1],
+              outputRange: [0, 180],
+              extrapolate: 'clamp',
+            }),
+          },
+        ],
+      };
 
   return (
     <ReactNativeModal
@@ -93,7 +93,7 @@ const ModalBox = ({
             styles.backdrop,
             StyleSheet.flatten(backdropStyle),
             backdropAnimatedStyle,
-            {width: DEVICE_WIDTH, height: DEVICE_HEIGHT},
+            { width: DEVICE_WIDTH, height: DEVICE_HEIGHT },
           ]}
         />
       </TouchableWithoutFeedback>

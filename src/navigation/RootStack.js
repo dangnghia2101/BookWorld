@@ -1,23 +1,21 @@
 import {NavigationContainer} from '@react-navigation/native';
-import {auth} from '@screens/Auth';
-import React, {useState, useEffect} from 'react';
-import {StatusBar, StyleSheet} from 'react-native';
+import React from 'react';
+import {StatusBar} from 'react-native';
 import BottomTabMyAp from './BottomTabMyAp';
 import Login from '@screens/Auth/Login';
 import Auth from '../screens/Auth';
-import {useSelector} from 'react-redux';
+import {SHOW, HIDE} from '@redux/actions/HandlerLoading';
+import {useAppSelector, useAppDispatch} from 'hooks';
+import {changeLanguage} from '@redux/reducerNew';
 
 export default function MainContainer() {
-  const [isLogin, setIsLogin] = useState(true);
-  const isLoginSelector = useSelector(state => state.login.data);
+  const isLoginSelector = useAppSelector(state => state.root.auth.isLogin);
+  const languageSelector = useAppSelector(state => state.root.setting.language);
 
-  useEffect(() => {
-    if (isLoginSelector) {
-      setIsLogin(false);
-    } else {
-      setIsLogin(true);
-    }
-  }, [isLoginSelector]);
+  const dispatch = useAppDispatch();
+  React.useEffect(() => {
+    dispatch(changeLanguage(languageSelector));
+  }, []);
 
   return (
     <>
@@ -27,7 +25,7 @@ export default function MainContainer() {
           barStyle="dark-content"
           backgroundColor="transparent"
         />
-        {isLogin ? <Auth /> : <BottomTabMyAp />}
+        {!isLoginSelector ? <Auth /> : <BottomTabMyAp />}
       </NavigationContainer>
     </>
   );
