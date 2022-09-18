@@ -1,23 +1,16 @@
 import React, { useEffect, useCallback, useState } from 'react';
 import { Block, Text } from '@components';
-import {
-  ScrollView,
-  Animated,
-  Platform,
-  View,
-  Image,
-  StyleSheet,
-} from 'react-native';
+import { ScrollView, Animated, Platform, View, Image } from 'react-native';
 import HeaderListBook from './components/HeaderListEvent';
 import { FlatList } from 'react-native-gesture-handler';
 import { width, height } from '@utils/responsive';
 import ItemMostBookRead from './components/ItemMostBookRead';
 import TabCategoryBook from './components/TabCategoryBook';
-import { theme } from '@theme';
 import HeaderHome from './components/HeaderHome';
 import LinearGradient from 'react-native-linear-gradient';
 import { useAppSelector } from 'hooks';
 import { useGetAllBookQuery, useGetAllCategoryQuery } from '@redux/servicesNew';
+import { makeStyles, useTheme } from 'themeNew';
 
 const ITEM_WITH = width * 0.6;
 
@@ -50,12 +43,6 @@ const HomeScreenMyAp = () => {
   useGetAllBookQuery();
   useGetAllCategoryQuery();
 
-  // useEffect(() => {
-  //   if (allBooks) {
-  //     dispatch(addBookReducer(allBooks));
-  //   }
-  // }, []);
-
   const [isCollapsible, setIsCollapsible] = useState(true);
 
   const scrollX = React.useRef(new Animated.Value(0)).current;
@@ -63,12 +50,10 @@ const HomeScreenMyAp = () => {
   const myInfo = useAppSelector(state => state.root.auth);
   const allBooks = useAppSelector(state => state.root.book.bookList);
   const allCategories = useAppSelector(state => state.root.book.categoryList);
+  const themeStore = useAppSelector(state => state.root.themeApp.theme);
 
-  // useEffect(() => {
-  //   dispatch({ type: actions.GET_ALL_BOOK });
-  //   dispatch({ type: actions.GET_ALL_AUTHOR });
-  //   dispatch({ type: actions.GET_ALL_CATEGORY });
-  // }, [dispatch]);
+  const theme = useTheme(themeStore);
+  const styles = useStyle(themeStore);
 
   const _renderItemMostBookRead = useCallback(
     ({ item, index }) => {
@@ -171,7 +156,7 @@ const HomeScreenMyAp = () => {
           key={() => Math.random()}
         />
         <LinearGradient
-          colors={['rgba(0, 0, 0, 0)', 'white']}
+          colors={['rgba(0, 0, 0, 0)', theme.colors.text]}
           style={styles.linearGradient}
         />
       </View>
@@ -179,7 +164,7 @@ const HomeScreenMyAp = () => {
   };
 
   return (
-    <Block flex backgroundColor={theme.colors.white}>
+    <Block flex backgroundColor={theme.colors.text}>
       <ScrollView
         showsVerticalScrollIndicator={false}
         nestedScrollEnabled={true}
@@ -201,13 +186,13 @@ const HomeScreenMyAp = () => {
   );
 };
 
-const styles = StyleSheet.create({
+const useStyle = makeStyles()(({ normalize, colors }) => ({
   linearGradient: {
     height: 200,
     width: width,
     position: 'absolute',
     bottom: 40,
   },
-});
+}));
 
 export default HomeScreenMyAp;

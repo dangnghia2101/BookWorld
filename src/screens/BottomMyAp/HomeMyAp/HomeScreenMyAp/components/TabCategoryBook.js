@@ -1,27 +1,20 @@
 import { Block, Text } from '@components';
-import { theme } from '@theme';
 import React, { useState, useEffect } from 'react';
 import { StyleSheet } from 'react-native';
 import { TabBar, TabView } from 'react-native-tab-view';
 import TabSceneCategoryBook from './TabSceneCategoryBook';
 import { useAppSelector } from 'hooks';
 import { useGetAllBookByCategoryQuery } from '@redux/servicesNew';
-
-const _renderLabel = ({ route, focused, color }) => {
-  return (
-    <Block>
-      <Text color={focused ? theme.colors.black : theme.colors.lightGray}>
-        {route.title}
-      </Text>
-    </Block>
-  );
-};
+import { makeStyles, useTheme } from 'themeNew';
 
 const TabCategoryBook = () => {
   const [routes, setRoutes] = useState([{ key: 'Default', title: 'Default' }]);
   const [index, setIndex] = useState(0);
 
   const allCategories = useAppSelector(state => state.root.book.categoryList);
+  const themeStore = useAppSelector(state => state.root.themeApp.theme);
+  const theme = useTheme(themeStore);
+  const styles = useStyle(themeStore);
 
   useEffect(() => {
     if (routes.length === 1) {
@@ -42,6 +35,16 @@ const TabCategoryBook = () => {
     });
   };
 
+  const _renderLabel = ({ route, focused, color }) => {
+    return (
+      <Block>
+        <Text color={focused ? theme.colors.primary : theme.colors.grey10}>
+          {route.title}
+        </Text>
+      </Block>
+    );
+  };
+
   const renderTabBar = props => {
     return (
       <>
@@ -55,7 +58,7 @@ const TabCategoryBook = () => {
             scrollEnabled={true}
             labelStyle={{ color: 'red' }}
             style={{
-              backgroundColor: theme.colors.white,
+              backgroundColor: theme.colors.text,
             }}
           />
         )}
@@ -78,9 +81,9 @@ const TabCategoryBook = () => {
 
 export default TabCategoryBook;
 
-const styles = StyleSheet.create({
+const useStyle = makeStyles()(({ colors }) => ({
   indicatorStyle: {
-    backgroundColor: theme.colors.dark,
+    backgroundColor: colors.dark,
   },
   tabStyle: { width: 'auto' },
-});
+}));

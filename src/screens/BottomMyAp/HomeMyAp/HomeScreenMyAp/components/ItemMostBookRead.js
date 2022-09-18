@@ -1,23 +1,21 @@
 import { Block, Text, Evaluate } from '@components';
 import React from 'react';
-import {
-  Image,
-  StyleSheet,
-  TouchableOpacity,
-  Animated,
-  View,
-} from 'react-native';
+import { Image, TouchableOpacity, Animated, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { routes } from '@navigation/routes';
 import { width, height } from '@utils/responsive';
+import { makeStyles, useTheme } from 'themeNew';
+import { useAppSelector } from '@hooks';
 
-import { theme } from '@theme';
-const { colors } = theme;
 const PADDING_ITEM = 15;
 const ITEM_WITH = width * 0.6;
 const SPACER_ITEM_SIZE = (width - ITEM_WITH) / 3;
 
 const ItemMostBookRead = ({ item, index, scrollX, size }) => {
+  const themeStore = useAppSelector(state => state.root.themeApp.theme);
+  const theme = useTheme(themeStore);
+  const styles = useStyle(themeStore);
+
   const inputRange = [
     (index - 2) * ITEM_WITH,
     (index - 1) * ITEM_WITH,
@@ -36,7 +34,7 @@ const ItemMostBookRead = ({ item, index, scrollX, size }) => {
   }
   return (
     <TouchableOpacity
-      style={{ width: ITEM_WITH, marginTop: 100 }}
+      style={styles.container}
       onPress={() =>
         navigation.navigate(routes.DETAIL_BOOK_MY_AP, {
           bookmark: true,
@@ -49,7 +47,7 @@ const ItemMostBookRead = ({ item, index, scrollX, size }) => {
           alignItems: 'center',
           transform: [{ translateY }],
           borderRadius: 34,
-          backgroundColor: 'white',
+          backgroundColor: theme.colors.text,
           justifyContent: 'center',
           paddingVertical: 20,
           marginHorizontal: 10,
@@ -62,6 +60,7 @@ const ItemMostBookRead = ({ item, index, scrollX, size }) => {
           }}
         />
         <Text
+          color={theme.colors.textInBox}
           marginHorizontal={10}
           numberOfLines={1}
           marginTop={10}
@@ -70,23 +69,25 @@ const ItemMostBookRead = ({ item, index, scrollX, size }) => {
           {item.name}
         </Text>
         <Text
-          style={{ marginBottom: 10 }}
+          marginBottom={10}
           numberOfLines={1}
           size={11}
-          color={colors.dark}>
+          color={theme.colors.textInBox}>
           {item.isPrice} lượt xem
         </Text>
 
-        <Evaluate sizeIcon={15} colorIcon={colors.yellow} />
+        <Evaluate sizeIcon={15} colorIcon={theme.colors.yellow} />
         {/* </Block> */}
       </Animated.View>
     </TouchableOpacity>
   );
 };
 
-export default ItemMostBookRead;
-
-const styles = StyleSheet.create({
+const useStyle = makeStyles()(({ colors }) => ({
+  container: {
+    width: ITEM_WITH,
+    marginTop: 100,
+  },
   inputSection: {
     color: colors.white,
     height: 40,
@@ -149,4 +150,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 16,
   },
-});
+}));
+
+export default ItemMostBookRead;
