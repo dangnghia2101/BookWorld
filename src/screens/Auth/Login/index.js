@@ -1,5 +1,5 @@
 import { Block, Text } from '@components';
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   StyleSheet,
   TextInput,
@@ -12,13 +12,16 @@ import messaging from '@react-native-firebase/messaging';
 import auth from '@react-native-firebase/auth';
 import { useLoginMutation } from '@redux/servicesNew';
 import { useAppDispatch } from 'hooks';
-import { loginReducer } from '@redux/reducerNew';
-import Storage from '@utils/storage';
+import { loginReducer, changeLoading } from '@redux/reducerNew';
 
 const Login = () => {
   // New way
-  const [login] = useLoginMutation();
+  const [login, { isLoading: isUpdating }] = useLoginMutation();
   const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(changeLoading(isUpdating ? 'SHOW' : 'HIDE'));
+  }, [dispatch, isUpdating]);
 
   GoogleSignin.configure({
     webClientId:

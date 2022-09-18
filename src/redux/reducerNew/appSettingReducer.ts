@@ -1,5 +1,4 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {getI18n} from 'react-i18next';
 import i18n from 'I18n/I18n';
 
 export enum Language {
@@ -29,9 +28,11 @@ const appSettingSlice = createSlice({
     changeLanguage(state: AppSettingState, action: PayloadAction<Language>) {
       i18n.changeLanguage(action.payload);
       state.language = action.payload;
+      return state;
     },
     changeCurrency(state: AppSettingState, action: PayloadAction<Currency>) {
       state.currency = action.payload;
+      return state;
     },
   },
 });

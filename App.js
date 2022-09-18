@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import RootStack from './src/navigation/RootStack';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Provider } from 'react-redux';
-// import { Loading } from '@components';
+import { Loading } from '@components';
 import { PersistGate } from 'redux-persist/lib/integration/react';
 import { persistor, store } from '@redux/storeNew';
 
@@ -24,18 +24,11 @@ const App = () => {
 
 const AppWrapper = () => {
   return (
-    // <Provider store={store}>
-    //   <SafeAreaProvider>
-    //     <App />
-    //     <Loading />
-    //   </SafeAreaProvider>
-    // </Provider>
-
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <SafeAreaProvider>
           <App />
-          {/* <Loading /> */}
+          <Loading />
         </SafeAreaProvider>
       </PersistGate>
     </Provider>

@@ -37,7 +37,7 @@ const author = [
   { _id: 7, image: 'https://bnnfeed.com/wp-content/uploads/2021/02/186.jpg' },
 ];
 
-const HomeScreenMyAp = ({ t }) => {
+const HomeScreenMyAp = () => {
   // const [clicked, setClicked] = useState(false);
   // const [searchPhrase, setSearchPhrase] = useState('');
 

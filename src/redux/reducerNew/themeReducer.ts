@@ -18,6 +18,7 @@ const themeSlice = createSlice({
       } else {
         state.theme = 'dark';
       }
+      return state;
     },
   },
 });

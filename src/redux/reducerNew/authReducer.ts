@@ -38,6 +38,7 @@ const authSlice = createSlice({
     },
     logoutReducer: (state: AuthState) => {
       state = defaultAuthState;
+      return state;
     },
   },
 });

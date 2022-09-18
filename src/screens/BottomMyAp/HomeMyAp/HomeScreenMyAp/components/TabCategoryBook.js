@@ -1,6 +1,5 @@
 import { Block, Text } from '@components';
-import React, { useState, useEffect } from 'react';
-import { StyleSheet } from 'react-native';
+import React, { useState, useEffect, useCallback } from 'react';
 import { TabBar, TabView } from 'react-native-tab-view';
 import TabSceneCategoryBook from './TabSceneCategoryBook';
 import { useAppSelector } from 'hooks';
@@ -36,37 +35,50 @@ const TabCategoryBook = () => {
     });
   };
 
-  const _renderLabel = ({ route, focused, color }) => {
-    return (
-      <Block>
-        <Text color={focused ? theme.colors.primary : theme.colors.grey10}>
-          {/* {route.title} */}
-          {strings(`categories.${route.code}`)}
-        </Text>
-      </Block>
-    );
-  };
+  const _renderLabel = useCallback(
+    ({ route, focused, color }) => {
+      return (
+        <Block>
+          <Text color={focused ? theme.colors.primary : theme.colors.grey10}>
+            {/* {route.title} */}
+            {route.key !== 'Default' ? strings(`categories.${route.code}`) : ''}
+          </Text>
+        </Block>
+      );
+    },
+    [theme.colors.grey10, theme.colors.primary],
+  );
 
-  const renderTabBar = props => {
-    return (
-      <>
-        {allCategories && (
-          <TabBar
-            {...props}
-            indicatorStyle={styles.indicatorStyle}
-            renderLabel={_renderLabel}
-            tabStyle={styles.tabStyle}
-            pressColor={theme.colors.white}
-            scrollEnabled={true}
-            labelStyle={{ color: 'red' }}
-            style={{
-              backgroundColor: theme.colors.text,
-            }}
-          />
-        )}
-      </>
-    );
-  };
+  const renderTabBar = useCallback(
+    props => {
+      return (
+        <>
+          {allCategories && (
+            <TabBar
+              {...props}
+              indicatorStyle={styles.indicatorStyle}
+              renderLabel={_renderLabel}
+              tabStyle={styles.tabStyle}
+              pressColor={theme.colors.white}
+              scrollEnabled={true}
+              labelStyle={{ color: 'red' }}
+              style={{
+                backgroundColor: theme.colors.text,
+              }}
+            />
+          )}
+        </>
+      );
+    },
+    [
+      _renderLabel,
+      allCategories,
+      styles.indicatorStyle,
+      styles.tabStyle,
+      theme.colors.text,
+      theme.colors.white,
+    ],
+  );
 
   return (
     <TabView

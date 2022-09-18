@@ -14,6 +14,7 @@ const resources = {
 };
 
 I18n.use(reactI18nextModule).init({
+  compatibilityJSON: 'v3',
   resources,
   lng: 'vi',
   keySeparator: '.',

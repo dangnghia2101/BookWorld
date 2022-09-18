@@ -1,10 +1,10 @@
 // import { pokemonApi } from '@redux-setup/api';
 import {
   AuthReducer,
-  counterReducer,
   ThemeReducer,
   BookReducer,
   AppSettingReducer,
+  LoadingReducer,
 } from '@redux/reducerNew';
 import {combineReducers, configureStore} from '@reduxjs/toolkit';
 import {
@@ -24,20 +24,20 @@ import {setupListeners} from '@reduxjs/toolkit/query';
 
 const rootReducer = combineReducers({
   auth: AuthReducer,
-  counter: counterReducer,
   themeApp: ThemeReducer,
   book: BookReducer,
   setting: AppSettingReducer,
+  loading: LoadingReducer,
   // ...other reducers here
 });
 
 export type RootState = ReturnType<typeof rootReducer>;
 
 const persistConfig = {
-  key: 'root',
+  key: 'roott',
   storage: AsyncStorage,
   timeout: 30000,
-  whitelist: ['counter'],
+  whitelist: ['setting', 'themeApp', 'auth'],
   stateReconciler: autoMergeLevel2,
 };
 
