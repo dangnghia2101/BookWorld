@@ -6,6 +6,7 @@ import TabSceneCategoryBook from './TabSceneCategoryBook';
 import { useAppSelector } from 'hooks';
 import { useGetAllBookByCategoryQuery } from '@redux/servicesNew';
 import { makeStyles, useTheme } from 'themeNew';
+import { strings } from 'I18n';
 
 const TabCategoryBook = () => {
   const [routes, setRoutes] = useState([{ key: 'Default', title: 'Default' }]);
@@ -39,7 +40,8 @@ const TabCategoryBook = () => {
     return (
       <Block>
         <Text color={focused ? theme.colors.primary : theme.colors.grey10}>
-          {route.title}
+          {/* {route.title} */}
+          {strings(`categories.${route.code}`)}
         </Text>
       </Block>
     );

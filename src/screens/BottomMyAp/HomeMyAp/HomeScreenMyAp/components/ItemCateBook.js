@@ -4,6 +4,7 @@ import { Image, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from '@components/Icon';
 import { routes } from '@navigation/routes';
+import { withNamespaces } from 'react-i18next';
 
 import { theme } from '@theme';
 const { width, height } = Dimensions.get('window');
@@ -11,7 +12,7 @@ const { width, height } = Dimensions.get('window');
 const { colors } = theme;
 const PADDING_ITEM = 15;
 
-const ItemCateBook = ({ item }) => {
+const ItemCateBook = ({ item, t }) => {
   const navigation = useNavigation();
   return (
     <TouchableOpacity
@@ -95,7 +96,7 @@ const ItemCateBook = ({ item }) => {
                 navigation.navigate(routes.DETAIL_BOOK_MY_AP, { item })
               }>
               <Text size={12} fontType="bold" color="white">
-                Đọc sách
+                {t('readBook')}
               </Text>
             </Button>
             <Button
@@ -104,7 +105,7 @@ const ItemCateBook = ({ item }) => {
                 { backgroundColor: theme.colors.black, marginLeft: 10 },
               ]}>
               <Text size={12} fontType="bold" color="white">
-                Sách nói
+                {t('listenBook')}
               </Text>
             </Button>
           </Block>
@@ -114,7 +115,7 @@ const ItemCateBook = ({ item }) => {
   );
 };
 
-export default ItemCateBook;
+export default withNamespaces()(ItemCateBook);
 
 const styles = StyleSheet.create({
   inputSection: {

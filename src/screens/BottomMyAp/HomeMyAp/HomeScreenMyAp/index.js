@@ -11,6 +11,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import { useAppSelector } from 'hooks';
 import { useGetAllBookQuery, useGetAllCategoryQuery } from '@redux/servicesNew';
 import { makeStyles, useTheme } from 'themeNew';
+import { withNamespaces } from 'react-i18next';
 
 const ITEM_WITH = width * 0.6;
 
@@ -36,7 +37,7 @@ const author = [
   { _id: 7, image: 'https://bnnfeed.com/wp-content/uploads/2021/02/186.jpg' },
 ];
 
-const HomeScreenMyAp = () => {
+const HomeScreenMyAp = ({ t }) => {
   // const [clicked, setClicked] = useState(false);
   // const [searchPhrase, setSearchPhrase] = useState('');
 
@@ -175,6 +176,7 @@ const HomeScreenMyAp = () => {
           setIsCollapsible={setIsCollapsible}
           isCollapsible={isCollapsible}
         />
+
         <Block marginTop={75}>
           <HeaderListBook title={'Sách xem nhiều nhất'} />
           {Backdrop()}
@@ -195,4 +197,4 @@ const useStyle = makeStyles()(({ normalize, colors }) => ({
   },
 }));
 
-export default HomeScreenMyAp;
+export default withNamespaces()(HomeScreenMyAp);

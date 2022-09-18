@@ -4,6 +4,7 @@ import {
   counterReducer,
   ThemeReducer,
   BookReducer,
+  AppSettingReducer,
 } from '@redux/reducerNew';
 import {combineReducers, configureStore} from '@reduxjs/toolkit';
 import {
@@ -26,6 +27,7 @@ const rootReducer = combineReducers({
   counter: counterReducer,
   themeApp: ThemeReducer,
   book: BookReducer,
+  setting: AppSettingReducer,
   // ...other reducers here
 });
 

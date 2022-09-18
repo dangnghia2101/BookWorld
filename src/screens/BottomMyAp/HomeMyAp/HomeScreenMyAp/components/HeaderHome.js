@@ -1,12 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Block, Text, Button } from '@components';
-import {
-  StyleSheet,
-  Platform,
-  NativeModules,
-  StatusBar,
-  Image,
-} from 'react-native';
+import { Platform, NativeModules, StatusBar, Image } from 'react-native';
 import { theme } from '@theme';
 import IconView from '@components/Icon';
 import { useNavigation } from '@react-navigation/native';
@@ -15,18 +9,20 @@ import Collapsible from 'react-native-collapsible';
 import { width } from '@utils/responsive';
 import { makeStyles, useTheme } from 'themeNew';
 import { useAppSelector, useAppDispatch } from '@hooks';
-import { changeTheme } from '@redux/reducerNew';
+import { changeTheme, changeLanguage } from '@redux/reducerNew';
+import { withNamespaces } from 'react-i18next';
 
-const { colors, fonts } = theme;
+const { fonts } = theme;
 
 const HeaderHome = props => {
-  const { name, image, setIsCollapsible, isCollapsible } = props;
+  const { name, image, setIsCollapsible, isCollapsible, t } = props;
   const navigation = useNavigation();
   const [paddingTop, setPaddingTop] = useState(0);
   const [showMoney, setShowMoney] = useState(false);
   const dispatch = useAppDispatch();
 
   const themeStore = useAppSelector(state => state.root.themeApp.theme);
+  const languageStore = useAppSelector(state => state.root.setting.language);
   const themeNew = useTheme(themeStore);
   const styles = useStyle(props, themeStore);
 
@@ -68,9 +64,11 @@ const HeaderHome = props => {
             </Block>
 
             <Button
-              onPress={() =>
-                dispatch(changeTheme(themeStore === 'dark' ? 'light' : 'dark'))
-              }>
+              style={{ marginRight: 10 }}
+              onPress={() => {
+                dispatch(changeTheme(themeStore === 'dark' ? 'light' : 'dark'));
+                dispatch(changeLanguage(languageStore === 'en' ? 'vi' : 'en'));
+              }}>
               <IconView
                 component={'MaterialCommunityIcons'}
                 name={'bell-outline'}
@@ -95,7 +93,7 @@ const HeaderHome = props => {
                       fontFamily: fonts.fontFamily.regular1,
                       fontWeight: 'normal',
                     }}>
-                    Số dư tài khoản
+                    {t('accountBalance')}
                   </Text>
                   <Button onPress={() => setShowMoney(!showMoney)}>
                     <IconView
@@ -145,7 +143,7 @@ const HeaderHome = props => {
                     />
                   </Block>
                 </Button>
-                <Text color={themeNew.colors.text}>Nap tien</Text>
+                <Text color={themeNew.colors.text}>{t('recharge')}</Text>
               </Block>
             </Block>
           </Collapsible>
@@ -229,4 +227,4 @@ const useStyle = makeStyles()(({ normalize, colors }) => ({
   },
 }));
 
-export default HeaderHome;
+export default withNamespaces()(HeaderHome);

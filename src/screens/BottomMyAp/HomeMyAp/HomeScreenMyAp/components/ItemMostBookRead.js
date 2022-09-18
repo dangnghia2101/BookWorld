@@ -6,12 +6,13 @@ import { routes } from '@navigation/routes';
 import { width, height } from '@utils/responsive';
 import { makeStyles, useTheme } from 'themeNew';
 import { useAppSelector } from '@hooks';
+import { withNamespaces } from 'react-i18next';
 
 const PADDING_ITEM = 15;
 const ITEM_WITH = width * 0.6;
 const SPACER_ITEM_SIZE = (width - ITEM_WITH) / 3;
 
-const ItemMostBookRead = ({ item, index, scrollX, size }) => {
+const ItemMostBookRead = ({ item, index, scrollX, size, t }) => {
   const themeStore = useAppSelector(state => state.root.themeApp.theme);
   const theme = useTheme(themeStore);
   const styles = useStyle(themeStore);
@@ -73,7 +74,7 @@ const ItemMostBookRead = ({ item, index, scrollX, size }) => {
           numberOfLines={1}
           size={11}
           color={theme.colors.textInBox}>
-          {item.isPrice} lượt xem
+          {item.isPrice} {t('view')}
         </Text>
 
         <Evaluate sizeIcon={15} colorIcon={theme.colors.yellow} />
@@ -152,4 +153,4 @@ const useStyle = makeStyles()(({ colors }) => ({
   },
 }));
 
-export default ItemMostBookRead;
+export default withNamespaces()(ItemMostBookRead);
