@@ -7,6 +7,7 @@ type AuthState = {
   phone?: string;
   permission?: string;
   fcmtokens: Array<string>;
+  passwordUser?: string;
   token: string;
   image: string;
   bookmark: string;
@@ -21,11 +22,12 @@ const defaultAuthState: AuthState = {
   phone: 'No phone',
   permission: 'user',
   fcmtokens: [],
+  passwordUser: '',
   token: '',
   image: '',
   bookmark: '',
   wallet: 0,
-  isLogin: false,
+  isLogin: true,
 };
 
 const authSlice = createSlice({
