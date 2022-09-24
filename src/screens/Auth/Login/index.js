@@ -1,5 +1,5 @@
-import { Block, Text } from '@components';
-import React, { useEffect } from 'react';
+import { Block, Text, ModalBox } from '@components';
+import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
   TextInput,
@@ -13,11 +13,12 @@ import auth from '@react-native-firebase/auth';
 import { useLoginMutation } from '@redux/servicesNew';
 import { useAppDispatch } from 'hooks';
 import { loginReducer, changeLoading } from '@redux/reducerNew';
+import { icons } from '@assets';
 
 const Login = () => {
-  // New way
   const [login, { isLoading: isUpdating }] = useLoginMutation();
   const dispatch = useAppDispatch();
+  const [visibleModal, setVisibleModal] = useState(false);
 
   useEffect(() => {
     dispatch(changeLoading(isUpdating ? 'SHOW' : 'HIDE'));
@@ -68,7 +69,11 @@ const Login = () => {
     };
     // dispatch({ type: 'LOGIN', body: body });
     const dataLogin = await login(body);
-    dispatch(loginReducer(dataLogin?.data?.data?.account));
+    if (dataLogin?.error?.data?.error) {
+      setVisibleModal(true);
+    } else {
+      dispatch(loginReducer(dataLogin?.data?.data?.account));
+    }
   };
 
   return (
@@ -109,6 +114,21 @@ const Login = () => {
           <Image source={require('../../../assets/images/Facbook.png')} />
         </Block>
       </Block>
+
+      {/* Modle when api wrong */}
+      <ModalBox
+        isVisible={visibleModal}
+        onBackdropPress={() => setVisibleModal(!visibleModal)}>
+        <Block
+          backgroundColor={'white'}
+          radius={15}
+          alignSelf={'center'}
+          justifyCenter={'center'}
+          padding={20}>
+          <Image source={icons.logo} style={styles.iconLogo} />
+          <Text>Server not work</Text>
+        </Block>
+      </ModalBox>
     </Block>
   );
 };
@@ -232,5 +252,10 @@ const styles = StyleSheet.create({
     width: 25,
     height: 25,
     marginHorizontal: 10,
+  },
+  iconLogo: {
+    width: 50,
+    height: 50,
+    alignSelf: 'center',
   },
 });
