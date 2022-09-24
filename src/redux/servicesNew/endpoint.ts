@@ -1,1 +1,1 @@
-export const MAIN_API = 'https://bookofword.herokuapp.com/api/';
+export const MAIN_API = 'https://bookworlddasboard.herokuapp.com/api/';

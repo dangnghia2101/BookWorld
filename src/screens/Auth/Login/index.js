@@ -1,5 +1,6 @@
-import {Block, Text} from '@components';
-import React, {useEffect, useState} from 'react';
+
+import { Block, Text, ModalBox } from '@components';
+import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
   Image,
@@ -12,15 +13,16 @@ import messaging from '@react-native-firebase/messaging';
 import auth from '@react-native-firebase/auth';
 import {useLoginMutation} from '@redux/servicesNew';
 import {useAppDispatch} from 'hooks';
-import {loginReducer, changeLoading} from '@redux/reducerNew';
 import {useNavigation} from '@react-navigation/native';
 import {routes} from '@navigation/routes';
+import { loginReducer, changeLoading } from '@redux/reducerNew';
+import { icons } from '@assets';
 
 const Login = () => {
   const navigation = useNavigation();
-  // New way
-  const [login, {isLoading: isUpdating}] = useLoginMutation();
+  const [login, { isLoading: isUpdating }] = useLoginMutation();
   const dispatch = useAppDispatch();
+  const [visibleModal, setVisibleModal] = useState(false);
 
   useEffect(() => {
     dispatch(changeLoading(isUpdating ? 'SHOW' : 'HIDE'));
@@ -70,7 +72,11 @@ const Login = () => {
     };
     // dispatch({ type: 'LOGIN', body: body });
     const dataLogin = await login(body);
-    dispatch(loginReducer(dataLogin?.data?.data?.account));
+    if (dataLogin?.error?.data?.error) {
+      setVisibleModal(true);
+    } else {
+      dispatch(loginReducer(dataLogin?.data?.data?.account));
+    }
   };
 
   return (
@@ -125,6 +131,21 @@ const Login = () => {
           </Text>
         </Text>
       </Block>
+
+      {/* Modle when api wrong */}
+      <ModalBox
+        isVisible={visibleModal}
+        onBackdropPress={() => setVisibleModal(!visibleModal)}>
+        <Block
+          backgroundColor={'white'}
+          radius={15}
+          alignSelf={'center'}
+          justifyCenter={'center'}
+          padding={20}>
+          <Image source={icons.logo} style={styles.iconLogo} />
+          <Text>Server not work</Text>
+        </Block>
+      </ModalBox>
     </Block>
   );
 };
@@ -283,5 +304,16 @@ const styles = StyleSheet.create({
   textDescribe: {
     marginTop: 12,
     fontWeight: '500',
+  },
+  iconLogin: {
+    marginTop: 32,
+    width: 25,
+    height: 25,
+    marginHorizontal: 10,
+  },
+  iconLogo: {
+    width: 50,
+    height: 50,
+    alignSelf: 'center',
   },
 });
