@@ -1,7 +1,8 @@
 import messaging from '@react-native-firebase/messaging';
 import Storage from '@utils/storage';
-import {useEffect} from 'react';
+import { useEffect } from 'react';
 import PushNotification from 'react-native-push-notification';
+import { Linking } from 'react-native';
 
 PushNotification.createChannel({
   channelId: 'notification-channel-id',
@@ -43,18 +44,34 @@ const useFCM = () => {
         bigText: remoteMessage.notification.body, //content for Android
         message: remoteMessage.notification.body, //content for Ios
         ignoreInForeground: false,
-        smallIcon: remoteMessage.notification.android.smallIcon,
-        largeIconUrl: remoteMessage.notification.android.smallIcon,
-        bigPictureUrl: remoteMessage.notification.android.smallIcon,
+        smallIcon: 'ic_notification',
+        largeIcon: '',
         when: new Date(Date.now() + 60 * 1000),
         picture: remoteMessage.notification.android.smallIcon,
-        color: 'red',
         ...remoteMessage,
       });
     });
+
+    //When the application is running, but in the background.
+    messaging().onNotificationOpenedApp(remoteMessage => {
+      if (remoteMessage) {
+        Linking.openURL(remoteMessage.data.link);
+      }
+    });
+
+    //When the application is opened from a quit state.
+    messaging()
+      .getInitialNotification()
+      .then(remoteMessage => {
+        if (remoteMessage) {
+          setTimeout(() => {
+            Linking.openURL(remoteMessage.data.link);
+          }, 1000);
+        }
+      });
   }, []);
 
-  return {requestUserPermission, getDeviceToken};
+  return { requestUserPermission, getDeviceToken };
 };
 
 export default useFCM;
