@@ -1,5 +1,5 @@
-import { Block, Text } from '@components';
-import React, { useState } from 'react';
+import { Block, Text, ModalBox } from '@components';
+import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
   TextInput,
@@ -8,14 +8,21 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
-import { useDispatch, useSelector } from 'react-redux';
-import actions from '@redux/actions';
 import messaging from '@react-native-firebase/messaging';
 import auth from '@react-native-firebase/auth';
-import API from '@utils/api';
+import { useLoginMutation } from '@redux/servicesNew';
+import { useAppDispatch } from 'hooks';
+import { loginReducer, changeLoading } from '@redux/reducerNew';
+import { icons } from '@assets';
 
 const Login = () => {
-  const dispatch = useDispatch();
+  const [login, { isLoading: isUpdating }] = useLoginMutation();
+  const dispatch = useAppDispatch();
+  const [visibleModal, setVisibleModal] = useState(false);
+
+  useEffect(() => {
+    dispatch(changeLoading(isUpdating ? 'SHOW' : 'HIDE'));
+  }, [dispatch, isUpdating]);
 
   GoogleSignin.configure({
     webClientId:
@@ -29,7 +36,6 @@ const Login = () => {
   const _signIn = async () => {
     await GoogleSignin.signOut();
     const currentUser = await GoogleSignin.getCurrentUser();
-    console.log('+++++> ERORR LOGIN ', currentUser);
 
     if (currentUser) {
       await GoogleSignin.revokeAccess();
@@ -45,6 +51,8 @@ const Login = () => {
 
       _handleLogin(idToken, fcmToken);
 
+      // Storage.setItem('tokenId', idToken);
+
       const googleCredential = auth.GoogleAuthProvider.credential(idToken);
       return auth().signInWithCredential(googleCredential);
     } catch (error) {
@@ -54,12 +62,18 @@ const Login = () => {
     }
   };
 
-  const _handleLogin = (token, fcmToken) => {
+  const _handleLogin = async (token, fcmToken) => {
     const body = {
       token: token,
       token_fcm: fcmToken,
     };
-    dispatch({ type: 'LOGIN', body: body });
+    // dispatch({ type: 'LOGIN', body: body });
+    const dataLogin = await login(body);
+    if (dataLogin?.error?.data?.error) {
+      setVisibleModal(true);
+    } else {
+      dispatch(loginReducer(dataLogin?.data?.data?.account));
+    }
   };
 
   return (
@@ -100,6 +114,21 @@ const Login = () => {
           <Image source={require('../../../assets/images/Facbook.png')} />
         </Block>
       </Block>
+
+      {/* Modle when api wrong */}
+      <ModalBox
+        isVisible={visibleModal}
+        onBackdropPress={() => setVisibleModal(!visibleModal)}>
+        <Block
+          backgroundColor={'white'}
+          radius={15}
+          alignSelf={'center'}
+          justifyCenter={'center'}
+          padding={20}>
+          <Image source={icons.logo} style={styles.iconLogo} />
+          <Text>Server not work</Text>
+        </Block>
+      </ModalBox>
     </Block>
   );
 };
@@ -223,5 +252,10 @@ const styles = StyleSheet.create({
     width: 25,
     height: 25,
     marginHorizontal: 10,
+  },
+  iconLogo: {
+    width: 50,
+    height: 50,
+    alignSelf: 'center',
   },
 });

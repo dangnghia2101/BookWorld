@@ -1,5 +1,4 @@
 import axios from 'axios';
-import Config from 'react-native-config';
 import store from 'redux/store';
 
 // axios.defaults.baseURL = 'https://emotion-passport.herokuapp.com/api/';
@@ -34,7 +33,7 @@ axios.interceptors.request.use(
     //   );
     // }
 
-    return {...config, data};
+    return { ...config, data };
   },
   error => {
     return Promise.reject(true);

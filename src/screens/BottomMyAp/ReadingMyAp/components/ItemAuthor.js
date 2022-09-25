@@ -83,7 +83,7 @@ export default ItemAuthor;
 
 const styles = StyleSheet.create({
   totalRead: {
-    color: ' #19191B',
+    color: '#19191B',
     fontSize: 16,
     marginTop: 3,
     lineHeight: 21,

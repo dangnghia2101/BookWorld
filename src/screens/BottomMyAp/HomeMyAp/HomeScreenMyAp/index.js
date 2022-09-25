@@ -1,23 +1,17 @@
 import React, { useEffect, useCallback, useState } from 'react';
 import { Block, Text } from '@components';
-import {
-  ScrollView,
-  Animated,
-  Platform,
-  View,
-  Image,
-  StyleSheet,
-} from 'react-native';
+import { ScrollView, Animated, Platform, View, Image } from 'react-native';
 import HeaderListBook from './components/HeaderListEvent';
 import { FlatList } from 'react-native-gesture-handler';
 import { width, height } from '@utils/responsive';
 import ItemMostBookRead from './components/ItemMostBookRead';
 import TabCategoryBook from './components/TabCategoryBook';
-import { theme } from '@theme';
 import HeaderHome from './components/HeaderHome';
-import { useDispatch, useSelector } from 'react-redux';
-import actions from '@redux/actions';
 import LinearGradient from 'react-native-linear-gradient';
+import { useAppSelector } from 'hooks';
+import { useGetAllBookQuery, useGetAllCategoryQuery } from '@redux/servicesNew';
+import { makeStyles, useTheme } from 'themeNew';
+import { withNamespaces } from 'react-i18next';
 
 const ITEM_WITH = width * 0.6;
 
@@ -46,22 +40,21 @@ const author = [
 const HomeScreenMyAp = () => {
   // const [clicked, setClicked] = useState(false);
   // const [searchPhrase, setSearchPhrase] = useState('');
-  const dispatch = useDispatch();
 
-  const listMostReadBook = useSelector(state => state.getAllBook);
-  const listCategoryBook = useSelector(state => state.getAllCategory);
-  const changeTheme = useSelector(state => state.changeTheme);
+  useGetAllBookQuery();
+  useGetAllCategoryQuery();
+
   const [isCollapsible, setIsCollapsible] = useState(true);
 
   const scrollX = React.useRef(new Animated.Value(0)).current;
 
-  const myInfo = useSelector(state => state.login.data);
+  const myInfo = useAppSelector(state => state.root.auth);
+  const allBooks = useAppSelector(state => state.root.book.bookList);
+  const allCategories = useAppSelector(state => state.root.book.categoryList);
+  const themeStore = useAppSelector(state => state.root.themeApp.theme);
 
-  useEffect(() => {
-    dispatch({ type: actions.GET_ALL_BOOK });
-    dispatch({ type: actions.GET_ALL_AUTHOR });
-    dispatch({ type: actions.GET_ALL_CATEGORY });
-  }, [dispatch]);
+  const theme = useTheme(themeStore);
+  const styles = useStyle(themeStore);
 
   const _renderItemMostBookRead = useCallback(
     ({ item, index }) => {
@@ -70,18 +63,18 @@ const HomeScreenMyAp = () => {
           item={item}
           index={index}
           scrollX={scrollX}
-          size={listMostReadBook.size}
+          size={allBooks}
         />
       );
     },
-    [listMostReadBook.size, scrollX],
+    [allBooks, scrollX],
   );
 
   const renderListMostRead = useCallback(() => {
     return (
       <Block height={height * 0.65}>
         <Animated.FlatList
-          data={listMostReadBook?.data}
+          data={allBooks}
           keyExtractor={item => Math.random() + item._id}
           renderItem={_renderItemMostBookRead}
           decelerationRate={Platform.OS === 'ios' ? 0 : 0.98}
@@ -111,19 +104,15 @@ const HomeScreenMyAp = () => {
         />
       </Block>
     );
-  }, [_renderItemMostBookRead, listMostReadBook?.data, scrollX]);
+  }, [_renderItemMostBookRead, allBooks, scrollX]);
 
   const renderListCategory = useCallback(() => {
     return (
       <Block height={650}>
-        {listCategoryBook?.data?.length > 0 ? (
-          <TabCategoryBook />
-        ) : (
-          <Text>Loading</Text>
-        )}
+        {allCategories?.length > 0 ? <TabCategoryBook /> : <Text>Loading</Text>}
       </Block>
     );
-  }, [listCategoryBook]);
+  }, [allCategories]);
 
   const Backdrop = () => {
     return (
@@ -168,7 +157,7 @@ const HomeScreenMyAp = () => {
           key={() => Math.random()}
         />
         <LinearGradient
-          colors={['rgba(0, 0, 0, 0)', 'white']}
+          colors={['rgba(0, 0, 0, 0)', theme.colors.text]}
           style={styles.linearGradient}
         />
       </View>
@@ -176,17 +165,18 @@ const HomeScreenMyAp = () => {
   };
 
   return (
-    <Block flex backgroundColor={theme.colors.white}>
+    <Block flex backgroundColor={theme.colors.text}>
       <ScrollView
         showsVerticalScrollIndicator={false}
         nestedScrollEnabled={true}
         style={{ position: 'relative' }}>
         <HeaderHome
-          name={myInfo?.account?.name}
-          image={myInfo?.account?.image}
+          name={myInfo?.name}
+          image={myInfo?.image}
           setIsCollapsible={setIsCollapsible}
           isCollapsible={isCollapsible}
         />
+
         <Block marginTop={75}>
           <HeaderListBook title={'Sách xem nhiều nhất'} />
           {Backdrop()}
@@ -198,13 +188,13 @@ const HomeScreenMyAp = () => {
   );
 };
 
-const styles = StyleSheet.create({
+const useStyle = makeStyles()(({ normalize, colors }) => ({
   linearGradient: {
     height: 200,
     width: width,
     position: 'absolute',
     bottom: 40,
   },
-});
+}));
 
-export default HomeScreenMyAp;
+export default withNamespaces()(HomeScreenMyAp);

@@ -1,26 +1,30 @@
 import React, { useState, useEffect } from 'react';
 import { Block, Text, Button } from '@components';
-import {
-  StyleSheet,
-  Platform,
-  NativeModules,
-  StatusBar,
-  Image,
-} from 'react-native';
+import { Platform, NativeModules, StatusBar, Image } from 'react-native';
 import { theme } from '@theme';
 import IconView from '@components/Icon';
 import { useNavigation } from '@react-navigation/native';
 import { routes } from '@navigation/routes';
 import Collapsible from 'react-native-collapsible';
 import { width } from '@utils/responsive';
+import { makeStyles, useTheme } from 'themeNew';
+import { useAppSelector, useAppDispatch } from '@hooks';
+import { changeTheme, changeLanguage } from '@redux/reducerNew';
+import { withNamespaces } from 'react-i18next';
 
+const { fonts } = theme;
 
-const { colors, fonts } = theme;
-
-const HeaderHome = ({ name, image, setIsCollapsible, isCollapsible }) => {
+const HeaderHome = props => {
+  const { name, image, setIsCollapsible, isCollapsible, t } = props;
   const navigation = useNavigation();
   const [paddingTop, setPaddingTop] = useState(0);
   const [showMoney, setShowMoney] = useState(false);
+  const dispatch = useAppDispatch();
+
+  const themeStore = useAppSelector(state => state.root.themeApp.theme);
+  const languageStore = useAppSelector(state => state.root.setting.language);
+  const themeNew = useTheme(themeStore);
+  const styles = useStyle(props, themeStore);
 
   useEffect(() => {
     if (Platform.OS === 'ios') {
@@ -35,11 +39,12 @@ const HeaderHome = ({ name, image, setIsCollapsible, isCollapsible }) => {
   }, []);
 
   return (
-    <Block style={{
-      position: 'absolute',
-      zIndex: 100,
-      width: width
-    }}>
+    <Block
+      style={{
+        position: 'absolute',
+        zIndex: 100,
+        width: width,
+      }}>
       <Block style={[styles.container, { paddingTop: paddingTop }]}>
         <Block width={'100%'} alignCenter marginTop={5}>
           <Block space={'between'} row width={'100%'}>
@@ -52,24 +57,28 @@ const HeaderHome = ({ name, image, setIsCollapsible, isCollapsible }) => {
                 marginLeft={10}
                 size={18}
                 marginHorizontal={5}
-                color={colors.white}
+                color={themeNew.colors.text}
                 style={{ fontFamily: 'Lato-Bold' }}>
                 {name}
               </Text>
             </Block>
 
-            <Block row marginRight={20}>
+            <Button
+              style={{ marginRight: 10 }}
+              onPress={() => {
+                dispatch(changeTheme(themeStore === 'dark' ? 'light' : 'dark'));
+                dispatch(changeLanguage(languageStore === 'en' ? 'vi' : 'en'));
+              }}>
               <IconView
                 component={'MaterialCommunityIcons'}
                 name={'bell-outline'}
                 size={25}
-                color={colors.white}
+                color={themeNew.colors.text}
               />
-            </Block>
+            </Button>
           </Block>
 
           <Collapsible collapsed={isCollapsible} style={{ width: width }}>
-
             <Block space={'between'} row width={'100%'} marginTop={10}>
               <Block>
                 <Block row marginLeft={7}>
@@ -77,19 +86,21 @@ const HeaderHome = ({ name, image, setIsCollapsible, isCollapsible }) => {
                     marginLeft={10}
                     size={14}
                     marginHorizontal={5}
-                    color={colors.white}
+                    color={themeNew.colors.text}
                     // fontType={'bold'}
                     // fontType={fonts.fontFamily.bold1}
-                    style={{ fontFamily: fonts.fontFamily.regular1, fontWeight: 'normal' }}
-                  >
-                    Số dư tài khoản
+                    style={{
+                      fontFamily: fonts.fontFamily.regular1,
+                      fontWeight: 'normal',
+                    }}>
+                    {t('accountBalance')}
                   </Text>
                   <Button onPress={() => setShowMoney(!showMoney)}>
                     <IconView
                       component={'Ionicons'}
                       name={showMoney ? 'md-eye' : 'md-eye-off'}
                       size={20}
-                      color={colors.white}
+                      color={themeNew.colors.text}
                     />
                   </Button>
                 </Block>
@@ -98,7 +109,7 @@ const HeaderHome = ({ name, image, setIsCollapsible, isCollapsible }) => {
                     <Text
                       size={25}
                       marginHorizontal={5}
-                      color={colors.white}
+                      color={themeNew.colors.text}
                       fontType={'bold'}>
                       *********
                     </Text>
@@ -106,7 +117,7 @@ const HeaderHome = ({ name, image, setIsCollapsible, isCollapsible }) => {
                     <Text
                       size={25}
                       marginHorizontal={5}
-                      color={colors.white}
+                      color={themeNew.colors.text}
                       fontType={'bold'}>
                       1.200.000
                     </Text>
@@ -115,9 +126,10 @@ const HeaderHome = ({ name, image, setIsCollapsible, isCollapsible }) => {
               </Block>
 
               <Block marginRight={20} alignCenter>
-                <Button onPress={() => navigation.navigate(routes.SCREEN_PAYMENT)}>
+                <Button
+                  onPress={() => navigation.navigate(routes.SCREEN_PAYMENT)}>
                   <Block
-                    backgroundColor={theme.colors.white}
+                    backgroundColor={themeNew.colors.text}
                     radius={12}
                     width={40}
                     height={40}
@@ -127,18 +139,32 @@ const HeaderHome = ({ name, image, setIsCollapsible, isCollapsible }) => {
                       component={'Ionicons'}
                       name={'add'}
                       size={25}
-                      color={colors.gray}
+                      color={themeNew.colors.icon}
                     />
                   </Block>
                 </Button>
-                <Text color={theme.colors.gray4}>Nap tien</Text>
+                <Text color={themeNew.colors.text}>{t('recharge')}</Text>
               </Block>
             </Block>
           </Collapsible>
 
-          <Button style={styles.btnExpand} onPress={() => setIsCollapsible(!isCollapsible)}>
-            {isCollapsible === true ? (<IconView component={'AntDesign'} name={'downcircleo'} color={colors.dark} size={25} />
-            ) : (<IconView component={'AntDesign'} name={'upcircleo'} color={colors.dark} size={25} />
+          <Button
+            style={styles.btnExpand}
+            onPress={() => setIsCollapsible(!isCollapsible)}>
+            {isCollapsible === true ? (
+              <IconView
+                component={'AntDesign'}
+                name={'downcircleo'}
+                color={themeNew.colors.icon}
+                size={25}
+              />
+            ) : (
+              <IconView
+                component={'AntDesign'}
+                name={'upcircleo'}
+                color={themeNew.colors.icon}
+                size={25}
+              />
             )}
           </Button>
         </Block>
@@ -148,10 +174,10 @@ const HeaderHome = ({ name, image, setIsCollapsible, isCollapsible }) => {
   );
 };
 
-const styles = StyleSheet.create({
+const useStyle = makeStyles()(({ normalize, colors }) => ({
   container: {
     paddingHorizontal: -20,
-    backgroundColor: theme.colors.red,
+    backgroundColor: colors.primary,
     borderBottomLeftRadius: 15,
     borderBottomRightRadius: 15,
   },
@@ -191,14 +217,14 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   btnExpand: {
-    backgroundColor: colors.white,
+    backgroundColor: colors.text,
     borderRadius: 50,
     height: 35,
     width: 35,
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: -15
-  }
-});
+    marginBottom: -15,
+  },
+}));
 
-export default HeaderHome;
+export default withNamespaces()(HeaderHome);
