@@ -1,10 +1,13 @@
-import {StyleSheet, Dimensions} from 'react-native';
-import {Block, Text, Button} from '@components';
+import { StyleSheet, Dimensions } from 'react-native';
+import { Block, Text, Button } from '@components';
 import React from 'react';
-import {theme} from '@theme';
+import { theme } from '@theme';
 import Icon from '@components/Icon';
-import {useNavigation} from '@react-navigation/native';
-import {routes} from '@navigation/routes';
+import { useNavigation } from '@react-navigation/native';
+import { routes } from '@navigation/routes';
+import { useAppSelector } from 'hooks';
+import { makeStyles, useTheme } from 'themeNew';
+import { withNamespaces } from 'react-i18next';
 
 const _renderStar = num => {
   let star = [];
@@ -21,29 +24,32 @@ const _renderStar = num => {
   return star;
 };
 
-const IntroduceText = ({item}) => {
+const IntroduceText = ({ item, t }) => {
+  const themeStore = useAppSelector(state => state.root.themeApp.theme);
+  const theme = useTheme(themeStore);
+  // const styles = useStyle(themeStore);
   return (
     <Block marginHorizontal={10} marginTop={20}>
       {/* Giới thiệu tác giả */}
       <Text
         marginTop={20}
-        color={theme.colors.black}
+        color={theme.colors.textInBox}
         fontType={'bold'}
         size={20}>
-        Giới thiệu về tác giả
+        {t('introduceText')}
       </Text>
-      <Text color={theme.colors.lightGray} size={15}>
+      <Text color={theme.colors.textInBox} size={15}>
         {item?.item?.introduction}
       </Text>
       {/* Tổng quan đánh giá */}
       <Text
         marginTop={10}
         fontType={'bold'}
-        color={theme.colors.black}
+        color={theme.colors.textInBox}
         size={20}>
-        Tổng quan
+        {t('overview')}
       </Text>
-      <Text color={theme.colors.lightGray} size={15}>
+      <Text color={theme.colors.textInBox} size={15}>
         J.D. Salinger was an American writer, best known for his 1951 novel The
         Catcher in the Rye. Before its publi cation, Salinger published several
         short stories in Story magazine
@@ -86,4 +92,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default IntroduceText;
+export default withNamespaces()(IntroduceText);

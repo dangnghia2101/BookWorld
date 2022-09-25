@@ -1,5 +1,5 @@
 import { Block, Text } from '@components';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { theme } from '@theme';
 import { StyleSheet } from 'react-native';
 import { TabBar, TabView } from 'react-native-tab-view';
@@ -7,20 +7,17 @@ import TabSceneReadingStatus from './TabSceneReadingStatus';
 import TapScenceAuthor from './TapScenceAuthor';
 import { useSelector, useDispatch } from 'react-redux';
 import actions from '@redux/actions';
-const _renderLabel = ({ route, focused, color }) => {
-  return (
-    <Block>
-      <Text color={focused ? theme.colors.dark : theme.colors.lightGray}>
-        {route.title}
-      </Text>
-    </Block>
-  );
-};
+import { makeStyles, useTheme } from 'themeNew';
+import { useAppSelector } from '@hooks';
+import { strings } from 'I18n';
 
 const TapReadingStatus = () => {
   const [routes, setRoutes] = useState([{ key: 'Default', title: 'Default' }]);
   const [index, setIndex] = useState(0);
   const dispatch = useDispatch();
+  const themeStore = useAppSelector(state => state.root.themeApp.theme);
+  const themeNew = useTheme(themeStore);
+
 
   const dataListCate = {
     data: [
@@ -123,6 +120,20 @@ const TapReadingStatus = () => {
     });
   };
 
+  const _renderLabel = useCallback(
+    ({ route, focused, color }) => {
+      return (
+        <Block>
+          <Text color={focused ? themeNew.colors.primary : themeNew.colors.grey10}>
+            {route.title}
+            {/* {route.key !== 'Default' ? strings(`tabReadingnName.${route.code}`) : ''} */}
+          </Text>
+        </Block>
+      );
+    },
+    [themeNew.colors.grey10, themeNew.colors.primary],
+  );
+
   useEffect(() => {
     setRoutes(formatRouter(dataListCate.data));
   }, []);
@@ -131,7 +142,7 @@ const TapReadingStatus = () => {
     dispatch({ type: actions.GET_ALL_AUTHOR, body: routes[index]._id });
   }, [index]);
 
-  const rednderTabBar = props => {
+  const rednderTabBar = useCallback(props => {
     return (
       <>
         {!dataListCate.isLoading && (
@@ -141,12 +152,17 @@ const TapReadingStatus = () => {
             // indicatorStyle={styles.indicator}
             renderLabel={_renderLabel}
             tabStyle={styles.tabStyle}
-            style={{ backgroundColor: theme.colors.white }}
+            style={{ backgroundColor: themeNew.colors.text }}
           />
         )}
       </>
     );
-  };
+  },
+    [
+      _renderLabel,
+      dataListCate
+    ],
+  );
   const renderScene = ({ route }) => {
     switch (route.key) {
       case 'cate01':
