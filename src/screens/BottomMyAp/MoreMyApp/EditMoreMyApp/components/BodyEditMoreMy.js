@@ -4,12 +4,8 @@ import {StyleSheet, Image} from 'react-native';
 
 const BodyEditMoreMy = ({name, image, email}) => {
   return (
-    <Block>
-      <Image
-        style={styles.imageBanner}
-        source={require('../../../../../assets/images/mask_group.png')}
-      />
-      <Block style={styles.ItemUser}>
+    <Block style={styles.container}>
+      <Block style={[styles.itemUser, styles.shadowColor]} center>
         <Image
           source={{
             uri: image,
@@ -20,6 +16,20 @@ const BodyEditMoreMy = ({name, image, email}) => {
           {name}
         </Text>
         <Text fontSize={13}>{email}</Text>
+        <Block row>
+          <Image
+            source={{
+              uri: image,
+            }}
+            style={styles.imageRank}
+          />
+          <Image
+            source={{
+              uri: image,
+            }}
+            style={styles.imageRank}
+          />
+        </Block>
       </Block>
     </Block>
   );
@@ -28,26 +38,43 @@ const BodyEditMoreMy = ({name, image, email}) => {
 export default BodyEditMoreMy;
 
 const styles = StyleSheet.create({
-  imageBanner: {
+  container: {
     width: '100%',
+    marginTop: 116,
+    position: 'absolute',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  itemUser: {
+    width: '85%',
+    height: 276,
+    backgroundColor: 'white',
+    borderRadius: 15,
   },
   imageInformation: {
     width: 144,
     height: 144,
-    borderColor: 'white',
-    borderWidth: 3,
-    borderRadius: 200,
+    borderRadius: 15,
   },
-  ItemUser: {
-    width: '100%',
-    height: 500,
-    backgroundColor: 'black',
-    position: 'absolute',
-    top: 140,
-    alignItems: 'center',
+  imageRank: {
+    width: 45,
+    height: 45,
+    borderRadius: 25,
+    marginHorizontal: 10,
   },
   textUser: {
     fontSize: 18,
     color: '#000000',
+  },
+  shadowColor: {
+    shadowColor: 'black',
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 1.27,
+    shadowRadius: 4.65,
+
+    elevation: 6,
   },
 });

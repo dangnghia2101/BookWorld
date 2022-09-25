@@ -1,6 +1,6 @@
-import { StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
+import {StyleSheet, TouchableOpacity, Dimensions} from 'react-native';
 import React from 'react';
-import { Block, Text } from '@components';
+import {Block, Text} from '@components';
 
 import {VictoryBar, VictoryChart, VictoryTheme} from 'victory-native';
 const screenWidth = Dimensions.get('window').width;
@@ -92,13 +92,12 @@ const ChartMoreMy = () => {
   ];
 
   return (
-    <Block column justifyCenter>
+    <Block marginVertical={20} column justifyCenter>
       <Block
         style={styles.dateContainer}
         row
         justifyContent={'space-between'}
-        marginHorizontal={15}
-        marginVertical={10}>
+        marginHorizontal={15}>
         <TouchableOpacity style={styles.itemChartContainer}>
           <Text>Ngày</Text>
         </TouchableOpacity>

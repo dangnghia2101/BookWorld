@@ -6,8 +6,7 @@ const ItemMoreMy = () => {
   return (
     <Block
       marginHorizontal={25}
-      marginVertical={10}
-      marginTop={100}
+      marginTop={200}
       row
       justifyContent={'space-between'}>
       <View style={styles.dataContainer}>
@@ -19,7 +18,6 @@ const ItemMoreMy = () => {
             1280
           </Text>
         </View>
-
         <Text center>phút</Text>
       </View>
       <View style={styles.dataContainer}>

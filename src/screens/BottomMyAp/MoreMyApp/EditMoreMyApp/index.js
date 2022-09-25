@@ -12,6 +12,7 @@ const MoreMyApp = () => {
   return (
     <Block flex justifyCenter>
       <ScrollView showsVerticalScrollIndicator={false}>
+        <HeaderEditMoreMy title={'Hồ sơ của bạn'} />
         <BodyEditMoreMy
           name={myInfo?.account?.name}
           image={myInfo?.account?.image}
@@ -20,7 +21,6 @@ const MoreMyApp = () => {
         <ItemEditMoreMy />
         <ItemEditLastMoreMy />
       </ScrollView>
-      <HeaderEditMoreMy title={'Hồ sơ của bạn'} />
     </Block>
   );
 };
