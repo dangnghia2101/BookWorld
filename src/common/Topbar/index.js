@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Block } from '@components';
+import React, {useState, useEffect} from 'react';
+import {Block} from '@components';
 import {
   StyleSheet,
   TouchableOpacity,
@@ -7,20 +7,14 @@ import {
   NativeModules,
   Platform,
 } from 'react-native';
-import { theme } from '@theme';
+import {theme} from '@theme';
 import IconView from '@components/Icon';
-import { useNavigation, useRoute } from '@react-navigation/native';
-import { makeStyles, useTheme } from 'themeNew';
-import { withNamespaces } from 'react-i18next';
-import { useAppSelector } from '@hooks';
+import {useNavigation, useRoute} from '@react-navigation/native';
 
-const Topbar = ({ bookmark }) => {
+const Topbar = ({bookmark}) => {
   const [paddingTop, setPaddingTop] = useState(0);
   const [height, setHeight] = useState(0);
   const navigation = useNavigation();
-  const themeStore = useAppSelector(state => state.root.themeApp.theme);
-  const theme = useTheme(themeStore);
-  const styles = useStyle(themeStore);
 
   useEffect(() => {
     if (Platform.OS === 'ios') {
@@ -52,7 +46,7 @@ const Topbar = ({ bookmark }) => {
             component={'MaterialIcons'}
             name="keyboard-backspace"
             size={30}
-            color={theme.colors.textInBox}
+            color={theme.colors.black}
           />
         </TouchableOpacity>
         {bookmark !== undefined && (
@@ -62,7 +56,7 @@ const Topbar = ({ bookmark }) => {
                 component={'Ionicons'}
                 name={'bookmark'}
                 size={25}
-                color={theme.colors.textInBox}
+                color={theme.colors.red}
               />
             ) : (
               <IconView
@@ -79,7 +73,7 @@ const Topbar = ({ bookmark }) => {
   );
 };
 
-const useStyle = makeStyles()(({ normalize, colors }) => ({
+const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -97,6 +91,6 @@ const useStyle = makeStyles()(({ normalize, colors }) => ({
     flex: 1,
     fontWeight: 'bold',
   },
-}));
+});
 
-export default withNamespaces()(Topbar);
+export default Topbar;

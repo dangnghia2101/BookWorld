@@ -5,14 +5,8 @@ import Icon from '@components/Icon';
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { routes } from '@navigation/routes';
-import { makeStyles, useTheme } from 'themeNew';
-import { withNamespaces } from 'react-i18next';
 
-const ItemAuthor = ({ item, t }) => {
-  const themeStore = useAppSelector(state => state.root.themeApp.theme);
-  const theme = useTheme(themeStore);
-  const styles = useStyle(themeStore);
-
+const ItemAuthor = ({ item }) => {
   const navigation = useNavigation();
   return (
     <TouchableOpacity
@@ -27,9 +21,9 @@ const ItemAuthor = ({ item, t }) => {
           row
           top={50}>
           <Block width="50%" height="100%">
-            <Text style={styles.textName}>{t('textNameAuthor')}</Text>
+            <Text style={styles.textName}>Tên tác giả</Text>
             <Text style={styles.nameAuthor}>{item.name}</Text>
-            <Text style={styles.textRate}>{t('textRating')}</Text>
+            <Text style={styles.textRate}>Tên tác giả</Text>
             <Block row marginLeft={22} marginTop={5}>
               <Icon
                 component={'AntDesign'}
@@ -61,10 +55,10 @@ const ItemAuthor = ({ item, t }) => {
 
           <Block width="50%" height="100%" alignCenter>
             <Text numberOfLines={2} style={styles.textQuantity}>
-              {t('texQuantity')}
+              Số lượng sách xuất bản
             </Text>
             <Text style={styles.totalRead}>23</Text>
-            <Text style={styles.textName}>{t('textToltalRead')}</Text>
+            <Text style={styles.textName}>Tổng lượt đọc</Text>
             <Text style={styles.totalRead}>23</Text>
           </Block>
         </Block>
@@ -85,15 +79,15 @@ const ItemAuthor = ({ item, t }) => {
   );
 };
 
-export default withNamespaces()(ItemAuthor);
+export default ItemAuthor;
 
-const useStyle = makeStyles()(({ normalize, colors }) => ({
+const styles = StyleSheet.create({
   totalRead: {
+    color: '#19191B',
     fontSize: 16,
     marginTop: 3,
     lineHeight: 21,
     fontWeight: '900',
-    color: colors.textInBox,
   },
   textQuantity: {
     fontWeight: '500',
@@ -103,14 +97,13 @@ const useStyle = makeStyles()(({ normalize, colors }) => ({
     marginTop: 14,
     marginLeft: 11,
     width: 122,
-    color: colors.textInBox,
   },
   totalRate: {
     fontWeight: '400',
     fontSize: 14,
     lineHeight: 21,
+    color: '#19191B',
     marginLeft: 3.21,
-    color: colors.textInBox,
   },
   textRate: {
     marginTop: 17,
@@ -118,19 +111,18 @@ const useStyle = makeStyles()(({ normalize, colors }) => ({
     fontWeight: '500',
     fontSize: 12,
     lineHeight: 15,
-    color: colors.textInBox,
   },
   nameAuthor: {
     marginTop: 11,
     marginLeft: 22,
     fontWeight: '600',
     lineHeight: 21,
-    color: colors.textInBox,
+    color: '#19191B',
   },
   textName: {
     marginTop: 22,
     marginLeft: 22,
-    color: colors.textInBox,
+    color: '#464444',
     fontWeight: '500',
     fontSize: 12,
     lineHeight: 15,
@@ -141,4 +133,4 @@ const useStyle = makeStyles()(({ normalize, colors }) => ({
     borderRadius: 40,
     margin: 7,
   },
-}));
+});

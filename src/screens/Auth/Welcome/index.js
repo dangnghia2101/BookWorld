@@ -5,17 +5,16 @@ import {
   FlatList,
   Animated,
   Pressable,
-  LogBox
 } from 'react-native';
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import ItemWelcome from './components/ItemWelcome';
-import { data } from './components/data';
-import { Block, Text } from '@components';
+import {data} from './components/data';
+import {Block, Text} from '@components';
 import Login from '../Login/index';
-const { width, heigth } = Dimensions.get('window');
-import { routes } from '@navigation/routes';
-import { useNavigation } from '@react-navigation/native';
-LogBox.ignoreAllLogs();
+const {width, heigth} = Dimensions.get('window');
+import {routes} from '@navigation/routes';
+import {useNavigation} from '@react-navigation/native';
+
 const Welcome = () => {
   const navigation = useNavigation();
   const scrollX = new Animated.Value(0);
@@ -35,11 +34,11 @@ const Welcome = () => {
           scrollEventThrottle={16}
           decelerationRate={'fast'}
           showsHorizontalScrollIndicator={false}
-          renderItem={({ item, index }) => {
+          renderItem={({item, index}) => {
             return <ItemWelcome item={item} key={index} />;
           }}
           onScroll={Animated.event([
-            { nativeEvent: { contentOffset: { x: scrollX } } },
+            {nativeEvent: {contentOffset: {x: scrollX}}},
           ])}
         />
         <View style={styles.dotView}>
