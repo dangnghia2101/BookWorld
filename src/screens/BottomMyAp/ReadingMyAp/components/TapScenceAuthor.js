@@ -1,17 +1,21 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { Block } from '@components';
 import React from 'react';
-import ItemAuthor from './ItemAuthor';
+import { useSelector } from 'react-redux';
+import NoData from '@components';
+import ItemAuthor from '@screens/BottomMyAp/ReadingMyAp/components/ItemAuthor';
 
 const TapScenceAuthor = ({ route }) => {
-  return route?.bookList?.length > 0 ? (
+  const listAuthor = useSelector(state => state.getAllAuthor);
+
+  return listAuthor?.data?.length > 0 ? (
     <Block>
-      {route?.bookList.map((item, index) => (
+      {listAuthor?.data.map((item, index) => (
         <ItemAuthor key={index} item={item} />
       ))}
     </Block>
   ) : (
-    <Text>Chua co du lieu</Text>
+    <NoData title={'Chưa có tác giả'}></NoData>
   );
 };
 

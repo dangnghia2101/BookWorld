@@ -8,6 +8,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import actions from '@redux/actions';
 import { theme } from '@theme';
 import Topbar from 'common/Topbar';
+import { useAppSelector } from '@hooks';
+import { makeStyles, useTheme } from 'themeNew';
 
 // const detailBook = {
 //   name: 'Đầu sách',
@@ -61,7 +63,8 @@ const DetailBookScreenMyAp = ({ route }) => {
   const { bookmark, item } = route.params;
   const dispatch = useDispatch();
   const listChapters = useSelector(select => select.getAllChapterBookById);
-
+  const themeStore = useAppSelector(state => state.root.themeApp.theme);
+  const theme = useTheme(themeStore);
   useEffect(() => {
     dispatch({
       type: actions.GET_ALL_CHAPTER_BY_ID,
@@ -72,7 +75,7 @@ const DetailBookScreenMyAp = ({ route }) => {
   return (
     <Block>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <Block flex paddingHorizontal={20} backgroundColor={theme.colors.white}>
+        <Block flex paddingHorizontal={20} backgroundColor={theme.colors.text}>
           <Topbar bookmark={bookmark} />
           <ImageBook item={route.params} />
           <IntroduceText item={route.params} />
