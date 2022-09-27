@@ -26,6 +26,8 @@ export const routes = {
   SCREEN_SETTINGS: 'SCREEN_SETTINGS',
   SCREEN_EDIT_SETTINGS: 'SCREEN_EDIT_SETTINGS',
   SCREEN_PAYMENT: 'SCREEN_PAYMENT',
+  THEME_MODE: 'THEME_MODE',
+  CHANGE_LANGUAGE: 'CHANGE_LANGUAGE',
 };
 
 export const APP_PREFIX = ['emotion://', 'https://emotion.com'];

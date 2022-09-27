@@ -13,20 +13,22 @@ const Header = ({title, action, titleAction}) => {
   const navigation = useNavigation();
 
   return (
-    <Block row style={[styles.container]}>
-      <View style={styles.titleContainer}>
-        <Text style={styles.titleSection}>{title}</Text>
-      </View>
-      <TouchableOpacity
-        style={styles.editContainer}
-        onPress={() => navigation.navigate(routes.SCREEN_EDIT_SETTINGS)}>
-        <IconView
-          component={'Ionicons'}
-          name={'settings-sharp'}
-          size={25}
-          color={'black'}
-        />
-      </TouchableOpacity>
+    <Block height={200} backgroundColor={'#FF7D54'}>
+      <Block row style={[styles.container]}>
+        <View style={styles.titleContainer}>
+          <Text style={styles.titleSection}>{title}</Text>
+        </View>
+        <TouchableOpacity
+          style={styles.editContainer}
+          onPress={() => navigation.navigate(routes.SCREEN_EDIT_SETTINGS)}>
+          <IconView
+            component={'Ionicons'}
+            name={'settings-sharp'}
+            size={25}
+            color={'black'}
+          />
+        </TouchableOpacity>
+      </Block>
     </Block>
   );
 };
@@ -46,11 +48,11 @@ const styles = StyleSheet.create({
     fontSize: 24,
     color: colors.white,
     fontWeight: 'bold',
-    alignItems: 'center',
   },
   editContainer: {
     position: 'absolute',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#FFFFFF50',
+    opacity: 1,
     borderRadius: 40,
     width: 40,
     height: 40,
