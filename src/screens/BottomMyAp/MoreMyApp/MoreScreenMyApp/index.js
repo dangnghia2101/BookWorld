@@ -13,12 +13,13 @@ const MoreMyApp = () => {
   return (
     <Block flex justifyCenter>
       <ScrollView showsVerticalScrollIndicator={false}>
+       
+        <Header title={'Hồ sơ của bạn'} />
         <BodyEditMoreMy
           name={myInfo?.account?.name}
           image={myInfo?.account?.image}
           email={myInfo?.account?.email}
         />
-        <Header title={'Hồ sơ của bạn'} />
         <ItemMoreMy />
         <ChartMoreMy />
         <ItemLastMoreMy />

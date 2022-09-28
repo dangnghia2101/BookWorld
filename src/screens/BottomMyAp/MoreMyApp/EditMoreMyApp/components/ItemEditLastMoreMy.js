@@ -22,7 +22,7 @@ const ItemEditLastMoreMy = () => {
   };
 
   return (
-    <Block marginHorizontal={40} style={styles.itemContainer2}>
+    <Block marginHorizontal={40} marginVertical={100} top={80}>
       <Pressable
         onPress={handleLogOut}
         style={[styles.buttonLastMoreMy, styles.shadowColor]}>
@@ -35,9 +35,6 @@ const ItemEditLastMoreMy = () => {
 export default ItemEditLastMoreMy;
 
 const styles = StyleSheet.create({
-  itemContainer2: {
-    marginVertical: 40,
-  },
   buttonLastMoreMy: {
     width: '100%',
     height: 60,

@@ -1,6 +1,6 @@
 import {Block, Text} from '@components';
 import React from 'react';
-import {StyleSheet, TouchableOpacity} from 'react-native';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {theme} from '@theme';
 
 import {routes} from '@navigation/routes';
@@ -9,18 +9,18 @@ import IconView from '@components/Icon';
 
 const {colors} = theme;
 
-const HeaderEditMoreMy = ({title, action, titleAction}) => {
+const HeaderChangeLanguage = ({title, action, titleAction}) => {
   const navigation = useNavigation();
   return (
-    <Block height={200} backgroundColor={'#FF7D54'}>
+    <Block height={100}>
       <Block row style={styles.container}>
         <TouchableOpacity
-          onPress={() => navigation.navigate(routes.SCREEN_SETTINGS)}>
+          onPress={() => navigation.navigate(routes.SCREEN_EDIT_SETTINGS)}>
           <IconView
             component={'Ionicons'}
             name={'arrow-back'}
             size={30}
-            color={'white'}
+            color={'black'}
           />
         </TouchableOpacity>
         <Text style={styles.titleSection}>{title}</Text>
@@ -29,7 +29,7 @@ const HeaderEditMoreMy = ({title, action, titleAction}) => {
   );
 };
 
-export default HeaderEditMoreMy;
+export default HeaderChangeLanguage;
 
 const styles = StyleSheet.create({
   container: {
@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
   },
   titleSection: {
     fontSize: 24,
-    color: colors.white,
+    color: colors.black,
     fontWeight: 'bold',
     left: 80,
   },
