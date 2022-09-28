@@ -1,10 +1,11 @@
-import { NavigationContainer } from '@react-navigation/native';
+import {NavigationContainer} from '@react-navigation/native';
 import React from 'react';
-import { StatusBar } from 'react-native';
+import {StatusBar} from 'react-native';
 import BottomTabMyAp from './BottomTabMyAp';
+import Login from '@screens/Auth/Login';
 import Auth from '../screens/Auth';
-import { useAppSelector, useAppDispatch } from 'hooks';
-import { changeLanguage } from '@redux/reducerNew';
+import {useAppSelector, useAppDispatch} from 'hooks';
+import {changeLanguage} from '@redux/reducerNew';
 import SplashScreen from 'react-native-splash-screen';
 
 export default function MainContainer() {
@@ -25,7 +26,7 @@ export default function MainContainer() {
           barStyle="dark-content"
           backgroundColor="transparent"
         />
-        {!isLoginSelector ? <Auth /> : <BottomTabMyAp />}
+        {isLoginSelector ? <Auth /> : <BottomTabMyAp />}
       </NavigationContainer>
     </>
   );

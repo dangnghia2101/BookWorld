@@ -39,6 +39,8 @@ export const theme = {
     darkGray: '#F1F1F1',
     creamRed: '#D45555',
     darkPurple: '#331A45',
+    buttomGroud: 'rgba(212, 85, 85, 0.2)',
+    listColor: 'rgba(243, 243, 243, 1)',
   },
 
   dark: {
