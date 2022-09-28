@@ -1,13 +1,12 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { Block } from '@components';
 import React from 'react';
-import { useSelector } from 'react-redux';
+import ItemAuthor from './ItemAuthor';
+// import { useAp } from 'react-redux';
+import { useAppSelector } from '@hooks';
 import NoData from '@components';
-import ItemAuthor from '@screens/BottomMyAp/ReadingMyAp/components/ItemAuthor';
-
 const TapScenceAuthor = ({ route }) => {
-  const listAuthor = useSelector(state => state.getAllAuthor);
-
+  const listAuthor = useAppSelector(state => state.getAllAuthor);
   return listAuthor?.data?.length > 0 ? (
     <Block>
       {listAuthor?.data.map((item, index) => (

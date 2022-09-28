@@ -8,7 +8,6 @@ import { routes } from '@navigation/routes';
 import { useAppSelector } from 'hooks';
 import { makeStyles, useTheme } from 'themeNew';
 import { withNamespaces } from 'react-i18next';
-
 const _renderStar = num => {
   let star = [];
   for (let i = 0; i < num; i++) {
@@ -27,7 +26,6 @@ const _renderStar = num => {
 const IntroduceText = ({ item, t }) => {
   const themeStore = useAppSelector(state => state.root.themeApp.theme);
   const theme = useTheme(themeStore);
-  // const styles = useStyle(themeStore);
   return (
     <Block marginHorizontal={10} marginTop={20}>
       {/* Giới thiệu tác giả */}
@@ -49,7 +47,7 @@ const IntroduceText = ({ item, t }) => {
         size={20}>
         {t('overview')}
       </Text>
-      <Text color={theme.colors.textInBox} size={15}>
+      <Text color={theme.colors.lightGray} size={15}>
         J.D. Salinger was an American writer, best known for his 1951 novel The
         Catcher in the Rye. Before its publi cation, Salinger published several
         short stories in Story magazine

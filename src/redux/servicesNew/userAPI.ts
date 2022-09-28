@@ -15,6 +15,8 @@ export const userApi = createApi({
         headers: {
           'Content-type': 'application/json; charset=UTF-8',
         },
+        validateStatus: (response, result) =>
+          response.status === 200 && !result.isError, // Our tricky API always returns a 200, but sets an `isError` property when there is an error.
       }),
       invalidatesTags: ['Post'],
     }),

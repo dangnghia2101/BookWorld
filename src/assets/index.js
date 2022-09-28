@@ -6,6 +6,7 @@ const icons = {
   google: require('./icons/google.png'),
   star_happy: require('./icons/star_happy.png'),
   star_sad: require('./icons/star_sad.png'),
+  logo: require('./icons/logo.png'),
 };
 
 const images = {
@@ -23,4 +24,4 @@ const fonts = {
   FiraSansBold: require('./fonts/FiraSans-SemiBold.ttf'),
 };
 
-export {icons, images, lotties, fonts};
+export { icons, images, lotties, fonts };

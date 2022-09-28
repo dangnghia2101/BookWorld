@@ -7,13 +7,13 @@ import React from 'react';
 import { routes } from '@navigation/routes';
 import { makeStyles, useTheme } from 'themeNew';
 import { withNamespaces } from 'react-i18next';
+import { useAppSelector } from '@hooks';
 
 const ItemAuthor = ({ item, t }) => {
+  const navigation = useNavigation();
   const themeStore = useAppSelector(state => state.root.themeApp.theme);
   const theme = useTheme(themeStore);
-  const styles = useStyle(themeStore);
 
-  const navigation = useNavigation();
   return (
     <TouchableOpacity
       onPress={() => navigation.navigate(routes.DETAIL_AUTHOR_MY_AP)}>
@@ -87,13 +87,13 @@ const ItemAuthor = ({ item, t }) => {
 
 export default withNamespaces()(ItemAuthor);
 
-const useStyle = makeStyles()(({ normalize, colors }) => ({
+const styles = StyleSheet.create({
   totalRead: {
+    color: '#19191B',
     fontSize: 16,
     marginTop: 3,
     lineHeight: 21,
     fontWeight: '900',
-    color: colors.textInBox,
   },
   textQuantity: {
     fontWeight: '500',
@@ -103,14 +103,13 @@ const useStyle = makeStyles()(({ normalize, colors }) => ({
     marginTop: 14,
     marginLeft: 11,
     width: 122,
-    color: colors.textInBox,
   },
   totalRate: {
     fontWeight: '400',
     fontSize: 14,
     lineHeight: 21,
+    color: '#19191B',
     marginLeft: 3.21,
-    color: colors.textInBox,
   },
   textRate: {
     marginTop: 17,
@@ -118,19 +117,18 @@ const useStyle = makeStyles()(({ normalize, colors }) => ({
     fontWeight: '500',
     fontSize: 12,
     lineHeight: 15,
-    color: colors.textInBox,
   },
   nameAuthor: {
     marginTop: 11,
     marginLeft: 22,
     fontWeight: '600',
     lineHeight: 21,
-    color: colors.textInBox,
+    color: '#19191B',
   },
   textName: {
     marginTop: 22,
     marginLeft: 22,
-    color: colors.textInBox,
+    color: '#464444',
     fontWeight: '500',
     fontSize: 12,
     lineHeight: 15,
@@ -141,4 +139,4 @@ const useStyle = makeStyles()(({ normalize, colors }) => ({
     borderRadius: 40,
     margin: 7,
   },
-}));
+});

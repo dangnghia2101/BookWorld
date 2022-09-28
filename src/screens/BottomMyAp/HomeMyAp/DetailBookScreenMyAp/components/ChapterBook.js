@@ -6,12 +6,10 @@ import { useNavigation } from '@react-navigation/native';
 import { routes } from '@navigation/routes';
 import { makeStyles, useTheme } from 'themeNew';
 import { useAppSelector } from '@hooks';
-
 const ChapterBook = ({ detailBook }) => {
   const navigation = useNavigation();
   const themeStore = useAppSelector(state => state.root.themeApp.theme);
   const themeNew = useTheme(themeStore);
-
   return (
     <Block marginHorizontal={10}>
       <Text

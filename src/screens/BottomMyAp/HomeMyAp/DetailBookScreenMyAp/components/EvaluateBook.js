@@ -1,8 +1,8 @@
-import { Image, StyleSheet, TextInput, Dimensions } from 'react-native';
-import { Block, Text, Button } from '@components';
-import React, { useState } from 'react';
-import { theme } from '@theme';
-import { icons } from '@assets';
+import {Image, StyleSheet, TextInput, Dimensions} from 'react-native';
+import {Block, Text, Button} from '@components';
+import React, {useState} from 'react';
+import {theme} from '@theme';
+import {icons} from '@assets';
 import ItemComment from './ItemComment';
 import * as Progress from 'react-native-progress';
 import Icon from '@components/Icon';
@@ -41,7 +41,7 @@ const _renderStar = num => {
   return star;
 };
 
-const EvaluateBook = ({ }) => {
+const EvaluateBook = ({}) => {
   const [evaluate, setEvaluate] = useState(0);
   const [comment, setComment] = useState('');
   return (

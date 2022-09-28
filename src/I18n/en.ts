@@ -23,9 +23,4 @@ export default {
     TRT: 'Detective',
     CK: 'Cook',
   },
-  tabReadingnName:{
-    reading:'Reading',
-    favoriteBook:'Favorite book',
-    favoriteAuthor: 'Favorite author'
-  }
 };

@@ -23,9 +23,4 @@ export default {
     TRT: 'Trinh thám',
     CK: 'Nấu ăn',
   },
-  tabReadingnName:{
-    reading:'Sách đang đọc',
-    favoriteBook:'Sách yêu thích',
-    favoriteAuthor: 'Tác giả yêu thích'
-  }
 };

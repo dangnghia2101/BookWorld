@@ -5,7 +5,6 @@ import { theme } from '@theme';
 import Icon from '@components/Icon';
 import { makeStyles, useTheme } from 'themeNew';
 import { useAppSelector } from '@hooks';
-
 const widthPhone = Dimensions.get('window').width;
 
 const _renderStar = num => {

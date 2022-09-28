@@ -1,6 +1,6 @@
 import React, { useEffect, useCallback, useState } from 'react';
 import { Block, Text } from '@components';
-import { ScrollView, Animated, Platform, View, Image } from 'react-native';
+import { ScrollView, Animated, Platform, View, Image, LogBox } from 'react-native';
 import HeaderListBook from './components/HeaderListEvent';
 import { FlatList } from 'react-native-gesture-handler';
 import { width, height } from '@utils/responsive';
@@ -12,7 +12,7 @@ import { useAppSelector } from 'hooks';
 import { useGetAllBookQuery, useGetAllCategoryQuery } from '@redux/servicesNew';
 import { makeStyles, useTheme } from 'themeNew';
 import { withNamespaces } from 'react-i18next';
-
+LogBox.ignoreAllLogs();
 const ITEM_WITH = width * 0.6;
 
 const widthItemEventIncoming = width - width / 3;
