@@ -26,7 +26,7 @@ export default function MainContainer() {
           barStyle="dark-content"
           backgroundColor="transparent"
         />
-        {!isLoginSelector ? <Auth /> : <BottomTabMyAp />}
+        {isLoginSelector ? <Auth /> : <BottomTabMyAp />}
       </NavigationContainer>
     </>
   );

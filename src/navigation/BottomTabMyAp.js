@@ -227,8 +227,9 @@ const BottomTabMyAp = () => {
         component={bottom.CHAT_MY_AP}
         options={{
           tabBarLabel: 'Nhắn tin',
-          tabBarIcon: 'chat-outline',
+          tabBarIcon: 'chat',
           tabBarStyle: {display: 'none'},
+          component: 'MaterialIcons',
         }}
       />
 
