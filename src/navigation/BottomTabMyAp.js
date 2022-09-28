@@ -1,25 +1,24 @@
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 // import actions from '@redux/actions';
 // import { bottom } from '@screens/Bottom';
-import { bottom } from '../screens/BottomMyAp';
-import React, { useEffect, useState } from 'react';
+import {bottom} from '../screens/BottomMyAp';
+import React, {useEffect, useState} from 'react';
 import CustomTabar from './CustomTabar';
 // import {useDispatch, useSelector} from 'react-redux';
-import { routes } from './routes';
+import {routes} from './routes';
 import IconView from '@components/Icon';
-import { View, Text, StyleSheet } from 'react-native';
+import {View, Text, StyleSheet} from 'react-native';
 import Tabbar from '@mindinventory/react-native-tab-bar-interaction';
 import HomeScreenMyAp from '@screens/BottomMyAp/HomeMyAp/HomeScreenMyAp';
-import { createStackNavigator } from '@react-navigation/stack';
-import { useNavigation } from '@react-navigation/native';
-import { theme } from '@theme';
+import {createStackNavigator} from '@react-navigation/stack';
+import {useNavigation} from '@react-navigation/native';
+import {theme} from '@theme';
 
 const Stack = createStackNavigator();
 
 const screenOptionStyle = {
   headerShown: false,
 };
-
 const Tab = createBottomTabNavigator();
 
 const styles = StyleSheet.create({
@@ -45,7 +44,7 @@ const activeHome = isPlay => {
         },
       ]}>
       <IconView
-        component={'MaterialCommunityIcons'}
+        component={'MaterialIcons'}
         name={'home'}
         size={25}
         color={isPlay ? 'white' : 'black'}
@@ -64,7 +63,7 @@ const activeStore = isPlay => {
         },
       ]}>
       <IconView
-        component={'MaterialCommunityIcons'}
+        component={'MaterialIcons'}
         name={'book-open-page-variant-outline'}
         size={25}
         color={isPlay ? 'white' : 'black'}
@@ -83,8 +82,8 @@ const activeChat = isPlay => {
         },
       ]}>
       <IconView
-        component={'MaterialCommunityIcons'}
-        name={'chat-outline'}
+        component={'MaterialIcons'}
+        name={'chat'}
         size={25}
         color={isPlay ? 'white' : 'black'}
       />
@@ -102,8 +101,8 @@ const activeSetting = isPlay => {
         },
       ]}>
       <IconView
-        component={'MaterialCommunityIcons'}
-        name={'account-outline'}
+        component={'MaterialIcons'}
+        name={'settings'}
         size={25}
         color={isPlay ? 'white' : 'black'}
       />
@@ -137,7 +136,6 @@ const tabData = [
   //   key: 4,
   // },
 ];
-
 const BottomTabMyAp = () => {
   // const dispatch = useDispatch();
   // const res = useSelector(state => state.notificationPrivateNotRead);
@@ -202,7 +200,7 @@ const BottomTabMyAp = () => {
 
   return (
     <Tab.Navigator
-      screenOptions={{ headerShown: false }}
+      screenOptions={{headerShown: false}}
       tabBar={props => <CustomTabar {...props} />}>
       <Tab.Screen
         name={routes.HOME_MY_AP}
@@ -210,6 +208,7 @@ const BottomTabMyAp = () => {
         options={{
           tabBarLabel: 'Trang chủ',
           tabBarIcon: 'home',
+          component: 'AntDesign',
         }}
       />
 
@@ -218,7 +217,8 @@ const BottomTabMyAp = () => {
         component={bottom.READING_MY_APP}
         options={{
           tabBarLabel: 'Đang đọc',
-          tabBarIcon: 'book-open-page-variant-outline',
+          tabBarIcon: 'book-open-variant',
+          component: 'MaterialCommunityIcons',
         }}
       />
 
@@ -227,8 +227,9 @@ const BottomTabMyAp = () => {
         component={bottom.CHAT_MY_AP}
         options={{
           tabBarLabel: 'Nhắn tin',
-          tabBarIcon: 'chat-outline',
-          tabBarStyle: { display: 'none' },
+          tabBarIcon: 'chat',
+          tabBarStyle: {display: 'none'},
+          component: 'MaterialIcons',
         }}
       />
 
@@ -237,7 +238,8 @@ const BottomTabMyAp = () => {
         component={bottom.MORE_MY_APP}
         options={{
           tabBarLabel: 'Cài đặt',
-          tabBarIcon: 'account-outline',
+          tabBarIcon: 'ios-settings-outline',
+          component: 'Ionicons',
         }}
       />
     </Tab.Navigator>
