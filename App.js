@@ -6,6 +6,7 @@ import { Provider } from 'react-redux';
 import { Loading } from '@components';
 import { PersistGate } from 'redux-persist/lib/integration/react';
 import { persistor, store } from '@redux/storeNew';
+import { StripeProvider } from '@stripe/stripe-react-native';
 
 const App = () => {
   const fcm = useFCM();
@@ -27,8 +28,10 @@ const AppWrapper = () => {
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <SafeAreaProvider>
-          <App />
-          <Loading />
+          <StripeProvider publishableKey="pk_test_51LksFaBV28KdDJtD2M1w8WjYtDm8HGnb3KG4GGRPK31114970YssBRsc6KNft4I6iQSYC4U0DH89kODj2Lh82pUM00zEio45Oq">
+            <App />
+            <Loading />
+          </StripeProvider>
         </SafeAreaProvider>
       </PersistGate>
     </Provider>

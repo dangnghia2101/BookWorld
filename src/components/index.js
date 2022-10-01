@@ -23,6 +23,7 @@ import Button from './Button';
 import NoData from './NoData';
 import AnimatedImage from './AnimatedImage';
 import Evaluate from './Evaluate';
+import PaymentScreen from './Payment';
 
 export {
   HeaderNotiAndEvent,
@@ -36,6 +37,7 @@ export {
   AnimatedImage,
   Evaluate,
   ModalBox,
+  PaymentScreen,
   //   RadioButton,
   //   ModalBox,
   //   FormContainer,

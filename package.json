@@ -30,7 +30,7 @@
     "@react-navigation/native-stack": "^6.6.2",
     "@react-navigation/stack": "^6.2.1",
     "@reduxjs/toolkit": "^1.8.1",
-    "@stripe/stripe-react-native": "^0.19.0",
+    "@stripe/stripe-react-native": "^0.18.1",
     "appcenter": "^4.4.4",
     "appcenter-analytics": "^4.4.4",
     "appcenter-crashes": "^4.4.4",

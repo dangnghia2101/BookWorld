@@ -27,7 +27,7 @@ const defaultAuthState: AuthState = {
   image: '',
   bookmark: '',
   wallet: 0,
-  isLogin: true,
+  isLogin: false,
 };
 
 const authSlice = createSlice({
