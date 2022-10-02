@@ -1,5 +1,5 @@
-import {Block, Text, ModalBox} from '@components';
-import React, {useEffect, useState} from 'react';
+import { Block, Text, ModalBox } from '@components';
+import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
   Image,
@@ -8,19 +8,21 @@ import {
   TouchableOpacity,
   Modal,
 } from 'react-native';
-import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import messaging from '@react-native-firebase/messaging';
 import auth from '@react-native-firebase/auth';
-import {useLoginMutation} from '@redux/servicesNew';
-import {useAppDispatch} from 'hooks';
-import {useNavigation} from '@react-navigation/native';
-import {routes} from '@navigation/routes';
-import {loginReducer, changeLoading} from '@redux/reducerNew';
-import {icons} from '@assets';
+import { useLoginMutation } from '@redux/servicesNew';
+import { useAppDispatch } from 'hooks';
+import { useNavigation } from '@react-navigation/native';
+import { routes } from '@navigation/routes';
+import { loginReducer, changeLoading } from '@redux/reducerNew';
+import { icons } from '@assets';
 import IconView from '@components/Icon';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { PaymentScreen } from '@components';
+import { WebView } from 'react-native-webview';
 
-const ModalPoup = ({visible, children}) => {
+const ModalPoup = ({ visible, children }) => {
   const [showModal, setShowModal] = React.useState(visible);
   useEffect(() => {
     toggleModal();
@@ -48,7 +50,7 @@ const Login = () => {
   const [visible, setVisible] = useState(false);
   const [hide, setHide] = useState(true);
   const navigation = useNavigation();
-  const [login, {isLoading: isUpdating}] = useLoginMutation();
+  const [login, { isLoading: isUpdating }] = useLoginMutation();
   const dispatch = useAppDispatch();
   const [visibleModal, setVisibleModal] = useState(false);
   const HidePassword = () => {
@@ -106,7 +108,7 @@ const Login = () => {
     try {
       // Get the users ID token
       // await GoogleSignin.hasPlayServices();
-      const {idToken} = await GoogleSignin.signIn();
+      const { idToken } = await GoogleSignin.signIn();
       // get fcm token
       const fcmToken = await getToken();
 
@@ -128,7 +130,6 @@ const Login = () => {
       token: token,
       token_fcm: fcmToken,
     };
-    // dispatch({ type: 'LOGIN', body: body });
     const dataLogin = await login(body);
     if (dataLogin?.error?.data?.error) {
       setVisibleModal(true);
@@ -159,18 +160,20 @@ const Login = () => {
           placeholder={'Mật khẩu'}
           style={styles.textInput2}
         />
-        {hide == true ? (
+        {hide === true ? (
           <MaterialCommunityIcons
             name={'eye-off-outline'}
             size={25}
             style={styles.hide}
-            onPress={() => HidePassword()}></MaterialCommunityIcons>
+            onPress={() => HidePassword()}
+          />
         ) : (
           <MaterialCommunityIcons
             name={'eye-outline'}
             size={25}
             style={styles.hide}
-            onPress={() => HidePassword()}></MaterialCommunityIcons>
+            onPress={() => HidePassword()}
+          />
         )}
       </Block>
       <Text
