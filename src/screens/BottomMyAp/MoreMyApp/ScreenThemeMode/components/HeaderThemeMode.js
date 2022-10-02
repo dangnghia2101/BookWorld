@@ -6,13 +6,21 @@ import {theme} from '@theme';
 import {routes} from '@navigation/routes';
 import {useNavigation} from '@react-navigation/native';
 import IconView from '@components/Icon';
+import {makeStyles, useTheme} from 'themeNew';
+import {useAppSelector, useAppDispatch} from '@hooks';
+import {changeTheme, changeLanguage} from '@redux/reducerNew';
+import {withNamespaces} from 'react-i18next';
 
-const {colors} = theme;
+const HeaderThemeMode = props => {
+  const {t} = props;
+  const themeStore = useAppSelector(state => state.root.themeApp.theme);
+  const themeNew = useTheme(themeStore);
+  const styles = useStyle(props, themeStore);
 
-const HeaderThemeMode = ({title, action, titleAction}) => {
   const navigation = useNavigation();
+
   return (
-    <Block height={100}>
+    <Block>
       <Block row style={styles.container}>
         <TouchableOpacity
           onPress={() => navigation.navigate(routes.SCREEN_EDIT_SETTINGS)}>
@@ -20,26 +28,26 @@ const HeaderThemeMode = ({title, action, titleAction}) => {
             component={'Ionicons'}
             name={'arrow-back'}
             size={30}
-            color={'black'}
+            color={themeNew.colors.textDark}
           />
         </TouchableOpacity>
-        <Text style={styles.titleSection}>{title}</Text>
+        <Text
+          fontType="bold"
+          size={22}
+          marginLeft={80}
+          color={themeNew.colors.textDark}>
+          {t('darkMode')}
+        </Text>
       </Block>
     </Block>
   );
 };
 
-export default HeaderThemeMode;
+export default withNamespaces()(HeaderThemeMode);
 
-const styles = StyleSheet.create({
+const useStyle = makeStyles()(({colors}) => ({
   container: {
-    left: 20,
-    top: 35,
+    paddingLeft: 20,
+    paddingTop: 35,
   },
-  titleSection: {
-    fontSize: 24,
-    color: colors.black,
-    fontWeight: 'bold',
-    left: 80,
-  },
-});
+}));

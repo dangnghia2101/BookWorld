@@ -4,7 +4,14 @@ import {Block, Text} from '@components';
 
 import {VictoryBar, VictoryChart, VictoryTheme} from 'victory-native';
 const screenWidth = Dimensions.get('window').width;
-const ChartMoreMy = () => {
+import {makeStyles, useTheme} from 'themeNew';
+import {withNamespaces} from 'react-i18next';
+import {useAppSelector, useAppDispatch} from '@hooks';
+
+const ChartMoreMy = props => {
+  const themeStore = useAppSelector(state => state.root.themeApp.theme);
+  const themeNew = useTheme(themeStore);
+  const styles = useStyle(props, themeStore);
   const data = [
     {
       month: 'January',
@@ -99,13 +106,13 @@ const ChartMoreMy = () => {
         justifyContent={'space-between'}
         marginHorizontal={15}>
         <TouchableOpacity style={styles.itemChartContainer}>
-          <Text>Ngày</Text>
+          <Text color={themeNew.colors.textDark}>Ngày</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.itemChartContainer}>
-          <Text>Tháng</Text>
+          <Text color={themeNew.colors.textDark}>Tháng</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.itemChartContainer}>
-          <Text>Năm</Text>
+          <Text color={themeNew.colors.textDark}>Năm</Text>
         </TouchableOpacity>
       </Block>
 
@@ -127,16 +134,16 @@ const ChartMoreMy = () => {
   );
 };
 
-export default ChartMoreMy;
+export default withNamespaces()(ChartMoreMy);
 
-const styles = StyleSheet.create({
+const useStyle = makeStyles()(({colors}) => ({
   dateContainer: {},
   itemChartContainer: {
     width: 118,
     height: 32,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.backgroundDark2,
     borderRadius: 6,
     justifyContent: 'center',
     alignItems: 'center',
   },
-});
+}));

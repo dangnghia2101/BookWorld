@@ -1,31 +1,39 @@
 import {Block, Text} from '@components';
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
+import {makeStyles, useTheme} from 'themeNew';
+import {withNamespaces} from 'react-i18next';
+import {useAppSelector, useAppDispatch} from '@hooks';
 
-const ItemMoreMy = () => {
+const ItemMoreMy = props => {
+  const themeStore = useAppSelector(state => state.root.themeApp.theme);
+  const themeNew = useTheme(themeStore);
+  const styles = useStyle(props, themeStore);
   return (
     <Block
       marginHorizontal={25}
-      marginTop={200}
+      marginTop={220}
       row
       justifyContent={'space-between'}>
       <View style={styles.dataContainer}>
-        <Text center marginTop={10}>
+        <Text center marginTop={10} color={themeNew.colors.textDark}>
           Tổng thời gian đọc
         </Text>
         <View style={styles.textDataContainer}>
-          <Text style={styles.textData} center>
+          <Text size={40} center color={themeNew.colors.textDark}>
             1280
           </Text>
         </View>
-        <Text center>phút</Text>
+        <Text center color={themeNew.colors.textDark}>
+          phút
+        </Text>
       </View>
       <View style={styles.dataContainer}>
-        <Text center marginTop={10}>
+        <Text center marginTop={10} color={themeNew.colors.textDark}>
           Số sách đã đọc
         </Text>
         <View style={styles.textDataContainer}>
-          <Text style={styles.textData} center>
+          <Text size={40} center color={themeNew.colors.textDark}>
             23
           </Text>
         </View>
@@ -34,11 +42,11 @@ const ItemMoreMy = () => {
   );
 };
 
-export default ItemMoreMy;
+export default withNamespaces()(ItemMoreMy);
 
-const styles = StyleSheet.create({
+const useStyle = makeStyles()(({colors}) => ({
   dataContainer: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.backgroundDark2,
     borderRadius: 20,
     width: 171,
     height: 150,
@@ -48,7 +56,4 @@ const styles = StyleSheet.create({
     height: 90,
     justifyContent: 'center',
   },
-  textData: {
-    fontSize: 40,
-  },
-});
+}));

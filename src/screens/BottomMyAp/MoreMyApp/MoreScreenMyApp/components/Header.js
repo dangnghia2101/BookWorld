@@ -1,22 +1,29 @@
 import {Block, Text} from '@components';
 import React from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {theme} from '@theme';
 import IconView from '@components/Icon';
 
 import {routes} from '@navigation/routes';
 import {useNavigation} from '@react-navigation/native';
+import {makeStyles, useTheme} from 'themeNew';
+import {useAppSelector, useAppDispatch} from '@hooks';
+import {withNamespaces} from 'react-i18next';
 
-const {colors} = theme;
-
-const Header = ({title, action, titleAction}) => {
+const Header = props => {
   const navigation = useNavigation();
+  const {t} = props;
+
+  const themeStore = useAppSelector(state => state.root.themeApp.theme);
+  const themeNew = useTheme(themeStore);
+  const styles = useStyle(props, themeStore);
 
   return (
-    <Block height={200} backgroundColor={'#FF7D54'}>
+    <Block height={200} backgroundColor={themeNew.colors.primary}>
       <Block row style={[styles.container]}>
         <View style={styles.titleContainer}>
-          <Text style={styles.titleSection}>{title}</Text>
+          <Text size={22} color={themeNew.colors.white} fontType={'bold'}>
+            {t('profile')}
+          </Text>
         </View>
         <TouchableOpacity
           style={styles.editContainer}
@@ -25,7 +32,7 @@ const Header = ({title, action, titleAction}) => {
             component={'Ionicons'}
             name={'settings-sharp'}
             size={25}
-            color={'black'}
+            color={themeNew.colors.white}
           />
         </TouchableOpacity>
       </Block>
@@ -33,7 +40,9 @@ const Header = ({title, action, titleAction}) => {
   );
 };
 
-const styles = StyleSheet.create({
+export default withNamespaces()(Header);
+
+const useStyle = makeStyles()(({colors}) => ({
   container: {
     position: 'absolute',
     left: 20,
@@ -43,11 +52,6 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  titleSection: {
-    fontSize: 24,
-    color: colors.white,
-    fontWeight: 'bold',
   },
   editContainer: {
     position: 'absolute',
@@ -60,6 +64,4 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     right: 40,
   },
-});
-
-export default Header;
+}));

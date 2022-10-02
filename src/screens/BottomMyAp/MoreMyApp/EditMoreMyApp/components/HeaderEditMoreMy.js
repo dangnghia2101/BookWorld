@@ -1,18 +1,25 @@
 import {Block, Text} from '@components';
 import React from 'react';
 import {StyleSheet, TouchableOpacity} from 'react-native';
-import {theme} from '@theme';
 
 import {routes} from '@navigation/routes';
 import {useNavigation} from '@react-navigation/native';
 import IconView from '@components/Icon';
 
-const {colors} = theme;
+import {makeStyles, useTheme} from 'themeNew';
+import {useAppSelector, useAppDispatch} from '@hooks';
+import {withNamespaces} from 'react-i18next';
 
-const HeaderEditMoreMy = ({title, action, titleAction}) => {
+const HeaderEditMoreMy = props => {
   const navigation = useNavigation();
+  const {t} = props;
+
+  const themeStore = useAppSelector(state => state.root.themeApp.theme);
+  const themeNew = useTheme(themeStore);
+  const styles = useStyle(props, themeStore);
+
   return (
-    <Block height={200} backgroundColor={'#FF7D54'}>
+    <Block height={200} backgroundColor={themeNew.colors.primary}>
       <Block row style={styles.container}>
         <TouchableOpacity
           onPress={() => navigation.navigate(routes.SCREEN_SETTINGS)}>
@@ -20,18 +27,24 @@ const HeaderEditMoreMy = ({title, action, titleAction}) => {
             component={'Ionicons'}
             name={'arrow-back'}
             size={30}
-            color={'white'}
+            color={themeNew.colors.white}
           />
         </TouchableOpacity>
-        <Text style={styles.titleSection}>{title}</Text>
+        <Text
+          size={24}
+          fontType={'bold'}
+          color={themeNew.colors.white}
+          marginLeft={80}>
+          {t('profile')}
+        </Text>
       </Block>
     </Block>
   );
 };
 
-export default HeaderEditMoreMy;
+export default withNamespaces()(HeaderEditMoreMy);
 
-const styles = StyleSheet.create({
+const useStyle = makeStyles()(({colors}) => ({
   container: {
     left: 20,
     top: 35,
@@ -42,4 +55,4 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     left: 80,
   },
-});
+}));

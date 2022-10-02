@@ -5,18 +5,23 @@ import {ScrollView} from 'react-native';
 import ItemEditLastMoreMy from './components/ItemEditLastMoreMy';
 import ItemEditMoreMy from './components/ItemEditMoreMy';
 import BodyEditMoreMy from './components/BodyEditMoreMy';
-import {useDispatch, useSelector} from 'react-redux';
 
-const MoreMyApp = () => {
-  const myInfo = useSelector(state => state.login.data);
+import {useAppSelector} from 'hooks';
+import {makeStyles, useTheme} from 'themeNew';
+
+const MoreMyApp = props => {
+  const myInfo = useAppSelector(state => state.root.auth);
+  const themeStore = useAppSelector(state => state.root.themeApp.theme);
+  const themeNew = useTheme(themeStore);
+
   return (
-    <Block flex justifyCenter>
+    <Block flex justifyCenter backgroundColor={themeNew.colors.text}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <HeaderEditMoreMy title={'Hồ sơ của bạn'} />
+        <HeaderEditMoreMy />
         <BodyEditMoreMy
-          name={myInfo?.account?.name}
-          image={myInfo?.account?.image}
-          email={myInfo?.account?.email}
+          name={myInfo?.name}
+          image={myInfo?.image}
+          email={myInfo?.email}
         />
         <ItemEditMoreMy />
         <ItemEditLastMoreMy />

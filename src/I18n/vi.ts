@@ -5,6 +5,13 @@ export default {
   view: 'Lượt xem',
   readBook: 'Đọc sách',
   listenBook: 'Nghe sách',
+  language: 'Ngôn ngữ',
+  darkMode: 'Giao diện tối',
+  on: 'Bật',
+  off: 'Tắt',
+  system: 'Hệ thống',
+  profile: 'Hồ sơ của bạn',
+  rank: 'Bảng xếp hạng',
   categories: {
     TT: 'Ảo tưởng',
     HD: 'Hành động',

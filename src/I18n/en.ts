@@ -5,6 +5,13 @@ export default {
   view: 'View',
   readBook: 'Read',
   listenBook: 'Listening',
+  language: 'Language',
+  darkMode: 'Dark mode',
+  on: 'On',
+  off: 'Off',
+  system: 'System',
+  profile: 'Profile',
+  rank: 'Rank',
   categories: {
     TT: 'Illusion',
     HD: 'Venturos',
