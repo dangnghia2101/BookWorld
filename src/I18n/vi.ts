@@ -12,6 +12,12 @@ export default {
   system: 'Hệ thống',
   profile: 'Hồ sơ của bạn',
   rank: 'Bảng xếp hạng',
+  introduceText:'Giới thiệu về tác giả',
+  overview:'Tổng quan',
+  textNameAuthor:"Tên tác giả",
+  texQuantity:'Số lượng sách xuất bản',
+  textRating: 'Đánh giá',
+  textToltalRead:'Tổng lượt đọc',
   categories: {
     TT: 'Ảo tưởng',
     HD: 'Hành động',

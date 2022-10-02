@@ -1,18 +1,18 @@
-import { StyleSheet, Image, FlatList } from 'react-native';
+import {StyleSheet, Image, FlatList} from 'react-native';
 import React from 'react';
-import { useNavigation } from '@react-navigation/native';
-import { Block, Text } from '@components';
-import { theme } from '@theme';
+import {useNavigation} from '@react-navigation/native';
+import {Block, Text} from '@components';
+import {theme} from '@theme';
 
 const ListMyGroup = () => {
-  const { navigation } = useNavigation();
+  const {navigation} = useNavigation();
 
-  const renderItem = ({ item }) => {
-    const { name, avatar, newMessage, time, status } = item;
+  const renderItem = ({item}) => {
+    const {name, avatar, newMessage, time, status} = item;
 
     return (
       <Block row marginTop={30}>
-        <Image style={styles.image} source={{ uri: avatar }} resizeMode="cover" />
+        <Image style={styles.image} source={{uri: avatar}} resizeMode="cover" />
         <Block marginHorizontal={20} marginTop={10} width={'55%'}>
           <Text size={16} fontType={'bold'}>
             {name}

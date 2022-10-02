@@ -12,6 +12,12 @@ export default {
   system: 'System',
   profile: 'Profile',
   rank: 'Rank',
+  introduceText:'About the author',
+  overview:'overview',
+  textNameAuthor:"Author's name",
+  texQuantity:'number of books published',
+  textRating: 'Rating',
+  textToltalRead:'total reads',
   categories: {
     TT: 'Illusion',
     HD: 'Venturos',

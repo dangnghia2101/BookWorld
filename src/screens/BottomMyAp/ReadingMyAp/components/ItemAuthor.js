@@ -5,9 +5,15 @@ import Icon from '@components/Icon';
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { routes } from '@navigation/routes';
+import { makeStyles, useTheme } from 'themeNew';
+import { withNamespaces } from 'react-i18next';
+import { useAppSelector } from '@hooks';
 
-const ItemAuthor = ({ item }) => {
+const ItemAuthor = ({ item, t }) => {
   const navigation = useNavigation();
+  const themeStore = useAppSelector(state => state.root.themeApp.theme);
+  const theme = useTheme(themeStore);
+
   return (
     <TouchableOpacity
       onPress={() => navigation.navigate(routes.DETAIL_AUTHOR_MY_AP)}>
@@ -21,9 +27,9 @@ const ItemAuthor = ({ item }) => {
           row
           top={50}>
           <Block width="50%" height="100%">
-            <Text style={styles.textName}>Tên tác giả</Text>
+            <Text style={styles.textName}>{t('textNameAuthor')}</Text>
             <Text style={styles.nameAuthor}>{item.name}</Text>
-            <Text style={styles.textRate}>Tên tác giả</Text>
+            <Text style={styles.textRate}>{t('textRating')}</Text>
             <Block row marginLeft={22} marginTop={5}>
               <Icon
                 component={'AntDesign'}
@@ -55,10 +61,10 @@ const ItemAuthor = ({ item }) => {
 
           <Block width="50%" height="100%" alignCenter>
             <Text numberOfLines={2} style={styles.textQuantity}>
-              Số lượng sách xuất bản
+              {t('texQuantity')}
             </Text>
             <Text style={styles.totalRead}>23</Text>
-            <Text style={styles.textName}>Tổng lượt đọc</Text>
+            <Text style={styles.textName}>{t('textToltalRead')}</Text>
             <Text style={styles.totalRead}>23</Text>
           </Block>
         </Block>
@@ -79,7 +85,7 @@ const ItemAuthor = ({ item }) => {
   );
 };
 
-export default ItemAuthor;
+export default withNamespaces()(ItemAuthor);
 
 const styles = StyleSheet.create({
   totalRead: {

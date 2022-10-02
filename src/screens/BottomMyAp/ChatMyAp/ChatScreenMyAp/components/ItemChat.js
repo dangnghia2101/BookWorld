@@ -11,7 +11,8 @@ const PADDING_ITEM = 15;
 const ItemChat = ({item}) => {
   const navigation = useNavigation();
   return (
-    <TouchableOpacity>
+    <TouchableOpacity
+      onPress={() => navigation.navigate(routes.DETAIL_GROUP_CHAT_MY_APP)}>
       <Block marginRight={PADDING_ITEM} row marginTop={20}>
         <Image
           style={styles.image}

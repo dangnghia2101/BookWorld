@@ -1,9 +1,9 @@
-import {Block, Text} from '@components';
-import {theme} from '@theme';
+import { Block, Text } from '@components';
+import { theme } from '@theme';
 import React from 'react';
-import {Image} from 'react-native';
-import {images} from '@assets';
-const NoData = ({title}) => {
+import { Image } from 'react-native';
+import { images } from '@assets';
+const NoData = ({ title }) => {
   return (
     <Block flex>
       <Block justifyCenter alignCenter flex>
