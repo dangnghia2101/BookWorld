@@ -24,7 +24,56 @@ const ItemEditMoreMy = props => {
           color={themeNew.colors.textDark}
           size={16}
           marginVertical={10}>
-          Cài đặt
+          {t('purchase')}
+        </Text>
+        <Block>
+          <Pressable
+            style={[styles.btnItem, styles.shadowColor]}
+            onPress={() => navigation.navigate(routes.PURCHASE_HISTORY)}>
+            <Block
+              marginHorizontal={10}
+              backgroundColor={'#00000020'}
+              width={40}
+              height={40}
+              alignCenter
+              justifyContent="center"
+              borderRadius={10}>
+              <Block>
+                <IconView
+                  component={'Ionicons'}
+                  name={'settings'}
+                  size={25}
+                  color={'#33CCFF'}
+                />
+              </Block>
+            </Block>
+            <Block column absolute marginLeft={60}>
+              <Text
+                fontType={'bold'}
+                color={themeNew.colors.textDark}
+                size={16}>
+                Lịch sử mua hàng
+              </Text>
+              <Text color={themeNew.colors.textDark} size={12}>
+                Xem thông tin mua hàng
+              </Text>
+            </Block>
+            <Block style={styles.iconItemMoreMy}>
+              <IconView
+                component={'AntDesigns'}
+                name={'right'}
+                size={15}
+                color={themeNew.colors.textDark}
+              />
+            </Block>
+          </Pressable>
+        </Block>
+        <Text
+          fontType={'bold'}
+          color={themeNew.colors.textDark}
+          size={16}
+          marginVertical={10}>
+          {t('settings')}
         </Text>
         <Block>
           <Pressable style={[styles.btnItem, styles.shadowColor]}>

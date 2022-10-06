@@ -36,7 +36,7 @@ const ItemEditLastMoreMy = props => {
         onPress={handleLogOut}
         style={[styles.buttonLastMoreMy, styles.shadowColor]}>
         <Text color={themeNew.colors.white} size={16}>
-          Đăng xuất
+          {t('logout')}
         </Text>
       </Pressable>
     </Block>

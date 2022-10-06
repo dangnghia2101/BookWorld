@@ -15,7 +15,7 @@ const ItemMoreMy = props => {
       marginTop={220}
       row
       justifyContent={'space-between'}>
-      <View style={styles.dataContainer}>
+      <View style={[styles.dataContainer, styles.shadowColor]}>
         <Text center marginTop={10} color={themeNew.colors.textDark}>
           Tổng thời gian đọc
         </Text>
@@ -28,7 +28,7 @@ const ItemMoreMy = props => {
           phút
         </Text>
       </View>
-      <View style={styles.dataContainer}>
+      <View style={[styles.dataContainer, styles.shadowColor]}>
         <Text center marginTop={10} color={themeNew.colors.textDark}>
           Số sách đã đọc
         </Text>
@@ -55,5 +55,15 @@ const useStyle = makeStyles()(({colors}) => ({
   textDataContainer: {
     height: 90,
     justifyContent: 'center',
+  },
+  shadowColor: {
+    shadowColor: colors.shadowDark,
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 1.27,
+    shadowRadius: 4.65,
+    elevation: 6,
   },
 }));

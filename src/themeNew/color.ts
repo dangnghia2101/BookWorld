@@ -103,7 +103,7 @@ export const colors = {
     textDark: '#000000',
     backgroundDark: '#000000',
     backgroundDark2: '#FFFFFF',
-    shadowDark: '#FFFFFF',
+    shadowDark: '#242424',
     textInBox: '#242424',
     backgroundErrorText: '#FFF8F8',
     green: '#29BF6F',

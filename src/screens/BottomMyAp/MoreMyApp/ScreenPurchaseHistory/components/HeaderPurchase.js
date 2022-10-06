@@ -1,39 +1,37 @@
 import {Block, Text} from '@components';
 import React from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import {theme} from '@theme';
 
 import {routes} from '@navigation/routes';
 import {useNavigation} from '@react-navigation/native';
 import IconView from '@components/Icon';
-
 import {makeStyles, useTheme} from 'themeNew';
 import {useAppSelector, useAppDispatch} from '@hooks';
 import {withNamespaces} from 'react-i18next';
 
-const HeaderEditMoreMy = props => {
-  const navigation = useNavigation();
+const HeaderPurchase = props => {
   const {t} = props;
+  const navigation = useNavigation();
 
   const themeStore = useAppSelector(state => state.root.themeApp.theme);
   const themeNew = useTheme(themeStore);
-  const styles = useStyle(props, themeStore);
-
   return (
-    <Block height={200} backgroundColor={themeNew.colors.primary}>
+    <Block>
       <Block row style={styles.container}>
         <TouchableOpacity
           style={styles.editContainer}
-          onPress={() => navigation.navigate(routes.SCREEN_SETTINGS)}>
+          onPress={() => navigation.navigate(routes.SCREEN_EDIT_SETTINGS)}>
           <IconView
             component={'Ionicons'}
             name={'arrow-back'}
             size={30}
-            color={themeNew.colors.white}
+            color={themeNew.colors.textDark}
           />
         </TouchableOpacity>
         <View style={styles.titleContainer}>
-          <Text size={24} fontType={'bold'} color={themeNew.colors.white}>
-            {t('profile')}
+          <Text fontType="bold" size={22} color={themeNew.colors.textDark}>
+            {t('purchaseHistory')}
           </Text>
         </View>
       </Block>
@@ -41,9 +39,9 @@ const HeaderEditMoreMy = props => {
   );
 };
 
-export default withNamespaces()(HeaderEditMoreMy);
+export default withNamespaces()(HeaderPurchase);
 
-const useStyle = makeStyles()(({colors}) => ({
+const styles = StyleSheet.create({
   container: {
     paddingLeft: 20,
     paddingTop: 35,
@@ -60,4 +58,4 @@ const useStyle = makeStyles()(({colors}) => ({
     paddingLeft: 20,
     paddingTop: 35,
   },
-}));
+});

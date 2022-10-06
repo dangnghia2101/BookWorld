@@ -5,6 +5,7 @@ import MoreScreenMyApp from './MoreScreenMyApp';
 import EditMoreMyApp from './EditMoreMyApp';
 import ScreenThemeMode from './ScreenThemeMode';
 import ScreenChangeLanguage from './ScreenChangeLanguage';
+import ScreenPurchaseHistory from './ScreenPurchaseHistory';
 
 const Stack = createStackNavigator();
 
@@ -25,6 +26,10 @@ const MoreAppNavigator = () => {
       <Stack.Screen
         name={routes.CHANGE_LANGUAGE}
         component={ScreenChangeLanguage}
+      />
+      <Stack.Screen
+        name={routes.PURCHASE_HISTORY}
+        component={ScreenPurchaseHistory}
       />
     </Stack.Navigator>
   );

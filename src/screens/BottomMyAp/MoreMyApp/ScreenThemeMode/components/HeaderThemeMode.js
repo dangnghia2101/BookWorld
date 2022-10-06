@@ -1,14 +1,12 @@
 import {Block, Text} from '@components';
 import React from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {theme} from '@theme';
 
 import {routes} from '@navigation/routes';
 import {useNavigation} from '@react-navigation/native';
 import IconView from '@components/Icon';
 import {makeStyles, useTheme} from 'themeNew';
 import {useAppSelector, useAppDispatch} from '@hooks';
-import {changeTheme, changeLanguage} from '@redux/reducerNew';
 import {withNamespaces} from 'react-i18next';
 
 const HeaderThemeMode = props => {
@@ -23,6 +21,7 @@ const HeaderThemeMode = props => {
     <Block>
       <Block row style={styles.container}>
         <TouchableOpacity
+          style={styles.editContainer}
           onPress={() => navigation.navigate(routes.SCREEN_EDIT_SETTINGS)}>
           <IconView
             component={'Ionicons'}
@@ -31,13 +30,11 @@ const HeaderThemeMode = props => {
             color={themeNew.colors.textDark}
           />
         </TouchableOpacity>
-        <Text
-          fontType="bold"
-          size={22}
-          marginLeft={80}
-          color={themeNew.colors.textDark}>
-          {t('darkMode')}
-        </Text>
+        <View style={styles.titleContainer}>
+          <Text fontType="bold" size={22} color={themeNew.colors.textDark}>
+            {t('darkMode')}
+          </Text>
+        </View>
       </Block>
     </Block>
   );
@@ -47,6 +44,18 @@ export default withNamespaces()(HeaderThemeMode);
 
 const useStyle = makeStyles()(({colors}) => ({
   container: {
+    paddingLeft: 20,
+    paddingTop: 35,
+  },
+  titleContainer: {
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  editContainer: {
+    position: 'absolute',
+    justifyContent: 'center',
+    alignItems: 'center',
     paddingLeft: 20,
     paddingTop: 35,
   },
