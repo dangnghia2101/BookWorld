@@ -1,20 +1,21 @@
 import React from 'react';
 import {Block} from '@components';
 import {ScrollView} from 'react-native';
-import HeaderThemeMode from './components/HeaderThemeMode';
-import BodyThemeMode from './components/BodyThemoMode';
+import HeaderPurchase from './components/HeaderPurchase';
+import ChartPurchase from './components/ChartPurchase.';
+import BodyPurchaseHistory from './components/BodyPurchaseHistory';
 import {makeStyles, useTheme} from 'themeNew';
 import {useAppSelector, useAppDispatch} from '@hooks';
 
-const MoreMyApp = () => {
+const MoreMyApp = props => {
   const themeStore = useAppSelector(state => state.root.themeApp.theme);
   const themeNew = useTheme(themeStore);
-
   return (
     <Block flex justifyCenter backgroundColor={themeNew.colors.text}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <HeaderThemeMode />
-        <BodyThemeMode />
+        <HeaderPurchase />
+        <ChartPurchase />
+        <BodyPurchaseHistory />
       </ScrollView>
     </Block>
   );

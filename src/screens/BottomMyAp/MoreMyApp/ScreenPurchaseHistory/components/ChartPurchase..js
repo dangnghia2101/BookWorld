@@ -9,7 +9,7 @@ import {makeStyles, useTheme} from 'themeNew';
 import {withNamespaces} from 'react-i18next';
 import {useAppSelector, useAppDispatch} from '@hooks';
 
-const ChartMoreMy = props => {
+const ChartPurchase = props => {
   const {t} = props;
   const themeStore = useAppSelector(state => state.root.themeApp.theme);
   const themeNew = useTheme(themeStore);
@@ -139,7 +139,7 @@ const ChartMoreMy = props => {
   );
 };
 
-export default withNamespaces()(ChartMoreMy);
+export default withNamespaces()(ChartPurchase);
 
 const useStyle = makeStyles()(({colors}) => ({
   shadowColor: {

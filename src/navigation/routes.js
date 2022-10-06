@@ -29,6 +29,7 @@ export const routes = {
   SCREEN_PAYMENT: 'SCREEN_PAYMENT',
   THEME_MODE: 'THEME_MODE',
   CHANGE_LANGUAGE: 'CHANGE_LANGUAGE',
+  PURCHASE_HISTORY: 'PURCHASE_HISTORY',
 };
 
 export const APP_PREFIX = ['emotion://', 'https://emotion.com'];

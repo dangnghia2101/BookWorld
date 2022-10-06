@@ -1,45 +1,62 @@
 import {Block, Text} from '@components';
 import React from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {theme} from '@theme';
 
 import {routes} from '@navigation/routes';
 import {useNavigation} from '@react-navigation/native';
 import IconView from '@components/Icon';
+import {makeStyles, useTheme} from 'themeNew';
+import {useAppSelector, useAppDispatch} from '@hooks';
+import {withNamespaces} from 'react-i18next';
 
-const {colors} = theme;
+const HeaderThemeMode = props => {
+  const {t} = props;
+  const themeStore = useAppSelector(state => state.root.themeApp.theme);
+  const themeNew = useTheme(themeStore);
+  const styles = useStyle(props, themeStore);
 
-const HeaderThemeMode = ({title, action, titleAction}) => {
   const navigation = useNavigation();
+
   return (
-    <Block height={100}>
+    <Block>
       <Block row style={styles.container}>
         <TouchableOpacity
+          style={styles.editContainer}
           onPress={() => navigation.navigate(routes.SCREEN_EDIT_SETTINGS)}>
           <IconView
             component={'Ionicons'}
             name={'arrow-back'}
             size={30}
-            color={'black'}
+            color={themeNew.colors.textDark}
           />
         </TouchableOpacity>
-        <Text style={styles.titleSection}>{title}</Text>
+        <View style={styles.titleContainer}>
+          <Text fontType="bold" size={22} color={themeNew.colors.textDark}>
+            {t('darkMode')}
+          </Text>
+        </View>
       </Block>
     </Block>
   );
 };
 
-export default HeaderThemeMode;
+export default withNamespaces()(HeaderThemeMode);
 
-const styles = StyleSheet.create({
+const useStyle = makeStyles()(({colors}) => ({
   container: {
-    left: 20,
-    top: 35,
+    paddingLeft: 20,
+    paddingTop: 35,
   },
-  titleSection: {
-    fontSize: 24,
-    color: colors.black,
-    fontWeight: 'bold',
-    left: 80,
+  titleContainer: {
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-});
+  editContainer: {
+    position: 'absolute',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingLeft: 20,
+    paddingTop: 35,
+  },
+}));
