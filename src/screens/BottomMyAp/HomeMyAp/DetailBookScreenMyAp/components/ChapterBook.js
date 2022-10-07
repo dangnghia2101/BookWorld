@@ -6,7 +6,9 @@ import { useNavigation } from '@react-navigation/native';
 import { routes } from '@navigation/routes';
 import { makeStyles, useTheme } from 'themeNew';
 import { useAppSelector } from '@hooks';
-const ChapterBook = ({ detailBook }) => {
+import { withNamespaces } from 'react-i18next';
+
+const ChapterBook = ({ detailBook, t }) => {
   const navigation = useNavigation();
   const themeStore = useAppSelector(state => state.root.themeApp.theme);
   const themeNew = useTheme(themeStore);
@@ -17,7 +19,7 @@ const ChapterBook = ({ detailBook }) => {
         color={themeNew.colors.textInBox}
         fontType={'bold'}
         size={20}>
-        Tập
+        {t('episode')}
       </Text>
       <Block row width={'100%'} marginBottom={20} style={{ flexWrap: 'wrap' }}>
         {detailBook?.map((item, index) => (
@@ -47,4 +49,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ChapterBook;
+export default withNamespaces()(ChapterBook);

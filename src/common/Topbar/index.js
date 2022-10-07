@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import {Block} from '@components';
+import React, { useState, useEffect } from 'react';
+import { Block } from '@components';
 import {
   StyleSheet,
   TouchableOpacity,
@@ -7,15 +7,17 @@ import {
   NativeModules,
   Platform,
 } from 'react-native';
-import {theme} from '@theme';
+import { theme } from '@theme';
 import IconView from '@components/Icon';
-import {useNavigation, useRoute} from '@react-navigation/native';
-
-const Topbar = ({bookmark}) => {
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { makeStyles, useTheme } from 'themeNew';
+import { useAppSelector } from '@hooks';
+const Topbar = ({ bookmark }) => {
   const [paddingTop, setPaddingTop] = useState(0);
   const [height, setHeight] = useState(0);
   const navigation = useNavigation();
-
+  const themeStore = useAppSelector(state => state.root.themeApp.theme);
+  const themeNew = useTheme(themeStore);
   useEffect(() => {
     if (Platform.OS === 'ios') {
       NativeModules.StatusBarManager.getHeight(statusBarHeight => {
@@ -46,7 +48,7 @@ const Topbar = ({bookmark}) => {
             component={'MaterialIcons'}
             name="keyboard-backspace"
             size={30}
-            color={theme.colors.black}
+            color={themeNew.colors.textInBox}
           />
         </TouchableOpacity>
         {bookmark !== undefined && (

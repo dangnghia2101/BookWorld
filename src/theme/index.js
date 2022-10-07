@@ -1,4 +1,4 @@
-import {Platform} from 'react-native';
+import { Platform } from 'react-native';
 
 export const theme = {
   colors: {
@@ -41,6 +41,9 @@ export const theme = {
     darkPurple: '#331A45',
     buttomGroud: 'rgba(212, 85, 85, 0.2)',
     listColor: 'rgba(243, 243, 243, 1)',
+    pinkLight: '#FFCCCC',
+    pinkRed: '#D45555',
+    blurGray: '#F2F2F2',
   },
 
   dark: {

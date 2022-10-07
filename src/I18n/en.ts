@@ -5,12 +5,16 @@ export default {
   view: 'View',
   readBook: 'Read',
   listenBook: 'Listening',
+  //detaill book screen-------------------------------------------
   introduceText:'About the author',
   overview:'overview',
+  episode: 'Episode',
+  //favorite Author screen---------------------------------------
   textNameAuthor:"Author's name",
   texQuantity:'number of books published',
   textRating: 'Rating',
   textToltalRead:'total reads',
+  //----------------------------------------------------------
   categories: {
     TT: 'Illusion',
     HD: 'Venturos',

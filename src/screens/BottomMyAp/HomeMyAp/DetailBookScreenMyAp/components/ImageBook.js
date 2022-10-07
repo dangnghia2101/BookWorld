@@ -26,7 +26,7 @@ const ImageBook = ({ item }) => {
   const themeStore = useAppSelector(state => state.root.themeApp.theme);
   const themeNew = useTheme(themeStore);
   return (
-    <Block alignCenter>
+    <Block alignCenter backgroundColor={themeNew.colors.text}>
       <Image source={{ uri: item.item.image }} style={styles.image} />
       <Text fontType="bold" size={20} marginTop={10} color={themeNew.colors.textInBox}>
         {item.item.name}

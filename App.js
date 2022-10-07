@@ -7,7 +7,7 @@ import { Loading } from '@components';
 import { PersistGate } from 'redux-persist/lib/integration/react';
 import { persistor, store } from '@redux/storeNew';
 import { StripeProvider } from '@stripe/stripe-react-native';
-
+import ScreenUpdateProfile from '@screens/BottomMyAp/MoreMyApp/MoreScreenMyApp/components/ScreenUpdateProfile';
 const App = () => {
   const fcm = useFCM();
   useEffect(() => {
@@ -35,6 +35,7 @@ const AppWrapper = () => {
         </SafeAreaProvider>
       </PersistGate>
     </Provider>
+
   );
 };
 

@@ -5,8 +5,11 @@ export default {
   view: 'Lượt xem',
   readBook: 'Đọc sách',
   listenBook: 'Nghe sách',
+  //detaill book screen-------------------------------------------
   introduceText:'Giới thiệu về tác giả',
   overview:'Tổng quan',
+  episode: 'Tập',
+  //favorite Author screen---------------------------------------
   textNameAuthor:"Tên tác giả",
   texQuantity:'Số lượng sách xuất bản',
   textRating: 'Đánh giá',

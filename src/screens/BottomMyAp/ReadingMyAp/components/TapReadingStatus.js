@@ -1,5 +1,5 @@
 import { Block, Text } from '@components';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { theme } from '@theme';
 import { StyleSheet } from 'react-native';
 import { TabBar, TabView } from 'react-native-tab-view';

@@ -6,14 +6,14 @@ import ChartMoreMy from './components/ChartMoreMy';
 import BodyEditMoreMy from '../EditMoreMyApp/components/BodyEditMoreMy';
 import ItemMoreMy from './components/ItemMoreMy';
 import ItemLastMoreMy from './components/ItemLastMoreMy';
-import {useDispatch, useSelector} from 'react-redux';
-
+import { useDispatch, useSelector } from 'react-redux';
+import { useAppSelector } from 'hooks';
 const MoreMyApp = () => {
   const myInfo = useSelector(state => state.login.data);
   return (
     <Block flex justifyCenter>
       <ScrollView showsVerticalScrollIndicator={false}>
-       
+
         <Header title={'Hồ sơ của bạn'} />
         <BodyEditMoreMy
           name={myInfo?.account?.name}

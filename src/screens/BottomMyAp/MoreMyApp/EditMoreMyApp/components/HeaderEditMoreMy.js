@@ -1,15 +1,15 @@
-import {Block, Text} from '@components';
+import { Block, Text } from '@components';
 import React from 'react';
-import {StyleSheet, TouchableOpacity} from 'react-native';
-import {theme} from '@theme';
+import { StyleSheet, TouchableOpacity } from 'react-native';
+import { theme } from '@theme';
 
-import {routes} from '@navigation/routes';
-import {useNavigation} from '@react-navigation/native';
+import { routes } from '@navigation/routes';
+import { useNavigation } from '@react-navigation/native';
 import IconView from '@components/Icon';
 
-const {colors} = theme;
+const { colors } = theme;
 
-const HeaderEditMoreMy = ({title, action, titleAction}) => {
+const HeaderEditMoreMy = ({ title, action, titleAction }) => {
   const navigation = useNavigation();
   return (
     <Block height={200} backgroundColor={'#FF7D54'}>
