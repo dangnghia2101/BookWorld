@@ -4,12 +4,21 @@ import {StyleSheet, Pressable} from 'react-native';
 import {useDispatch} from 'react-redux';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import actions from '@redux/actions';
+import {makeStyles, useTheme} from 'themeNew';
+import {useAppSelector, useAppDispatch} from '@hooks';
+import {withNamespaces} from 'react-i18next';
 
-const ItemEditLastMoreMy = () => {
+const ItemEditLastMoreMy = props => {
   GoogleSignin.configure({
     webClientId:
       '1078600024718-r4kttklrp4av6li4mqs9b5ctnhbm6aob.apps.googleusercontent.com',
   });
+
+  const {t} = props;
+
+  const themeStore = useAppSelector(state => state.root.themeApp.theme);
+  const themeNew = useTheme(themeStore);
+  const styles = useStyle(props, themeStore);
 
   const dispatch = useDispatch();
   const handleLogOut = async () => {
@@ -22,25 +31,26 @@ const ItemEditLastMoreMy = () => {
   };
 
   return (
-    <Block marginHorizontal={40} marginVertical={100} top={80}>
+    <Block marginHorizontal={30} marginTop={250}>
       <Pressable
         onPress={handleLogOut}
         style={[styles.buttonLastMoreMy, styles.shadowColor]}>
-        <Text style={styles.text2}>Đăng xuất</Text>
+        <Text color={themeNew.colors.white} size={16}>
+          {t('logout')}
+        </Text>
       </Pressable>
     </Block>
   );
 };
 
-export default ItemEditLastMoreMy;
+export default withNamespaces()(ItemEditLastMoreMy);
 
-const styles = StyleSheet.create({
+const useStyle = makeStyles()(({colors}) => ({
   buttonLastMoreMy: {
     width: '100%',
     height: 60,
     flexDirection: 'row',
-    marginTop: 100,
-    backgroundColor: '#D45555',
+    backgroundColor: colors.primary,
     borderRadius: 20,
     alignItems: 'center',
     justifyContent: 'center',
@@ -50,4 +60,4 @@ const styles = StyleSheet.create({
     fontSize: 17,
     fontWeight: 'bold',
   },
-});
+}));

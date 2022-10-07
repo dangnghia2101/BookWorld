@@ -5,7 +5,15 @@ export default {
   view: 'View',
   readBook: 'Read',
   listenBook: 'Listening',
-  //detaill book screen-------------------------------------------
+
+  language: 'Language',
+  darkMode: 'Dark mode',
+  on: 'On',
+  off: 'Off',
+  system: 'System',
+  profile: 'Profile',
+  rank: 'Rank',
+    //detaill book screen-------------------------------------------
   introduceText:'About the author',
   overview:'overview',
   episode: 'Episode',
@@ -15,6 +23,16 @@ export default {
   textRating: 'Rating',
   textToltalRead:'total reads',
   //----------------------------------------------------------
+  logout: 'Log out',
+  settings: 'Settings',
+  privacy: 'Privacy',
+  display: 'Display and accessibility',
+  day: 'Day',
+  month: 'Month',
+  year: 'Year',
+  purchase: 'Purchase',
+  purchaseHistory: 'Purchase History',
+  myPurchase: 'My Purchases',
   categories: {
     TT: 'Illusion',
     HD: 'Venturos',

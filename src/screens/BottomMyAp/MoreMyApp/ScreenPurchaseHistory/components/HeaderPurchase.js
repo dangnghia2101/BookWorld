@@ -1,52 +1,50 @@
 import {Block, Text} from '@components';
 import React from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import IconView from '@components/Icon';
+import {theme} from '@theme';
 
 import {routes} from '@navigation/routes';
 import {useNavigation} from '@react-navigation/native';
+import IconView from '@components/Icon';
 import {makeStyles, useTheme} from 'themeNew';
 import {useAppSelector, useAppDispatch} from '@hooks';
 import {withNamespaces} from 'react-i18next';
 
-const Header = props => {
-  const navigation = useNavigation();
+const HeaderPurchase = props => {
   const {t} = props;
+  const navigation = useNavigation();
 
   const themeStore = useAppSelector(state => state.root.themeApp.theme);
   const themeNew = useTheme(themeStore);
-  const styles = useStyle(props, themeStore);
-
   return (
-    <Block height={200} backgroundColor={themeNew.colors.primary}>
-      <Block row style={[styles.container]}>
-        <View style={styles.titleContainer}>
-          <Text size={22} color={themeNew.colors.white} fontType={'bold'}>
-            {t('profile')}
-          </Text>
-        </View>
+    <Block>
+      <Block row style={styles.container}>
         <TouchableOpacity
           style={styles.editContainer}
           onPress={() => navigation.navigate(routes.SCREEN_EDIT_SETTINGS)}>
           <IconView
             component={'Ionicons'}
-            name={'settings-sharp'}
-            size={25}
-            color={themeNew.colors.white}
+            name={'arrow-back'}
+            size={30}
+            color={themeNew.colors.textDark}
           />
         </TouchableOpacity>
+        <View style={styles.titleContainer}>
+          <Text fontType="bold" size={22} color={themeNew.colors.textDark}>
+            {t('purchaseHistory')}
+          </Text>
+        </View>
       </Block>
     </Block>
   );
 };
 
-export default withNamespaces()(Header);
+export default withNamespaces()(HeaderPurchase);
 
-const useStyle = makeStyles()(({colors}) => ({
+const styles = StyleSheet.create({
   container: {
-    position: 'absolute',
-    left: 20,
-    top: 35,
+    paddingLeft: 20,
+    paddingTop: 35,
   },
   titleContainer: {
     width: '100%',
@@ -55,13 +53,9 @@ const useStyle = makeStyles()(({colors}) => ({
   },
   editContainer: {
     position: 'absolute',
-    backgroundColor: '#FFFFFF50',
-    opacity: 1,
-    borderRadius: 40,
-    width: 40,
-    height: 40,
     justifyContent: 'center',
     alignItems: 'center',
-    right: 40,
+    paddingLeft: 20,
+    paddingTop: 35,
   },
-}));
+});
