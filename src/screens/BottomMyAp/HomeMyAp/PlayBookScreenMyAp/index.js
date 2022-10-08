@@ -1,22 +1,60 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { ScrollView, Dimensions } from 'react-native';
-import { Block, Text } from '@components';
+import { Block, Button, HeaderWithButton, Text } from '@components';
+import IconView from '@components/Icon';
+import BottomSheet, { BottomSheetBackdrop } from '@gorhom/bottom-sheet';
+import { useAppSelector } from '@hooks';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { StyleSheet } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { WebView } from 'react-native-webview';
-import Header from './components/Header';
-import * as Progress from 'react-native-progress';
-
-import { theme } from '@theme';
-
-const height = Dimensions.get('window').height;
+import { useTheme } from 'themeNew';
 
 const PlayBookScreenMyAp = ({ route }) => {
-  const { htmlChapter, title } = route?.params?.item;
+  const { htmlChapter, title, image, price } = route?.params?.item;
   const webref = useRef(null);
   const [themeBack, setThemeBack] = useState(true); //True background white
-  const [size, setSize] = useState(50);
-  const [scrollY, setScrollY] = useState(0.00000001);
-  const [scrollYSize, setScollYSize] = useState(0.00001);
-  const [heightWebView, setHeightWebView] = useState(height);
+  const [size, setSize] = useState(16);
+  const themeStore = useAppSelector(state => state.root.themeApp.theme);
+  const theme = useTheme(themeStore);
+  const inset = useSafeAreaInsets();
+
+  const snapPoints = useMemo(() => [260 + inset.bottom], [inset.bottom]);
+  const bottomSheetRef = useRef(null);
+
+  const renderBackdrop = useCallback(
+    props => (
+      <BottomSheetBackdrop
+        disappearsOnIndex={-1}
+        appearsOnIndex={0}
+        {...props}
+        enableTouchThrough={true}
+      />
+    ),
+    [],
+  );
+
+  const renderRightIconHeader = () => (
+    <Button
+      style={{ padding: 10, theme: theme.colors.text }}
+      onPress={() => bottomSheetRef.current?.snapToIndex(0)}>
+      <IconView
+        component={'Entypo'}
+        name={'dots-three-vertical'}
+        size={20}
+        color={theme.colors.textInBox}
+      />
+    </Button>
+  );
+
+  const initailStyle = `
+  document.body.style.marginLeft = '5%'
+  document.body.style.marginRight = '5%' 
+  document.querySelectorAll("p, div, td").forEach(item => {
+    item.style.fontSize = "${size}px";
+  });
+  document.querySelectorAll("span").forEach(item => {
+    item.style.display = "none";
+  });
+`;
 
   const backgroundBlack = `
   document.body.style.background = "${theme.colors.dark2}";
@@ -35,89 +73,162 @@ const PlayBookScreenMyAp = ({ route }) => {
     item.style.fontSize = "${size}px";
   });`;
 
-  // Dinh dang ban dau
-  const initailStyle = `
-    document.body.style.marginLeft = '5%'
-    document.body.style.marginRight = '5%' 
-    document.querySelectorAll("p, div, td").forEach(item => {
-      item.style.fontSize = "${size}px";
-    });
-    document.querySelectorAll("span").forEach(item => {
-      item.style.display = "none";
-    });
-  `;
-
-  // Doi mau background
   useEffect(() => {
     if (themeBack === true) {
       webref.current.injectJavaScript(backgroundWhite);
     } else {
       webref.current.injectJavaScript(backgroundBlack);
     }
-  }, [themeBack]);
+  }, [backgroundBlack, backgroundWhite, themeBack]);
 
-  // Doi kich co chu
   useEffect(() => {
     webref.current.injectJavaScript(changeSize);
-  }, [size]);
+  }, [changeSize, size]);
+
+  const renderHtml = useCallback(() => {
+    return (
+      <WebView
+        ref={webref}
+        scalesPageToFit={false}
+        injectedJavaScript={initailStyle}
+        originWhitelist={['*']}
+        source={{ html: htmlChapter }}
+      />
+    );
+  }, [htmlChapter, initailStyle]);
 
   return (
-    <Block
-      backgroundColor={themeBack ? theme.colors.white : theme.colors.dark2}
-      style={{ flex: 1 }}>
-      <Block showsVerticalScrollIndicator={false} style={{ flex: 1 }}>
-        <Header
-          themeBack={themeBack}
-          setThemeBack={setThemeBack}
-          size={size}
-          setSize={setSize}
-          _idBook={route.params.item._id}
-          scrollY={scrollY}
-          scrollYSize={scrollYSize}
-          title={title}
-        />
-        <WebView
-          style={{ height: heightWebView }}
-          source={{
-            uri: 'https://www.gutenberg.org/files/68149/68149-h/68149-h.htm',
-          }}
-          injectedJavaScript={initailStyle}
-          ref={webref}
-          onScroll={syntheticEvent => {
-            const { contentOffset, contentSize } = syntheticEvent.nativeEvent;
-            setScrollY(contentOffset.y);
-            setScollYSize(Math.floor(contentSize.height));
-            // scrollY / scrollYSize >= 0.98
-            //   ? setHeightWebView(100)
-            //   : setHeightWebView(height - 250);
-          }}
-        />
+    <Block backgroundColor={theme.colors.text} style={{ flex: 1 }}>
+      <HeaderWithButton
+        title={title}
+        isBackHeader
+        rightIcon={renderRightIconHeader()}
+      />
 
+      {renderHtml()}
+
+      {/* {renderHtml()} */}
+      <BottomSheet
+        index={-1}
+        ref={bottomSheetRef}
+        snapPoints={snapPoints}
+        enablePanDownToClose={true}
+        backdropComponent={renderBackdrop}>
         <Block
-          borderTopLeftRadius={20}
-          borderTopRightRadius={20}
-          backgroundColor={themeBack ? theme.colors.gray4 : theme.colors.dark}
-          height={40}
-          justifyCenter
-          alignCenter
-          row>
-          <Progress.Bar
-            color={theme.colors.red}
-            height={6}
-            progress={scrollY / scrollYSize}
-            width={260}
-          />
-          <Text
-            marginLeft={10}
-            fontType={'bold'}
-            color={!themeBack ? theme.colors.white : theme.colors.dark}>
-            {Math.floor((scrollY / scrollYSize) * 100)}%
+          backgroundColor={!themeBack ? theme.colors.black : theme.colors.white}
+          borderWidth={!themeBack ? 1 : 0}
+          borderColor={!themeBack ? theme.colors.white : theme.colors.red}
+          paddingHorizontal={10}>
+          <Text center size={18} fontType={'bold'} color={theme.colors.grey4}>
+            Cài đặt
           </Text>
+          <Block
+            borderBottomWidth={1}
+            borderBottomColor={theme.colors.grey14}
+            marginTop={15}
+          />
+          <Button row style={[styles.rowModal]}>
+            <IconView
+              component={'MaterialIcons'}
+              name={true ? 'favorite' : 'favorite-border'}
+              size={20}
+              color={themeBack ? theme.colors.red : theme.colors.white}
+            />
+            <Text
+              style={styles.textRowModal}
+              color={!themeBack ? theme.colors.white : theme.colors.dark2}>
+              {true ? 'Lưu sách yêu thích ' : 'Đã lưu'}
+            </Text>
+          </Button>
+
+          {/* Che do ban ngay */}
+          <Button
+            row
+            style={[styles.rowModal]}
+            onPress={() => setThemeBack(!themeBack)}>
+            <IconView
+              component={'Ionicons'}
+              name={themeBack ? 'ios-sunny-outline' : 'moon-outline'}
+              size={20}
+              color={!themeBack ? theme.colors.white : theme.colors.dark2}
+            />
+            <Text
+              style={styles.textRowModal}
+              color={!themeBack ? theme.colors.white : theme.colors.dark2}>
+              {themeBack ? 'Chế độ ban ngày' : 'Chế độ ban đêm'}
+            </Text>
+          </Button>
+
+          <Button
+            row
+            style={[styles.rowModal]}
+            onPress={() => setSize(size + 2)}>
+            <IconView
+              component={'AntDesign'}
+              name={'plus'}
+              size={20}
+              color={!themeBack ? theme.colors.white : theme.colors.dark2}
+            />
+            <Text
+              style={styles.textRowModal}
+              color={!themeBack ? theme.colors.white : theme.colors.dark2}>
+              Tăng kích cỡ chữ
+            </Text>
+          </Button>
+
+          <Button
+            row
+            style={[styles.rowModal]}
+            onPress={() => setSize(size - 2)}>
+            <IconView
+              component={'AntDesign'}
+              name={'minus'}
+              size={22}
+              color={!themeBack ? theme.colors.white : theme.colors.dark2}
+            />
+            <Text
+              style={styles.textRowModal}
+              color={!themeBack ? theme.colors.white : theme.colors.dark2}>
+              Giảm kích cỡ chữ
+            </Text>
+          </Button>
         </Block>
-        {/* {heightWebView <= 200 ? <EvaluateBook /> : null} */}
-      </Block>
+      </BottomSheet>
     </Block>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  iconBack: {
+    alignItems: 'center',
+    justifyCenter: 'center',
+    padding: 5,
+  },
+  textHeader: {
+    fontSize: 16,
+    color: 'white',
+    marginRight: 10,
+    flex: 1,
+    fontWeight: 'bold',
+  },
+  containerModal: {
+    alignItems: 'flex-end',
+    paddingRight: 20,
+  },
+  rowModal: {
+    height: 50,
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 10,
+  },
+  textRowModal: {
+    fontSize: 15,
+    marginLeft: 10,
+  },
+});
 
 export default PlayBookScreenMyAp;

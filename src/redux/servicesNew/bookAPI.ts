@@ -1,9 +1,12 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 import {
   saveBookReducer,
-  saveCategoryReducer,
+  changeLoading,
   saveTabCategoryReducer,
+  saveCategoryReducer,
 } from '@redux/reducerNew';
+
+import {chapterType} from '@redux/types/chapterType';
 
 import {MAIN_API} from './endpoint';
 
@@ -73,6 +76,26 @@ export const bookAPI = createApi({
         }
       },
     }),
+    getAllChapterBook: builder.mutation<
+      chapterType[],
+      {id: string; idUser: string}
+    >({
+      query: body => ({
+        url: 'books/getChapterBook',
+        method: 'POST',
+        body: body,
+      }),
+      transformResponse: (response: {data: chapterType[]}) => response.data,
+      async onQueryStarted(id, {dispatch, queryFulfilled}) {
+        try {
+          dispatch(changeLoading('SHOW'));
+          const {data} = await queryFulfilled;
+          dispatch(changeLoading('HIDE')); // Save data in store, using reducer
+        } catch (err) {
+          console.log('error api getAllCategories... ', err);
+        }
+      },
+    }),
   }),
 });
 
@@ -80,4 +103,5 @@ export const {
   useGetAllBookQuery,
   useGetAllBookByCategoryQuery,
   useGetAllCategoryQuery,
+  useGetAllChapterBookMutation,
 } = bookAPI;

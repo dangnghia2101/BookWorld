@@ -23,10 +23,21 @@ const ChapterBook = ({ detailBook }) => {
         {detailBook?.map((item, index) => (
           <TouchableOpacity
             onPress={() =>
-              navigation.navigate(routes.PLAY_BOOK_MY_AP, { item: item })
+              navigation.navigate(routes.PLAY_BOOK_MY_AP, { item: item.element })
             }
             style={styles.button}>
-            <Text>{index + 1}</Text>
+            <Block
+              alignCenter
+              justifyCenter
+              radius={5}
+              width={'100%'}
+              backgroundColor={
+                item.ispay ? themeNew.colors.primary : themeNew.colors.grey12
+              }
+              paddingVertical={10}
+              paddingHorizontal={5}>
+              <Text>{index + 1}</Text>
+            </Block>
           </TouchableOpacity>
         ))}
       </Block>
@@ -37,13 +48,7 @@ const ChapterBook = ({ detailBook }) => {
 const styles = StyleSheet.create({
   button: {
     width: '18%',
-    backgroundColor: theme.colors.gray4,
-    borderRadius: 5,
-    paddingHorizontal: 5,
     margin: 3,
-    paddingVertical: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
 });
 
