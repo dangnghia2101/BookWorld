@@ -1,16 +1,16 @@
-import {Block, Text} from '@components';
+import { Block, Text } from '@components';
 import React from 'react';
-import {StyleSheet, Pressable} from 'react-native';
+import { StyleSheet, Pressable } from 'react-native';
 import IconView from '@components/Icon';
-import {routes} from '@navigation/routes';
-import {useNavigation} from '@react-navigation/native';
-import {makeStyles, useTheme} from 'themeNew';
-import {useAppSelector, useAppDispatch} from '@hooks';
-import {withNamespaces} from 'react-i18next';
+import { routes } from '@navigation/routes';
+import { useNavigation } from '@react-navigation/native';
+import { makeStyles, useTheme } from 'themeNew';
+import { useAppSelector, useAppDispatch } from '@hooks';
+import { withNamespaces } from 'react-i18next';
 
 const ItemEditMoreMy = props => {
   const navigation = useNavigation();
-  const {t} = props;
+  const { t } = props;
 
   const themeStore = useAppSelector(state => state.root.themeApp.theme);
   const themeNew = useTheme(themeStore);
@@ -76,7 +76,8 @@ const ItemEditMoreMy = props => {
           {t('settings')}
         </Text>
         <Block>
-          <Pressable style={[styles.btnItem, styles.shadowColor]}>
+          <Pressable style={[styles.btnItem, styles.shadowColor]}
+            onPress={() => navigation.navigate(routes.EDIT_PROFILE)}>
             <Block
               marginHorizontal={10}
               backgroundColor={'#00000020'}
@@ -283,7 +284,7 @@ const ItemEditMoreMy = props => {
 
 export default withNamespaces()(ItemEditMoreMy);
 
-const useStyle = makeStyles()(({colors}) => ({
+const useStyle = makeStyles()(({ colors }) => ({
   btnItem: {
     width: '100%',
     height: 55,

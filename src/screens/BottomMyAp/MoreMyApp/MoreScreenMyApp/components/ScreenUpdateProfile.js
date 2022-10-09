@@ -14,7 +14,7 @@ import { Block } from '@components';
 import { theme } from '@theme';
 import IconView from '@components/Icon';
 import HeaderEditMoreMy from '../../EditMoreMyApp/components/HeaderEditMoreMy';
-
+import TopBar from '@screens/BottomMyAp/ReadingMyAp/components/TopBar';
 const ScreenUpdateProfile = () => {
     const [imageUri, setImageUri] = useState('');
     const options = {
@@ -27,8 +27,7 @@ const ScreenUpdateProfile = () => {
     };
     return (
         <Block flex backgroundColor={theme.colors.white}>
-            {/* <HeaderEditMoreMy title={'Chỉnh sửa thông tin'} /> */}
-            <Image source={require('@assets/images/Ellipse.png')} />
+            <TopBar headerTitle={'Chỉnh sửa thông tin'} />
             <Block width={150} marginTop={-60} marginLeft={140} relative>
                 <Block
                     backgroundColor={theme.colors.white}

@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
   Text,
@@ -6,15 +6,16 @@ import {
   StatusBar,
   NativeModules,
   Platform,
+  Image,
 } from 'react-native';
-import {Block} from '@components';
-import {theme} from '@theme';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import {useNavigation, useRoute} from '@react-navigation/native';
+import { Block } from '@components';
+import { theme } from '@theme';
+import IconView from '@components/Icon';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
-const {colors} = theme;
+const { colors } = theme;
 
-function TopBar({headerTitle}) {
+function TopBar({ headerTitle }) {
   const navigation = useNavigation();
   const activeRoute = useRoute();
 
@@ -40,16 +41,18 @@ function TopBar({headerTitle}) {
   }, []);
 
   return (
-    <Block
-      backgroundColor={colors.orange}
-      height={height}
-      paddingTop={paddingTop}
-      paddingHorizontal={10}>
+    <Block relative>
+      <Image source={require('@assets/images/Ellipse.png')} />
       <Block style={styles.container}>
         <TouchableOpacity
           style={styles.iconBack}
           onPress={() => navigation.goBack()}>
-          <Ionicons name="chevron-back" color="white" size={30} />
+          <IconView
+            component={'Ionicons'}
+            name={'arrow-back'}
+            size={30}
+            color={theme.colors.white}
+          />
         </TouchableOpacity>
         {<Text style={styles.textHeader}>{headerName}</Text>}
       </Block>
@@ -61,6 +64,9 @@ TopBar.propTypes = {};
 
 const styles = StyleSheet.create({
   container: {
+    width: '100%',
+    position: 'absolute',
+    top: 40,
     flexDirection: 'row',
     alignItems: 'center',
     paddingBottom: 10,
@@ -72,8 +78,11 @@ const styles = StyleSheet.create({
     justifyCenter: 'center',
     padding: 5,
     height: 40,
+    marginLeft: 10,
   },
   textHeader: {
+    position: 'absolute',
+    left: '35%',
     fontSize: 18,
     color: 'white',
     marginRight: 10,

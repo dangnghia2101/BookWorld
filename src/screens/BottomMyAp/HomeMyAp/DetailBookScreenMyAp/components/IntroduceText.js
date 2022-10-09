@@ -8,6 +8,7 @@ import { routes } from '@navigation/routes';
 import { useAppSelector } from 'hooks';
 import { makeStyles, useTheme } from 'themeNew';
 import { withNamespaces } from 'react-i18next';
+
 const _renderStar = num => {
   let star = [];
   for (let i = 0; i < num; i++) {
