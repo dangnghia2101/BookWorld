@@ -1,13 +1,11 @@
-import { StyleSheet } from 'react-native';
-import React, { useState, useRef, useEffect } from 'react';
 import { Block } from '@components';
 import { theme } from '@theme';
-import Header from '../Header';
+import React, { useEffect, useRef, useState } from 'react';
+import { StyleSheet } from 'react-native';
 import io from 'socket.io-client';
-import TabChat from './components/TabChat';
-import { Button, Text } from '@components';
-import MessagesList from './components/MessageList';
+import Header from '../Header';
 import ChatInput from './components/ChatInput';
+import MessagesList from './components/MessageList';
 
 const ChatScreenMyApp = () => {
   const [clicked, setClicked] = useState(false);
@@ -51,7 +49,7 @@ const ChatScreenMyApp = () => {
   };
 
   return (
-    <Block flex paddingHorizontal={20} backgroundColor={theme.colors.white}>
+    <Block flex paddingHorizontal={10} backgroundColor={theme.colors.white}>
       <Header
         clicked={clicked}
         setClicked={setClicked}
@@ -61,9 +59,6 @@ const ChatScreenMyApp = () => {
       <MessagesList onSwipeToReply={swipeToReply} />
       <ChatInput />
       {/* <TabChat /> */}
-      <Button onPress={onSubmitHandler}>
-        <Text>Submit</Text>
-      </Button>
     </Block>
   );
 };
