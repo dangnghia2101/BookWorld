@@ -31,7 +31,6 @@ const ChatScreenMyApp = () => {
   }, [messages]);
 
   const onSubmitHandler = () => {
-    console.log('====> submit');
     const { message, sid, time, rid } = chat;
     socketRef.current.emit('message2', { message, sid, time, rid });
   };
