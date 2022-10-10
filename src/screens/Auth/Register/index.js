@@ -1,6 +1,7 @@
 import {Block, Text} from '@components';
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet, TextInput, Pressable, Modal, Button} from 'react-native';
+import auth from '@react-native-firebase/auth';
 
 const ModalPoup = ({visible, children}) => {
   const [showModal, setShowModal] = React.useState(visible);
@@ -26,6 +27,16 @@ const ModalPoup = ({visible, children}) => {
 
 const Register = () => {
   const [visible, setVisible] = React.useState(false);
+  const [name, setName] = useState('');
+  const [phone, setPhone] = useState('');
+  const [password, setPassword] = useState('');
+  const [repassword, setRepassword] = useState('');
+
+  const doUserRegisration = async function () {
+    const phoneValue = phone;
+    const passwordValue = password;
+  };
+
   return (
     <Block flex alignCenter paddingTop={56} backgroundColor={'white'}>
       <Text h1 bold size={30} style={styles.textWelcomLogin}>
@@ -37,10 +48,30 @@ const Register = () => {
         Vui lòng đăng ký tài khoản để sử dụng ứng dụng Lưu ý nhập đầy đủ thông
         tin ở bên dưới{' '}
       </Text>
-      <TextInput placeholder={'Số điện thoại'} style={styles.textInput} />
-      <TextInput placeholder={'Họ và tên'} style={styles.textInput2} />
-      <TextInput placeholder={'Mật khẩu'} style={styles.textInput2} />
-      <TextInput placeholder={'Nhập lại mật khẩu'} style={styles.textInput2} />
+      <TextInput
+        placeholder={'Số điện thoại'}
+        value={phone}
+        onChangeText={text => setPhone(text)}
+        style={styles.textInput}
+      />
+      <TextInput
+        value={name}
+        onChangeText={text => setName(text)}
+        placeholder={'Họ và tên'}
+        style={styles.textInput2}
+      />
+      <TextInput
+        value={password}
+        onChangeText={text => setPassword(text)}
+        placeholder={'Mật khẩu'}
+        style={styles.textInput2}
+      />
+      <TextInput
+        value={repassword}
+        onChangeText={text => setRepassword(text)}
+        placeholder={'Nhập lại mật khẩu'}
+        style={styles.textInput2}
+      />
       <ModalPoup visible={visible}>
         <Block alignCenter={'center'}>
           <Text style={styles.textOTP} center>

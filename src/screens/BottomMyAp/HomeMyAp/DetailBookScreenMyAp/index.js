@@ -13,6 +13,7 @@ const DetailBookScreenMyAp = ({ route }) => {
   const { bookmark, item } = route.params;
   const [listChapters, setListChapters] = useState([]);
 
+
   const myInfo = useAppSelector(state => state.root.auth);
 
   const [getAllChapterBook] = useGetAllChapterBookMutation();
@@ -38,7 +39,7 @@ const DetailBookScreenMyAp = ({ route }) => {
           <Topbar bookmark={bookmark} />
           <ImageBook item={route.params} />
           <IntroduceText item={route.params} />
-          <ChapterBook detailBook={listChapters} />
+          <ChapterBook infoBook={item} detailBook={listChapters} />
         </Block>
       </ScrollView>
     </Block>

@@ -5,6 +5,7 @@ import {
   BookReducer,
   AppSettingReducer,
   LoadingReducer,
+  CartReducer,
 } from '@redux/reducerNew';
 import {combineReducers, configureStore} from '@reduxjs/toolkit';
 import {
@@ -21,6 +22,7 @@ import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {userApi, bookAPI, paymentApi} from '@redux/servicesNew';
 import {setupListeners} from '@reduxjs/toolkit/query';
+import { userPhoneApi } from '@redux/servicesNew/userPhoneAPI';
 
 const rootReducer = combineReducers({
   auth: AuthReducer,
@@ -28,6 +30,7 @@ const rootReducer = combineReducers({
   book: BookReducer,
   setting: AppSettingReducer,
   loading: LoadingReducer,
+  cart: CartReducer,
   // ...other reducers here
 });
 
@@ -37,7 +40,7 @@ const persistConfig = {
   key: 'roott',
   storage: AsyncStorage,
   timeout: 30000,
-  whitelist: ['setting', 'themeApp', 'auth'],
+  whitelist: ['setting', 'themeApp', 'auth','cart'],
   stateReconciler: autoMergeLevel2,
 };
 
@@ -49,6 +52,7 @@ export const store = configureStore({
     [userApi.reducerPath]: userApi.reducer,
     [bookAPI.reducerPath]: bookAPI.reducer,
     [paymentApi.reducerPath]: paymentApi.reducer,
+    [userPhoneApi.reducerPath]: userPhoneApi.reducer,
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
@@ -58,7 +62,8 @@ export const store = configureStore({
     })
       .concat(userApi.middleware)
       .concat(bookAPI.middleware)
-      .concat(paymentApi.middleware),
+      .concat(paymentApi.middleware)
+      .concat(userPhoneApi.middleware),
 });
 
 setupListeners(store.dispatch);
