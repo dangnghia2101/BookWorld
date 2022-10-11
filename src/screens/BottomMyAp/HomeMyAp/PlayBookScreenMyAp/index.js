@@ -9,7 +9,7 @@ import { WebView } from 'react-native-webview';
 import { useTheme } from 'themeNew';
 
 const PlayBookScreenMyAp = ({ route }) => {
-  const { htmlChapter, title, image, price } = route?.params?.item;
+  const { htmlChapter, title, image, price } = route.params;
   const webref = useRef(null);
   const [themeBack, setThemeBack] = useState(true); //True background white
   const [size, setSize] = useState(16);
@@ -34,7 +34,6 @@ const PlayBookScreenMyAp = ({ route }) => {
 
   const renderRightIconHeader = () => (
     <Button
-      style={{ padding: 10, theme: theme.colors.text }}
       onPress={() => bottomSheetRef.current?.snapToIndex(0)}>
       <IconView
         component={'Entypo'}
