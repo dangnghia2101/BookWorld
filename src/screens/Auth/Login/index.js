@@ -133,8 +133,6 @@ const Login = () => {
     const dataLogin = await login(body);
     if (dataLogin?.error?.data?.error) {
       setVisibleModal(true);
-    } else {
-      dispatch(loginReducer(dataLogin?.data?.data?.account));
     }
   };
 

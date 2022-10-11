@@ -1,17 +1,24 @@
-import React, { useEffect, useCallback, useState } from 'react';
 import { Block, Text } from '@components';
-import { ScrollView, Animated, Platform, View, Image, LogBox } from 'react-native';
-import HeaderListBook from './components/HeaderListEvent';
+import { useGetAllBookQuery, useGetAllCategoryQuery } from '@redux/servicesNew';
+import { height, width } from '@utils/responsive';
+import { useAppSelector } from 'hooks';
+import React, { useCallback, useState } from 'react';
+import { withNamespaces } from 'react-i18next';
+import {
+  Animated,
+  Image,
+  LogBox,
+  Platform,
+  ScrollView,
+  View
+} from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
-import { width, height } from '@utils/responsive';
+import LinearGradient from 'react-native-linear-gradient';
+import { makeStyles, useTheme } from 'themeNew';
+import HeaderHome from './components/HeaderHome';
+import HeaderListBook from './components/HeaderListEvent';
 import ItemMostBookRead from './components/ItemMostBookRead';
 import TabCategoryBook from './components/TabCategoryBook';
-import HeaderHome from './components/HeaderHome';
-import LinearGradient from 'react-native-linear-gradient';
-import { useAppSelector } from 'hooks';
-import { useGetAllBookQuery, useGetAllCategoryQuery } from '@redux/servicesNew';
-import { makeStyles, useTheme } from 'themeNew';
-import { withNamespaces } from 'react-i18next';
 LogBox.ignoreAllLogs();
 const ITEM_WITH = width * 0.6;
 
@@ -24,13 +31,11 @@ const author = [
   { _id: 2, image: 'https://bnnfeed.com/wp-content/uploads/2021/02/186.jpg' },
   {
     _id: 3,
-    image:
-      'https://scontent.fsgn12-1.fna.fbcdn.net/v/t1.6435-9/160623841_274437330713385_6140920492295108645_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=_vbpplnTIi0AX96j1ta&_nc_ht=scontent.fsgn12-1.fna&oh=00_AT_iTkUVCSh_novn6Ee7b8zJ_mRFA4Q1-387Kcu4fPKDxg&oe=63011824',
+    image: 'https://scontent.fsgn12-1.fna.fbcdn.net/v/t1.6435-9/160623841_274437330713385_6140920492295108645_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=_vbpplnTIi0AX96j1ta&_nc_ht=scontent.fsgn12-1.fna&oh=00_AT_iTkUVCSh_novn6Ee7b8zJ_mRFA4Q1-387Kcu4fPKDxg&oe=63011824',
   },
   {
     _id: 4,
-    image:
-      'https://static01.nyt.com/images/2016/10/17/t-magazine/zadie-smith-slide-NRAT/zadie-smith-slide-NRAT-jumbo.jpg',
+    image: 'https://static01.nyt.com/images/2016/10/17/t-magazine/zadie-smith-slide-NRAT/zadie-smith-slide-NRAT-jumbo.jpg',
   },
   { _id: 5, image: 'https://bnnfeed.com/wp-content/uploads/2021/02/186.jpg' },
   { _id: 6, image: 'https://bnnfeed.com/wp-content/uploads/2021/02/186.jpg' },
@@ -109,14 +114,23 @@ const HomeScreenMyAp = () => {
   const renderListCategory = useCallback(() => {
     return (
       <Block height={650}>
-        {allCategories?.length > 0 ? <TabCategoryBook /> : <Text>Loading</Text>}
+        {allCategories?.length > 0 ? (
+          <TabCategoryBook />
+        ) : (
+          <Text>Loading</Text>
+        )}
       </Block>
     );
   }, [allCategories]);
 
   const Backdrop = () => {
     return (
-      <View style={{ height: BACKDROP_HEIGHT, width, position: 'absolute' }}>
+      <View
+        style={{
+          height: BACKDROP_HEIGHT,
+          width,
+          position: 'absolute',
+        }}>
         <FlatList
           data={author}
           keyExtractor={(item, index) => item._id + '-backdrop'}
@@ -129,7 +143,10 @@ const HomeScreenMyAp = () => {
             //   return null;
             // }
             const translateX = scrollX.interpolate({
-              inputRange: [(index - 2) * ITEM_WITH, (index - 1) * ITEM_WITH],
+              inputRange: [
+                (index - 2) * ITEM_WITH,
+                (index - 1) * ITEM_WITH,
+              ],
               outputRange: [0, width],
               extrapolate: 'clamp',
             });

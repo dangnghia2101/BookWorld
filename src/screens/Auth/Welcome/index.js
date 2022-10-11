@@ -6,23 +6,22 @@ import {
   Animated,
   Pressable,
 } from 'react-native';
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import ItemWelcome from './components/ItemWelcome';
-import {data} from './components/data';
-import {Block, Text} from '@components';
-import {routes} from '@navigation/routes';
-import {useNavigation} from '@react-navigation/native';
-import {useRef} from 'react';
+import { data } from './components/data';
+import { Block, Text } from '@components';
+import { routes } from '@navigation/routes';
+import { useNavigation } from '@react-navigation/native';
+import { useRef } from 'react';
 
 import Paginator from './components/Paginator';
 
-const {width, heigth} = Dimensions.get('window');
+const { width, heigth } = Dimensions.get('window');
 const Welcome = () => {
   const navigation = useNavigation();
   const scrollX = useRef(new Animated.Value(0)).current;
   // const slidesRef = useRef(null);
   let position = Animated.divide(scrollX, width);
-  console.log(data);
   if (data && data.length) {
     return (
       <View style={styles.Container}>
@@ -36,9 +35,9 @@ const Welcome = () => {
           scrollEventThrottle={16}
           decelerationRate={'fast'}
           showsHorizontalScrollIndicator={false}
-          renderItem={({item}) => <ItemWelcome item={item} />}
+          renderItem={({ item }) => <ItemWelcome item={item} />}
           onScroll={Animated.event(
-            [{nativeEvent: {contentOffset: {x: scrollX}}}],
+            [{ nativeEvent: { contentOffset: { x: scrollX } } }],
             {
               useNativeDriver: false,
             },

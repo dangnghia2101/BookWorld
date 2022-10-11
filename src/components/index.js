@@ -19,6 +19,7 @@ import Loading from './Loading';
 import Text from './Text';
 import TextInput from './TextInput';
 import HeaderNotiAndEvent from './HeaderNotiAndEvent';
+import HeaderWithButton from './HeaderWithButton';
 import Button from './Button';
 import NoData from './NoData';
 import AnimatedImage from './AnimatedImage';
@@ -38,6 +39,7 @@ export {
   Evaluate,
   ModalBox,
   PaymentScreen,
+  HeaderWithButton,
   //   RadioButton,
   //   ModalBox,
   //   FormContainer,

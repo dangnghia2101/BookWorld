@@ -1,18 +1,18 @@
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 // import actions from '@redux/actions';
 // import { bottom } from '@screens/Bottom';
-import {bottom} from '../screens/BottomMyAp';
-import React, {useEffect, useState} from 'react';
+import { bottom } from '../screens/BottomMyAp';
+import React, { useEffect, useState } from 'react';
 import CustomTabar from './CustomTabar';
 // import {useDispatch, useSelector} from 'react-redux';
-import {routes} from './routes';
+import { routes } from './routes';
 import IconView from '@components/Icon';
-import {View, Text, StyleSheet} from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import Tabbar from '@mindinventory/react-native-tab-bar-interaction';
 import HomeScreenMyAp from '@screens/BottomMyAp/HomeMyAp/HomeScreenMyAp';
-import {createStackNavigator} from '@react-navigation/stack';
-import {useNavigation} from '@react-navigation/native';
-import {theme} from '@theme';
+import { createStackNavigator } from '@react-navigation/stack';
+import { useNavigation } from '@react-navigation/native';
+import { theme } from '@theme';
 
 const Stack = createStackNavigator();
 
@@ -177,8 +177,6 @@ const BottomTabMyAp = () => {
       setTabs(tempTabs);
     }, 500);
 
-    console.log('====? TAB ', item);
-
     tempTabs.map(val => {
       if (item.name === 'Nhà' && val.name === 'Nhà') {
         val.activeIcon = Object.assign({}, activeHome(true));
@@ -200,7 +198,7 @@ const BottomTabMyAp = () => {
 
   return (
     <Tab.Navigator
-      screenOptions={{headerShown: false}}
+      screenOptions={{ headerShown: false }}
       tabBar={props => <CustomTabar {...props} />}>
       <Tab.Screen
         name={routes.HOME_MY_AP}
@@ -228,7 +226,7 @@ const BottomTabMyAp = () => {
         options={{
           tabBarLabel: 'Nhắn tin',
           tabBarIcon: 'chat',
-          tabBarStyle: {display: 'none'},
+          tabBarStyle: { display: 'none' },
           component: 'MaterialIcons',
         }}
       />

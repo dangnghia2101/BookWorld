@@ -1,21 +1,21 @@
-import React, {useState, useEffect} from 'react';
-import {Block, Text, Button} from '@components';
-import {Platform, NativeModules, StatusBar, Image} from 'react-native';
-import {theme} from '@theme';
+import React, { useState, useEffect } from 'react';
+import { Block, Text, Button } from '@components';
+import { Platform, NativeModules, StatusBar, Image } from 'react-native';
+import { theme } from '@theme';
 import IconView from '@components/Icon';
-import {useNavigation} from '@react-navigation/native';
-import {routes} from '@navigation/routes';
+import { useNavigation } from '@react-navigation/native';
+import { routes } from '@navigation/routes';
 import Collapsible from 'react-native-collapsible';
-import {width} from '@utils/responsive';
-import {makeStyles, useTheme} from 'themeNew';
-import {useAppSelector, useAppDispatch} from '@hooks';
-import {changeTheme, changeLanguage} from '@redux/reducerNew';
-import {withNamespaces} from 'react-i18next';
+import { width } from '@utils/responsive';
+import { makeStyles, useTheme } from 'themeNew';
+import { useAppSelector, useAppDispatch } from '@hooks';
+import { changeTheme, changeLanguage } from '@redux/reducerNew';
+import { withNamespaces } from 'react-i18next';
 
-const {fonts} = theme;
+const { fonts } = theme;
 
 const HeaderHome = props => {
-  const {name, image, setIsCollapsible, isCollapsible, t} = props;
+  const { name, image, setIsCollapsible, isCollapsible, t } = props;
   const navigation = useNavigation();
   const [paddingTop, setPaddingTop] = useState(0);
   const [showMoney, setShowMoney] = useState(false);
@@ -45,26 +45,26 @@ const HeaderHome = props => {
         zIndex: 100,
         width: width,
       }}>
-      <Block style={[styles.container, {paddingTop: paddingTop}]}>
+      <Block style={[styles.container, { paddingTop: paddingTop }]}>
         <Block width={'100%'} alignCenter marginTop={5}>
           <Block space={'between'} row width={'100%'}>
             <Block alignCenter row marginLeft={10}>
               <Image
-                source={{uri: image}}
-                style={{width: 40, height: 40, borderRadius: 100}}
+                source={{ uri: image }}
+                style={{ width: 40, height: 40, borderRadius: 100 }}
               />
               <Text
                 marginLeft={10}
                 size={18}
                 marginHorizontal={5}
                 color={themeNew.colors.text}
-                style={{fontFamily: 'Lato-Bold'}}>
+                style={{ fontFamily: 'Lato-Bold' }}>
                 {name}
               </Text>
             </Block>
 
             <Button
-              style={{marginRight: 10}}
+              style={{ marginRight: 10 }}
               onPress={() => {
                 dispatch(changeTheme(themeStore === 'dark' ? 'light' : 'dark'));
                 dispatch(changeLanguage(languageStore === 'en' ? 'vi' : 'en'));
@@ -78,7 +78,7 @@ const HeaderHome = props => {
             </Button>
           </Block>
 
-          <Collapsible collapsed={isCollapsible} style={{width: width}}>
+          <Collapsible collapsed={isCollapsible} style={{ width: width }}>
             <Block space={'between'} row width={'100%'} marginTop={10}>
               <Block>
                 <Block row marginLeft={7}>
@@ -174,7 +174,7 @@ const HeaderHome = props => {
   );
 };
 
-const useStyle = makeStyles()(({normalize, colors}) => ({
+const useStyle = makeStyles()(({ normalize, colors }) => ({
   container: {
     paddingHorizontal: -20,
     backgroundColor: colors.primary,
