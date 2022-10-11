@@ -25,3 +25,5 @@ const fonts = {
 };
 
 export { icons, images, lotties, fonts };
+
+export * from './icons';

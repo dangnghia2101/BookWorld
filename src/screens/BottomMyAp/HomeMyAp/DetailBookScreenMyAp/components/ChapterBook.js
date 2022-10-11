@@ -10,8 +10,15 @@ import {saveCartReducer} from '@redux/reducerNew/cartReducer';
 import {saveChapterReducer} from '@redux/reducerNew/cartReducer';
 import {useDispatch, useSelector} from 'react-redux';
 import {useAppDispatch} from 'hooks';
-
-const ChapterBook = ({detailBook, infoBook}) => {
+import { Block, Text, Button } from '@components';
+import { WINDOW_WIDTH } from '@gorhom/bottom-sheet';
+import { useAppSelector } from '@hooks';
+import { routes } from '@navigation/routes';
+import { useNavigation } from '@react-navigation/native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, TouchableOpacity } from 'react-native';
+import { useTheme } from 'themeNew';
+const ChapterBook = ({ detailBook, nameBook, isRead, setIsRead,infoBook }) => {
   const navigation = useNavigation();
   const themeStore = useAppSelector(state => state.root.themeApp.theme);
   const bookStore = useAppSelector(state => state.root.cart.cartList);
@@ -50,10 +57,42 @@ const ChapterBook = ({detailBook, infoBook}) => {
       }
     });
   };
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    if (isRead) {
+      setData(detailBook?.filter(item => item.element?.htmlChapter !== ''))
+    } else {
+      setData(detailBook?.filter(item => item.element?.audio !== ''))
+    }
+  }, [detailBook, isRead])
+
   return (
-    <Block marginHorizontal={10}>
+    <Block width={WINDOW_WIDTH - 50} alignSelf='center'>
+      <Block width={200} row alignSelf='center' marginTop={30} justifyCenter >
+        <Button onPress={() => setIsRead(true)}>
+          <Block backgroundColor={isRead ? themeNew.colors.primary : themeNew.colors.grey14} paddingHorizontal={15} paddingVertical={5} style={styles.containerTabLeft}>
+            <Text
+              color={isRead ? themeNew.colors.text : themeNew.colors.grey10}
+              fontType={'bold'}
+              size={12}>
+              Sach doc
+            </Text>
+          </Block>
+        </Button>
+        <Button onPress={() => setIsRead(false)}>
+          <Block backgroundColor={isRead ? themeNew.colors.grey14 : themeNew.colors.primary} paddingHorizontal={15} paddingVertical={5} style={styles.containerTabRight}>
+            <Text
+              color={!isRead ? themeNew.colors.text : themeNew.colors.grey10}
+              fontType={'bold'}
+              size={12}>
+              Sach Nghe
+            </Text>
+          </Block>
+        </Button>
+      </Block>
       <Text
-        marginTop={20}
+        marginTop={5}
         color={themeNew.colors.textInBox}
         fontType={'bold'}
         size={20}>
@@ -72,6 +111,23 @@ const ChapterBook = ({detailBook, infoBook}) => {
               console.log('........ đây là cái gì', item);
               addCart(item.element);
             }}
+      // <Block row width={'100%'} marginBottom={20} style={{ flexWrap: 'wrap' }}>
+      //   {data?.map((item, index) => (
+      //     <TouchableOpacity
+      //       onPress={() => {
+      //         if (isRead) {
+      //           navigation.navigate(routes.PLAY_BOOK_MY_AP,
+      //             item.element,
+      //           )
+      //         } else {
+      //           navigation.navigate(routes.LISTEN_BOOK, {
+      //             item: item.element,
+      //             nameBook: nameBook,
+      //           })
+
+      //         }
+      //       }
+      //       }
             style={styles.button}>
             <Block
               alignCenter
@@ -97,6 +153,14 @@ const styles = StyleSheet.create({
     width: '18%',
     margin: 3,
   },
+  containerTabLeft: {
+    borderBottomLeftRadius: 10,
+    borderTopLeftRadius: 10,
+  },
+  containerTabRight: {
+    borderBottomRightRadius: 10,
+    borderTopRightRadius: 10,
+  }
 });
 
 export default ChapterBook;

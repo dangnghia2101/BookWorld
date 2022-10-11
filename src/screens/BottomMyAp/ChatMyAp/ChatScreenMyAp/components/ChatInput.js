@@ -1,31 +1,34 @@
-import React, { useState, useEffect, useRef, memo } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
-  View,
-  Text,
-  StyleSheet,
-  TextInput,
   Platform,
+  Text,
+  TextInput,
   TouchableOpacity,
+  View,
 } from 'react-native';
 
 import Animated, {
+  useAnimatedStyle,
   useSharedValue,
   withSpring,
   withTiming,
-  useAnimatedStyle,
 } from 'react-native-reanimated';
-import { useTheme } from 'themeNew';
+import { makeStyles, useTheme } from 'themeNew';
 
 // import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 // import EmojiPicker from "./emojis/EmojiPicker";
 
 import IconView from '@components/Icon';
+import { useAppSelector } from '@hooks';
 
 const ChatInput = ({ reply, closeReply, isLeft, username }) => {
   const [message, setMessage] = useState('');
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const height = useSharedValue(70);
-  const { colors } = useTheme('light');
+  const themeStore = useAppSelector(state => state.root.themeApp.theme);
+  const { colors } = useTheme(themeStore);
+
+  const styles = useStyle(themeStore);
 
   useEffect(() => {
     if (showEmojiPicker) {
@@ -69,15 +72,6 @@ const ChatInput = ({ reply, closeReply, isLeft, username }) => {
       ) : null}
       <View style={styles.innerContainer}>
         <View style={styles.inputAndMicrophone}>
-          <TouchableOpacity
-            style={styles.emoticonButton}
-            onPress={() => setShowEmojiPicker(value => !value)}>
-            <IconView
-              name={showEmojiPicker ? 'close' : 'emoticon-outline'}
-              size={23}
-              color={colors.grey6}
-            />
-          </TouchableOpacity>
           <TextInput
             multiline
             placeholder={'Type something...'}
@@ -116,7 +110,7 @@ const ChatInput = ({ reply, closeReply, isLeft, username }) => {
   );
 };
 
-const styles = StyleSheet.create({
+const useStyle = makeStyles()(({ normalize, colors }) => ({
   container: {
     justifyContent: 'center',
     backgroundColor: 'white',
@@ -141,7 +135,6 @@ const styles = StyleSheet.create({
   },
   innerContainer: {
     paddingHorizontal: 10,
-    marginHorizontal: 10,
     justifyContent: 'space-between',
     alignItems: 'center',
     flexDirection: 'row',
@@ -149,7 +142,7 @@ const styles = StyleSheet.create({
   },
   inputAndMicrophone: {
     flexDirection: 'row',
-    backgroundColor: 'black',
+    backgroundColor: colors.grey14,
     flex: 3,
     marginRight: 10,
     paddingVertical: Platform.OS === 'ios' ? 10 : 0,
@@ -220,6 +213,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-});
+}));
 
 export default ChatInput;

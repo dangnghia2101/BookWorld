@@ -9,7 +9,6 @@ import { useAppSelector } from '@hooks';
 
 const Loading = () => {
   const isShow = useAppSelector(state => state.root.loading.isLoading);
-  console.log('====> is show ', isShow);
   if (isShow === 'HIDE') {
     return null;
   }
