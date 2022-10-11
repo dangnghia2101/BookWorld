@@ -18,7 +18,7 @@ const ItemEditMoreMy = props => {
 
   return (
     <Block>
-      <Block marginHorizontal={25} top={210}>
+      <Block marginHorizontal={25} top={220}>
         <Text
           fontType={'bold'}
           color={themeNew.colors.textDark}
@@ -40,8 +40,8 @@ const ItemEditMoreMy = props => {
               borderRadius={10}>
               <Block>
                 <IconView
-                  component={'Ionicons'}
-                  name={'settings'}
+                  component={'FontAwesome5'}
+                  name={'clipboard-list'}
                   size={25}
                   color={'#33CCFF'}
                 />

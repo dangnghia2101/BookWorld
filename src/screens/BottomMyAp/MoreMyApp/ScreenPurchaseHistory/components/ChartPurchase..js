@@ -123,7 +123,7 @@ const ChartPurchase = props => {
 
       <VictoryChart theme={VictoryTheme.material}>
         <VictoryBar
-          style={{data: {fill: '#0D7EF9', width: 15}}}
+          style={{data: {fill: '#0D7EF9', width: 10}}}
           animate={{
             duration: 3000,
             onLoad: {

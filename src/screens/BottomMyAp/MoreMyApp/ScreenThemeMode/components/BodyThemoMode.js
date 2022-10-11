@@ -15,7 +15,7 @@ const BodyThemeMode = props => {
   const themeNew = useTheme(themeStore);
   const styles = useStyle(props, themeStore);
 
-  const [value, setValue] = React.useState('on');
+  const [value, setValue] = React.useState('off');
   useEffect(() => {
     if (value === 'on') {
       dispatch(changeTheme('dark'));

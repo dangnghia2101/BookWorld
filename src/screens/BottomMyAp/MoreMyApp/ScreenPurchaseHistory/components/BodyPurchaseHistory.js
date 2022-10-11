@@ -4,7 +4,7 @@ import {StyleSheet, Pressable, TouchableOpacity, Image} from 'react-native';
 import IconView from '@components/Icon';
 import {routes} from '@navigation/routes';
 import {useNavigation} from '@react-navigation/native';
-import {makeStyles, useTheme} from 'themeNew';
+import {colors, makeStyles, useTheme} from 'themeNew';
 import {useAppSelector, useAppDispatch} from '@hooks';
 import {withNamespaces} from 'react-i18next';
 
@@ -17,7 +17,7 @@ const BodyPurchaseHistory = props => {
   const styles = useStyle(props, themeStore);
 
   return (
-    <Block>
+    <Block marginHorizontal={20} flex height={2000}>
       <Block>
         <Text
           fontType={'bold'}
@@ -28,7 +28,7 @@ const BodyPurchaseHistory = props => {
         </Text>
         <Block>
           <TouchableOpacity style={[styles.itemPurchase, styles.shadowColor]}>
-            <Block row>
+            <Block row marginHorizontal={10} marginVertical={10}>
               <Image
                 style={styles.image}
                 source={require('../../../../../assets/images/Vector.png')}
@@ -63,6 +63,7 @@ const useStyle = makeStyles()(({colors}) => ({
     width: '100%',
     backgroundColor: colors.backgroundDark2,
     justifyContent: 'center',
+    borderRadius: 10,
   },
   shadowColor: {
     shadowColor: colors.shadowDark,
@@ -71,11 +72,13 @@ const useStyle = makeStyles()(({colors}) => ({
       height: 3,
     },
     shadowOpacity: 1.27,
+    shadowRadius: 4.65,
     elevation: 6,
   },
   image: {
     borderRadius: 5,
-    width: 100,
+    width: 80,
     height: 100,
+    backgroundColor: 'black',
   },
 }));
