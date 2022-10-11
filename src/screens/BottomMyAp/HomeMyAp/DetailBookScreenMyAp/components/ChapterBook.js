@@ -1,23 +1,18 @@
 import {StyleSheet, Dimensions, TouchableOpacity} from 'react-native';
 import {Block, Text, Button} from '@components';
-import React from 'react';
 import {theme} from '@theme';
 import {useNavigation} from '@react-navigation/native';
-import {routes} from '@navigation/routes';
 import {makeStyles, useTheme} from 'themeNew';
 import {useAppSelector} from '@hooks';
 import {saveCartReducer} from '@redux/reducerNew/cartReducer';
 import {saveChapterReducer} from '@redux/reducerNew/cartReducer';
 import {useDispatch, useSelector} from 'react-redux';
 import {useAppDispatch} from 'hooks';
-import { Block, Text, Button } from '@components';
 import { WINDOW_WIDTH } from '@gorhom/bottom-sheet';
-import { useAppSelector } from '@hooks';
 import { routes } from '@navigation/routes';
-import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, TouchableOpacity } from 'react-native';
-import { useTheme } from 'themeNew';
+
+
 const ChapterBook = ({ detailBook, nameBook, isRead, setIsRead,infoBook }) => {
   const navigation = useNavigation();
   const themeStore = useAppSelector(state => state.root.themeApp.theme);
@@ -25,12 +20,13 @@ const ChapterBook = ({ detailBook, nameBook, isRead, setIsRead,infoBook }) => {
   const themeNew = useTheme(themeStore);
   const dispatch = useAppDispatch();
   const addCart = item => {
-    console.log('................nó load lại nè');
+    console.log('................nó load lại nè', item.chapter);
     const data = {
       _id: infoBook._id,
       name: infoBook.name,
       isPrice: infoBook.isPrice,
       image: infoBook.image,
+      chapter: [infoBook.element],
     };
     let co = 0;
     bookStore.map(item => {
@@ -52,6 +48,7 @@ const ChapterBook = ({ detailBook, nameBook, isRead, setIsRead,infoBook }) => {
           name: chapter.name,
           isPrice: chapter.isPrice,
         };
+        console.log('>>>>>>>>>>>>>', data);
         dispatch(saveChapterReducer(data, index));
         return;
       }
@@ -104,11 +101,11 @@ const ChapterBook = ({ detailBook, nameBook, isRead, setIsRead,infoBook }) => {
         </TouchableOpacity>
       </Block>
       <Block row width={'100%'} marginBottom={20} style={{flexWrap: 'wrap'}}>
-        {detailBook?.map((item, index) => (
+        {data?.map((item, index) => (
           <TouchableOpacity
             onPress={() => {
               // navigation.navigate(routes.PLAY_BOOK_MY_AP, {item: item.element})
-              console.log('........ đây là cái gì', item);
+              console.log('........ đây là cái gì', item.element);
               addCart(item.element);
             }}
       // <Block row width={'100%'} marginBottom={20} style={{ flexWrap: 'wrap' }}>
