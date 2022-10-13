@@ -2,8 +2,7 @@ import { Block } from '@components';
 import React from 'react';
 import ItemCateBook from './ItemCateBook';
 import { NoData } from '@components';
-import { useAppSelector } from 'hooks';
-
+import { useAppSelector } from '@hooks';
 const TabSceneCategoryBook = ({ route }) => {
   const listBookByCategory = useAppSelector(state => state.root.book.tabList);
 

@@ -84,6 +84,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: '35%',
     fontSize: 18,
+    fontFamily: 'Lato-Bold',
     color: 'white',
     marginRight: 10,
     flex: 1,

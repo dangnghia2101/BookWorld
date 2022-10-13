@@ -163,7 +163,7 @@ const TapReadingStatus = () => {
       case 'cate02':
         return index === 1 ? <TapScenceAuthor /> : null;
       case 'cate03':
-        return index === 2 ? <TapScenceAuthor /> : null;
+        return index === 2 ? <TapScenceAuthor route={route} /> : null;
       default:
         return <TabSceneReadingStatus />;
     }

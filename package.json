@@ -52,6 +52,7 @@
     "react": "17.0.2",
     "react-i18next": "^9.0.10",
     "react-native": "0.68.2",
+    "react-native-bottomsheet": "^2.5.2",
     "react-native-chart-kit": "^6.12.0",
     "react-native-code-push": "^7.0.4",
     "react-native-collapsible": "^1.6.0",
@@ -129,7 +130,7 @@
   },
   "rnpm": {
     "assets": [
-      "./src/assets/fonts/"
+      ".src/assets/fonts/"
     ]
   }
 }
