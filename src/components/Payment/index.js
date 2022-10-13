@@ -1,13 +1,13 @@
-import { useStripe, BillingDetails, CardForm } from '@stripe/stripe-react-native';
+import {useStripe, BillingDetails, CardForm} from '@stripe/stripe-react-native';
 import React from 'react';
-import { Block, Text } from '@components';
-import { TouchableOpacity } from 'react-native';
-import { useTheme } from 'themeNew';
-import { useAppSelector } from '@hooks';
-import { useCreatePaymentMutation } from '@redux/servicesNew';
+import {Block, Text} from '@components';
+import {TouchableOpacity} from 'react-native';
+import {useTheme} from 'themeNew';
+import {useAppSelector} from '@hooks';
+import {useCreatePaymentMutation} from '@redux/servicesNew';
 
 export default function PaymentScreen() {
-  const { confirmPayment } = useStripe();
+  const {confirmPayment} = useStripe();
 
   const [createPayment] = useCreatePaymentMutation();
 
@@ -33,7 +33,7 @@ export default function PaymentScreen() {
 
     if (response.data) {
       const clientSecret = response.data.clientSecret;
-      const { error, paymentIntent } = await confirmPayment(clientSecret, {
+      const {error, paymentIntent} = await confirmPayment(clientSecret, {
         paymentMethodType: 'Card',
         paymentMethodData: {
           billingDetails,
@@ -68,7 +68,7 @@ export default function PaymentScreen() {
           console.log(cardDetails);
         }}
       />
-      <TouchableOpacity onPress={initPayment} style={{ width: '88%' }}>
+      <TouchableOpacity onPress={initPayment} style={{width: '88%'}}>
         <Block
           width={'100%'}
           height={50}

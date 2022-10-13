@@ -1,5 +1,5 @@
-import { Block, Text, ModalBox } from '@components';
-import React, { useEffect, useState } from 'react';
+import {Block, Text, ModalBox} from '@components';
+import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
   Image,
@@ -8,21 +8,22 @@ import {
   TouchableOpacity,
   Modal,
 } from 'react-native';
-import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import messaging from '@react-native-firebase/messaging';
 import auth from '@react-native-firebase/auth';
-import { useLoginMutation } from '@redux/servicesNew';
-import { useAppDispatch } from 'hooks';
-import { useNavigation } from '@react-navigation/native';
-import { routes } from '@navigation/routes';
-import { loginReducer, changeLoading } from '@redux/reducerNew';
-import { icons } from '@assets';
-import IconView from '@components/Icon';
+import {useLoginMutation} from '@redux/servicesNew';
+import {useAppDispatch} from 'hooks';
+import {useNavigation} from '@react-navigation/native';
+import {routes} from '@navigation/routes';
+import {loginReducer, changeLoading} from '@redux/reducerNew';
+import {icons} from '@assets';
+import {useDispatch, useSelector} from 'react-redux';
+import {userPhoneApi} from '@redux/servicesNew/userPhoneAPI';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { PaymentScreen } from '@components';
-import { WebView } from 'react-native-webview';
+import {PaymentScreen} from '@components';
+import {WebView} from 'react-native-webview';
 
-const ModalPoup = ({ visible, children }) => {
+const ModalPoup = ({visible, children}) => {
   const [showModal, setShowModal] = React.useState(visible);
   useEffect(() => {
     toggleModal();
@@ -50,9 +51,20 @@ const Login = () => {
   const [visible, setVisible] = useState(false);
   const [hide, setHide] = useState(true);
   const navigation = useNavigation();
-  const [login, { isLoading: isUpdating }] = useLoginMutation();
+  const [login, {isLoading: isUpdating}] = useLoginMutation();
   const dispatch = useAppDispatch();
   const [visibleModal, setVisibleModal] = useState(false);
+  const [phoneUser, setPhoneUser] = useState('');
+  const [password, setPassword] = useState('');
+  const [auth, setAuth] = useState('signin');
+  const dispatch1 = useDispatch();
+
+  const LoginPhone = () => {
+    if (auth == 'signin') {
+      dispatch(login({phoneUser, password}));
+    }
+  };
+
   const HidePassword = () => {
     if (hide === true) {
       setHide(false);
@@ -97,7 +109,7 @@ const Login = () => {
     return await messaging().getToken();
   }
 
-  const _signIn = async () => {
+  const _signIngoogle = async () => {
     await GoogleSignin.signOut();
     const currentUser = await GoogleSignin.getCurrentUser();
 
@@ -108,7 +120,7 @@ const Login = () => {
     try {
       // Get the users ID token
       // await GoogleSignin.hasPlayServices();
-      const { idToken } = await GoogleSignin.signIn();
+      const {idToken} = await GoogleSignin.signIn();
       // get fcm token
       const fcmToken = await getToken();
 
@@ -148,12 +160,16 @@ const Login = () => {
         bằng số điện thoại hoặc gmail{' '}
       </Text>
       <TextInput
+        value={phoneUser}
+        onChangeText={text => setPhoneUser(text)}
         keyboardType="numeric"
         placeholder={'Số điện thoại'}
         style={styles.textInput}
       />
       <Block style={styles.inputPassword}>
         <TextInput
+          value={password}
+          onChangeText={text => setPassword(text)}
           secureTextEntry={hide}
           placeholder={'Mật khẩu'}
           style={styles.textInput2}
@@ -182,12 +198,12 @@ const Login = () => {
         {' '}
         Quên mật khẩu ?{' '}
       </Text>
-      <Pressable style={styles.buttomLogin}>
+      <Pressable style={styles.buttomLogin} onPress={() => LoginPhone()}>
         <Text style={styles.textButtomLogin}>Đăng nhập</Text>
       </Pressable>
       <Block marginTop={20}>
         <TouchableOpacity
-          onPress={_signIn}
+          onPress={_signIngoogle}
           style={styles.loginGoogle}
           marginHorizontal={10}>
           <Image

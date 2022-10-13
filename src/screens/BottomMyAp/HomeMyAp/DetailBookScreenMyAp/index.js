@@ -59,58 +59,63 @@ import IntroduceText from './components/IntroduceText';
 // };
 
 const DetailBookScreenMyAp = ({ route }) => {
-  const { bookmark, item, _isRead } = route.params;
-  const [listChapters, setListChapters] = useState([]);
-  const [isRead, setIsRead] = useState(_isRead || true);
-  const themeStore = useAppSelector(state => state.root.themeApp.theme);
-  const themeNew = useTheme(themeStore);
-  const myInfo = useAppSelector(state => state.root.auth);
+    const { bookmark, item, _isRead } = route.params;
+    const [listChapters, setListChapters] = useState([]);
+    const [isRead, setIsRead] = useState(_isRead || true);
+    const themeStore = useAppSelector(state => state.root.themeApp.theme);
+    const themeNew = useTheme(themeStore);
+    const myInfo = useAppSelector(state => state.root.auth);
 
-  const [getAllChapterBook] = useGetAllChapterBookMutation();
 
-  useEffect(() => {
-    async function fetchAPI() {
-      if (item._id) {
-        const params = [{
-          id: item._id,
-        }, { token: myInfo.token }];
-        const data = await getAllChapterBook(params);
-        setListChapters(data.data);
-      }
-    }
-    fetchAPI();
-  }, [getAllChapterBook, item._id, myInfo._id]);
+    const [getAllChapterBook] = useGetAllChapterBookMutation();
 
-  return (
-    <Block>
-      <HeaderWithButton isBackHeader />
+    useEffect(() => {
+        async function fetchAPI() {
+            if (item._id) {
+                const params = [
+                    {
+                        id: item._id,
+                    },
+                    { token: myInfo.token },
+                ];
+                const data = await getAllChapterBook(params);
+                setListChapters(data.data);
+            }
+        }
+        fetchAPI();
+    }, [getAllChapterBook, item._id, myInfo._id]);
 
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <Block flex paddingHorizontal={20} backgroundColor={themeNew.colors.text}>
-          <Topbar bookmark={bookmark} />
-          <Block
-            flex
-            paddingHorizontal={20}
-            backgroundColor={theme.colors.white}>
-            <ImageBook item={route.params} />
-            <IntroduceText item={route.params} />
-            <ChapterBook
-              detailBook={listChapters}
-              nameBook={route.params.item.name}
-              isRead={isRead}
-              setIsRead={setIsRead}
-            />
-          </Block>
-      </ScrollView>
-    </Block>
-  );
+    return (
+        <Block>
+            <HeaderWithButton isBackHeader />
+
+            <ScrollView showsVerticalScrollIndicator={false}>
+                <Block flex paddingHorizontal={20} backgroundColor={themeNew.colors.text} />
+                <Topbar bookmark={bookmark} />
+                <Block
+                    flex
+                    paddingHorizontal={20}
+                    backgroundColor={theme.colors.white}>
+
+                    <ImageBook item={route.params} />
+                    <IntroduceText item={route.params} />
+                    <ChapterBook
+                        detailBook={listChapters}
+                        nameBook={route.params.item.name}
+                        isRead={isRead}
+                        setIsRead={setIsRead}
+                    />
+                </Block>
+            </ScrollView>
+        </Block>
+    );
 };
 
 const styles = StyleSheet.create({
-  animation: {
-    width: 100,
-    height: 100,
-  },
+    animation: {
+        width: 100,
+        height: 100,
+    },
 });
 
 export default DetailBookScreenMyAp;
