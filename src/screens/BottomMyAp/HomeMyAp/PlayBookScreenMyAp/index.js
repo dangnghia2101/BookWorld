@@ -20,6 +20,10 @@ const PlayBookScreenMyAp = ({ route }) => {
   const snapPoints = useMemo(() => [260 + inset.bottom], [inset.bottom]);
   const bottomSheetRef = useRef(null);
 
+  const startReadBook = new Date();
+  startReadBook.getSeconds();
+  console.log("bắt đầu đọc:  ", startReadBook);
+
   const renderBackdrop = useCallback(
     props => (
       <BottomSheetBackdrop

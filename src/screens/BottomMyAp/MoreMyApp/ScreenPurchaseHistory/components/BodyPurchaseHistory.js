@@ -1,6 +1,6 @@
 import {Block, Text} from '@components';
 import React from 'react';
-import {StyleSheet, Pressable, TouchableOpacity, Image} from 'react-native';
+import {StyleSheet, Pressable, TouchableOpacity, Image, View} from 'react-native';
 import IconView from '@components/Icon';
 import {routes} from '@navigation/routes';
 import {useNavigation} from '@react-navigation/native';
@@ -28,7 +28,7 @@ const BodyPurchaseHistory = props => {
         </Text>
         <Block>
           <TouchableOpacity style={[styles.itemPurchase, styles.shadowColor]}>
-            <Block row marginHorizontal={10} marginVertical={10}>
+            <Block row marginHorizontal={15} marginVertical={15}>
               <Image
                 style={styles.image}
                 source={require('../../../../../assets/images/Vector.png')}
@@ -49,6 +49,39 @@ const BodyPurchaseHistory = props => {
                 </Text>
               </Block>
             </Block>
+            <Block borderBottomWidth={0.4}
+          backgroundColor={themeNew.colors.grey8}>
+              </Block>
+              <Block row marginHorizontal={15} marginVertical={15} alignSelf={'baseline'}>
+                <Block width={'40%'}>
+                <Text size={12} color={themeNew.colors.grey8}>
+                  2 sản phẩm
+                </Text>
+                </Block>
+               <Block row width={'60%'} alignItems={'flex-end'}>
+               <Image
+                style={styles.icon_logo}
+                source={require('../../../../../assets/images/logo_icon.png')}
+              />
+               <Text size={14} color={themeNew.colors.grey8}>
+                  Thành tiền:
+                </Text>
+                <Text size={14} color={themeNew.colors.grey8}>
+                  15.000 VNĐ
+                </Text>
+               </Block>
+              
+              </Block>
+              
+                <Block borderBottomWidth={0.4}
+                       backgroundColor={themeNew.colors.grey8}>
+              </Block>
+              <Block alignItems={'flex-end'} right={10}>
+                <TouchableOpacity style={[styles.btnCmt, styles.shadowColor]}>
+                  <Text size={14} color={themeNew.colors.white}>Đánh giá</Text>
+                </TouchableOpacity>
+              </Block>
+              
           </TouchableOpacity>
         </Block>
       </Block>
@@ -80,5 +113,15 @@ const useStyle = makeStyles()(({colors}) => ({
     width: 80,
     height: 100,
     backgroundColor: 'black',
+  },
+  btnCmt: {
+    padding: 10,
+    marginVertical: 5,
+    borderRadius: 5,
+    backgroundColor: colors.primary,
+  },
+  icon_logo: {
+    width: 20,
+    height: 20,
   },
 }));

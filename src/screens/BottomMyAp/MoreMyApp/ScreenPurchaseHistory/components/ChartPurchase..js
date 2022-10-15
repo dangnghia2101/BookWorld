@@ -49,7 +49,7 @@ const ChartPurchase = props => {
     },
     {
       month: 'Setember',
-      time: 500,
+      time: 1000,
     },
     {
       month: 'October',
@@ -96,7 +96,7 @@ const ChartPurchase = props => {
     },
     {
       month: 'August',
-      time: 500,
+      time: 600,
     },
   ];
 

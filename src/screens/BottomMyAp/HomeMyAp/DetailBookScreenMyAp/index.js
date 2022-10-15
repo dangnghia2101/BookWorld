@@ -18,6 +18,10 @@ const DetailBookScreenMyAp = ({ route }) => {
 
   const [getAllChapterBook] = useGetAllChapterBookMutation();
 
+  const startReadBook = new Date();
+  startReadBook.getSeconds();
+  console.log("bắt đầu đọc:  ", startReadBook.getTime());
+
   useEffect(() => {
     async function fetchAPI() {
       if (item._id) {
