@@ -31,6 +31,7 @@ export const routes = {
   THEME_MODE: 'THEME_MODE',
   CHANGE_LANGUAGE: 'CHANGE_LANGUAGE',
   PURCHASE_HISTORY: 'PURCHASE_HISTORY',
+  EDIT_PROFILE_SCREEN: 'EDIT_PROFILE_SCREEN',
 };
 
 export const APP_PREFIX = ['emotion://', 'https://emotion.com'];

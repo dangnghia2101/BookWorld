@@ -1,11 +1,12 @@
 import React from 'react';
-import {createStackNavigator} from '@react-navigation/stack';
-import {routes} from '@navigation/routes';
+import { createStackNavigator } from '@react-navigation/stack';
+import { routes } from '@navigation/routes';
 import MoreScreenMyApp from './MoreScreenMyApp';
 import EditMoreMyApp from './EditMoreMyApp';
 import ScreenThemeMode from './ScreenThemeMode';
 import ScreenChangeLanguage from './ScreenChangeLanguage';
 import ScreenPurchaseHistory from './ScreenPurchaseHistory';
+import ScreenUpdateProfile from './UpdateProfile/ScreenUpdateProfle';
 
 const Stack = createStackNavigator();
 
@@ -30,6 +31,10 @@ const MoreAppNavigator = () => {
       <Stack.Screen
         name={routes.PURCHASE_HISTORY}
         component={ScreenPurchaseHistory}
+      />
+      <Stack.Screen
+        name={routes.EDIT_PROFILE_SCREEN}
+        component={ScreenUpdateProfile}
       />
     </Stack.Navigator>
   );
