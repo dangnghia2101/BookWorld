@@ -1,26 +1,18 @@
-import { Block, Text, ModalBox } from '@components';
-import React, { useEffect, useState } from 'react';
-import {
-  StyleSheet,
-  Image,
-  TextInput,
-  Pressable,
-  TouchableOpacity,
-  Modal,
-} from 'react-native';
-import { GoogleSignin } from '@react-native-google-signin/google-signin';
-import messaging from '@react-native-firebase/messaging';
+import { icons } from '@assets';
+import { Block, ModalBox, Text } from '@components';
+import { routes } from '@navigation/routes';
 import auth from '@react-native-firebase/auth';
+import messaging from '@react-native-firebase/messaging';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import { useNavigation } from '@react-navigation/native';
+import { changeLoading } from '@redux/reducerNew';
 import { useLoginMutation } from '@redux/servicesNew';
 import { useAppDispatch } from 'hooks';
-import { useNavigation } from '@react-navigation/native';
-import { routes } from '@navigation/routes';
-import { loginReducer, changeLoading } from '@redux/reducerNew';
-import { icons } from '@assets';
-import IconView from '@components/Icon';
+import React, { useEffect, useState } from 'react';
+import {
+  Image, Modal, Pressable, StyleSheet, TextInput, TouchableOpacity
+} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { PaymentScreen } from '@components';
-import { WebView } from 'react-native-webview';
 
 const ModalPoup = ({ visible, children }) => {
   const [showModal, setShowModal] = React.useState(visible);

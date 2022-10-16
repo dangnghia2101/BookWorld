@@ -1,11 +1,11 @@
-import {Block, Text} from '@components';
+import { Block, Text } from '@components';
 import React from 'react';
-import {StyleSheet, TouchableOpacity} from 'react-native';
-import {theme} from '@theme';
+import { StyleSheet, TouchableOpacity } from 'react-native';
+import { theme } from '@theme';
 
-const {colors} = theme;
+const { colors } = theme;
 
-const HeaderListBook = ({title, action}) => {
+const HeaderListBook = ({ title, action }) => {
   return (
     <Block row justifyContent={'space-between'} height={50} alignCenter>
       <Text style={styles.titleSection}>{title}</Text>

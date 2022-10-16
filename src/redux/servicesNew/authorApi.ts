@@ -1,5 +1,5 @@
-import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
-import {MAIN_API} from './endpoint';
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { MAIN_API } from './endpoint';
 
 type AuthorState = {
     _id?: string;
@@ -10,44 +10,39 @@ type AuthorState = {
     fcmtokens: Array<string>;
     image: string;
     bookmark: string;
-    role:number;
-    authorAcess:number;
+    role: number;
+    authorAcess: number;
     updatedAt: string;
     createdAt: string;
     wallet: number;
-    notification:Array<string>;
+    notification: Array<string>;
     favoriteBooks: Array<String>;
     followBooks: Array<String>;
-    historyBookRead:Array<String>;
-    payBook:Array<String>;
-  };
-  export const authorAPI = createApi({
+    historyBookRead: Array<String>;
+    payBook: Array<String>;
+};
+export const authorAPI = createApi({
     reducerPath: 'authorAPI',
     tagTypes: [],
     baseQuery: fetchBaseQuery({
-      baseUrl: MAIN_API,
+        baseUrl: MAIN_API,
     }),
     endpoints: builder => ({
-      getAllAuthor: builder.query<AuthorState[], string>({
-        query: () => ({
-          url: `accounts/allAuthor`,
-        // Our tricky API always returns a 200, but sets an `isError` property when there is an error.
+        getAllAuthor: builder.query<AuthorState[], string>({
+            query: () => ({
+                url: `accounts/allAuthor`,
+                // Our tricky API always returns a 200, but sets an `isError` property when there is an error.
+            }),
+            transformResponse: (response: any) => response,
+            async onQueryStarted(id, { dispatch, queryFulfilled }) {
+                try {
+                    const data = await queryFulfilled;
+                } catch (err) {
+                    console.log('error api getAllBook... ', err);
+                }
+            },
         }),
-        transformResponse: (response: any) => response,
-        async onQueryStarted(id, {dispatch, queryFulfilled}) {
-            try {
-              const data = await queryFulfilled;
-              console.log("+++++++++++++",data) // Save data in store, using reducer
-            } catch (err) {
-              console.log('error api getAllBook... ', err);
-            }
-          },
-      }),
-
     }),
-  });
-  
-export const {
-    useGetAllAuthorQuery,
-  } = authorAPI;
-  
+});
+
+export const { useGetAllAuthorQuery } = authorAPI;
