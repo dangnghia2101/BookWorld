@@ -18,7 +18,7 @@ const ItemEditMoreMy = props => {
 
   return (
     <Block>
-      <Block marginHorizontal={25} top={220}>
+      <Block marginHorizontal={25}>
         <Text
           fontType={'bold'}
           color={themeNew.colors.textDark}
@@ -314,3 +314,5 @@ const useStyle = makeStyles()(({colors}) => ({
     fontWeight: 'bold',
   },
 }));
+
+

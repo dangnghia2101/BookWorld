@@ -32,7 +32,7 @@ const ItemEditLastMoreMy = props => {
   };
 
   return (
-    <Block marginHorizontal={30} marginTop={250}>
+    <Block marginHorizontal={30} marginVertical={10}>
       <Pressable
         onPress={handleLogOut}
         style={[styles.buttonLastMoreMy, styles.shadowColor]}>

@@ -101,12 +101,11 @@ const ChartPurchase = props => {
   ];
 
   return (
-    <Block marginVertical={20} column justifyCenter>
+    <Block marginVertical={10} column justifyCenter>
       <Block
         style={styles.dateContainer}
         row
-        justifyContent={'space-between'}
-        marginHorizontal={15}>
+        justifyContent={'space-around'}>
         <TouchableOpacity
           style={[styles.itemChartContainer, styles.shadowColor]}>
           <Text color={themeNew.colors.textDark}>{t('day')}</Text>

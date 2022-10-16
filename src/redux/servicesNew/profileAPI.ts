@@ -1,10 +1,4 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
-import {
-  saveBookReducer,
-  changeLoading,
-  saveTabCategoryReducer,
-  saveCategoryReducer,
-} from '@redux/reducerNew';
 
 import {MAIN_API} from './endpoint';
 
@@ -29,9 +23,9 @@ export const profileAPI = createApi({
     baseUrl: MAIN_API,
   }),
   endpoints: builder => ({
-    getAllBook: builder.query<ProfileState[], string>({
-      query: () => ({
-        url: ``,
+    getReadTimeBook: builder.query<ProfileState[], string>({
+      query: actions => ({
+        url: `accounts/${actions}/getReadTimeBook`,
         validateStatus: (response, result) =>
           response.status === 200 && !result.isError, // Our tricky API always returns a 200, but sets an `isError` property when there is an error.
       }),

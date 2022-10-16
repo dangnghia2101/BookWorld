@@ -1,5 +1,5 @@
 import React from 'react';
-import {Block} from '@components';
+import {Block, HeaderWithButton} from '@components';
 import HeaderEditMoreMy from './components/HeaderEditMoreMy';
 import {ScrollView} from 'react-native';
 import ItemEditLastMoreMy from './components/ItemEditLastMoreMy';
@@ -8,16 +8,18 @@ import BodyEditMoreMy from './components/BodyEditMoreMy';
 
 import {useAppSelector} from 'hooks';
 import {makeStyles, useTheme} from 'themeNew';
+import {withNamespaces} from 'react-i18next';
 
-const MoreMyApp = props => {
+const MoreMyApp = props=> {
+  const {t} = props;
   const myInfo = useAppSelector(state => state.root.auth);
   const themeStore = useAppSelector(state => state.root.themeApp.theme);
   const themeNew = useTheme(themeStore);
 
   return (
     <Block flex justifyCenter backgroundColor={themeNew.colors.text}>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <HeaderEditMoreMy />
+        <HeaderWithButton isBackHeader title={t('profile')}/>
+        <ScrollView showsVerticalScrollIndicator={false}>
         <BodyEditMoreMy
           name={myInfo?.name}
           image={myInfo?.image}
@@ -30,4 +32,5 @@ const MoreMyApp = props => {
   );
 };
 
-export default MoreMyApp;
+export default withNamespaces()(MoreMyApp);
+

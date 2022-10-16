@@ -26,7 +26,7 @@ const BodyThemeMode = props => {
 
   return (
     <Block>
-      <Block marginHorizontal={10} marginVertical={20}>
+      <Block marginHorizontal={5} marginVertical={10}>
         <RadioButton.Group
           onValueChange={value => setValue(value)}
           value={value}>
@@ -59,6 +59,6 @@ export default withNamespaces()(BodyThemeMode);
 const useStyle = makeStyles()(({colors}) => ({
   textLabel: {
     color: colors.textDark,
-    fontSize: 18,
+    fontSize: 16,
   },
 }));

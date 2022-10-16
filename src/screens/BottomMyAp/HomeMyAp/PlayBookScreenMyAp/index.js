@@ -21,8 +21,10 @@ const PlayBookScreenMyAp = ({ route }) => {
   const bottomSheetRef = useRef(null);
 
   const startReadBook = new Date();
+  const endReadBook = new Date();
   startReadBook.getSeconds();
   console.log("bắt đầu đọc:  ", startReadBook);
+  const sumTime = endReadBook - startReadBook;
 
   const renderBackdrop = useCallback(
     props => (

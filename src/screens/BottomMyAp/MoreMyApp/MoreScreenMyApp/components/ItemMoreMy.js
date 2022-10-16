@@ -11,32 +11,29 @@ const ItemMoreMy = props => {
   const styles = useStyle(props, themeStore);
   return (
     <Block
-      marginHorizontal={25}
-      marginTop={220}
       row
-      justifyContent={'space-between'}>
+      justifyContent={'space-around'}>
       <View style={[styles.dataContainer, styles.shadowColor]}>
-        <Text center marginTop={10} color={themeNew.colors.textDark}>
+        <Text center color={themeNew.colors.textDark}>
           Tổng thời gian đọc
         </Text>
-        <View style={styles.textDataContainer}>
-          <Text size={40} center color={themeNew.colors.textDark}>
-            1280
-          </Text>
-        </View>
+        <Text size={40} center color={themeNew.colors.textDark}>
+          1280
+        </Text>
         <Text center color={themeNew.colors.textDark}>
           phút
         </Text>
-      </View>
+        </View>
       <View style={[styles.dataContainer, styles.shadowColor]}>
         <Text center marginTop={10} color={themeNew.colors.textDark}>
           Số sách đã đọc
         </Text>
-        <View style={styles.textDataContainer}>
-          <Text size={40} center color={themeNew.colors.textDark}>
-            23
-          </Text>
-        </View>
+        <Text size={40} center color={themeNew.colors.textDark}>
+          23
+        </Text>
+        <Text center color={themeNew.colors.textDark}>
+          sách
+        </Text>
       </View>
     </Block>
   );
@@ -51,10 +48,7 @@ const useStyle = makeStyles()(({colors}) => ({
     width: 171,
     height: 150,
     flexDirection: 'column',
-  },
-  textDataContainer: {
-    height: 90,
-    justifyContent: 'center',
+    justifyContent: 'space-around',
   },
   shadowColor: {
     shadowColor: colors.shadowDark,

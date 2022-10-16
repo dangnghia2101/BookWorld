@@ -17,7 +17,7 @@ const BodyPurchaseHistory = props => {
   const styles = useStyle(props, themeStore);
 
   return (
-    <Block marginHorizontal={20} flex height={2000}>
+    <Block marginHorizontal={20} flex height={20000}>
       <Block>
         <Text
           fontType={'bold'}
@@ -50,7 +50,7 @@ const BodyPurchaseHistory = props => {
               </Block>
             </Block>
             <Block borderBottomWidth={0.4}
-          backgroundColor={themeNew.colors.grey8}>
+                    backgroundColor={themeNew.colors.grey8}>
               </Block>
               <Block row marginHorizontal={15} marginVertical={15} alignSelf={'baseline'}>
                 <Block width={'40%'}>

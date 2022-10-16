@@ -105,7 +105,7 @@ const ChartMoreMy = props => {
       <Block
         style={styles.dateContainer}
         row
-        justifyContent={'space-between'}
+        justifyContent={'space-around'}
         marginHorizontal={15}>
         <TouchableOpacity
           style={[styles.itemChartContainer, styles.shadowColor]}>
