@@ -55,7 +55,7 @@ export const bookAPI = createApi({
                     const { data } = await queryFulfilled;
                     dispatch(saveBookReducer({ data: data.data })); // Save data in store, using reducer
                 } catch (err) {
-                    console.log('error api getAllBook... ', err);
+                    // console.log('error api getAllBook... ', err);
                 }
             },
         }),
@@ -68,7 +68,7 @@ export const bookAPI = createApi({
                     const { data } = await queryFulfilled;
                     dispatch(saveTabCategoryReducer({ data: data.data })); // Save data in store, using reducer
                 } catch (err) {
-                    console.log('error api getAllBookByCategory... ', err);
+                    // console.log('error api getAllBookByCategory... ', err);
                 }
             },
         }),
@@ -83,7 +83,7 @@ export const bookAPI = createApi({
                     const { data } = await queryFulfilled;
                     dispatch(saveCategoryReducer({ data: data.data })); // Save data in store, using reducer
                 } catch (err) {
-                    console.log('error api getAllCategories... ', err);
+                    // console.log('error api getAllCategories... ', err);
                 }
             },
         }),
@@ -105,7 +105,7 @@ export const bookAPI = createApi({
                     const { data } = await queryFulfilled;
                     dispatch(changeLoading('HIDE')); // Save data in store, using reducer
                 } catch (err) {
-                    console.log('error api getAllCategories... ', err);
+                    // console.log('error api getAllCategories... ', err);
                 }
             },
         }),

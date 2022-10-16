@@ -1,27 +1,25 @@
-import { Block, Text, Button } from '@components';
+import { Block, Button, Text } from '@components';
 import { WINDOW_WIDTH } from '@gorhom/bottom-sheet';
 import { useAppSelector } from '@hooks';
 import { routes } from '@navigation/routes';
-import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import { useTheme } from 'themeNew';
-const ChapterBook = ({ detailBook, nameBook, isRead, setIsRead }) => {
-  const navigation = useNavigation();
+const ChapterBook = ({ detailBook, nameBook, isRead, setIsRead, navigation }) => {
   const themeStore = useAppSelector(state => state.root.themeApp.theme);
   const themeNew = useTheme(themeStore);
   const [data, setData] = useState([]);
 
   useEffect(() => {
     if (isRead) {
-      setData(detailBook?.filter(item => item.element?.htmlChapter !== ''))
+      setData(detailBook?.filter(item => item?.element?.htmlChapter !== ''))
     } else {
-      setData(detailBook?.filter(item => item.element?.audio !== ''))
+      setData(detailBook?.filter(item => item?.element?.linkAudio?.length > 0))
     }
   }, [detailBook, isRead])
 
   return (
-    <Block width={WINDOW_WIDTH - 50} alignSelf='center'>
+    <Block width={WINDOW_WIDTH - 50} alignSelf='center' marginBottom={100} flex>
       <Block width={200} row alignSelf='center' marginTop={30} justifyCenter >
         <Button onPress={() => setIsRead(true)}>
           <Block backgroundColor={isRead ? themeNew.colors.primary : themeNew.colors.grey14} paddingHorizontal={15} paddingVertical={5} style={styles.containerTabLeft}>
@@ -79,7 +77,7 @@ const ChapterBook = ({ detailBook, nameBook, isRead, setIsRead }) => {
               }
               paddingVertical={10}
               paddingHorizontal={5}>
-              <Text>{index + 1}</Text>
+              <Text>{item.element.chapterNumber}</Text>
             </Block>
           </TouchableOpacity>
         ))}

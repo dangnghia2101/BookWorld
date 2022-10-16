@@ -40,6 +40,7 @@ export {
   ModalBox,
   PaymentScreen,
   HeaderWithButton,
+  Icon
   //   RadioButton,
   //   ModalBox,
   //   FormContainer,
