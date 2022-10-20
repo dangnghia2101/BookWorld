@@ -52,10 +52,10 @@ const ItemEditMoreMy = props => {
                 fontType={'bold'}
                 color={themeNew.colors.textDark}
                 size={16}>
-                Lịch sử mua hàng
+                {t('purchaseHistory')}
               </Text>
               <Text color={themeNew.colors.textDark} size={12}>
-                Xem thông tin mua hàng
+                {t('viewPurchase')}
               </Text>
             </Block>
             <Block style={styles.iconItemMoreMy}>
@@ -99,10 +99,10 @@ const ItemEditMoreMy = props => {
                 fontType={'bold'}
                 color={themeNew.colors.textDark}
                 size={16}>
-                Chỉnh sửa thông tin
+                {t('editProfile')}
               </Text>
               <Text color={themeNew.colors.textDark} size={12}>
-                Cập nhật và chỉnh sửa thông tin
+                {t('updateAndEdit')}
               </Text>
             </Block>
             <Block style={styles.iconItemMoreMy}>
@@ -138,10 +138,10 @@ const ItemEditMoreMy = props => {
                 fontType={'bold'}
                 color={themeNew.colors.textDark}
                 size={16}>
-                Riêng tư
+                {t('privacy')}
               </Text>
               <Text color={themeNew.colors.textDark} size={12}>
-                Thay đổi mật khẩu
+                {t('changePassword')}
               </Text>
             </Block>
             <Block style={styles.iconItemMoreMy}>
@@ -178,10 +178,10 @@ const ItemEditMoreMy = props => {
                 fontType={'bold'}
                 color={themeNew.colors.textDark}
                 size={16}>
-                Thông báo
+                {t('notification')}
               </Text>
               <Text color={themeNew.colors.textDark} size={12}>
-                Cài đặt thông báo
+                {t('notificationSettings')}
               </Text>
             </Block>
             <Block style={styles.iconItemMoreMy}>
@@ -219,10 +219,10 @@ const ItemEditMoreMy = props => {
                 fontType={'bold'}
                 color={themeNew.colors.textDark}
                 size={16}>
-                Giao diện
+                {t('darkMode')}
               </Text>
               <Text color={themeNew.colors.textDark} size={12}>
-                Thay đổi giao diện màn hình
+                {t('changeScreenMode')}
               </Text>
             </Block>
             <Block style={styles.iconItemMoreMy}>
@@ -260,10 +260,10 @@ const ItemEditMoreMy = props => {
                 fontType={'bold'}
                 color={themeNew.colors.textDark}
                 size={16}>
-                Ngôn ngữ
+                {t('language')}
               </Text>
               <Text color={themeNew.colors.textDark} size={12}>
-                Thay đổi cài đặt ngôn ngữ
+                {t('changeLanguageSettings')}
               </Text>
             </Block>
             <Block style={styles.iconItemMoreMy}>

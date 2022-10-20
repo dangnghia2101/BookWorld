@@ -2,22 +2,20 @@ import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 import {MAIN_API} from './endpoint';
 
 export const timereadAPI = createApi({
-  reducerPath: 'paymentAPI',
+  reducerPath: 'timereadAPI',
   tagTypes: ['Post'],
   baseQuery: fetchBaseQuery({
     baseUrl: MAIN_API,
   }),
   endpoints: builder => ({
-    createPayment: builder.mutation({
+    createTimeRead: builder.mutation<any,{ time: number , token: string }>
+    ({
       query: body => {
-        console.log('  BODY ', body);
         return {
-          url: 'accounts/creatTimeRead',
+          url: 'accounts/changeReadTimeBook',
           method: 'POST',
-          body: body,
-          headers: {
-            'Content-type': 'application/json; charset=UTF-8',
-          },
+          body: body.time,
+          headers: { Authorization: `Bearer ${body.token}` },
           validateStatus: (response, result) =>
             response.status === 200 && !result.isError, // Our tricky API always returns a 200, but sets an `isError` property when there is an error.
         };
@@ -28,4 +26,4 @@ export const timereadAPI = createApi({
   }),
 });
 
-export const {useCreatePaymentMutation} = timereadAPI;
+export const {useCreateTimeReadMutation} = timereadAPI;
