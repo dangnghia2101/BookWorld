@@ -8,7 +8,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Feather from 'react-native-vector-icons/Feather';
 import { useTheme } from 'themeNew';
 const HeaderWithButton = props => {
-  const { title, isBackHeader, children, rightIcon, handleBack } = props;
+  const { title, isBackHeader, children, rightIcon, handleBack, backgroundColor } = props;
   const insets = useSafeAreaInsets();
   const HEIGHT_HEADER = 50;
   const themeStore = useAppSelector(state => state.root.themeApp.theme);
@@ -65,25 +65,28 @@ const HeaderWithButton = props => {
     <>
       {isBackHeader ? (
         <Block
-          marginTop={insets.top - 20}
           paddingVertical={15}
-          backgroundColor={theme.colors.text}
+          marginTop={insets.top}
+          justifyCenter
+          backgroundColor={backgroundColor ? backgroundColor : theme.colors.text}
         >
           {renderBackHeader()}
         </Block>
       ) : (
         <Block
+
           style={{
-            marginTop: insets.top,
-            backgroundColor: theme.colors.text,
+            // marginTop: insets.top,
+            backgroundColor: backgroundColor ? backgroundColor : theme.colors.text,
             height: HEIGHT_HEADER,
-          }}>
-          <Block alignCenter justifyCenter row paddingHorizontal={20}>
-            <Title title={title} />
-            {children}
-          </Block>
+          }}
+          alignCenter justifyCenter row
+        >
+          <Title title={title} />
+          {children}
         </Block>
-      )}
+      )
+      }
     </>
   );
 };
