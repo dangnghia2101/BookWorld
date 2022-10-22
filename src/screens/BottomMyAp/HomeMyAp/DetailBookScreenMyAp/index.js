@@ -1,10 +1,10 @@
 import { Block, HeaderWithButton } from '@components';
 import { useAppSelector } from '@hooks';
+import { useNavigation } from '@react-navigation/core';
 import { useGetAllChapterBookMutation } from '@redux/servicesNew';
 import { theme } from '@theme';
-import Topbar from 'common/Topbar';
 import React, { useEffect, useState } from 'react';
-import { ScrollView, StatusBar, StyleSheet } from 'react-native';
+import { ScrollView, StyleSheet } from 'react-native';
 import ChapterBook from './components/ChapterBook';
 import ImageBook from './components/ImageBook';
 import IntroduceText from './components/IntroduceText';
@@ -13,6 +13,8 @@ const DetailBookScreenMyAp = ({ route }) => {
   const { bookmark, item, _isRead } = route.params;
   const [listChapters, setListChapters] = useState([]);
   const [isRead, setIsRead] = useState(_isRead || true);
+  const navigation = useNavigation();
+
 
   const myInfo = useAppSelector(state => state.root.auth);
 
@@ -47,6 +49,7 @@ const DetailBookScreenMyAp = ({ route }) => {
             nameBook={route.params.item.name}
             isRead={isRead}
             setIsRead={setIsRead}
+            navigation={navigation}
           />
         </Block>
       </ScrollView>

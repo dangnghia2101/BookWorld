@@ -1,11 +1,11 @@
-import {icons} from '@assets';
-import {AnimatedImage, Block, Text} from '@components';
-import {routes} from '@navigation/routes';
-import {useNavigation} from '@react-navigation/native';
+import { icons } from '@assets';
+import { AnimatedImage, Block, Text } from '@components';
+import { routes } from '@navigation/routes';
+import { useNavigation } from '@react-navigation/native';
 import actions from '@redux/actions';
 import React from 'react';
-import {Image, Pressable} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
+import { Image, Pressable } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 import styles from './styles';
 
 const NotificationItem = ({
