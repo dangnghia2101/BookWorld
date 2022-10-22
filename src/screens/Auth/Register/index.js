@@ -1,44 +1,97 @@
-import {Block, Text} from '@components';
-import React, {useEffect, useState} from 'react';
-import {StyleSheet, TextInput, Pressable, Modal, Button} from 'react-native';
+import { Block, Text, TextInput } from '@components';
+import { useAppSelector } from '@hooks';
 import auth from '@react-native-firebase/auth';
+import messaging from '@react-native-firebase/messaging';
+import { useLoginPhoneMutation } from '@redux/servicesNew';
+import { PHONE_REG_EXP } from '@utils/constants';
+import React, { useMemo, useState } from 'react';
+import { StyleSheet, TouchableOpacity } from 'react-native';
+import { useTheme } from 'themeNew';
+import ModalConfirmOtp from './components/ModalConfirmOtp';
 
-const ModalPoup = ({visible, children}) => {
-  const [showModal, setShowModal] = React.useState(visible);
-  useEffect(() => {
-    toggleModal();
-  }, [visible]);
-
-  const toggleModal = () => {
-    if (visible) {
-      setShowModal(true);
-    } else {
-      setShowModal(false);
-    }
-  };
-  return (
-    <Modal transparent visible={showModal}>
-      <Block flex={1} style={styles.modalBackGround}>
-        <Block style={styles.modalContainer}>{children}</Block>
-      </Block>
-    </Modal>
-  );
-};
+async function getToken() {
+  return await messaging().getToken();
+}
 
 const Register = () => {
-  const [visible, setVisible] = React.useState(false);
-  const [name, setName] = useState('');
-  const [phone, setPhone] = useState('');
-  const [password, setPassword] = useState('');
-  const [repassword, setRepassword] = useState('');
+  const themeStore = useAppSelector(state => state.root.themeApp.theme);
 
-  const doUserRegisration = async function () {
-    const phoneValue = phone;
-    const passwordValue = password;
-  };
+  const [loginPhone] = useLoginPhoneMutation();
+  const [phone, setPhone] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [confirmOTP, setConfirmOTP] = useState(null);
+  const [codeOTP, setCodeOTP] = useState('');
+  const [showModal, setShowModal] = React.useState(false);
+  const { colors } = useTheme(themeStore)
+
+
+  const handleErrorPhone = useMemo(() => {
+    if (phone.match(PHONE_REG_EXP)) {
+      return [false, ''];
+    } else {
+      return [true, 'Format phone invalid'];
+    }
+  }, [phone])
+
+  const handleErrorNewPassword = useMemo(() => {
+    if (newPassword.length > 5) {
+      return [false, ''];
+    } else {
+      return [true, 'New password at least 6 character'];
+    }
+  }, [newPassword])
+
+  const handleErrorComfirmPassword = useMemo(() => {
+    if (newPassword === confirmPassword) {
+      return [false, ''];
+    } else {
+      return [true, 'Confirm password nat match New Password'];
+    }
+  }, [confirmPassword, newPassword])
+
+  const handleSendLogin = useMemo(() => {
+    if (!handleErrorPhone[0] && !handleErrorNewPassword[0] && !handleErrorComfirmPassword[0]) {
+      return false;
+    } else {
+      return true;
+    }
+  }, [handleErrorPhone, handleErrorNewPassword, handleErrorComfirmPassword]);
+
+  //Send OTP from Firebase
+  const signInWithPhoneNumber = async () => {
+    console.log("PHONE  +84 " + phone)
+    const confirmation = await auth().signInWithPhoneNumber(("+84 " + phone));
+    setConfirmOTP(confirmation);
+    setShowModal(true);
+  }
+
+  //Confirm code OTP
+  async function confirmCode() {
+    try {
+      await confirmOTP.confirm(codeOTP);
+      await callApiLogin();
+      console.log('Register success.');
+      setShowModal(false)
+    } catch (error) {
+      setShowModal(false)
+      console.log('Invalid code.');
+    }
+  }
+
+
+  const callApiLogin = async () => {
+    const data = {
+      phoneUser: phone,
+      passwordUser: newPassword,
+      token_fcm: await getToken()
+
+    }
+    await loginPhone(data);
+  }
 
   return (
-    <Block flex alignCenter paddingTop={56} backgroundColor={'white'}>
+    <Block flex alignCenter paddingTop={56} backgroundColor={'white'} paddingHorizontal={20}>
       <Text h1 bold size={30} style={styles.textWelcomLogin}>
         {' '}
         Xin Chào Bạn Mới{' '}
@@ -48,66 +101,28 @@ const Register = () => {
         Vui lòng đăng ký tài khoản để sử dụng ứng dụng Lưu ý nhập đầy đủ thông
         tin ở bên dưới{' '}
       </Text>
-      <TextInput
-        placeholder={'Số điện thoại'}
-        value={phone}
-        onChangeText={text => setPhone(text)}
-        style={styles.textInput}
-      />
-      <TextInput
-        value={name}
-        onChangeText={text => setName(text)}
-        placeholder={'Họ và tên'}
-        style={styles.textInput2}
-      />
-      <TextInput
-        value={password}
-        onChangeText={text => setPassword(text)}
-        placeholder={'Mật khẩu'}
-        style={styles.textInput2}
-      />
-      <TextInput
-        value={repassword}
-        onChangeText={text => setRepassword(text)}
-        placeholder={'Nhập lại mật khẩu'}
-        style={styles.textInput2}
-      />
-      <ModalPoup visible={visible}>
-        <Block alignCenter={'center'}>
-          <Text style={styles.textOTP} center>
-            Mã OTP đã được gửi về số điện thoại của bạn
-          </Text>
-          <Text marginTop={18} style={styles.textPhone}>
-            (099999xxxx)
-          </Text>
-          <Block style={styles.textOPTContainer}>
-            <TextInput style={styles.textInputOTP} />
-            <TextInput style={styles.textInputOTP} />
-            <TextInput style={styles.textInputOTP} />
-            <TextInput style={styles.textInputOTP} />
-          </Block>
-          <Pressable
-            style={styles.buttomLogin}
-            onPress={() => setVisible(false)}>
-            <Text style={styles.textButtomLogin} height={55}>
-              Đồng ý
-            </Text>
-          </Pressable>
-        </Block>
-      </ModalPoup>
-      <Pressable
-        onPress={() => setVisible(true)}
-        style={styles.buttomLogin}
-        height={59}>
+
+      <TextInput onChangeText={setPhone} value={phone} label={'Phone number'} keyboardType='phone-pad' errorText={handleErrorPhone[1]} isError={handleErrorPhone[0]} />
+      <TextInput onChangeText={setNewPassword} value={newPassword} label={'New Password'} isSecure={true} errorText={handleErrorNewPassword[1]} isError={handleErrorNewPassword[0]} />
+      <TextInput onChangeText={setConfirmPassword} value={confirmPassword} label={'Confirm Passord'} isSecure={true} errorText={handleErrorComfirmPassword[1]} isError={handleErrorComfirmPassword[0]} />
+
+      <ModalConfirmOtp confirmCode={confirmCode} setShowModal={setShowModal} showModal={showModal} setConfirmOTP={setConfirmOTP} setCodeOTP={setCodeOTP} codeOTP={codeOTP} />
+
+      <TouchableOpacity
+        onPress={signInWithPhoneNumber}
+        style={styles({ isDisable: handleSendLogin }).buttomLogin}
+        height={59}
+        disabled={handleSendLogin}
+      >
         <Text style={styles.textButtomLogin}>Đăng ký</Text>
-      </Pressable>
+      </TouchableOpacity>
     </Block>
   );
 };
 
 export default Register;
 
-const styles = StyleSheet.create({
+const styles = ({ isDisable }) => StyleSheet.create({
   textOPTContainer: {
     justifyContent: 'center',
     flexDirection: 'row',
@@ -153,7 +168,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   textButtomLogin: {
-    fontSize: 22,
+    fontSize: 16,
     lineHeight: 50,
     alignItems: 'center',
     fontWeight: '700',
@@ -161,12 +176,13 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
   },
   buttomLogin: {
-    width: '88%',
+    width: '100%',
     marginTop: 43,
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 15,
-    backgroundColor: '#DD4455',
+    backgroundColor: isDisable ? '#818181' : '#DD4455',
+    height: 50,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -174,7 +190,6 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 1,
     shadowRadius: 6,
-
     elevation: 7,
   },
   textInput2: {
@@ -203,17 +218,8 @@ const styles = StyleSheet.create({
     height: 59,
     fontWeight: '600',
     backgroundColor: '#F3F3F3',
-    marginTop: 54,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 3,
-    },
-    paddingLeft: 18,
-    shadowOpacity: 1,
-    shadowRadius: 6,
-
-    elevation: 7,
+    marginTop: 10,
+    paddingHorizontal: 20
   },
   textWelcomLogin: {
     fontFamily: 'Poppins',

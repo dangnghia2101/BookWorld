@@ -1,14 +1,20 @@
-import {Block, Text} from '@components';
-import React, {memo, useRef} from 'react';
-import {Animated, Platform, StyleSheet, TouchableOpacity} from 'react-native';
+import { Block, Text } from '@components';
+import React, { memo, useRef } from 'react';
+import { Animated, Platform, StyleSheet, TouchableOpacity } from 'react-native';
 import IconView from '@components/Icon';
 // import {useDispatch, useSelector} from 'react-redux';
-import {theme} from '../theme';
+import { theme } from '../theme';
+import { useAppSelector } from '@hooks';
+import { useTheme } from 'themeNew';
 
 const PADDING_BOTTOM = Platform.OS === 'ios' ? 20 : 0;
-const {colors} = theme;
-const CustomTabBar = ({state, descriptors, navigation}) => {
+const { colors } = theme;
+const CustomTabBar = ({ state, descriptors, navigation }) => {
   const scaleBotTabBar = useRef(new Animated.Value(0.5)).current;
+  const themeStore = useAppSelector(state => state.root.themeApp.theme);
+
+  const { colors } = useTheme(themeStore);
+
   const scaleOut = () => {
     Animated.timing(scaleBotTabBar, {
       toValue: 1,
@@ -21,15 +27,15 @@ const CustomTabBar = ({state, descriptors, navigation}) => {
       paddingVertical={10}
       paddingBottom={PADDING_BOTTOM}
       flexDirection="row"
-      backgroundColor={theme.colors.white}>
+      backgroundColor={colors.text}>
       {state.routes.map((route, index) => {
-        const {options} = descriptors[route.key];
+        const { options } = descriptors[route.key];
         const label =
           options.tabBarLabel !== undefined
             ? options.tabBarLabel
             : options.title !== undefined
-            ? options.title
-            : route.name;
+              ? options.title
+              : route.name;
         const isFocused = state.index === index;
         if (isFocused) {
           scaleOut();
@@ -44,7 +50,7 @@ const CustomTabBar = ({state, descriptors, navigation}) => {
           });
           if (!isFocused && !event.defaultPrevented) {
             // The `merge: true` option makes sure that the params inside the tab screen are preserved
-            navigation.navigate({name: route.name, merge: true});
+            navigation.navigate({ name: route.name, merge: true });
           }
         };
         const onLongPress = () => {
@@ -53,8 +59,7 @@ const CustomTabBar = ({state, descriptors, navigation}) => {
             target: route.key,
           });
         };
-        const backgroundColor = isFocused ? colors.red : colors.white;
-        const color = isFocused ? colors.red : colors.gray;
+        const color = isFocused ? colors.primary : colors.textInBox;
         const flex = isFocused ? 2.5 : 2.5;
 
         return (
@@ -63,7 +68,7 @@ const CustomTabBar = ({state, descriptors, navigation}) => {
             style={[
               styles.container,
               {
-                transform: [isFocused ? {scaleX: scaleBotTabBar} : {scale: 1}],
+                transform: [isFocused ? { scaleX: scaleBotTabBar } : { scale: 1 }],
                 flex,
               },
             ]}

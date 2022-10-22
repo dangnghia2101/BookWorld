@@ -1,36 +1,30 @@
+import { NextListenIcon, PreviousListenIcon } from '@assets';
 import {
-    Block,
-    Text,
-    HeaderWithButton,
-    AnimatedImage,
-    Button,
+    AnimatedImage, Block, Button, HeaderWithButton, Text
 } from '@components';
+import IconView from '@components/Icon';
 import { SCREEN_HEIGHT, SCREEN_WIDTH, WINDOW_WIDTH } from '@gorhom/bottom-sheet';
 import { useAppSelector } from '@hooks';
-import { useGetAllChapterBookMutation } from '@redux/servicesNew';
-import { theme } from '@theme';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { ScrollView, StyleSheet } from 'react-native';
-import { makeStyles, useTheme } from 'themeNew';
-import { PlayListenIcon, NextListenIcon, PreviousListenIcon } from '@assets';
 import { useAudioHelper } from 'helper/audio-helper';
-import IconView from '@components/Icon';
+import React, { useCallback, useEffect } from 'react';
+import { BackHandler } from 'react-native';
 import * as Progress from 'react-native-progress';
+import { makeStyles, useTheme } from 'themeNew';
 
 const listSpeedValues = [
     { value: 0.5, text: 'x0.5' },
     { value: 0.75, text: 'x0.75' },
     { value: 1.0, text: 'x1.0' },
     { value: 1.25, text: 'x1.25' },
-    { value: 1.4, text: 'x1.5' },
+    { value: 1.5, text: 'x1.5' },
 ]
 
 export const ListenBook = props => {
     const themeStore = useAppSelector(state => state.root.themeApp.theme);
     const { colors } = useTheme(themeStore);
     const { item, nameBook } = props.route.params;
+    const { goBack, getParent } = props.navigation;
     const styles = useStyle(themeStore);
-    const [currentTime, setCurrentTime] = useState(0);
 
     const renderImage = useCallback(() => {
         return (
@@ -44,6 +38,7 @@ export const ListenBook = props => {
                     lineHeight={30}
                     size={20}
                     fontType="bold"
+                    marginTop={10}
                     color={colors.textInBox}>
                     {item?.title}
                 </Text>
@@ -58,23 +53,42 @@ export const ListenBook = props => {
         listSounds: [
             {
                 type: 'network',
-                path: 'https://raw.githubusercontent.com/uit2712/RNPlaySound/develop/sounds/Tropic%20-%20Anno%20Domini%20Beats.mp3',
-                name: 'Tropic - Anno Domini Beats',
+                path: item?.linkAudio,
+                name: item?.title,
             },
         ],
         timeRate: 15,
         isLogStatus: false,
     });
 
+    const playSound = () => {
+        if (sound.status === 'play') {
+            sound.pause();
+        } else {
+            sound.play();
+        }
+        return true;
+    };
+
+    useEffect(() => {
+        const backHandler = () => {
+            sound.pause();
+            goBack();
+            return false;
+        };
+
+        const backHandlerEvent = BackHandler.addEventListener(
+            "hardwareBackPress",
+            backHandler
+        );
+
+        return () => backHandlerEvent.remove()
+
+    }, [])
+
 
     const renderButtonPlay = useCallback(() => {
-        const playSound = () => {
-            if (sound.status === 'play') {
-                sound.pause();
-            } else {
-                sound.play();
-            }
-        };
+
         return (
             <Block
                 marginHorizontal={25}
@@ -138,11 +152,12 @@ export const ListenBook = props => {
                 }
             </Block>
         )
-    }, [sound.speed])
+    }, [sound.speed, sound])
 
     return (
         <Block flex backgroundColor={colors.text} alignCenter>
-            <HeaderWithButton isBackHeader title={nameBook} />
+            <HeaderWithButton handleBack={playSound}
+                isBackHeader title={nameBook} />
             {renderImage()}
             {renderButtonPlay()}
             {renderSlide()}

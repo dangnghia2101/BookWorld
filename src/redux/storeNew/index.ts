@@ -20,7 +20,7 @@ import {
 } from 'redux-persist';
 import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {userApi, bookAPI, paymentApi} from '@redux/servicesNew';
+import {userApi, bookAPI, paymentApi,authorAPI} from '@redux/servicesNew';
 import {setupListeners} from '@reduxjs/toolkit/query';
 import { userPhoneApi } from '@redux/servicesNew/userPhoneAPI';
 
@@ -53,6 +53,7 @@ export const store = configureStore({
     [bookAPI.reducerPath]: bookAPI.reducer,
     [paymentApi.reducerPath]: paymentApi.reducer,
     [userPhoneApi.reducerPath]: userPhoneApi.reducer,
+    [authorAPI.reducerPath]: authorAPI.reducer,
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
@@ -63,7 +64,8 @@ export const store = configureStore({
       .concat(userApi.middleware)
       .concat(bookAPI.middleware)
       .concat(paymentApi.middleware)
-      .concat(userPhoneApi.middleware),
+      .concat(userPhoneApi.middleware)
+      .concat(authorAPI.middleware),
 });
 
 setupListeners(store.dispatch);
