@@ -1,13 +1,13 @@
-import {Block, Text, Button} from '@components';
+import { Block, Text, Button } from '@components';
 import React from 'react';
-import {Image, StyleSheet, TouchableOpacity} from 'react-native';
+import { Image, StyleSheet, TouchableOpacity } from 'react-native';
 import Icon from '@components/Icon';
 
-import {theme} from '@theme';
-import {images} from '@assets';
-import {startCase} from 'lodash';
+import { theme } from '@theme';
+import { images } from '@assets';
+import { startCase } from 'lodash';
 
-const {colors} = theme;
+const { colors } = theme;
 const PADDING_ITEM = 15;
 
 const _renderStar = num => {
@@ -25,27 +25,27 @@ const _renderStar = num => {
   return star;
 };
 
-const ItemComment = ({item}) => {
+const ItemComment = ({ item }) => {
   return (
     <Block>
       <Block marginRight={PADDING_ITEM} row marginTop={20}>
         <Image
           style={styles.image}
           source={{
-            uri: item.Image,
+            uri: item.image,
           }}
         />
         <Block marginHorizontal={10}>
           <Text size={15} fontType="regular">
-            {item.UserName}
+            {item.userName}
           </Text>
           <Block row marginTop={5}>
-            {_renderStar(item.Evaluate)}
+            {_renderStar(item.evaluate)}
           </Block>
         </Block>
       </Block>
       <Block marginTop={5} marginLeft={5}>
-        <Text color={colors.gray}>{item.Content}</Text>
+        <Text color={colors.gray}>{item.content}</Text>
       </Block>
     </Block>
   );

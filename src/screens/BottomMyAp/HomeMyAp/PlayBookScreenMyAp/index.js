@@ -1,15 +1,17 @@
 import { Block, Button, HeaderWithButton, Text } from '@components';
 import IconView from '@components/Icon';
-import BottomSheet, { BottomSheetBackdrop } from '@gorhom/bottom-sheet';
+import BottomSheet, { BottomSheetBackdrop, BottomSheetScrollView } from '@gorhom/bottom-sheet';
 import { useAppSelector } from '@hooks';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, ScrollView } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { WebView } from 'react-native-webview';
 import { useTheme } from 'themeNew';
+import EvaluateBook from '../DetailBookScreenMyAp/components/EvaluateBook';
 
 const PlayBookScreenMyAp = ({ route }) => {
-  const { htmlChapter, title, image, price } = route.params;
+  const { htmlChapter, title, image, price, _id } = route.params;
+  console.log
   const webref = useRef(null);
   const [themeBack, setThemeBack] = useState(true); //True background white
   const [size, setSize] = useState(16);
@@ -17,9 +19,11 @@ const PlayBookScreenMyAp = ({ route }) => {
   const theme = useTheme(themeStore);
   const inset = useSafeAreaInsets();
 
-  const snapPoints = useMemo(() => [260 + inset.bottom], [inset.bottom]);
+  const snapPoints = useMemo(() => [300 + inset.bottom], [inset.bottom]);
+  const snapPoints2 = useMemo(() => [700 + inset.bottom], [inset.bottom]);
   const bottomSheetRef = useRef(null);
-
+  const bottomSheetCommetnRef = useRef(null);
+  var snapTI = -1;
   const renderBackdrop = useCallback(
     props => (
       <BottomSheetBackdrop
@@ -34,7 +38,7 @@ const PlayBookScreenMyAp = ({ route }) => {
 
   const renderRightIconHeader = () => (
     <Button
-      onPress={() => bottomSheetRef.current?.snapToIndex(0)}>
+      onPress={changBottomSheet}>
       <IconView
         component={'Entypo'}
         name={'dots-three-vertical'}
@@ -43,6 +47,16 @@ const PlayBookScreenMyAp = ({ route }) => {
       />
     </Button>
   );
+  const changBottomSheet = () => {
+    if (snapTI == 0) {
+      snapTI = -1;
+      bottomSheetRef.current?.snapToIndex(snapTI);
+      bottomSheetCommetnRef.current?.snapToIndex(0);
+    } else {
+      snapTI = 0;
+      bottomSheetRef.current?.snapToIndex(snapTI);
+    }
+  }
 
   const initailStyle = `
   document.body.style.marginLeft = '5%'
@@ -191,7 +205,34 @@ const PlayBookScreenMyAp = ({ route }) => {
               Giảm kích cỡ chữ
             </Text>
           </Button>
+
+          <Button
+            row
+            style={[styles.rowModal]}
+            onPress={changBottomSheet}>
+            <IconView
+              component={'EvilIcons'}
+              name={'comment'}
+              size={22}
+              color={!themeBack ? theme.colors.white : theme.colors.dark2}
+            />
+            <Text
+              style={styles.textRowModal}>
+              Bình luận
+            </Text>
+          </Button>
+
         </Block>
+      </BottomSheet>
+      <BottomSheet
+        index={-1}
+        ref={bottomSheetCommetnRef}
+        snapPoints={snapPoints2}
+        enablePanDownToClose={true}
+        backdropComponent={renderBackdrop}>
+        <BottomSheetScrollView>
+          <EvaluateBook idChapter={_id} />
+        </BottomSheetScrollView>
       </BottomSheet>
     </Block>
   );

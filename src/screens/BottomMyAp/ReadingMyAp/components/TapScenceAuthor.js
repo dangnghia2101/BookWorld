@@ -4,7 +4,7 @@ import React from 'react';
 import ItemAuthor from './ItemAuthor';
 import { useSelector } from 'react-redux';
 import { useAppSelector } from '@hooks';
-import { useGetAllAuthorQuery } from '@redux/servicesNew/authorAPI';
+import { useGetAllAuthorQuery } from '@redux/servicesNew';
 
 const TapScenceAuthor = ({ route }) => {
 

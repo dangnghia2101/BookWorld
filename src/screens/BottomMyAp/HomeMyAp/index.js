@@ -6,6 +6,7 @@ import DetailBookScreenMyAp from './DetailBookScreenMyAp';
 import PlayBookScreenMyAp from './PlayBookScreenMyAp';
 import { ListenBook } from './ListenBook';
 import Payment from './components/Payment';
+import ScreenNotification from '../MoreMyApp/UpdateProfile/Nitification/ScreenNotification';
 const Stack = createStackNavigator();
 
 const screenOptionStyle = {
@@ -32,6 +33,10 @@ const HomeMyApNavigator = ({ navigation, route }) => {
       />
       <Stack.Screen name={routes.LISTEN_BOOK} component={ListenBook} />
       <Stack.Screen name={routes.SCREEN_PAYMENT} component={Payment} />
+      <Stack.Screen
+        name={routes.NOTIFICATION_SCREEN}
+        component={ScreenNotification}
+      />
     </Stack.Navigator>
   );
 };

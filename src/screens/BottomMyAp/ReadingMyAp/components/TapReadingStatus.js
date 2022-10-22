@@ -5,11 +5,10 @@ import { StyleSheet } from 'react-native';
 import { TabBar, TabView } from 'react-native-tab-view';
 import TabSceneReadingStatus from './TabSceneReadingStatus';
 import TapScenceAuthor from './TapScenceAuthor';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch, useCallback } from 'react-redux';
 import actions from '@redux/actions';
 import { makeStyles, useTheme } from 'themeNew';
 import { useAppSelector } from '@hooks';
-import { strings } from 'I18n';
 
 
 const TapReadingStatus = () => {
@@ -103,7 +102,6 @@ const TapReadingStatus = () => {
     ],
     isLoading: false,
   };
-  const listAuthor = useSelector(state => state.getAllAuthor);
 
   const formatRouter = data => {
     return data?.map(item => {

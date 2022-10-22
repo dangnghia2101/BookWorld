@@ -7,7 +7,7 @@ import {
     ScrollView,
     TouchableOpacity
 } from 'react-native';
-import { launchImageLibrary } from 'react-native-image-picker';
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import LinearGradient from 'react-native-linear-gradient';
 import React, { useState, useCallback, useMemo, useRef } from 'react';
 import { Block } from '@components';
@@ -33,14 +33,23 @@ const ScreenUpdateProfile = () => {
         ),
         [],
     );
+
     const options = {
         saveToPhotos: true,
         mediaType: 'photo',
+        cameraType: 'back'
     };
+
     const chooseImageGallary = async () => {
         const result = await launchImageLibrary(options);
         setImageUri(result.assets[0].uri);
     };
+
+    const takePhoto = async () => {
+        const result = await launchCamera(options);
+        setImageUri(result.assets[0].uri);
+    };
+
     return (
         <Block flex backgroundColor={theme.colors.white}>
             <TopBar headerTitle={'Chỉnh sửa thông tin'} />
@@ -141,11 +150,12 @@ const ScreenUpdateProfile = () => {
                 enablePanDownToClose={true}
                 backdropComponent={renderBackdrop}>
                 <Block width={'100%'} height={'100%'} justifyCenter alignCenter>
-                    <TouchableOpacity style={styles.buttomLogin}>
+                    <TouchableOpacity style={styles.buttomLogin}
+                        onPress={() => takePhoto()}>
                         <Text style={styles.textButtomLogin}>Chụp ảnh</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.buttomLogin}
-                        onPress={() => launchImageLibrary()}>
+                        onPress={() => chooseImageGallary()}>
                         <Text style={styles.textButtomLogin}>Chọn sẵn có</Text>
                     </TouchableOpacity>
                 </Block>

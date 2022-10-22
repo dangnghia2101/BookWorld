@@ -1,4 +1,4 @@
-import {reducerDefault} from '@redux/common/reducers';
+import { reducerDefault } from '@redux/common/reducers';
 import Actions from '../actions';
 
 export const login = (...props) => {

@@ -66,8 +66,7 @@ const HeaderHome = props => {
             <Button
               style={{ marginRight: 10 }}
               onPress={() => {
-                dispatch(changeTheme(themeStore === 'dark' ? 'light' : 'dark'));
-                dispatch(changeLanguage(languageStore === 'en' ? 'vi' : 'en'));
+                navigation.navigate(routes.NOTIFICATION_SCREEN)
               }}>
               <IconView
                 component={'MaterialCommunityIcons'}
