@@ -52,13 +52,17 @@ export default function PaymentScreen() {
 
   return (
     <Block alignCenter>
+      <Block marginRight={270} marginVertical={10}>
+      <Text size={16}>100.000đ</Text>
+      </Block>
       <CardForm
         cardStyle={{
-          backgroundColor: colors.colors.grey4,
-          textColor: 'white',
+          backgroundColor: colors.colors.Orange,
+          textColor: 'black',
+          fontSize: 16,
           borderRadius: 20,
-          cursorColor: colors.colors.green,
-          placeholderColor: colors.colors.grey10,
+          cursorColor: colors.colors.blue,
+          placeholderColor: colors.colors.black,
         }}
         style={{
           width: '90%',
@@ -72,11 +76,12 @@ export default function PaymentScreen() {
         <Block
           width={'100%'}
           height={50}
+          marginTop={20}
           justifyCenter
           alignCenter
           backgroundColor={colors.colors.blue}
           radius={15}>
-          <Text color="white">Pay now</Text>
+          <Text size={16} color="white">Pay now</Text>
         </Block>
       </TouchableOpacity>
     </Block>

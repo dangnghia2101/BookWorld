@@ -38,9 +38,8 @@ const DetailBookScreenMyAp = ({ route }) => {
         <Block>
             <HeaderWithButton isBackHeader />
 
-            <ScrollView showsVerticalScrollIndicator={false}>
+            <ScrollView style={{height: '100%'}} showsVerticalScrollIndicator={false}>
                 <Block
-                    flex
                     paddingHorizontal={20}
                     backgroundColor={theme.colors.white}>
                     <ImageBook item={route.params} />
