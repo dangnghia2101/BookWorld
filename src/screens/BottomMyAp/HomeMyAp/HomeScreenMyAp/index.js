@@ -1,4 +1,3 @@
-import { images } from '@assets';
 import { Block, Container, Text } from '@components';
 import { useGetAllBookQuery, useGetAllCategoryQuery } from '@redux/servicesNew';
 import { height, width } from '@utils/responsive';
@@ -6,44 +5,22 @@ import { useAppSelector } from 'hooks';
 import React, { useCallback, useState } from 'react';
 import { withNamespaces } from 'react-i18next';
 import {
-  Animated,
-  Image,
-  LogBox,
+  Animated, LogBox,
   Platform,
-  ScrollView,
-  View
+  ScrollView
 } from 'react-native';
-import { FlatList } from 'react-native-gesture-handler';
-import LinearGradient from 'react-native-linear-gradient';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { makeStyles, useTheme } from 'themeNew';
 import HeaderHome from './components/HeaderHome';
 import HeaderListBook from './components/HeaderListEvent';
+import ItemCategory from './components/ItemCategory';
 import ItemMostBookRead from './components/ItemMostBookRead';
-import TabCategoryBook from './components/TabCategoryBook';
 
 LogBox.ignoreAllLogs();
 const ITEM_WITH = width * 0.6;
 
 const widthItemEventIncoming = width - width / 3;
 const WIDTH_ITEM_INVIEW = widthItemEventIncoming - 20;
-const BACKDROP_HEIGHT = height * 0.65;
-
-const author = [
-  { _id: 1, image: images.backdrop_1 },
-  { _id: 2, image: images.backdrop_2 },
-  {
-    _id: 3,
-    image: images.backdrop_3,
-  },
-  {
-    _id: 4,
-    image: images.backdrop_4,
-  },
-  { _id: 5, image: images.backdrop_6 },
-  { _id: 6, image: images.backdrop_7 },
-  { _id: 7, image: images.backdrop_8 },
-];
 
 const HomeScreenMyAp = () => {
   // const [clicked, setClicked] = useState(false);
@@ -66,6 +43,9 @@ const HomeScreenMyAp = () => {
   const theme = useTheme(themeStore);
   const styles = useStyle(themeStore);
 
+  //Cập nhật mỗi lần thay đổi TabView
+
+
   const _renderItemMostBookRead = useCallback(
     ({ item, index }) => {
       return (
@@ -82,7 +62,7 @@ const HomeScreenMyAp = () => {
 
   const renderListMostRead = useCallback(() => {
     return (
-      <Block height={height * 0.65}>
+      <Block height={height * 0.6} backgroundColor={theme.colors.grey14}>
         <Animated.FlatList
           data={allBooks}
           keyExtractor={item => Math.random() + item._id}
@@ -116,96 +96,70 @@ const HomeScreenMyAp = () => {
     );
   }, [_renderItemMostBookRead, allBooks, scrollX]);
 
+  // const renderListCategory = useCallback(() => {
+  //   return (
+  //     <Block height={650} borderTopWidth={2} borderColor={theme.colors.textInBox}>
+  //       {allCategories?.length > 0 ? (
+  //         <TabCategoryBook />
+  //       ) : (
+  //         <Text>Loading</Text>
+  //       )}
+  //     </Block>
+  //   );
+  // }, [allCategories]);
+
+
+
   const renderListCategory = useCallback(() => {
     return (
-      <Block height={650} borderTopWidth={2} borderColor={theme.colors.textInBox}>
-        {allCategories?.length > 0 ? (
-          <TabCategoryBook />
-        ) : (
-          <Text>Loading</Text>
-        )}
+      <Block >
+        <HeaderListBook title={'Thể loại sách'} />
+
+        <Animated.FlatList
+          data={allCategories}
+          keyExtractor={item => Math.random() + item._id}
+          renderItem={(item) => <ItemCategory item={item} />}
+          bounces={false}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          scrollEventThrottle={16}
+          nestedScrollEnabled={true}
+          ListEmptyComponent={
+            <Block
+              width={width}
+              height={WIDTH_ITEM_INVIEW}
+              justifyCenter
+              alignCenter>
+              <Text>Loading...</Text>
+            </Block>
+          }
+        />
       </Block>
     );
-  }, [allCategories]);
-
-  const Backdrop = () => {
-    return (
-      <View
-        style={{
-          height: BACKDROP_HEIGHT,
-          width,
-          position: 'absolute',
-        }}>
-        <FlatList
-          data={author}
-          keyExtractor={(item, index) => item._id + '-backdrop'}
-          removeClippedSubviews={false}
-          contentContainerStyle={{ width, height: BACKDROP_HEIGHT }}
-          scrollEnabled={true}
-          renderItem={({ item, index }) => {
-            // console.log("+====", item);
-            // if (!item.backdrop) {
-            //   return null;
-            // }
-            const translateX = scrollX.interpolate({
-              inputRange: [
-                (index - 2) * ITEM_WITH,
-                (index - 1) * ITEM_WITH,
-              ],
-              outputRange: [0, width],
-              extrapolate: 'clamp',
-            });
-            return (
-              <Animated.View
-                removeClippedSubviews={false}
-                style={{
-                  position: 'absolute',
-                  width: translateX,
-                  height,
-                  overflow: 'hidden',
-                }}>
-                <Image
-                  source={item.image}
-                  style={{
-                    width,
-                    height: BACKDROP_HEIGHT,
-                    position: 'absolute',
-                    top: -40,
-                  }}
-                />
-              </Animated.View>
-            );
-          }}
-          key={() => Math.random()}
-        />
-        <LinearGradient
-          colors={['rgba(0, 0, 0, 0)', theme.colors.text]}
-          style={styles.linearGradient}
-        />
-      </View>
-    );
-  };
+  }, [_renderItemMostBookRead, allBooks, scrollX]);
 
   return (
-    <Container statusColor={theme.colors.text} edges={['right', 'left']} >
+    <Container statusColor={theme.colors.grey16} edges={['right', 'left']} >
       <HeaderHome
         name={myInfo?.name}
         image={myInfo?.image}
         setIsCollapsible={setIsCollapsible}
         isCollapsible={isCollapsible}
+
       />
 
       <ScrollView
         showsVerticalScrollIndicator={false}
         nestedScrollEnabled={true}
-        style={{ position: 'relative', backgroundColor: theme.colors.text }}>
+        style={{ position: 'relative', backgroundColor: theme.colors.grey14 }}>
 
         <Block >
 
           <HeaderListBook title={'Sách xem nhiều nhất'} />
-          {Backdrop()}
+          {/* {Backdrop()} */}
           {renderListMostRead()}
           {renderListCategory()}
+          {/* {renderListCategory()} */}
         </Block>
       </ScrollView>
 

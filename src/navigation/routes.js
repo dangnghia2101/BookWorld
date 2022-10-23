@@ -32,6 +32,7 @@ export const routes = {
   CHANGE_LANGUAGE: 'CHANGE_LANGUAGE',
   PURCHASE_HISTORY: 'PURCHASE_HISTORY',
   EDIT_PROFILE_SCREEN: 'EDIT_PROFILE_SCREEN',
+  BOOKS_BY_CATEGORY: 'BOOKS_BY_CATEGORY'
 };
 
 export const APP_PREFIX = ['emotion://', 'https://emotion.com'];

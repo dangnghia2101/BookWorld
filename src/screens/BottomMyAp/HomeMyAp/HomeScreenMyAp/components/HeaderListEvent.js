@@ -7,7 +7,7 @@ const { colors } = theme;
 
 const HeaderListBook = ({ title, action }) => {
   return (
-    <Block row justifyContent={'space-between'} height={50} alignCenter>
+    <Block row justifyContent={'space-between'} alignCenter marginLeft={12} marginTop={20}>
       <Text style={styles.titleSection}>{title}</Text>
       {action && (
         <TouchableOpacity onPress={action}>

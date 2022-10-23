@@ -32,7 +32,7 @@ const ItemCateBook = ({ item, t }) => {
             uri: item.image,
           }}
         />
-        <Block marginHorizontal={10}>
+        <Block marginHorizontal={10} flex>
           <Text
             size={18}
             fontType="bold"

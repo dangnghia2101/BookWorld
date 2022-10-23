@@ -4,7 +4,6 @@ import { useAppDispatch, useAppSelector } from '@hooks';
 import { useNavigation } from '@react-navigation/native';
 import { changeLanguage, changeTheme } from '@redux/reducerNew';
 import { theme } from '@theme';
-import { width } from '@utils/responsive';
 import React, { useEffect, useState } from 'react';
 import { withNamespaces } from 'react-i18next';
 import { Image, NativeModules, Platform, StatusBar } from 'react-native';
@@ -37,7 +36,7 @@ const HeaderHome = props => {
   }, []);
 
   return (
-    <Block space={'between'} row width={'100%'} backgroundColor={themeNew.colors.text} paddingVertical={10}
+    <Block borderBottomWidth={1} borderColor={themeNew.colors.grey12} space={'between'} row backgroundColor={themeNew.colors.grey14} paddingVertical={20}
     >
       <Block alignCenter row marginLeft={10}>
         <Image
@@ -58,7 +57,9 @@ const HeaderHome = props => {
             size={18}
             marginHorizontal={5}
             color={themeNew.colors.textInBox}
-            style={{ fontFamily: 'Lato-Bold' }}>
+            style={{ fontFamily: 'Lato-Bold' }}
+            fontType='bold'
+          >
             {name}
           </Text>
         </Block>
