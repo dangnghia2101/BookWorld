@@ -9,11 +9,22 @@ import {makeStyles, useTheme} from 'themeNew';
 import {withNamespaces} from 'react-i18next';
 import {useAppSelector, useAppDispatch} from '@hooks';
 
+import { useGetReadTimeBookQuery } from '@redux/servicesNew';
+
 const ChartMoreMy = props => {
+  const dataChart = useGetReadTimeBookQuery(actions);
+  const myInfo = useAppSelector(state => state.root.auth);
   const {t} = props;
   const themeStore = useAppSelector(state => state.root.themeApp.theme);
   const themeNew = useTheme(themeStore);
   const styles = useStyle(props, themeStore);
+
+  //
+  const actions = myInfo._id;
+  console.log("id >>>>", actions);
+
+  // dataChart = getReadTimeBook(actions);
+  console.log("datasever >>", dataChart);
   const data = [
     {
       month: 'January',
@@ -65,40 +76,33 @@ const ChartMoreMy = props => {
     },
   ];
 
-  const data2 = [
-    {
-      month: 'January',
-      time: 500,
-    },
-    {
-      month: 'February',
-      time: 400,
-    },
-    {
-      month: 'March',
-      time: 450,
-    },
-    {
-      month: 'April',
-      time: 480,
-    },
-    {
-      month: 'May',
-      time: 500,
-    },
-    {
-      month: 'June',
-      time: 500,
-    },
-    {
-      month: 'July',
-      time: 500,
-    },
-    {
-      month: 'August',
-      time: 500,
-    },
-  ];
+  const Clusdata = 
+[
+{ title: 'First', 
+  example: 
+ [
+ {name: 'a'},
+ {name: 'b'},
+ {name: 'c'},
+ ],
+},
+{ title: 'Second', 
+  example: 
+ [
+ {name: '1'},
+ {name: '2'},
+ {name: '3'},
+ ],
+},
+{ title: 'Third', 
+  example: 
+ [
+ {name: '4'},
+ {name: '5'},
+ {name: '6'},   
+ ],
+}
+];
 
   return (
     <Block marginVertical={20} column justifyCenter>
@@ -130,9 +134,9 @@ const ChartMoreMy = props => {
               duration: 3000,
             },
           }}
-          data={data}
-          x="month"
-          y="time"
+          // data={data}
+          // x={dataSever.month}
+          // y={dataSever.time}
         />
       </VictoryChart>
     </Block>

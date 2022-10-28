@@ -18,8 +18,8 @@ const MoreMyApp = props=> {
 
   return (
     <Block flex justifyCenter backgroundColor={themeNew.colors.text}>
-      <Block backgroundColor={themeNew.colors.primary} height={100}>
-        <HeaderWithButton isBackHeader title={t('profile')} backgroundColor={themeNew.colors.primary}/>
+      <Block height={90}>
+        <HeaderEditMoreMy />
       </Block>
         <ScrollView showsVerticalScrollIndicator={false}>
         <BodyEditMoreMy

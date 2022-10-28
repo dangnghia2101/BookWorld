@@ -17,7 +17,7 @@ const ItemEditMoreMy = props => {
   const styles = useStyle(props, themeStore);
 
   return (
-    <Block>
+    <Block relative>
       <Block marginHorizontal={25}>
         <Text
           fontType={'bold'}

@@ -1,6 +1,6 @@
 import {Block, Text} from '@components';
 import React from 'react';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import {StyleSheet, TouchableOpacity, View, Image} from 'react-native';
 
 import {routes} from '@navigation/routes';
 import {useNavigation} from '@react-navigation/native';
@@ -19,7 +19,11 @@ const HeaderEditMoreMy = props => {
   const styles = useStyle(props, themeStore);
 
   return (
-    <Block height={200} backgroundColor={themeNew.colors.primary}>
+    <Block height={200}>
+      {/* <Image
+            style={styles.imageBackground}
+            source={require('../../../../../assets/images/rank.png')}
+          /> */}
       <Block row style={styles.container}>
         <TouchableOpacity
           style={styles.editContainer}
@@ -47,6 +51,7 @@ const useStyle = makeStyles()(({colors}) => ({
   container: {
     paddingLeft: 20,
     paddingTop: 35,
+    position: 'absolute',
   },
   titleContainer: {
     width: '100%',
@@ -59,5 +64,10 @@ const useStyle = makeStyles()(({colors}) => ({
     alignItems: 'center',
     paddingLeft: 20,
     paddingTop: 35,
+  },
+  imageBackground: {
+    position: 'absolute',
+    width: 1000,
+    height: 200,
   },
 }));

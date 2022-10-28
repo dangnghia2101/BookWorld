@@ -18,10 +18,12 @@ const MoreMyApp = props => {
 
   return (
     <Block flex justifyCenter backgroundColor={themeNew.colors.text}>
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <Block height={90}>
         <Header />
+      </Block>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <BodyEditMoreMy
-          name={myInfo?.name}
+          name={myInfo?.name} 
           image={myInfo?.image}
           email={myInfo?.email}
         />

@@ -1,6 +1,6 @@
 import {Block, Text} from '@components';
 import React from 'react';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import {StyleSheet, TouchableOpacity, View, Image} from 'react-native';
 import IconView from '@components/Icon';
 
 import {routes} from '@navigation/routes';
@@ -18,10 +18,14 @@ const Header = props => {
   const styles = useStyle(props, themeStore);
 
   return (
-    <Block height={200} backgroundColor={themeNew.colors.primary}>
+    <Block height={200}>
+      {/* <Image
+            style={styles.imageBackground}
+            source={require('../../../../../assets/images/rank.png')}
+          /> */}
       <Block row style={[styles.container]}>
         <View style={styles.titleContainer}>
-          <Text size={22} color={themeNew.colors.white} fontType={'bold'}>
+          <Text size={22} color={themeNew.colors.textDark} fontType={'bold'}>
             {t('profile')}
           </Text>
         </View>
@@ -32,7 +36,7 @@ const Header = props => {
             component={'Ionicons'}
             name={'settings-sharp'}
             size={25}
-            color={themeNew.colors.white}
+            color={themeNew.colors.textDark}
           />
         </TouchableOpacity>
       </Block>
@@ -44,7 +48,6 @@ export default withNamespaces()(Header);
 
 const useStyle = makeStyles()(({colors}) => ({
   container: {
-    position: 'absolute',
     left: 20,
     top: 35,
   },
@@ -63,5 +66,10 @@ const useStyle = makeStyles()(({colors}) => ({
     justifyContent: 'center',
     alignItems: 'center',
     right: 40,
+  },
+  imageBackground: {
+    position: 'absolute',
+    width: 1000,
+    height: 200,
   },
 }));

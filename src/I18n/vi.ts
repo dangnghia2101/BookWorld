@@ -30,6 +30,8 @@ export default {
   myPurchase: 'Đơn mua',
   changeScreenMode: 'Thay đổi chế độ màn hình',
   changeLanguageSettings: 'Thay đổi cài đặt ngôn ngữ',
+  notification: 'Thông báo',
+  notificationSettings: 'Cài đặt thông báo',
   changePassword: 'Thay đổi mật khẩu',
   updateAndEdit: 'Cập nhật và chỉnh sửa thông tin',
   editProfile: 'Chỉnh sửa thông tin',
