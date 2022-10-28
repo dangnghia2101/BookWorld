@@ -1,4 +1,5 @@
 import { Block } from '@components';
+import { useAppSelector } from '@hooks';
 import { theme } from '@theme';
 import React, { useEffect, useRef, useState } from 'react';
 import { StyleSheet } from 'react-native';
@@ -10,30 +11,31 @@ import MessagesList from './components/MessageList';
 const ChatScreenMyApp = () => {
   const [clicked, setClicked] = useState(false);
   const [searchPhrase, setSearchPhrase] = useState('');
-  const [chat, setChat] = useState({
-    message: 'Nghia ne',
-    sid: 'sid',
-    time: '2022',
-    rid: '',
-  });
-  const [messages, setMessages] = useState([]);
-
   const socketRef = useRef();
 
-  useEffect(() => {
-    socketRef.current = io('http://192.168.0.105:4000', {
-      transports: ['websocket'],
-    });
-    socketRef.current.on('message', ({ sid, message, time, rid }) => {
-      setMessages([...messages, { message, sid, time, rid }]);
-      console.log('Nhan duoc ne ', message);
-    });
-  }, [messages]);
+  let saveSentMessage = ''
 
-  const onSubmitHandler = () => {
-    const { message, sid, time, rid } = chat;
-    socketRef.current.emit('message2', { message, sid, time, rid });
+  const myInfo = useAppSelector(state => state.root.auth);
+
+  const [messages, setMessages] = useState([]);
+
+  useEffect(() => {
+    socketRef.current = io('https://bookworlddasboard.herokuapp.com');
+    socketRef.current.emit('add-user', myInfo._id)
+  }, []);
+
+  //👇🏻 Runs whenever there is new trigger from the backend
+
+  const onSubmitHandler = (_message) => {
+    setMessages([...messages, { user: 0, time: new Date().toDateString(), content: _message.msg }])
+    socketRef.current.emit('send-msg', _message);
   };
+
+  useEffect(() => {
+    socketRef.current.on("msg-recieve", (msg) => {
+      setMessages([...messages, { user: 1, time: new Date().toDateString(), content: msg }])
+    });
+  }, [socketRef, messages]);
 
   const [reply, setReply] = useState('');
   const [isLeft, setIsLeft] = useState();
@@ -55,8 +57,8 @@ const ChatScreenMyApp = () => {
         searchPhrase={searchPhrase}
         setSearchPhrase={setSearchPhrase}
       />
-      <MessagesList onSwipeToReply={swipeToReply} />
-      <ChatInput />
+      <MessagesList onSwipeToReply={swipeToReply} messages={messages} />
+      <ChatInput onSubmitHandler={onSubmitHandler} />
       {/* <TabChat /> */}
     </Block>
   );
