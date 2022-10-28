@@ -20,12 +20,12 @@ const ItemCateBook = ({ item, t }) => {
   const styles = useStyles(themeStore);
 
   return (
-    <TouchableOpacity
+    <Block
       style={{ marginHorizontal: 20 }}
       onPress={() =>
         navigation.navigate(routes.DETAIL_BOOK_MY_AP, { bookmark: true, item })
       }>
-      <Block width={width} marginRight={PADDING_ITEM} row marginTop={20}>
+      <Block width={width} marginRight={PADDING_ITEM} row marginTop={30}>
         <Image
           style={styles.image}
           source={{
@@ -117,6 +117,9 @@ const ItemCateBook = ({ item, t }) => {
               </Text>
             </Button>
             <Button
+              onPress={() =>
+                navigation.navigate(routes.DETAIL_BOOK_MY_AP, { item, _isRead: false })
+              }
               style={[
                 styles.btnItemCate,
                 { backgroundColor: theme.colors.black, marginLeft: 10 },
@@ -128,7 +131,7 @@ const ItemCateBook = ({ item, t }) => {
           </Block>
         </Block>
       </Block>
-    </TouchableOpacity>
+    </Block>
   );
 };
 

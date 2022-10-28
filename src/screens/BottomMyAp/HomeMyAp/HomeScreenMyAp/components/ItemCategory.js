@@ -3,6 +3,7 @@ import { useAppSelector } from '@hooks';
 import { routes } from '@navigation/routes';
 import { useNavigation } from '@react-navigation/native';
 import { randomColor } from '@utils/helper';
+import { width } from '@utils/responsive';
 import React from 'react';
 import { withNamespaces } from 'react-i18next';
 import { Image, TouchableOpacity } from 'react-native';
@@ -18,15 +19,14 @@ const ItemCategory = ({ item }) => {
   return (
     <TouchableOpacity
       style={styles.container}
-      activeOpacity={0.9}
       onPress={() =>
         navigation.navigate(routes.BOOKS_BY_CATEGORY, {
           id: item.item._id,
           title: item.item.name,
         })
       }>
-      <Block alignCenter justifyCenter style={styles.shadow} backgroundColor={randomColor(8)}>
-        <Image style={styles.image} source={{ uri: 'https://i.ibb.co/6y5fSzP/lover.png' }} />
+      <Block alignCenter justifyCenter >
+        <Image style={styles.image} source={{ uri: item.item.image }} />
         <Text size={12} marginHorizontal={5} marginTop={5} numberOfLines={2} flexGrow>{item?.item?.name}</Text>
       </Block>
     </TouchableOpacity>
@@ -35,23 +35,12 @@ const ItemCategory = ({ item }) => {
 
 const useStyle = makeStyles()(({ colors, normalize }) => ({
   container: {
-    marginTop: 20,
-    marginBottom: 50,
-  },
-  shadow: {
-    width: normalize(85)('moderate'),
+    marginTop: 10,
+    marginBottom: 5,
+    marginHorizontal: width * 0.01,
+    width: width * 0.22,
     height: normalize(85)('moderate'),
 
-    borderRadius: 20,
-    marginHorizontal: 10,
-    shadowColor: colors.grey4,
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.32,
-    shadowRadius: 5.46,
-    elevation: 4,
   },
   image: {
     height: normalize(40)('moderate'),

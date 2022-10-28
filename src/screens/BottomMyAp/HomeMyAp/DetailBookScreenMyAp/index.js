@@ -15,7 +15,6 @@ const DetailBookScreenMyAp = ({ route }) => {
   const [isRead, setIsRead] = useState(_isRead || true);
   const navigation = useNavigation();
 
-
   const myInfo = useAppSelector(state => state.root.auth);
 
   const [getAllChapterBook] = useGetAllChapterBookMutation();
@@ -47,7 +46,7 @@ const DetailBookScreenMyAp = ({ route }) => {
           <ChapterBook
             detailBook={listChapters}
             nameBook={route.params.item.name}
-            isRead={isRead}
+            isRead={_isRead}
             setIsRead={setIsRead}
             navigation={navigation}
           />

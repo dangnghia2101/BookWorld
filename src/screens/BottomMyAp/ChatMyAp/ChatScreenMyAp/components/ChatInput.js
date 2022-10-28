@@ -21,12 +21,14 @@ import { makeStyles, useTheme } from 'themeNew';
 import IconView from '@components/Icon';
 import { useAppSelector } from '@hooks';
 
-const ChatInput = ({ reply, closeReply, isLeft, username }) => {
+const ChatInput = ({ reply, closeReply, isLeft, username, onSubmitHandler }) => {
   const [message, setMessage] = useState('');
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const height = useSharedValue(70);
   const themeStore = useAppSelector(state => state.root.themeApp.theme);
   const { colors } = useTheme(themeStore);
+  const myInfo = useAppSelector(state => state.root.auth);
+
 
   const styles = useStyle(themeStore);
 
@@ -75,6 +77,7 @@ const ChatInput = ({ reply, closeReply, isLeft, username }) => {
           <TextInput
             multiline
             placeholder={'Type something...'}
+            placeholderTextColor='black'
             style={styles.input}
             value={message}
             onChangeText={text => setMessage(text)}
@@ -96,7 +99,13 @@ const ChatInput = ({ reply, closeReply, isLeft, username }) => {
             />
           </TouchableOpacity>
         </View>
-        <TouchableOpacity style={styles.sendButton}>
+        <TouchableOpacity style={styles.sendButton} onPress={() => {
+          onSubmitHandler({ from: myInfo._id, to: "63254bcca085e871f7a1f933", msg: message })
+          setMessage('')
+        }}>
+          {/* 6329ba557a5b2854e9a16383 cua Vy
+            63254bcca085e871f7a1f933 cua Nghia
+        */}
           <IconView
             component="MaterialCommunityIcons"
             name={message ? 'send' : 'microphone'}
