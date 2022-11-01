@@ -1,4 +1,4 @@
-import { Block, Container, Text } from '@components';
+import { Block, Container, Icon, Text } from '@components';
 import { useGetAllBookQuery, useGetAllCategoryQuery, useGetAllAuthorQuery } from '@redux/servicesNew';
 import { height, width } from '@utils/responsive';
 import { useAppSelector } from 'hooks';
@@ -18,6 +18,10 @@ import ItemCategory from './components/ItemCategory';
 import ItemMostBookRead from './components/ItemMostBookRead';
 import ItemAuthor from './components/ItemAuthor';
 import { images } from '@assets';
+import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
+import { useNavigation } from '@react-navigation/native';
+import { routes } from '@navigation/routes';
+
 
 LogBox.ignoreAllLogs();
 const ITEM_WITH = width * 0.6;
@@ -54,6 +58,7 @@ const HomeScreenMyAp = () => {
 
   useGetAllBookQuery();
   useGetAllCategoryQuery();
+  const navigation = useNavigation()
 
   const [isCollapsible, setIsCollapsible] = useState(true);
 
@@ -206,9 +211,12 @@ const HomeScreenMyAp = () => {
 
   const renderSearch = () => {
     return (
-      <Block width='100%' marginTop={20}>
-        <TextInput style={styles.searchStyle} placeholder='Search here' placeholderTextColor={theme.colors.grey2} />
-      </Block>
+      <Pressable onPress={() => navigation.navigate(routes.SEARCH)} style={styles.searchStyle} >
+        <Text color={theme.colors.grey4} size={14} >
+          Search here
+        </Text>
+        <Icon component='Ionicons' name='ios-search-outline' size={22} color={theme.colors.grey4} />
+      </Pressable>
     )
   }
 
@@ -259,13 +267,17 @@ const useStyle = makeStyles()(({ normalize, colors }) => ({
     marginTop: 30
   },
   searchStyle: {
-    flex: 1,
     marginHorizontal: normalize(10)('moderate'),
+    paddingHorizontal: normalize(15)('moderate'),
     backgroundColor: colors.white,
     borderRadius: normalize(15)('moderate'),
-    color: colors.grey2,
-    fontSize: 14,
-    paddingLeft: 15,
+    height: normalize(50)('moderate'),
+    justifyContent: 'space-between',
+    flex: 1,
+    marginTop: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
+
 
     shadowColor: colors.grey4,
     shadowOffset: {

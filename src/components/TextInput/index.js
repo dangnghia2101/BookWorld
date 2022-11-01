@@ -81,16 +81,7 @@ const InputText = ({
         borderWidth={1.5}
         borderColor={isError ? ColorErr : ColorNotErr}
         style={style}>
-        {iconLeft && (
-          <Image
-            source={iconLeft}
-            resizeMode="contain"
-            style={{
-              ...styles.iconLeft,
-              tintColor: isError ? theme.colors.red : theme.colors.lightGray,
-            }}
-          />
-        )}
+        {iconLeft && iconLeft()}
         <TextInput
           ref={setRef}
           style={{
