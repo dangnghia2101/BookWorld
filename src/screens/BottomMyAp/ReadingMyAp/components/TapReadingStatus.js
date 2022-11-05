@@ -1,14 +1,15 @@
 import { Block, Text } from '@components';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { theme } from '@theme';
 import { StyleSheet } from 'react-native';
 import { TabBar, TabView } from 'react-native-tab-view';
 import TabSceneReadingStatus from './TabSceneReadingStatus';
 import TapScenceAuthor from './TapScenceAuthor';
-import { useSelector, useDispatch, useCallback } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import actions from '@redux/actions';
 import { makeStyles, useTheme } from 'themeNew';
 import { useAppSelector } from '@hooks';
+import TapScreenFavoriteBook from './TapScreenFavoriteBook';
 
 
 const TapReadingStatus = () => {
@@ -116,6 +117,7 @@ const TapReadingStatus = () => {
       };
     });
   };
+
   const _renderLabel = useCallback(
     ({ route, focused, color }) => {
       return (
@@ -159,7 +161,7 @@ const TapReadingStatus = () => {
       case 'cate01':
         return index === 0 ? <TabSceneReadingStatus route={route} /> : null;
       case 'cate02':
-        return index === 1 ? <TapScenceAuthor /> : null;
+        return index === 1 ? <TapScreenFavoriteBook /> : null;
       case 'cate03':
         return index === 2 ? <TapScenceAuthor /> : null;
       default:

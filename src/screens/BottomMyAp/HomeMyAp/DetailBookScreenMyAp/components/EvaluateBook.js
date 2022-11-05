@@ -1,6 +1,6 @@
 import { Image, StyleSheet, TextInput, Dimensions, ToastAndroid } from 'react-native';
 import { Block, Text, Button } from '@components';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { theme } from '@theme';
 import { icons } from '@assets';
 import ItemComment from './ItemComment';
@@ -30,29 +30,40 @@ const EvaluateBook = ({ idChapter }) => {
   const [comment, setComment] = useState('');
 
   const [postComment] = usePostCommentMutation();
-  const [getAllComment] = useLazyGetAllCommentQuery();
-  let listComment = useGetAllCommentQuery(idChapter);
+  const [getAllComment, status, error] = useLazyGetAllCommentQuery();
+  const [listComment, setListComment] = useState([]);
+
+  useEffect(() => {
+    const getDataComment = async () => {
+      const dataComment = await getAllComment(idChapter);
+      let listReverse = [];
+      dataComment.data.data.map(item => {
+        listReverse = [item, ...listReverse]
+      })
+      setListComment(listReverse);
+    }
+    getDataComment();
+  }, [status])
   const myInfo = useAppSelector(state => state.root.auth);
 
 
   const handleSubmitComment = async () => {
     if (evaluate > 0 && comment.length != 0) {
-      const body = { idChapter: idChapter, content: comment, idUser: myInfo._id, evaluate: evaluate };
-      const postApi = await postComment(body)
+      const body = { idChapter: idChapter, content: comment, idUser: myInfo._id, userName: myInfo.name, evaluate: evaluate };
+      await postComment(body);
       ToastAndroid.show("Đăng bình luận thành công!", ToastAndroid.SHORT);
       setEvaluate(0);
       setComment('');
-      listComment = getAllComment(idChapter);
-      console.log('=================', postApi);
+      // listComment = getAllComment(idChapter);
+      const dataComment = await getAllComment(idChapter);
+      setListComment(dataComment?.data?.data?.reverse());
     } else {
       if (evaluate <= 0) {
         ToastAndroid.show("Bạn chưa đánh giá!", ToastAndroid.SHORT);
       } else {
         ToastAndroid.show("Bạn chưa viết bình luận!", ToastAndroid.SHORT);
       }
-
     }
-
   }
 
   return (
@@ -218,7 +229,7 @@ const EvaluateBook = ({ idChapter }) => {
       </Block>
 
       {/* List comment */}
-      {listComment?.data?.data.map((item, index) => (
+      {listComment.map((item, index) => (
         <ItemComment key={index} item={item} />
       ))}
     </Block>

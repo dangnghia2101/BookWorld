@@ -1,5 +1,6 @@
 import { loginReducer } from '@redux/reducerNew';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { Token } from '@stripe/stripe-react-native';
 
 import { MAIN_API } from './endpoint';
 
@@ -23,8 +24,9 @@ export const userApi = createApi({
                     const saveData = {
                         ...data?.data?.account,
                         token: data?.data?.token,
+                    
                     };
-
+                    console.log("tokennnnnnnnnnnnnnnnnnnn",data?.data?.token)
                     dispatch(loginReducer(saveData));
                 } catch (err) {
                     console.log('error api getAllCategories... ', err);

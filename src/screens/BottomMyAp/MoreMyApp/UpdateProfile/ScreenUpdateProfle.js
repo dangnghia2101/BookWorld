@@ -10,14 +10,16 @@ import {
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import LinearGradient from 'react-native-linear-gradient';
 import React, { useState, useCallback, useMemo, useRef } from 'react';
-import { Block } from '@components';
+import { Block, HeaderWithButton } from '@components';
 import { theme } from '@theme';
 import IconView from '@components/Icon';
+import { useAppSelector } from '@hooks';
 import BottomSheet, { BottomSheetBackdrop } from '@gorhom/bottom-sheet';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import TopBar from '@screens/BottomMyAp/ReadingMyAp/components/TopBar';
 const ScreenUpdateProfile = () => {
-    const [imageUri, setImageUri] = useState('');
+
+    const myInfo = useAppSelector(state => state.root.auth);
+    const [imageUri, setImageUri] = useState(myInfo.image);
     const inset = useSafeAreaInsets();
 
     const snapPoints = useMemo(() => [260 + inset.bottom], [inset.bottom]);
@@ -51,123 +53,95 @@ const ScreenUpdateProfile = () => {
     };
 
     return (
-        <Block flex backgroundColor={theme.colors.white}>
-            <TopBar headerTitle={'Chỉnh sửa thông tin'} />
-            <Block width={150} marginTop={-60} marginLeft={140} relative>
-                <Block
-                    backgroundColor={theme.colors.white}
-                    width={150}
-                    height={150}
-                    radius={100}
-                    justifyCenter
-                    alignCenter
-                    padding={7}
-                    borderWidth={5}
-                    borderColor={theme.colors.creamRed}>
-                    <Image
-                        style={styles.avatar}
-                        source={{ uri: imageUri }}
-                    />
+        <Block flex paddingHorizontal={40} backgroundColor={theme.colors.white}>
+            <HeaderWithButton isBackHeader title={'Chỉnh sửa thông tin'} />
+            <ScrollView>
+                <Block width={150} marginTop={30} marginBottom={50} marginLeft={100} relative>
+                    <Block
+                        relative
+                        backgroundColor={theme.colors.white}
+                        width={150}
+                        height={150}
+                        radius={100}
+                        justifyCenter
+                        alignCenter
+                        padding={7}>
+                        <Image
+                            style={styles.avatar}
+                            source={{ uri: imageUri }} />
+                        <Block
+                            absolute
+                            width={40}
+                            height={40}
+                            radius={50}
+                            backgroundColor={'#FDFDFD'}
+                            opacity={0.7}
+                            justifyCenter
+                            alignCenter>
+                            <TouchableOpacity
+                                onPress={() => bottomSheetRef.current?.snapToIndex(0)}>
+                                <IconView
+                                    component={'SimpleLineIcons'}
+                                    name={'pencil'}
+                                    size={32}
+                                    color={theme.colors.pinkRed}
+                                />
+                            </TouchableOpacity>
+                        </Block>
+                    </Block>
                 </Block>
                 <Block
-                    absolute
-                    bottom={-5}
-                    right={5}
-                    width={40}
-                    height={40}
-                    radius={50}
-                    justifyCenter
-                    alignCenter
-                    backgroundColor={theme.colors.white}
-                >
-                    <TouchableOpacity
-                        onPress={() => bottomSheetRef.current?.snapToIndex(0)}>
-                        <IconView
-                            component={'AntDesign'}
-                            name={'camerao'}
-                            size={32}
-                            color={theme.colors.pinkRed}
-                        />
-                    </TouchableOpacity>
-                </Block>
-            </Block>
-            <Block
-                width={'100%'}
-                height={100}
-                paddingHorizontal={24}
-                marginTop={100}
-                alignCenter>
-                <Block
-                    row
                     width={'100%'}
-                    height={60}
-                    radius={25}
-                    alignCenter
-                    marginBottom={30}
-                    paddingHorizontal={10}
-                    backgroundColor={theme.colors.blurGray}>
-                    <IconView
-                        component={'AntDesign'}
-                        name={'user'}
-                        size={32}
-                        color={theme.colors.pinkRed}
-                    />
-                    <TextInput placeholder={'Họ tên...'} style={styles.textInput} />
+                    marginTop={20}>
+                    <Text style={styles.textFullname}>Họ tên</Text>
+                    <TextInput placeholder={myInfo.name} placeholderTextColor={theme.colors.gray2} style={styles.textInput} />
                 </Block>
                 <Block
-                    row
                     width={'100%'}
-                    height={60}
-                    radius={25}
-                    alignCenter
-                    paddingHorizontal={10}
-                    backgroundColor={theme.colors.blurGray}>
-                    <IconView
-                        component={'AntDesign'}
-                        name={'calendar'}
-                        size={32}
-                        color={theme.colors.pinkRed}
-                    />
-                    <TextInput placeholder={'dd/mm/yyyy'} style={styles.textInput} />
+                    marginTop={20}>
+                    <Text style={styles.textFullname}>Ngày sinh</Text>
+                    <TextInput placeholder={'dd/mm/yyyy'} placeholderTextColor={theme.colors.gray2} style={styles.textInput} />
                 </Block>
                 <TouchableOpacity
-                    style={styles.TouchableOpacity}
-                >
-                    <LinearGradient
-                        style={styles.btnSave}
-                        colors={['#CD58E0', '#DB4040']}>
-                        <Text style={styles.textSave} height={55}>
-                            Lưu
-                        </Text>
-                    </LinearGradient>
+                    style={styles.TouchableOpacity} >
+                    <Text style={styles.textSave} height={55}>
+                        Lưu
+                    </Text>
                 </TouchableOpacity>
-            </Block>
-            <BottomSheet
-                style={styles.bottomSheet}
-                index={-1}
-                ref={bottomSheetRef}
-                snapPoints={snapPoints}
-                enablePanDownToClose={true}
-                backdropComponent={renderBackdrop}>
-                <Block width={'100%'} height={'100%'} justifyCenter alignCenter>
-                    <TouchableOpacity style={styles.buttomLogin}
-                        onPress={() => takePhoto()}>
-                        <Text style={styles.textButtomLogin}>Chụp ảnh</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.buttomLogin}
-                        onPress={() => chooseImageGallary()}>
-                        <Text style={styles.textButtomLogin}>Chọn sẵn có</Text>
-                    </TouchableOpacity>
-                </Block>
-            </BottomSheet>
+                <BottomSheet
+                    style={styles.bottomSheet}
+                    index={-1}
+                    ref={bottomSheetRef}
+                    snapPoints={snapPoints}
+                    enablePanDownToClose={true}
+                    backdropComponent={renderBackdrop}>
+                    <Block width={'100%'} height={'100%'} justifyCenter alignCenter>
+                        <TouchableOpacity style={styles.buttomLogin}
+                            onPress={() => takePhoto()}>
+                            <Text style={styles.textButtomLogin}>Chụp ảnh</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.buttomLogin}
+                            onPress={() => chooseImageGallary()}>
+                            <Text style={styles.textButtomLogin}>Chọn sẵn có</Text>
+                        </TouchableOpacity>
+                    </Block>
+                </BottomSheet>
+            </ScrollView>
         </Block>
+
+
     );
 };
 
 export default ScreenUpdateProfile;
 
 const styles = StyleSheet.create({
-
+    textFullname: {
+        color: theme.colors.text,
+        fontSize: 17,
+        fontWeight: '500',
+        marginLeft: 10
+    },
     textButtomLogin: {
         fontSize: 22,
         lineHeight: 50,
@@ -199,31 +173,23 @@ const styles = StyleSheet.create({
         fontWeight: '700',
         color: 'white',
     },
-    btnSave: {
-        width: '100%',
-        height: '100%',
-        marginTop: 100,
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderRadius: 20,
-        shadowColor: '#000',
-        shadowOffset: {
-            width: 0,
-            height: 3,
-        },
-        shadowOpacity: 1,
-        shadowRadius: 6,
-        elevation: 7,
-    },
     TouchableOpacity: {
-        width: '50%',
-        height: 55
+        width: '100%',
+        height: 55,
+        backgroundColor: theme.colors.creamRed,
+        borderRadius: 50,
+        marginTop: '50%',
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     textInput: {
-        fontSize: 20,
+        width: '100%',
+        fontSize: 18,
         fontWeight: '500',
-        color: '#898585',
         marginLeft: 10,
+        color: theme.colors.text,
+        borderBottomWidth: 1,
+        borderBottomColor: theme.colors.gray2
     },
     avatar: {
         width: 135,

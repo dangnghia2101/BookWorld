@@ -2,11 +2,8 @@ import { Block, Text, Button } from '@components';
 import React from 'react';
 import { Image, StyleSheet, TouchableOpacity } from 'react-native';
 import Icon from '@components/Icon';
-
 import { theme } from '@theme';
-import { images } from '@assets';
-import { startCase } from 'lodash';
-
+import { formatDay } from '@utils/helper';
 const { colors } = theme;
 const PADDING_ITEM = 15;
 
@@ -26,8 +23,9 @@ const _renderStar = num => {
 };
 
 const ItemComment = ({ item }) => {
+
   return (
-    <Block>
+    <Block borderBottomWidth={1} paddingBottom={20} borderColor={theme.colors.gray2}>
       <Block marginRight={PADDING_ITEM} row marginTop={20}>
         <Image
           style={styles.image}
@@ -36,9 +34,15 @@ const ItemComment = ({ item }) => {
           }}
         />
         <Block marginHorizontal={10}>
-          <Text size={15} fontType="regular">
-            {item.userName}
-          </Text>
+          <Block row>
+            <Text size={15} fontType="regular">
+              {item.userName}
+            </Text>
+            <Text size={12} color={colors.gray} marginLeft={10} marginTop={3} fontType="regular">
+              {formatDay(new Date(item.time))}
+            </Text>
+          </Block>
+
           <Block row marginTop={5}>
             {_renderStar(item.evaluate)}
           </Block>

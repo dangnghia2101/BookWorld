@@ -84,6 +84,25 @@ export const convertCart = (cart = []) => {
   );
 };
 
+export const formatDay = (date) => {
+  const day = date.getDate();
+  const month = date.getMonth() + 1;
+  const year = date.getFullYear();
+
+  let dayString = day.toString();
+  let monthString = month.toString();
+  let yearString = year.toString();
+
+  if (day < 10) {
+    dayString = '0' + dayString;
+  }
+  if (month < 10) {
+    monthString = '0' + monthString;
+  }
+  return dayString + '/' + monthString + '/' + yearString;
+};
+
+
 export const convertOption = (arr_option_tmp, option1, option2, option3) => {
   return arr_option_tmp?.find(value => {
     const checkOption1 = value.Option1 === option1;

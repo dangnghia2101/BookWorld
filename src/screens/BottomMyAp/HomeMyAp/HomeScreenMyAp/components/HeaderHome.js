@@ -4,7 +4,6 @@ import { useAppDispatch, useAppSelector } from '@hooks';
 import { useNavigation } from '@react-navigation/native';
 import { changeLanguage, changeTheme } from '@redux/reducerNew';
 import { theme } from '@theme';
-import { width } from '@utils/responsive';
 import React, { useEffect, useState } from 'react';
 import { withNamespaces } from 'react-i18next';
 import { Image, NativeModules, Platform, StatusBar } from 'react-native';

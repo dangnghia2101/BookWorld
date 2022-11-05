@@ -1,24 +1,29 @@
-import { Block, HeaderWithButton } from '@components';
+import { Block, HeaderWithButton, Icon } from '@components';
 import { useAppSelector } from '@hooks';
 import { useNavigation } from '@react-navigation/core';
 import { useGetAllChapterBookMutation } from '@redux/servicesNew';
 import { theme } from '@theme';
+import { makeStyles, useTheme } from 'themeNew';
 import React, { useEffect, useState } from 'react';
-import { ScrollView, StyleSheet } from 'react-native';
+import { ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import ChapterBook from './components/ChapterBook';
 import ImageBook from './components/ImageBook';
 import IntroduceText from './components/IntroduceText';
+import IconView from '@components/Icon';
+import { saveFavoriteBookReducer } from '@redux/reducerNew';
+import { useAppDispatch } from '@hooks';
 
 const DetailBookScreenMyAp = ({ route }) => {
   const { bookmark, item, _isRead } = route.params;
   const [listChapters, setListChapters] = useState([]);
   const [isRead, setIsRead] = useState(_isRead || true);
   const navigation = useNavigation();
-
-
+  const themeStore = useAppSelector(state => state.root.themeApp.theme);
+  const themeNew = useTheme(themeStore);
   const myInfo = useAppSelector(state => state.root.auth);
 
   const [getAllChapterBook] = useGetAllChapterBookMutation();
+  const disPatch = useAppDispatch();
 
   useEffect(() => {
     async function fetchAPI() {
@@ -33,9 +38,28 @@ const DetailBookScreenMyAp = ({ route }) => {
     fetchAPI();
   }, [getAllChapterBook, item._id, myInfo._id]);
 
+
+  const favoriteIcon = () => {
+    return (
+      <TouchableOpacity
+        onPress={() => disPatch(saveFavoriteBookReducer(item))}
+      >
+        <Block justifyCenter width={50} paddingVertical={2}>
+          <IconView
+            component={'AntDesign'}
+            name={'hearto'}
+            size={25}
+            color={themeNew.colors.textInBox}
+          />
+        </Block>
+      </TouchableOpacity>
+    );
+  };
+
+
   return (
     <Block>
-      <HeaderWithButton isBackHeader />
+      <HeaderWithButton isBackHeader rightIcon={favoriteIcon()} />
 
       <ScrollView showsVerticalScrollIndicator={false}>
         <Block

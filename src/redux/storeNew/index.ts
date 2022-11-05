@@ -5,6 +5,7 @@ import {
   BookReducer,
   AppSettingReducer,
   LoadingReducer,
+  favoriteBookReducer,
 } from '@redux/reducerNew';
 import {combineReducers, configureStore} from '@reduxjs/toolkit';
 import {
@@ -28,6 +29,7 @@ const rootReducer = combineReducers({
   book: BookReducer,
   setting: AppSettingReducer,
   loading: LoadingReducer,
+  favoriteBook:favoriteBookReducer,
   // ...other reducers here
 });
 
