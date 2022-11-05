@@ -25,7 +25,7 @@ const ItemMoreMy = props => {
         </Text>
         </View>
       <View style={[styles.dataContainer, styles.shadowColor]}>
-        <Text center marginTop={10} color={themeNew.colors.textDark}>
+        <Text center color={themeNew.colors.textDark}>
           Số sách đã đọc
         </Text>
         <Text size={40} center color={themeNew.colors.textDark}>

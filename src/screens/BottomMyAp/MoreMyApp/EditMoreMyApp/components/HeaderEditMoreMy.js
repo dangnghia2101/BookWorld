@@ -31,12 +31,12 @@ const HeaderEditMoreMy = props => {
           <IconView
             component={'Ionicons'}
             name={'arrow-back'}
-            size={30}
-            color={themeNew.colors.white}
+            size={25}
+            color={themeNew.colors.textDark}
           />
         </TouchableOpacity>
         <View style={styles.titleContainer}>
-          <Text size={24} fontType={'bold'} color={themeNew.colors.white}>
+          <Text size={22} fontType={'bold'} color={themeNew.colors.textDark}>
             {t('profile')}
           </Text>
         </View>

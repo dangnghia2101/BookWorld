@@ -20,11 +20,10 @@ export const profileAPI = createApi({
     getReadTimeBook: builder.query<any, string>({
       query: (actions) => ({
         url: `accounts/${actions}/getReadTimeBook`,
-        validateStatus: (response, result) =>
-          response.status === 200 && !result.isError, // Our tricky API always returns a 200, but sets an `isError` property when there is an error.
       }),
+      transformResponse: (response: any) => response.data,
     }),
   }),
 });
 
-export const {useGetReadTimeBookQuery} = profileAPI;
+export const {useGetReadTimeBookQuery, useLazyGetReadTimeBookQuery} = profileAPI;
