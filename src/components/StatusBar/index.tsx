@@ -28,7 +28,7 @@ export const StatusBar: FC<StatusBarProps> = props => {
                 barStyle={
                     themeStore === 'dark' ? 'light-content' : 'dark-content'
                 }
-                backgroundColor={statusColor || theme.colors.white}
+                backgroundColor={statusColor || theme.colors.black}
             />
         </View>
     );

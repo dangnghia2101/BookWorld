@@ -71,7 +71,7 @@ const DetailBookScreenMyAp = ({ route }) => {
           <ChapterBook
             detailBook={listChapters}
             nameBook={route.params.item.name}
-            isRead={isRead}
+            isRead={_isRead}
             setIsRead={setIsRead}
             navigation={navigation}
           />

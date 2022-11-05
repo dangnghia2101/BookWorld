@@ -36,14 +36,14 @@ const HeaderHome = props => {
   }, []);
 
   return (
-    <Block space={'between'} row width={'100%'} backgroundColor={themeNew.colors.text} paddingVertical={10}
+    <Block width='100%' borderBottomWidth={1} borderColor={themeNew.colors.grey12} space={'between'} row backgroundColor={themeNew.colors.grey14} paddingVertical={20}
     >
-      <Block alignCenter row marginLeft={10}>
+      <Block alignCenter row marginLeft={15} flex>
         <Image
           source={{ uri: image }}
           style={{ width: 40, height: 40, borderRadius: 100 }}
         />
-        <Block>
+        <Block flexGrow={1} >
           <Text
             marginLeft={10}
             size={12}
@@ -54,28 +54,33 @@ const HeaderHome = props => {
           </Text>
           <Text
             marginLeft={10}
+            marginRight={40}
             size={18}
             marginHorizontal={5}
             color={themeNew.colors.textInBox}
-            style={{ fontFamily: 'Lato-Bold' }}>
+            style={{ fontFamily: 'Lato-Bold' }}
+            fontType='bold'
+            numberOfLines={1}
+          >
             {name}
           </Text>
         </Block>
       </Block>
 
-      <Button
-        style={{ marginRight: 10 }}
-        onPress={() => {
-          dispatch(changeTheme(themeStore === 'dark' ? 'light' : 'dark'));
-          dispatch(changeLanguage(languageStore === 'en' ? 'vi' : 'en'));
-        }}>
-        <IconView
-          component={'MaterialCommunityIcons'}
-          name={'bell-outline'}
-          size={25}
-          color={themeNew.colors.textInBox}
-        />
-      </Button>
+      <Block marginRight={15}>
+        <Button
+          onPress={() => {
+            dispatch(changeTheme(themeStore === 'dark' ? 'light' : 'dark'));
+            dispatch(changeLanguage(languageStore === 'en' ? 'vi' : 'en'));
+          }}>
+          <IconView
+            component={'MaterialCommunityIcons'}
+            name={'bell-outline'}
+            size={25}
+            color={themeNew.colors.textInBox}
+          />
+        </Button>
+      </Block>
       {/* </ImageBackground> */}
     </Block >
   );

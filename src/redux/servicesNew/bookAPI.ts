@@ -71,6 +71,7 @@ export const bookAPI = createApi({
                     // console.log('error api getAllBookByCategory... ', err);
                 }
             },
+            transformResponse: (response: any) => response.data,
         }),
         getAllCategory: builder.query<BookState[], string>({
             query: () => ({
@@ -115,6 +116,7 @@ export const bookAPI = createApi({
 export const {
     useGetAllBookQuery,
     useGetAllBookByCategoryQuery,
+    useLazyGetAllBookByCategoryQuery,
     useGetAllCategoryQuery,
     useGetAllChapterBookMutation,
 } = bookAPI;

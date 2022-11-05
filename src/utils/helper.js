@@ -111,3 +111,22 @@ export const convertOption = (arr_option_tmp, option1, option2, option3) => {
     return checkOption1 && checkOption2 && checkOption3;
   });
 };
+
+const objColors = {
+  '0': '#FFA1CF',
+  '1': '#E3FDFD',
+  '2': '#F9F7F7',
+  '3': '#F8C4B4',
+  '4': '#FF97FA',
+  '5': '#C8FFD4',
+  '6': '#FFE6F7',
+  '7': '#EEF1FF',
+  '8': '#FFA8A7',
+  '9': '#A7ACFF',
+};
+
+export const randomColor = (number) => {
+  const n = Math.floor(Math.random() * number);
+  return objColors[n];
+};
+

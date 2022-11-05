@@ -4,9 +4,11 @@ import { routes } from '@navigation/routes';
 import HomeScreenMyAp from './HomeScreenMyAp';
 import DetailBookScreenMyAp from './DetailBookScreenMyAp';
 import PlayBookScreenMyAp from './PlayBookScreenMyAp';
+import BooksByCategory from './BooksByCategory';
 import { ListenBook } from './ListenBook';
 import Payment from './components/Payment';
 import ScreenNotification from '../MoreMyApp/UpdateProfile/Nitification/ScreenNotification';
+import Search from './Search';
 const Stack = createStackNavigator();
 
 const screenOptionStyle = {
@@ -37,6 +39,8 @@ const HomeMyApNavigator = ({ navigation, route }) => {
         name={routes.NOTIFICATION_SCREEN}
         component={ScreenNotification}
       />
+      <Stack.Screen name={routes.BOOKS_BY_CATEGORY} component={BooksByCategory} />
+      <Stack.Screen name={routes.SEARCH} component={Search} />
     </Stack.Navigator>
   );
 };
