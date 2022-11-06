@@ -45,4 +45,4 @@ export const authorAPI = createApi({
     }),
 });
 
-export const { useGetAllAuthorQuery } = authorAPI;
+export const { useGetAllAuthorQuery, useLazyGetAllAuthorQuery } = authorAPI;

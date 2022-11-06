@@ -253,32 +253,6 @@ const BottomTabMyAp = () => {
       />
     </Tab.Navigator>
 
-    // <View style={[styles.container]}>
-    //   <Stack.Navigator
-    //     screenOptions={screenOptionStyle}
-    //     initialRouteName={routes.HOME_MY_AP}>
-    //     <Stack.Screen name={routes.HOME_MY_AP} component={bottom.HOME_MY_AP} />
-    //     <Stack.Screen name={routes.CHAT_MY_AP} component={bottom.CHAT_MY_AP} />
-    //     <Stack.Screen
-    //       name={routes.READING_MY_APP}
-    //       component={bottom.READING_MY_APP}
-    //     />
-    //     <Stack.Screen
-    //       name={routes.MORE_MY_APP}
-    //       component={bottom.MORE_MY_APP}
-    //     />
-    //   </Stack.Navigator>
-
-    //   <Tabbar
-    //     tabs={tabs}
-    //     tabBarBackground={'white'}
-    //     labelStyle={{ color: 'black', fontWeight: '600', fontSize: 11 }}
-    //     onTabChange={item => onTabChange(item)}
-    //     defaultActiveTabIndex={0}
-    //     transitionSpeed={100}
-    //     tabBarContainerBackground={theme.colors.gray4}
-    //   />
-    // </View>
   );
 };
 

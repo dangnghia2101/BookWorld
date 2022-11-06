@@ -4,8 +4,10 @@ import { routes } from '@navigation/routes';
 import HomeScreenMyAp from './HomeScreenMyAp';
 import DetailBookScreenMyAp from './DetailBookScreenMyAp';
 import PlayBookScreenMyAp from './PlayBookScreenMyAp';
+import BooksByCategory from './BooksByCategory';
 import { ListenBook } from './ListenBook';
 import Payment from './components/Payment';
+import Search from './Search';
 const Stack = createStackNavigator();
 
 const screenOptionStyle = {
@@ -32,6 +34,8 @@ const HomeMyApNavigator = ({ navigation, route }) => {
       />
       <Stack.Screen name={routes.LISTEN_BOOK} component={ListenBook} />
       <Stack.Screen name={routes.SCREEN_PAYMENT} component={Payment} />
+      <Stack.Screen name={routes.BOOKS_BY_CATEGORY} component={BooksByCategory} />
+      <Stack.Screen name={routes.SEARCH} component={Search} />
     </Stack.Navigator>
   );
 };

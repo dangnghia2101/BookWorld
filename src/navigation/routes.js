@@ -36,6 +36,8 @@ export const routes = {
   PAYMENT_METHODS: 'PAYMENT_METHODS',
   DETAIL_CART: 'DETAIL_CART',
   EDIT_PROFILE_SCREEN: 'EDIT_PROFILE_SCREEN',
+  BOOKS_BY_CATEGORY: 'BOOKS_BY_CATEGORY',
+  SEARCH: 'SEARCH'
 };
 
 export const APP_PREFIX = ['emotion://', 'https://emotion.com'];

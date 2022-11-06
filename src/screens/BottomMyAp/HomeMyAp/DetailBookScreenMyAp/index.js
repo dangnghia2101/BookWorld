@@ -34,25 +34,28 @@ const DetailBookScreenMyAp = ({ route }) => {
         fetchAPI();
     }, [getAllChapterBook, item._id, myInfo._id]);
 
-    return (
-        <Block>
-            <HeaderWithButton isBackHeader />
+  return (
+    <Block>
+      <HeaderWithButton isBackHeader />
 
-            <ScrollView style={{height: '100%'}} showsVerticalScrollIndicator={false}>
-                <Block
-                    paddingHorizontal={20}
-                    backgroundColor={theme.colors.white}>
-                    <ImageBook item={route.params} />
-                    <IntroduceText item={route.params} />
-                    <ChapterBook
-                        infoBook={item}
-                        detailBook={listChapters}
-                        nameBook={route.params.item.name}
-                        isRead={isRead}
-                        setIsRead={setIsRead}
-                    />
-                </Block>
-            </ScrollView>
+      <ScrollView style={{height: '100%'}}  showsVerticalScrollIndicator={false}>
+        <Block
+          flex
+          paddingHorizontal={20}
+          backgroundColor={theme.colors.white}>
+          <ImageBook item={route.params} />
+          <IntroduceText item={route.params} />
+          <ChapterBook
+          infoBook={item}
+            detailBook={listChapters}
+            nameBook={route.params.item.name}
+            isRead={_isRead}
+            setIsRead={setIsRead}
+            navigation={navigation}
+          />
+
+        </Block>
+        </ScrollView>
         </Block>
     );
 };

@@ -36,6 +36,7 @@ const ItemMostBookRead = ({ item, index, scrollX, size, t }) => {
   return (
     <TouchableOpacity
       style={styles.container}
+      activeOpacity={0.9}
       onPress={() =>
         navigation.navigate(routes.DETAIL_BOOK_MY_AP, {
           bookmark: true,
@@ -52,6 +53,14 @@ const ItemMostBookRead = ({ item, index, scrollX, size, t }) => {
           justifyContent: 'center',
           paddingVertical: 20,
           marginHorizontal: 10,
+          shadowColor: theme.colors.grey4,
+          shadowOffset: {
+            width: 0,
+            height: 4,
+          },
+          shadowOpacity: 0.32,
+          shadowRadius: 5.46,
+          elevation: 9,
         }}>
         {/* <Block width={width / 2} marginRight={PADDING_ITEM}> */}
         <Image
@@ -87,7 +96,7 @@ const ItemMostBookRead = ({ item, index, scrollX, size, t }) => {
 const useStyle = makeStyles()(({ colors }) => ({
   container: {
     width: ITEM_WITH,
-    marginTop: 100,
+    marginTop: 50,
   },
   inputSection: {
     color: colors.white,
