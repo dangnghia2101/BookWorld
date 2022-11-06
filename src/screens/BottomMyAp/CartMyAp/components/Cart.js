@@ -3,6 +3,7 @@ import {
     FlatList,
     TouchableOpacity,
     Image,
+    Modal,
     Pressable,
     ScrollView,
 } from 'react-native';
@@ -14,32 +15,59 @@ import React, {
     useRef,
 } from 'react';
 import { Block, Text, HeaderWithButton, Button } from '@components';
-import { theme } from '@theme';
+// import { theme } from '@theme';
 import { useNavigation } from '@react-navigation/native';
 import { routes } from '@navigation/routes';
-import { CheckBox } from 'react-native-elements';
-import IconView from '@components/Icon';
 import BottomSheet, { BottomSheetBackdrop } from '@gorhom/bottom-sheet';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useTheme } from 'themeNew';
-import DetailCart from './DetailCart';
+import { colors, useTheme } from 'themeNew';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import Entypo from 'react-native-vector-icons/Entypo';
+import Feather from 'react-native-vector-icons/Feather';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import { useAppSelector } from '@hooks';
 import { useAppDispatch } from 'hooks';
 import { saveStatusCartReducer } from '@redux/reducerNew/cartReducer';
+import { removeItem } from '@redux/reducerNew/cartReducer';
+import { removeChapter } from '@redux/reducerNew/cartReducer';
+import { theme } from '@theme';
+
+const ModalPoup = ({ visible, children }) => {
+    const [showModal, setShowModal] = React.useState(visible);
+    useEffect(() => {
+        toggleModal();
+    }, [visible]);
+
+    const toggleModal = () => {
+        if (visible) {
+            setShowModal(true);
+        } else {
+            setShowModal(false);
+        }
+    };
+    return (
+        <Modal transparent visible={showModal}>
+            <Block flex={1} style={styles.modalBackGround}>
+                <Block style={styles.modalContainer}>{children}</Block>
+            </Block>
+        </Modal>
+    );
+};
 
 const Cart = () => {
+    const [visibleCart, setVisibleCart] = useState(false);
     const navigation = useNavigation();
     const [allPrice, setAllPrice] = useState();
-    const [cartItem, setCartItem] = useState({});
-    const [data, setData] = useState({});
+    const [cartItem, setCartItem] = useState([]);
+    const [data, setData] = useState([]);
     const [themeBack, setThemeBack] = useState(true); //True background white
     const inset = useSafeAreaInsets();
     const snapPoints = useMemo(() => [440 + inset.bottom], [inset.bottom]);
     const bottomSheetRef = useRef(null);
     const bookStore = useAppSelector(state => state.root.cart.cartList);
-    const dispatch = useAppDispatch();
+    const dispatch = useAppDispatch();    
+    const themeStore = useAppSelector(state => state.root.themeApp.theme);
+    const theme = useTheme(themeStore);
     let all = 0;
 
     useEffect(() => {
@@ -49,8 +77,8 @@ const Cart = () => {
         }
     }, [cartItem?.chapter]);
     useEffect(() => {
-        bottomSheetRef.current?.snapToIndex(0);
-    }, [cartItem]);
+        setAllPrice((all = 0));
+    }, [bookStore != 0]);
     const renderBackdrop = useCallback(
         props => (
             <BottomSheetBackdrop
@@ -63,12 +91,10 @@ const Cart = () => {
         [],
     );
     const numColumns = 3;
-    // console.log('>>>>>>>>priceBook');
     const renderItem = ({ item, index }) => {
         let sum = 0;
         const priceBook = () => {
             for (const i in item.chapter) {
-                console.log(`item.chapter.${i} = ${item.chapter[i].price}`);
                 sum += item.chapter[i].price;
             }
             if (item.status == true) {
@@ -77,16 +103,62 @@ const Cart = () => {
             return sum;
         };
         const detailCart = () => {
-            setCartItem({ ...item, priceBook: sum });
-            // bottomSheetRef.current?.snapToIndex(0);
+            let SL = Object.keys(item.chapter).length;
+            setCartItem({ ...item, priceBook: sum, index: index, SL: SL });
+            bottomSheetRef.current?.snapToIndex(0);
         };
+        // console.log('>>>>>>>>>>>>>> CartItem', cartItem.SL);
+        bookStore.map(item => {
+            if (item.status == false) {
+                setAllPrice((all += 0));
+            }
+        });
 
-        // console.log('>>>>>>>>>>>>>> CartItem', cartItem);
         return (
             <TouchableOpacity
                 style={styles.ItemCart}
-                onPress={() => detailCart(item)}>
+                onPress={() => detailCart(item, index)}>
                 <Block row marginVertical={10}>
+                    <Image
+                        style={styles.image}
+                        source={{ uri: item.image }}
+                        resizeMode="cover"
+                    />
+                    <Block marginHorizontal={20} marginTop={5} width={'55%'}>
+                        <Text numberOfLines={1} size={20} fontType={'bold'}>
+                            {item.name}
+                        </Text>
+                        <Text
+                            color="#9D9D9D"
+                            size={14}
+                            numberOfLines={1}
+                            marginTop={5}>
+                            Số tập: {Object.keys(item.chapter).length}
+                        </Text>
+                        <Text style={styles.TextPrice}>
+                            {priceBook()
+                                .toFixed(0)
+                                .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')}{' '}
+                            đ
+                        </Text>
+                    </Block>
+                        <TouchableOpacity
+                            style={{
+                                alignItems: 'flex-start',
+                                width: 40,
+                                position: 'absolute',
+                                marginLeft: '95%',
+                                marginTop: '26%'
+                            }}
+                            onPress={() => {
+                                setVisibleCart(true);
+                            }}>
+                            <Feather
+                                name={'trash-2'}
+                                size={18}
+                                color={theme.colors.grey1}
+                            />
+                        </TouchableOpacity>
                     {item.status ? (
                         <TouchableOpacity
                             style={styles.CheckBox1}
@@ -98,7 +170,11 @@ const Cart = () => {
                                     }),
                                 );
                             }}>
-                            <Entypo name={'check'} size={18} color={'white'} />
+                            <AntDesign
+                                name={'checkcircle'}
+                                size={23}
+                                color={theme.colors.primary}
+                            />
                         </TouchableOpacity>
                     ) : (
                         <TouchableOpacity
@@ -110,46 +186,90 @@ const Cart = () => {
                                         status: true,
                                     }),
                                 );
+                            }}>
+                            <AntDesign
+                                name={'checkcircleo'}
+                                size={23}
+                                color={'gray'}
+                            />
+                        </TouchableOpacity>
+                    )}
+                </Block>
+                <ModalPoup visible={visibleCart}>
+                    <Block style={styles.clone}>
+                        <Fontisto
+                            name={'close-a'}
+                            size={18}
+                            color={'black'}
+                            onPress={() => {
+                                setVisibleCart(false);
                             }}
                         />
-                    )}
-                    <Image
-                        style={styles.image}
-                        source={{ uri: item.image }}
-                        resizeMode="cover"
-                    />
-                    <Block marginHorizontal={10} marginTop={10} width={'55%'}>
-                        <Text numberOfLines={2} size={20} fontType={'bold'}>
-                            {item.name}
-                        </Text>
-                        <Text
-                            color="#9D9D9D"
-                            size={14}
-                            numberOfLines={1}
-                            marginTop={5}>
-                            Số tập: {Object.keys(item.chapter).length}
-                        </Text>
-                        <Text style={styles.TextPrice}>
-                            {' '}
-                            {priceBook()
-                                .toFixed(0)
-                                .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')}{' '}
-                            đ
-                        </Text>
                     </Block>
-                    <TouchableOpacity>
-                        <Image
-                            source={require('../../../../assets/icons/delete.png')}
-                        />
-                    </TouchableOpacity>
-                </Block>
+                    <Block alignCenter={'center'}>
+                        <Text style={styles.textOTP} center>
+                            Bạn muốn xóa sách khỏi giỏ hàng
+                        </Text>
+                        <Block>
+                            <Image
+                                source={require('../../../../assets/icons/faile.png')}
+                                style={{ width: 80, height: 80 }}
+                            />
+                        </Block>
+                        <TouchableOpacity
+                            style={styles.buttomAddCart}
+                            onPress={() => {
+                                dispatch(removeItem({ _id: item._id })),
+                                    { setVisibleCart: setVisibleCart(false) };
+                            }}>
+                            <Text style={styles.textButtomLogin} height={55}>
+                                Xóa
+                            </Text>
+                        </TouchableOpacity>
+                    </Block>
+                </ModalPoup>
             </TouchableOpacity>
         );
     };
-    const renderChapterItem = body => {
-        const { item } = body;
+    const renderChapterItem = ({ item, index }) => {
         return (
-            <TouchableOpacity style={styles.ItemCart1}>
+            <Block style={styles.ItemCart1}>
+                <TouchableOpacity
+                    onPress={() => {
+                        {
+                            cartItem.SL !== 1
+                                ? (console.log(
+                                      '................... Xóa chương',
+                                  ),
+                                  dispatch(
+                                      removeChapter({
+                                          element: item,
+                                          index: cartItem.index,
+                                          keyChapter:
+                                              cartItem?.chapter[item]
+                                                  ?.chapterNumber,
+                                      }),
+                                  ),
+                                  setCartItem(
+                                      data.filter(
+                                          (item, index) =>
+                                              index != item.chapterNumber,
+                                      ),
+                                  ))
+                                : (console.log(
+                                      '................... Xoasaaa Sách',
+                                      cartItem._id,
+                                  ),
+                                  dispatch(removeItem({ _id: cartItem._id })));
+                        }
+                    }}>
+                    <Entypo
+                        name={'cross'}
+                        size={16}
+                        color={'black'}
+                        style={styles.hide}
+                    />
+                </TouchableOpacity>
                 <Block style={styles.chap} row marginVertical={10}>
                     <Text size={14}>
                         Chương{' '}
@@ -157,50 +277,52 @@ const Cart = () => {
                             cartItem.chapter[item].chapterNumber}
                     </Text>
                 </Block>
-            </TouchableOpacity>
+            </Block>
         );
     };
 
     return (
         <Block style={styles.Container}>
-            <HeaderWithButton title={'Giỏ hàng'} />
-            <FlatList
-                data={bookStore}
-                renderItem={renderItem}
-                keyExtractor={item => Math.random()}
-                showsVerticalScrollIndicator={false}
-                style={styles.FlatList}
-            />
-            <Block bottom={0}>
-                <TouchableOpacity
-                    onPress={() => navigation.navigate(routes.DETAIL_CART)}>
-                    <Block
-                        row
-                        width={'100%'}
-                        height={45}
-                        paddingHorizontal={10}
-                        backgroundColor={'white'}
-                        marginTop={10}>
-                        <Image
-                            marginTop={10}
-                            source={require('../../../../assets/icons/note.png')}
-                        />
-                        <Text marginLeft={5} lineHeight={20}>
-                            Nhấn “ Thanh toán “ đồng nghĩa với việc bạn đồng ý
-                            tuân theo điều khoản của Bookword
+            <Block
+                justifyCenter
+                alignCenter
+                marginTop={10}
+                backgroundColor={'white'}
+                height={50}
+                row>
+                <Text size={20} style={styles.textTitle}>
+                    Giỏ hàng
+                </Text>
+            </Block>
+            <Block height={'80%'}>
+                {bookStore == [] ? (
+                    <Block alignCenter>
+                        <Text center marginTop={260} size={16}>
+                            Giỏ hàng trống
                         </Text>
                     </Block>
-                </TouchableOpacity>
+                ) : (
+                    <FlatList
+                        data={bookStore}
+                        renderItem={renderItem}
+                        keyExtractor={item => Math.random()}
+                        showsVerticalScrollIndicator={false}
+                        style={styles.FlatList}
+                    />
+                )}
+            </Block>
+            <Block bottom={7}>
                 <Block
                     row
                     width={'100%'}
                     paddingHorizontal={5}
+                    paddingVertical={5}
                     backgroundColor={'white'}
                     style={styles.ContainerCheckOut}
                     marginTop={10}>
-                    <Block>
-                        <Text size={20} style={styles.TextCart}>
-                            Tổng:
+                    <Block marginLeft={10}>
+                        <Text size={16} style={styles.TextCart}>
+                            Tổng
                         </Text>
                         <Text
                             color="#D45555"
@@ -212,16 +334,20 @@ const Cart = () => {
                                   allPrice
                                       .toFixed(0)
                                       .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')
-                                : 0}
+                                : 0}{' '}
                             đ
                         </Text>
                     </Block>
                     <TouchableOpacity
-                        style={styles.BottomCheckOut}
-                        // onPress={() => navigation.navigate(routes.PAYMENT_METHODS)}
-                        onPress={() => navigation.navigate(routes.DETAIL_CART)}>
-                        <Text marginRight={10} color="#ffffff" size={20}>
-                            Thanh toán
+                        disabled={allPrice === 0}
+                        onPress={() =>
+                            navigation.navigate(routes.DETAIL_CART, {
+                                allPrice: allPrice,
+                            })
+                        }
+                        style={styles.BottomCheckOut(allPrice)}>
+                        <Text marginRight={10} color="#ffffff" size={18}>
+                            Mua sách
                         </Text>
                         <Image
                             marginTop={5}
@@ -244,7 +370,7 @@ const Cart = () => {
                                 source={{ uri: cartItem?.image }}
                             />
                         </Block>
-                        <Block width={'53%'} marginLeft={10} marginTop={8}>
+                        <Block width={'53%'} marginTop={25}>
                             <Text size={20} style={styles.Name}>
                                 {cartItem?.name}
                             </Text>
@@ -271,9 +397,9 @@ const Cart = () => {
                     <Block
                         marginTop={10}
                         width={'100%'}
-                        height={0.2}
+                        height={1}
                         backgroundColor={'#979797'}
-                        borderWidth={0.2}
+                        borderWidth={0.1}
                     />
                     <Text
                         marginVertical={10}
@@ -292,35 +418,78 @@ const Cart = () => {
                             numColumns={numColumns}
                         />
                     </Block>
-                    {/* <Block
-                        marginTop={10}
-                        width={'100%'}
-                        height={0.2}
-                        backgroundColor={'#979797'}
-                        borderWidth={0.2}
-                    /> */}
-                    <TouchableOpacity style={styles.Bottom}>
-                        <Text style={styles.textBottom}>Xác nhận</Text>
-                    </TouchableOpacity>
                 </Block>
             </BottomSheet>
         </Block>
     );
 };
 
-export default Cart;
-
 const styles = StyleSheet.create({
+    buttomAddCart: {
+        width: '88%',
+        height: 59,
+        marginTop: 20,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 10,
+        backgroundColor: theme.colors.creamRed,
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 3,
+        },
+        shadowOpacity: 1,
+        shadowRadius: 6,
+
+        elevation: 7,
+    },
+    textButtomLogin: {
+        fontSize: 18,
+        fontWeight: '700',
+        color: 'white',
+    },
+    clone: {
+        alignItems: 'flex-end',
+        marginRight: 10,
+    },
+    textOTP: {
+        marginTop: 20,
+        fontWeight: '700',
+        fontSize: 16,
+        marginBottom: 20,
+    },
+    modalContainer: {
+        width: '75%',
+        backgroundColor: 'rgba(253,253,253,10)',
+        paddingHorizontal: 20,
+        paddingVertical: 30,
+        borderRadius: 30,
+        borderColor: 'black',
+    },
+    modalBackGround: {
+        backgroundColor: 'rgba(0,0,0,0.2)',
+        justifyContent: 'center',
+        alignContent: 'center',
+        alignItems: 'center',
+    },
+    hide: {
+        position: 'absolute',
+        marginLeft: 85,
+    },
+    textTitle: {
+        fontWeight: '700',
+    },
     textBottom: {
         color: 'white',
         fontSize: 20,
         fontWeight: '700',
     },
     Bottom: {
+        marginLeft: '5%',
         marginTop: 20,
         height: 50,
-        width: '100%',
-        backgroundColor: '#D45555',
+        width: '90%',
+        backgroundColor: theme.colors.lightRed,
         justifyContent: 'center',
         alignItems: 'center',
         shadowColor: '#000',
@@ -343,6 +512,8 @@ const styles = StyleSheet.create({
     },
     ItemCart1: {
         width: '27%',
+        height: 45,
+        justifyContent: 'center',
         backgroundColor: '#CDCDCD',
         marginTop: 10,
         marginHorizontal: 10,
@@ -362,7 +533,7 @@ const styles = StyleSheet.create({
         lineHeight: 30,
     },
     Price: {
-        marginTop: 30,
+        marginTop: 10,
         fontSize: 20,
         fontWeight: 'bold',
         color: '#D45555',
@@ -372,29 +543,24 @@ const styles = StyleSheet.create({
         paddingHorizontal: 15,
     },
     image1: {
-        width: 120,
-        height: 175,
+        width: 100,
+        height: 125,
         borderRadius: 10,
         borderWidth: 0.5,
         borderColor: 'black',
     },
     CheckBox1: {
-        width: 20,
-        height: 20,
-        borderRadius: 10,
-        borderWidth: 0.7,
-        marginTop: 45,
-        marginRight: 5,
-        backgroundColor: 'rgba(212, 85, 85,0.8)',
+        width: 27,
+        height: 27,
+        alignItems: 'center',
+        marginTop: 42,
         paddingBottom: 2,
     },
     CheckBox: {
-        width: 20,
-        height: 20,
-        borderRadius: 10,
-        borderWidth: 0.7,
-        marginTop: 45,
-        marginRight: 5,
+        width: 27,
+        height: 27,
+        alignItems: 'center',
+        marginTop: 42,
     },
     AllPay: {
         width: '100%',
@@ -410,19 +576,32 @@ const styles = StyleSheet.create({
         fontSize: 20,
     },
     TextPrice: {
-        marginLeft: '40%',
+        marginTop: 5,
         color: '#D45555',
         fontSize: 20,
         fontWeight: '700',
     },
-    BottomCheckOut: {
+    BottomCheckOut: item => ({
+        marginRight: 15,
         marginVertical: 10,
         flexDirection: 'row',
         marginLeft: 100,
-        height: 60,
+        height: 50,
+        backgroundColor: item === 0 ? '#bdc3c7' : theme.colors.lightRed,
+        borderRadius: 10,
+        width: 160,
+        alignItems: 'center',
+        justifyContent: 'center',
+    }),
+    BottomCheckOut1: {
+        marginRight: 15,
+        marginVertical: 10,
+        flexDirection: 'row',
+        marginLeft: 100,
+        height: 50,
         backgroundColor: '#D45555',
         borderRadius: 10,
-        width: 180,
+        width: 160,
         alignItems: 'center',
         justifyContent: 'center',
     },
@@ -430,28 +609,26 @@ const styles = StyleSheet.create({
         width: 90,
         height: 120,
     },
-    FlatList: {
-        paddingBottom: 20,
-    },
+    FlatList: {},
     ContainerCheckOut: {
         alignItems: 'center',
         justifyContent: 'space-between',
     },
-    Container: { flex: 1 },
+    Container: { flex: 1, marginTop: 50, marginBottom: 5 },
     ItemCart: {
         marginHorizontal: 10,
-        paddingHorizontal: 10,
-        marginTop: 15,
+        paddingHorizontal: 15,
+        marginVertical: 10,
         width: '95%',
         height: 140,
         backgroundColor: 'white',
         borderRadius: 10,
-        shadowColor: '#000',
+        shadowColor: theme.colors.gray2,
         shadowOffset: {
             width: 0,
-            height: 8,
+            height: 2,
         },
-        shadowOpacity: 0.46,
+        shadowOpacity: 0.2,
         shadowRadius: 11.14,
 
         elevation: 17,
@@ -460,3 +637,5 @@ const styles = StyleSheet.create({
         fontWeight: '600',
     },
 });
+export default Cart;
+

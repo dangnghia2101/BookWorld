@@ -11,12 +11,12 @@ import {theme} from '@theme';
 import {useNavigation} from '@react-navigation/native';
 import {routes} from '@navigation/routes';
 
-const PaymentMethods = () => {
+const PaymentMethods = ({route}) => {
   const navigation = useNavigation();
+  let price = route.params.allPrice;
   return (
     <Block backgroundColor={'white'} height={'100%'}>
-      <HeaderWithButton title={'Thanh toán'}/>
-      <PaymentScreen />
+      <PaymentScreen price={price} />
     </Block>
   );
 };

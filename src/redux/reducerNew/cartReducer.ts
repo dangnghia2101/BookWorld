@@ -51,7 +51,26 @@ const cartSlice = createSlice({
                 action.payload.data.chapterNumber || 0
             ] = action.payload.data;
         },
+        removeItem: (state, action) => {
+            let arr = state.cartList.filter(
+                arrow => arrow._id === action.payload,
+            );
+            state.cartList = arr;
+        },
+        removeChapter: (state: CartList, action) => {
+            let { id, index, keyChapter } = action.payload;
+
+            let arr = state.cartList[index];
+            delete arr.chapter[keyChapter];
+            state.cartList[index] = arr;
+        },
     },
 });
-export const { saveCartReducer, saveChapterReducer, saveStatusCartReducer } = cartSlice.actions;
+export const {
+    saveCartReducer,
+    saveChapterReducer,
+    saveStatusCartReducer,
+    removeItem,
+    removeChapter,
+} = cartSlice.actions;
 export const CartReducer = cartSlice.reducer;

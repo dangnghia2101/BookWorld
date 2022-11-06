@@ -48,7 +48,6 @@ const Login = () => {
   const [phoneUser, setPhoneUser] = useState('');
   const [password, setPassword] = useState('');
   const [auth, setAuth] = useState('signin');
-  const dispatch1 = useDispatch();
 
   const LoginPhone = () => {
     if (auth == 'signin') {

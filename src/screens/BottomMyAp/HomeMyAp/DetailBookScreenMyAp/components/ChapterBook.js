@@ -12,32 +12,13 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useAppDispatch } from 'hooks';
-import { useTheme } from 'themeNew';
+import { makeStyles, useTheme } from 'themeNew';
 import { saveCartReducer } from '@redux/reducerNew/cartReducer';
 import { saveChapterReducer } from '@redux/reducerNew/cartReducer';
 import Fontisto from 'react-native-vector-icons/Fontisto';
+import { theme } from '@theme';
 
-const ModalPoup = ({ visible, children }) => {
-    const [showModal, setShowModal] = React.useState(visible);
-    useEffect(() => {
-        toggleModal();
-    }, [visible]);
 
-    const toggleModal = () => {
-        if (visible) {
-            setShowModal(true);
-        } else {
-            setShowModal(false);
-        }
-    };
-    return (
-        <Modal transparent visible={showModal}>
-            <Block flex={1} style={styles.modalBackGround}>
-                <Block style={styles.modalContainer}>{children}</Block>
-            </Block>
-        </Modal>
-    );
-};
 
 const ChapterBook = ({
     detailBook,
@@ -56,8 +37,30 @@ const ChapterBook = ({
     const bookStore = useAppSelector(state => state.root.cart.cartList);
     const dispatch = useAppDispatch();
 
+    const theme = useTheme(themeStore);
+    const styles = useStyle(themeStore);
+    const ModalPoup = ({ visible, children }) => {
+        const [showModal, setShowModal] = React.useState(visible);
+        useEffect(() => {
+            toggleModal();
+        }, [visible]);
+    
+        const toggleModal = () => {
+            if (visible) {
+                setShowModal(true);
+            } else {
+                setShowModal(false);
+            }
+        };
+        return (
+            <Modal transparent visible={showModal}>
+                <Block flex={1} style={styles.modalBackGround}>
+                    <Block style={styles.modalContainer}>{children}</Block>
+                </Block>
+            </Modal>
+        );
+    };
     const addCart = _item => {
-        // console.log('................nó load lại nè', bookStore);
         const data = {
             _id: infoBook._id,
             name: infoBook.name,
@@ -194,7 +197,6 @@ const ChapterBook = ({
                                     });
                                 }
                             } else {
-                                console.log('showw modal');
                                 setChapItem(item.element);
                                 setVisible(true);
                             }
@@ -222,7 +224,7 @@ const ChapterBook = ({
                 <Block style={styles.clone}>
                     <Fontisto
                         name={'close-a'}
-                        size={20}
+                        size={12}
                         color={'black'}
                         onPress={() => {
                             setVisible(false);
@@ -233,7 +235,7 @@ const ChapterBook = ({
                     <Text style={styles.textOTP} center>
                         Mua để có thể xem sách
                     </Text>
-                    <Text size={16} center>
+                    <Text size={18} center>
                         Chương {chapItem?.chapterNumber}
                     </Text>
                     <TouchableOpacity
@@ -249,7 +251,7 @@ const ChapterBook = ({
     );
 };
 
-const styles = StyleSheet.create({
+const useStyle = makeStyles()(({ normalize, colors }) =>({
     textButtomLogin: {
         fontSize: 16,
         fontWeight: '700',
@@ -262,20 +264,11 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 10,
-        backgroundColor: '#DD4455',
-        shadowColor: '#000',
-        shadowOffset: {
-            width: 0,
-            height: 3,
-        },
-        shadowOpacity: 1,
-        shadowRadius: 6,
-
-        elevation: 7,
+        backgroundColor: colors.primary,
     },
     clone: {
         alignItems: 'flex-end',
-        marginRight: 20,
+        marginRight: 10,
     },
     textOTP: {
         marginTop: 20,
@@ -287,8 +280,8 @@ const styles = StyleSheet.create({
         width: '75%',
         backgroundColor: 'rgba(253,253,253,10)',
         paddingHorizontal: 20,
-        paddingVertical: 30,
-        borderRadius: 30,
+        paddingVertical: 20,
+        borderRadius: 20,
         borderColor: 'black',
     },
     modalBackGround: {
@@ -309,6 +302,6 @@ const styles = StyleSheet.create({
         borderBottomRightRadius: 10,
         borderTopRightRadius: 10,
     },
-});
+}));
 
 export default ChapterBook;
