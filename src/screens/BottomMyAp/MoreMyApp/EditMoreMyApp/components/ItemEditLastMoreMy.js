@@ -1,5 +1,5 @@
 import {Block, Text} from '@components';
-import React from 'react';
+import React, {useState} from 'react';
 import {StyleSheet, Pressable} from 'react-native';
 import {useDispatch} from 'react-redux';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
@@ -7,6 +7,7 @@ import actions from '@redux/actions';
 import {makeStyles, useTheme} from 'themeNew';
 import {useAppSelector, useAppDispatch} from '@hooks';
 import {withNamespaces} from 'react-i18next';
+import {logoutReducer} from '@redux/reducerNew';
 
 const ItemEditLastMoreMy = props => {
   GoogleSignin.configure({
@@ -20,18 +21,18 @@ const ItemEditLastMoreMy = props => {
   const themeNew = useTheme(themeStore);
   const styles = useStyle(props, themeStore);
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const handleLogOut = async () => {
     try {
       await GoogleSignin.signOut();
-      dispatch({type: actions.LOGOUT_ACCOUNT});
+      dispatch(logoutReducer());
     } catch (error) {
       console.error(error);
     }
   };
 
   return (
-    <Block marginHorizontal={30} marginTop={250}>
+    <Block marginHorizontal={30} marginVertical={10}>
       <Pressable
         onPress={handleLogOut}
         style={[styles.buttonLastMoreMy, styles.shadowColor]}>

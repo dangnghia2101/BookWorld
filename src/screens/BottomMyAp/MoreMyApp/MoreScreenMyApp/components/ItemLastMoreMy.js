@@ -11,7 +11,7 @@ const ItemLastMoreMy = props => {
   const themeNew = useTheme(themeStore);
   const styles = useStyle(props, themeStore);
   return (
-    <Block marginHorizontal={26}>
+    <Block marginHorizontal={26} relative>
       <Text size={16} color={themeNew.colors.textDark}>
         {t('rank')}
       </Text>

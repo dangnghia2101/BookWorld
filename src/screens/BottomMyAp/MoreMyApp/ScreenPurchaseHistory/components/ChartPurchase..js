@@ -49,7 +49,7 @@ const ChartPurchase = props => {
     },
     {
       month: 'Setember',
-      time: 500,
+      time: 1000,
     },
     {
       month: 'October',
@@ -96,17 +96,16 @@ const ChartPurchase = props => {
     },
     {
       month: 'August',
-      time: 500,
+      time: 600,
     },
   ];
 
   return (
-    <Block marginVertical={20} column justifyCenter>
+    <Block marginVertical={10} column justifyCenter>
       <Block
         style={styles.dateContainer}
         row
-        justifyContent={'space-between'}
-        marginHorizontal={15}>
+        justifyContent={'space-around'}>
         <TouchableOpacity
           style={[styles.itemChartContainer, styles.shadowColor]}>
           <Text color={themeNew.colors.textDark}>{t('day')}</Text>
@@ -123,7 +122,7 @@ const ChartPurchase = props => {
 
       <VictoryChart theme={VictoryTheme.material}>
         <VictoryBar
-          style={{data: {fill: '#0D7EF9', width: 15}}}
+          style={{data: {fill: '#0D7EF9', width: 10}}}
           animate={{
             duration: 3000,
             onLoad: {

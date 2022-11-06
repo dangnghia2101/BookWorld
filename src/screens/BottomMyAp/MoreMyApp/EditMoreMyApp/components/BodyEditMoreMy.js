@@ -55,8 +55,7 @@ export default withNamespaces()(BodyEditMoreMy);
 const useStyle = makeStyles()(({colors}) => ({
   container: {
     width: '100%',
-    marginTop: 116,
-    position: 'absolute',
+    marginVertical: 10,
     alignItems: 'center',
     justifyContent: 'center',
   },
