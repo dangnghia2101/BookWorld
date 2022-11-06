@@ -1,11 +1,20 @@
 import {Block, Text} from '@components';
 import React from 'react';
 import {StyleSheet, View, Image} from 'react-native';
+import {makeStyles, useTheme} from 'themeNew';
+import {withNamespaces} from 'react-i18next';
+import {useAppSelector, useAppDispatch} from '@hooks';
 
-const ItemLastMoreMy = () => {
+const ItemLastMoreMy = props => {
+  const {t} = props;
+  const themeStore = useAppSelector(state => state.root.themeApp.theme);
+  const themeNew = useTheme(themeStore);
+  const styles = useStyle(props, themeStore);
   return (
-    <Block marginHorizontal={26}>
-      <Text style={styles.textLastMoreMy}>Bảng xếp hạng</Text>
+    <Block marginHorizontal={26} relative>
+      <Text size={16} color={themeNew.colors.textDark}>
+        {t('rank')}
+      </Text>
       <Block row style={styles.itemContainer} padding={10}>
         <Block row justifyContent={'center'} alignItems={'center'}>
           <Image source={require('../../../../../assets/images/Vector.png')} />
@@ -38,20 +47,16 @@ const ItemLastMoreMy = () => {
   );
 };
 
-export default ItemLastMoreMy;
+export default withNamespaces()(ItemLastMoreMy);
 
-const styles = StyleSheet.create({
-  textLastMoreMy: {
-    marginVertical: 10,
-    color: 'black',
-    fontSize: 20,
-  },
+const useStyle = makeStyles()(({colors}) => ({
   itemContainer: {
     backgroundColor: '#242042',
     justifyContent: 'space-between',
     width: '100%',
     height: 100,
     borderRadius: 20,
+    marginVertical: 10,
   },
   imageRank: {
     position: 'absolute',
@@ -71,4 +76,4 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 4.5,
   },
-});
+}));

@@ -1,14 +1,13 @@
 package com.bookworld;
 
 import android.content.Intent;
+import android.os.Bundle;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.ReactRootView;
 import com.swmansion.gesturehandler.react.RNGestureHandlerEnabledRootView;
-
-import vn.zalopay.sdk.ZaloPaySDK;
-import vn.zalopay.sdk.Environment;
+import org.devio.rn.splashscreen.SplashScreen; // here
 
 public class MainActivity extends ReactActivity {
 
@@ -56,7 +55,12 @@ public class MainActivity extends ReactActivity {
   @Override
   public void onNewIntent(Intent intent) {
     super.onNewIntent(intent);
-    ZaloPaySDK.getInstance().onResult(intent);
+    // ZaloPaySDK.getInstance().onResult(intent);
   }
 
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    SplashScreen.show(this);
+    super.onCreate(savedInstanceState);
+  }
 }

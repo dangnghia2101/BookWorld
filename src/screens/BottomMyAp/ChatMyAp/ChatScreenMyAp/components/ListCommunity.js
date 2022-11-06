@@ -1,8 +1,15 @@
-import {StyleSheet, Image, FlatList, Pressable} from 'react-native';
+import {
+  StyleSheet,
+  Image,
+  FlatList,
+  TouchableOpacity,
+  Pressable,
+} from 'react-native';
 import React from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {Block, Text} from '@components';
 import {theme} from '@theme';
+import {routes} from '@navigation/routes';
 
 const ListCommunity = () => {
   const {navigation} = useNavigation();
@@ -13,7 +20,7 @@ const ListCommunity = () => {
       <Block
         row
         marginTop={30}
-        backgroundColor={theme.colors.gray5}
+        backgroundColor={theme.colors.listColor}
         padding={15}
         radius={20}
         style={styles.bong}>
@@ -44,7 +51,7 @@ const ListCommunity = () => {
             <Block
               marginTop={10}
               radius={10}
-              backgroundColor={theme.colors.colorButtom}
+              backgroundColor={theme.colors.buttomGroud}
               height={35}
               width={112}
               alignCenter
@@ -98,7 +105,7 @@ const styles = StyleSheet.create({
       height: 2,
     },
     shadowOpacity: 0.25,
-    shadowRadius: 3.84,
+    shadowRadius: 3.85,
 
     elevation: 5,
   },

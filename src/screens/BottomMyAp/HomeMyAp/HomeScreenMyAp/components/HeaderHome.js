@@ -1,26 +1,27 @@
-import React, { useState, useEffect } from 'react';
-import { Block, Text, Button } from '@components';
-import {
-  StyleSheet,
-  Platform,
-  NativeModules,
-  StatusBar,
-  Image,
-} from 'react-native';
-import { theme } from '@theme';
+import { Block, Button, Text } from '@components';
 import IconView from '@components/Icon';
+import { useAppDispatch, useAppSelector } from '@hooks';
 import { useNavigation } from '@react-navigation/native';
-import { routes } from '@navigation/routes';
-import Collapsible from 'react-native-collapsible';
-import { width } from '@utils/responsive';
+import { changeLanguage, changeTheme } from '@redux/reducerNew';
+import { theme } from '@theme';
+import React, { useEffect, useState } from 'react';
+import { withNamespaces } from 'react-i18next';
+import { Image, NativeModules, Platform, StatusBar } from 'react-native';
+import { makeStyles, useTheme } from 'themeNew';
 
+const { fonts } = theme;
 
-const { colors, fonts } = theme;
-
-const HeaderHome = ({ name, image, setIsCollapsible, isCollapsible }) => {
+const HeaderHome = props => {
+  const { name, image, setIsCollapsible, isCollapsible, t } = props;
   const navigation = useNavigation();
   const [paddingTop, setPaddingTop] = useState(0);
   const [showMoney, setShowMoney] = useState(false);
+  const dispatch = useAppDispatch();
+
+  const themeStore = useAppSelector(state => state.root.themeApp.theme);
+  const languageStore = useAppSelector(state => state.root.setting.language);
+  const themeNew = useTheme(themeStore);
+  const styles = useStyle(props, themeStore);
 
   useEffect(() => {
     if (Platform.OS === 'ios') {
@@ -35,125 +36,59 @@ const HeaderHome = ({ name, image, setIsCollapsible, isCollapsible }) => {
   }, []);
 
   return (
-    <Block style={{
-      position: 'absolute',
-      zIndex: 100,
-      width: width
-    }}>
-      <Block style={[styles.container, { paddingTop: paddingTop }]}>
-        <Block width={'100%'} alignCenter marginTop={5}>
-          <Block space={'between'} row width={'100%'}>
-            <Block alignCenter row marginLeft={10}>
-              <Image
-                source={{ uri: image }}
-                style={{ width: 40, height: 40, borderRadius: 100 }}
-              />
-              <Text
-                marginLeft={10}
-                size={18}
-                marginHorizontal={5}
-                color={colors.white}
-                style={{ fontFamily: 'Lato-Bold' }}>
-                {name}
-              </Text>
-            </Block>
-
-            <Block row marginRight={20}>
-              <IconView
-                component={'MaterialCommunityIcons'}
-                name={'bell-outline'}
-                size={25}
-                color={colors.white}
-              />
-            </Block>
-          </Block>
-
-          <Collapsible collapsed={isCollapsible} style={{ width: width }}>
-
-            <Block space={'between'} row width={'100%'} marginTop={10}>
-              <Block>
-                <Block row marginLeft={7}>
-                  <Text
-                    marginLeft={10}
-                    size={14}
-                    marginHorizontal={5}
-                    color={colors.white}
-                    // fontType={'bold'}
-                    // fontType={fonts.fontFamily.bold1}
-                    style={{ fontFamily: fonts.fontFamily.regular1, fontWeight: 'normal' }}
-                  >
-                    Số dư tài khoản
-                  </Text>
-                  <Button onPress={() => setShowMoney(!showMoney)}>
-                    <IconView
-                      component={'Ionicons'}
-                      name={showMoney ? 'md-eye' : 'md-eye-off'}
-                      size={20}
-                      color={colors.white}
-                    />
-                  </Button>
-                </Block>
-                <Block justifyCenter height={40} marginLeft={10}>
-                  {showMoney ? (
-                    <Text
-                      size={25}
-                      marginHorizontal={5}
-                      color={colors.white}
-                      fontType={'bold'}>
-                      *********
-                    </Text>
-                  ) : (
-                    <Text
-                      size={25}
-                      marginHorizontal={5}
-                      color={colors.white}
-                      fontType={'bold'}>
-                      1.200.000
-                    </Text>
-                  )}
-                </Block>
-              </Block>
-
-              <Block marginRight={20} alignCenter>
-                <Button onPress={() => navigation.navigate(routes.SCREEN_PAYMENT)}>
-                  <Block
-                    backgroundColor={theme.colors.white}
-                    radius={12}
-                    width={40}
-                    height={40}
-                    justifyCenter
-                    alignCenter>
-                    <IconView
-                      component={'Ionicons'}
-                      name={'add'}
-                      size={25}
-                      color={colors.gray}
-                    />
-                  </Block>
-                </Button>
-                <Text color={theme.colors.gray4}>Nap tien</Text>
-              </Block>
-            </Block>
-          </Collapsible>
-
-          <Button style={styles.btnExpand} onPress={() => setIsCollapsible(!isCollapsible)}>
-            {isCollapsible === true ? (<IconView component={'AntDesign'} name={'downcircleo'} color={colors.dark} size={25} />
-            ) : (<IconView component={'AntDesign'} name={'upcircleo'} color={colors.dark} size={25} />
-            )}
-          </Button>
+    <Block width='100%' borderBottomWidth={1} borderColor={themeNew.colors.grey12} space={'between'} row backgroundColor={themeNew.colors.grey14} paddingVertical={20}
+    >
+      <Block alignCenter row marginLeft={15} flex>
+        <Image
+          source={{ uri: image }}
+          style={{ width: 40, height: 40, borderRadius: 100 }}
+        />
+        <Block flexGrow={1} >
+          <Text
+            marginLeft={10}
+            size={12}
+            marginHorizontal={5}
+            color={themeNew.colors.grey8}
+            style={{ fontFamily: 'Lato-Bold' }}>
+            Welcom to BookWorld!
+          </Text>
+          <Text
+            marginLeft={10}
+            marginRight={40}
+            size={18}
+            marginHorizontal={5}
+            color={themeNew.colors.textInBox}
+            style={{ fontFamily: 'Lato-Bold' }}
+            fontType='bold'
+            numberOfLines={1}
+          >
+            {name}
+          </Text>
         </Block>
-        {/* </ImageBackground> */}
       </Block>
-    </Block>
+
+      <Block marginRight={15}>
+        <Button
+          onPress={() => {
+            dispatch(changeTheme(themeStore === 'dark' ? 'light' : 'dark'));
+            dispatch(changeLanguage(languageStore === 'en' ? 'vi' : 'en'));
+          }}>
+          <IconView
+            component={'MaterialCommunityIcons'}
+            name={'bell-outline'}
+            size={25}
+            color={themeNew.colors.textInBox}
+          />
+        </Button>
+      </Block>
+      {/* </ImageBackground> */}
+    </Block >
   );
 };
 
-const styles = StyleSheet.create({
+const useStyle = makeStyles()(({ normalize, colors }) => ({
   container: {
     paddingHorizontal: -20,
-    backgroundColor: theme.colors.red,
-    borderBottomLeftRadius: 15,
-    borderBottomRightRadius: 15,
   },
   bg_sell: {
     width: '100%',
@@ -191,14 +126,14 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   btnExpand: {
-    backgroundColor: colors.white,
+    backgroundColor: colors.text,
     borderRadius: 50,
     height: 35,
     width: 35,
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: -15
-  }
-});
+    marginBottom: -15,
+  },
+}));
 
-export default HeaderHome;
+export default withNamespaces()(HeaderHome);

@@ -19,10 +19,13 @@ import Loading from './Loading';
 import Text from './Text';
 import TextInput from './TextInput';
 import HeaderNotiAndEvent from './HeaderNotiAndEvent';
+import HeaderWithButton from './HeaderWithButton';
 import Button from './Button';
 import NoData from './NoData';
 import AnimatedImage from './AnimatedImage';
 import Evaluate from './Evaluate';
+import PaymentScreen from './Payment';
+import { Container } from './Container';
 
 export {
   HeaderNotiAndEvent,
@@ -36,6 +39,10 @@ export {
   AnimatedImage,
   Evaluate,
   ModalBox,
+  PaymentScreen,
+  HeaderWithButton,
+  Icon,
+  Container,
   //   RadioButton,
   //   ModalBox,
   //   FormContainer,

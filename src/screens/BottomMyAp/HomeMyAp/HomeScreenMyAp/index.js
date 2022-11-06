@@ -1,67 +1,79 @@
-import React, { useEffect, useCallback, useState } from 'react';
-import { Block, Text } from '@components';
+import { Block, Container, Icon, Text } from '@components';
+import { useGetAllBookQuery, useGetAllCategoryQuery, useGetAllAuthorQuery } from '@redux/servicesNew';
+import { height, width } from '@utils/responsive';
+import { useAppSelector } from 'hooks';
+import React, { useCallback, useState } from 'react';
+import { withNamespaces } from 'react-i18next';
 import {
-  ScrollView,
-  Animated,
+  Animated, Image, LogBox,
   Platform,
-  View,
-  Image,
-  StyleSheet,
+  ScrollView,
+  TextInput
 } from 'react-native';
-import HeaderListBook from './components/HeaderListEvent';
-import { FlatList } from 'react-native-gesture-handler';
-import { width, height } from '@utils/responsive';
-import ItemMostBookRead from './components/ItemMostBookRead';
-import TabCategoryBook from './components/TabCategoryBook';
-import { theme } from '@theme';
+import { makeStyles, useTheme } from 'themeNew';
 import HeaderHome from './components/HeaderHome';
-import { useDispatch, useSelector } from 'react-redux';
-import actions from '@redux/actions';
-import LinearGradient from 'react-native-linear-gradient';
+import HeaderListBook from './components/HeaderListEvent';
+import ItemBookFree from './components/ItemBookFree';
+import ItemCategory from './components/ItemCategory';
+import ItemMostBookRead from './components/ItemMostBookRead';
+import ItemAuthor from './components/ItemAuthor';
+import { images } from '@assets';
+import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
+import { useNavigation } from '@react-navigation/native';
+import { routes } from '@navigation/routes';
 
+
+LogBox.ignoreAllLogs();
 const ITEM_WITH = width * 0.6;
 
 const widthItemEventIncoming = width - width / 3;
 const WIDTH_ITEM_INVIEW = widthItemEventIncoming - 20;
-const BACKDROP_HEIGHT = height * 0.65;
 
-const author = [
-  { _id: 1, image: 'http://encyclopediaofalabama.org/images/m-2477.jpg' },
-  { _id: 2, image: 'https://bnnfeed.com/wp-content/uploads/2021/02/186.jpg' },
+const listTopAuthor = [
   {
-    _id: 3,
-    image:
-      'https://scontent.fsgn12-1.fna.fbcdn.net/v/t1.6435-9/160623841_274437330713385_6140920492295108645_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=_vbpplnTIi0AX96j1ta&_nc_ht=scontent.fsgn12-1.fna&oh=00_AT_iTkUVCSh_novn6Ee7b8zJ_mRFA4Q1-387Kcu4fPKDxg&oe=63011824',
+    "_id": "63441225c532a4c786a3fda5",
+    "name": "abcd",
+    "email": "phucho1907@gmail.com",
+    "phone": " ",
+    "permission": "author",
+    "fcmtokens": [
+
+    ],
+    "image": "https://res.cloudinary.com/cao-ng-fpt-polytechnic/image/upload/v1666510883/nkfmf4vvwj5gypulp3vm.png"
   },
   {
-    _id: 4,
-    image:
-      'https://static01.nyt.com/images/2016/10/17/t-magazine/zadie-smith-slide-NRAT/zadie-smith-slide-NRAT-jumbo.jpg',
-  },
-  { _id: 5, image: 'https://bnnfeed.com/wp-content/uploads/2021/02/186.jpg' },
-  { _id: 6, image: 'https://bnnfeed.com/wp-content/uploads/2021/02/186.jpg' },
-  { _id: 7, image: 'https://bnnfeed.com/wp-content/uploads/2021/02/186.jpg' },
-];
+    "_id": "63441225c532a4c786a3fda32",
+    "name": "abcd",
+    "email": "phucho1907@gmail.com",
+    "phone": " ",
+    "permission": "author",
+    "fcmtokens": [
+
+    ],
+    "image": "https://res.cloudinary.com/cao-ng-fpt-polytechnic/image/upload/v1666510883/nkfmf4vvwj5gypulp3vm.png"
+  }
+]
 
 const HomeScreenMyAp = () => {
-  // const [clicked, setClicked] = useState(false);
-  // const [searchPhrase, setSearchPhrase] = useState('');
-  const dispatch = useDispatch();
 
-  const listMostReadBook = useSelector(state => state.getAllBook);
-  const listCategoryBook = useSelector(state => state.getAllCategory);
-  const changeTheme = useSelector(state => state.changeTheme);
+  useGetAllBookQuery();
+  useGetAllCategoryQuery();
+  const navigation = useNavigation()
+
   const [isCollapsible, setIsCollapsible] = useState(true);
 
   const scrollX = React.useRef(new Animated.Value(0)).current;
 
-  const myInfo = useSelector(state => state.login.data);
+  const myInfo = useAppSelector(state => state.root.auth);
+  const allBooks = useAppSelector(state => state.root.book.bookList);
+  const allCategories = useAppSelector(state => state.root.book.categoryList);
+  const themeStore = useAppSelector(state => state.root.themeApp.theme);
 
-  useEffect(() => {
-    dispatch({ type: actions.GET_ALL_BOOK });
-    dispatch({ type: actions.GET_ALL_AUTHOR });
-    dispatch({ type: actions.GET_ALL_CATEGORY });
-  }, [dispatch]);
+  const theme = useTheme(themeStore);
+  const styles = useStyle(themeStore);
+
+  //Cập nhật mỗi lần thay đổi TabView
+
 
   const _renderItemMostBookRead = useCallback(
     ({ item, index }) => {
@@ -70,18 +82,18 @@ const HomeScreenMyAp = () => {
           item={item}
           index={index}
           scrollX={scrollX}
-          size={listMostReadBook.size}
+          size={allBooks}
         />
       );
     },
-    [listMostReadBook.size, scrollX],
+    [allBooks, scrollX],
   );
 
   const renderListMostRead = useCallback(() => {
     return (
-      <Block height={height * 0.65}>
+      <Block height={height * 0.6} backgroundColor={theme.colors.grey14}>
         <Animated.FlatList
-          data={listMostReadBook?.data}
+          data={allBooks}
           keyExtractor={item => Math.random() + item._id}
           renderItem={_renderItemMostBookRead}
           decelerationRate={Platform.OS === 'ios' ? 0 : 0.98}
@@ -98,6 +110,7 @@ const HomeScreenMyAp = () => {
             { useNativeDriver: false },
           )}
           scrollEventThrottle={16}
+          nestedScrollEnabled={true}
           ListEmptyComponent={
             <Block
               width={width}
@@ -110,97 +123,173 @@ const HomeScreenMyAp = () => {
         />
       </Block>
     );
-  }, [_renderItemMostBookRead, listMostReadBook?.data, scrollX]);
+  }, [_renderItemMostBookRead, allBooks, scrollX]);
+
 
   const renderListCategory = useCallback(() => {
     return (
-      <Block height={650}>
-        {listCategoryBook?.data?.length > 0 ? (
-          <TabCategoryBook />
-        ) : (
-          <Text>Loading</Text>
-        )}
+      <Block >
+        <HeaderListBook title={'Thể loại sách'} />
+
+        <Animated.FlatList
+          data={allCategories}
+          keyExtractor={item => Math.random() + item._id}
+          renderItem={(item) => <ItemCategory item={item} />}
+          bounces={true}
+          numColumns={4}
+          showsHorizontalScrollIndicator={false}
+          scrollEventThrottle={16}
+          nestedScrollEnabled={true}
+          ListEmptyComponent={
+            <Block
+              width={width}
+              height={WIDTH_ITEM_INVIEW}
+              justifyCenter
+              alignCenter>
+              <Text>Loading...</Text>
+            </Block>
+          }
+        />
       </Block>
     );
-  }, [listCategoryBook]);
+  }, [_renderItemMostBookRead, allBooks, scrollX]);
 
-  const Backdrop = () => {
+
+  const renderListBookFree = useCallback(() => {
     return (
-      <View style={{ height: BACKDROP_HEIGHT, width, position: 'absolute' }}>
-        <FlatList
-          data={author}
-          keyExtractor={(item, index) => item._id + '-backdrop'}
-          removeClippedSubviews={false}
-          contentContainerStyle={{ width, height: BACKDROP_HEIGHT }}
-          renderItem={({ item, index }) => {
-            // console.log("+====", item);
-            // if (!item.backdrop) {
-            //   return null;
-            // }
-            const translateX = scrollX.interpolate({
-              inputRange: [(index - 2) * ITEM_WITH, (index - 1) * ITEM_WITH],
-              outputRange: [0, width],
-              extrapolate: 'clamp',
-            });
-            return (
-              <Animated.View
-                removeClippedSubviews={false}
-                style={{
-                  position: 'absolute',
-                  width: translateX,
-                  height,
-                  overflow: 'hidden',
-                }}>
-                <Image
-                  source={{ uri: item.image }}
-                  style={{
-                    width,
-                    height: BACKDROP_HEIGHT,
-                    position: 'absolute',
-                    top: -40,
-                  }}
-                />
-              </Animated.View>
-            );
-          }}
+      <Block >
+        <HeaderListBook title={'Sách miễn phí'} action={() => { }} />
+        <Animated.FlatList
+          data={allBooks}
+          keyExtractor={item => Math.random() + item._id}
+          renderItem={(item) => <ItemBookFree item={item.item} />}
+          bounces={false}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          scrollEventThrottle={16}
+          nestedScrollEnabled={true}
+          ListEmptyComponent={
+            <Block
+              width={width}
+              height={WIDTH_ITEM_INVIEW}
+              justifyCenter
+              alignCenter>
+              <Text>Loading...</Text>
+            </Block>
+          }
         />
-        <LinearGradient
-          colors={['rgba(0, 0, 0, 0)', 'white']}
-          style={styles.linearGradient}
-        />
-      </View>
+      </Block>
     );
-  };
+  }, [_renderItemMostBookRead, allBooks, scrollX]);
+
+  const renderListTopAuthor = useCallback(() => {
+    return (
+      <Block >
+        <HeaderListBook title={'Tác giả hàng đầu'} action={() => { }} />
+        <Animated.FlatList
+          data={listTopAuthor}
+          keyExtractor={item => Math.random() + item._id}
+          renderItem={(item) => <ItemAuthor item={item.item} />}
+          bounces={false}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          scrollEventThrottle={16}
+          nestedScrollEnabled={true}
+          ListEmptyComponent={
+            <Block
+              width={width}
+              height={WIDTH_ITEM_INVIEW}
+              justifyCenter
+              alignCenter>
+              <Text>Loading...</Text>
+            </Block>
+          }
+        />
+      </Block>
+    );
+  }, [_renderItemMostBookRead, allBooks, scrollX]);
+
+  const renderSearch = () => {
+    return (
+      <Pressable onPress={() => navigation.navigate(routes.SEARCH)} style={styles.searchStyle} >
+        <Text color={theme.colors.grey4} size={14} >
+          Search here
+        </Text>
+        <Icon component='Ionicons' name='ios-search-outline' size={22} color={theme.colors.grey4} />
+      </Pressable>
+    )
+  }
+
 
   return (
-    <Block flex backgroundColor={theme.colors.white}>
-      <Block
+    <Container statusColor={theme.colors.grey16} edges={['right', 'left']} >
+      <HeaderHome
+        name={myInfo?.name}
+        image={myInfo?.image}
+        setIsCollapsible={setIsCollapsible}
+        isCollapsible={isCollapsible}
+
+      />
+
+      <ScrollView
         showsVerticalScrollIndicator={false}
-        style={{ position: 'relative' }}>
-        <HeaderHome
-          name={myInfo?.account?.name}
-          image={myInfo?.account?.image}
-          setIsCollapsible={setIsCollapsible}
-          isCollapsible={isCollapsible}
-        />
-        <Block marginTop={75}>
+        nestedScrollEnabled={true}
+        style={{ position: 'relative', backgroundColor: theme.colors.grey14 }}>
+
+        <Block >
+          {renderSearch()}
+
           <HeaderListBook title={'Sách xem nhiều nhất'} />
-          {Backdrop()}
+          {/* {Backdrop()} */}
           {renderListMostRead()}
           {renderListCategory()}
+          {renderListBookFree()}
+          {renderListTopAuthor()}
+          <Image source={images.banner} style={styles.banner} />
+          {/* {renderListCategory()} */}
         </Block>
-      </Block>
-    </Block>
+      </ScrollView>
+
+    </Container>
   );
 };
 
-const styles = StyleSheet.create({
+const useStyle = makeStyles()(({ normalize, colors }) => ({
   linearGradient: {
     height: 200,
     width: width,
     position: 'absolute',
     bottom: 40,
   },
-});
+  banner: {
+    width: '100%',
+    height: 130,
+    marginTop: 30
+  },
+  searchStyle: {
+    marginHorizontal: normalize(10)('moderate'),
+    paddingHorizontal: normalize(15)('moderate'),
+    backgroundColor: colors.white,
+    borderRadius: normalize(15)('moderate'),
+    height: normalize(50)('moderate'),
+    justifyContent: 'space-between',
+    flex: 1,
+    marginTop: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
 
-export default HomeScreenMyAp;
+
+    shadowColor: colors.grey4,
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.07,
+    shadowRadius: 4.65,
+
+    elevation: 8,
+  },
+
+}));
+
+export default withNamespaces()(HomeScreenMyAp);

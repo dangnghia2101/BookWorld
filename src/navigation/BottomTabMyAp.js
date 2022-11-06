@@ -7,7 +7,7 @@ import CustomTabar from './CustomTabar';
 // import {useDispatch, useSelector} from 'react-redux';
 import { routes } from './routes';
 import IconView from '@components/Icon';
-import { View, I18nManage, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import Tabbar from '@mindinventory/react-native-tab-bar-interaction';
 import HomeScreenMyAp from '@screens/BottomMyAp/HomeMyAp/HomeScreenMyAp';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -19,22 +19,32 @@ const Stack = createStackNavigator();
 const screenOptionStyle = {
   headerShown: false,
 };
-
 const Tab = createBottomTabNavigator();
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  container_icon: {
+    width: 50,
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 60,
+  },
+});
 
 const activeHome = isPlay => {
   return (
     <View
-      style={{
-        width: 50,
-        height: 50,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: isPlay ? theme.colors.red : theme.colors.gray4,
-        borderRadius: 60,
-      }}>
+      style={[
+        styles.container_icon,
+        {
+          backgroundColor: isPlay ? theme.colors.red : theme.colors.gray4,
+        },
+      ]}>
       <IconView
-        component={'MaterialCommunityIcons'}
+        component={'MaterialIcons'}
         name={'home'}
         size={25}
         color={isPlay ? 'white' : 'black'}
@@ -46,16 +56,14 @@ const activeHome = isPlay => {
 const activeStore = isPlay => {
   return (
     <View
-      style={{
-        width: 50,
-        height: 50,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: isPlay ? theme.colors.red : theme.colors.gray4,
-        borderRadius: 60,
-      }}>
+      style={[
+        styles.container_icon,
+        {
+          backgroundColor: isPlay ? theme.colors.red : theme.colors.gray4,
+        },
+      ]}>
       <IconView
-        component={'MaterialCommunityIcons'}
+        component={'MaterialIcons'}
         name={'book-open-page-variant-outline'}
         size={25}
         color={isPlay ? 'white' : 'black'}
@@ -67,19 +75,16 @@ const activeStore = isPlay => {
 const activeChat = isPlay => {
   return (
     <View
-      style={{
-        width: 50,
-        height: 50,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: isPlay ? theme.colors.red : theme.colors.gray4,
-        borderRadius: 60,
-      }}>
+      style={[
+        styles.container_icon,
+        {
+          backgroundColor: isPlay ? theme.colors.red : theme.colors.gray4,
+        },
+      ]}>
       <IconView
-        component={'MaterialCommunityIcons'}
-        name={'chat-outline'}
+        component={'MaterialIcons'}
+        name={'chat'}
         size={25}
-        color={'black'}
         color={isPlay ? 'white' : 'black'}
       />
     </View>
@@ -89,19 +94,16 @@ const activeChat = isPlay => {
 const activeSetting = isPlay => {
   return (
     <View
-      style={{
-        width: 50,
-        height: 50,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: isPlay ? theme.colors.red : theme.colors.gray4,
-        borderRadius: 60,
-      }}>
+      style={[
+        styles.container_icon,
+        {
+          backgroundColor: isPlay ? theme.colors.red : theme.colors.gray4,
+        },
+      ]}>
       <IconView
-        component={'MaterialCommunityIcons'}
-        name={'account-outline'}
+        component={'MaterialIcons'}
+        name={'settings'}
         size={25}
-        color={'black'}
         color={isPlay ? 'white' : 'black'}
       />
     </View>
@@ -113,24 +115,27 @@ const tabData = [
     name: 'Nhà',
     activeIcon: activeHome(true),
     inactiveIcon: activeHome(false),
+    key: 1,
   },
-  {
-    name: 'Lưu trữ',
-    activeIcon: activeStore(true),
-    inactiveIcon: activeStore(false),
-  },
-  {
-    name: 'Nhắn tin',
-    activeIcon: activeChat(true),
-    inactiveIcon: activeChat(false),
-  },
-  {
-    name: 'Cài đặt',
-    activeIcon: activeSetting(true),
-    inactiveIcon: activeSetting(false),
-  },
+  // {
+  //   name: 'Lưu trữ',
+  //   activeIcon: activeStore(true),
+  //   inactiveIcon: activeStore(false),
+  //   key: 2,
+  // },
+  // {
+  //   name: 'Nhắn tin',
+  //   activeIcon: activeChat(true),
+  //   inactiveIcon: activeChat(false),
+  //   key: 3,
+  // },
+  // {
+  //   name: 'Cài đặt',
+  //   activeIcon: activeSetting(true),
+  //   inactiveIcon: activeSetting(false),
+  //   key: 4,
+  // },
 ];
-
 const BottomTabMyAp = () => {
   // const dispatch = useDispatch();
   // const res = useSelector(state => state.notificationPrivateNotRead);
@@ -150,27 +155,27 @@ const BottomTabMyAp = () => {
 
   const onTabChange = item => {
     let tempTabs = [...tabs];
-    // setTimeout(() => {
-    //   tempTabs.map(val => {
-    //     if (item.name === 'Home' && val.name === 'Home') {
-    //       // val.activeIcon = Object.assign({}, activeHome(true));
-    //       // setBgColor('#FFC0C7');
-    //       navigation.navigate(routes.HOME_MY_AP);
-    //     } else if (item.name === 'Cart' && val.name === 'Cart') {
-    //       // val.activeIcon = Object.assign({}, activeList(true));
-    //       // setBgColor('#FF7128');
-    //       navigation.navigate(routes.CHAT_MY_AP);
-    //     } else if (item.name === 'Search' && val.name === 'Search') {
-    //       // val.activeIcon = Object.assign({}, activeCamera(true));
-    //     } else if (item.name === 'Setting' && val.name === 'Setting') {
-    //       // val.activeIcon = Object.assign({}, activeNotification(true));
-    //     } else {
-    //       val.activeIcon = null;
-    //     }
-    //   });
+    setTimeout(() => {
+      tempTabs.map(val => {
+        if (item.name === 'Home' && val.name === 'Home') {
+          // val.activeIcon = Object.assign({}, activeHome(true));
+          // setBgColor('#FFC0C7');
+          navigation.navigate(routes.HOME_MY_AP);
+        } else if (item.name === 'Cart' && val.name === 'Cart') {
+          // val.activeIcon = Object.assign({}, activeList(true));
+          // setBgColor('#FF7128');
+          navigation.navigate(routes.CHAT_MY_AP);
+        } else if (item.name === 'Search' && val.name === 'Search') {
+          // val.activeIcon = Object.assign({}, activeCamera(true));
+        } else if (item.name === 'Setting' && val.name === 'Setting') {
+          // val.activeIcon = Object.assign({}, activeNotification(true));
+        } else {
+          val.activeIcon = null;
+        }
+      });
 
-    //   setTabs(tempTabs);
-    // }, 500);
+      setTabs(tempTabs);
+    }, 500);
 
     tempTabs.map(val => {
       if (item.name === 'Nhà' && val.name === 'Nhà') {
@@ -192,80 +197,52 @@ const BottomTabMyAp = () => {
   };
 
   return (
-    // <Tab.Navigator
-    //   screenOptions={{ headerShown: false }}
-    //   tabBar={props => <CustomTabar {...props} />}>
-    //   <Tab.Screen
-    //     name={routes.HOME_MY_AP}
-    //     component={bottom.HOME_MY_AP}
-    //     options={{
-    //       tabBarLabel: 'Trang chủ',
-    //       tabBarIcon: 'home',
-    //     }}
-    //   />
-
-    //   <Tab.Screen
-    //     name={routes.READING_MY_APP}
-    //     component={bottom.READING_MY_APP}
-    //     options={{
-    //       tabBarLabel: 'Đang đọc',
-    //       tabBarIcon: 'book-open-page-variant-outline',
-    //     }}
-    //   />
-
-    //   <Tab.Screen
-    //     name={routes.CHAT_MY_AP}
-    //     component={bottom.CHAT_MY_AP}
-    //     options={{
-    //       tabBarLabel: 'Nhắn tin',
-    //       tabBarIcon: 'chat-outline',
-    //       tabBarStyle: { display: 'none' },
-    //     }}
-    //   />
-
-    //   <Tab.Screen
-    //     name={routes.MORE_MY_APP}
-    //     component={bottom.MORE_MY_APP}
-    //     options={{
-    //       tabBarLabel: 'Cài đặt',
-    //       tabBarIcon: 'account-outline',
-    //     }}
-    //   />
-    // </Tab.Navigator>
-
-    <View style={[styles.container]}>
-      <Stack.Navigator
-        screenOptions={screenOptionStyle}
-        initialRouteName={routes.HOME_MY_AP}>
-        <Stack.Screen name={routes.HOME_MY_AP} component={bottom.HOME_MY_AP} />
-        <Stack.Screen name={routes.CHAT_MY_AP} component={bottom.CHAT_MY_AP} />
-        <Stack.Screen
-          name={routes.READING_MY_APP}
-          component={bottom.READING_MY_APP}
-        />
-        <Stack.Screen
-          name={routes.MORE_MY_APP}
-          component={bottom.MORE_MY_APP}
-        />
-      </Stack.Navigator>
-
-      <Tabbar
-        tabs={tabs}
-        tabBarBackground={'white'}
-        labelStyle={{ color: 'black', fontWeight: '600', fontSize: 11 }}
-        onTabChange={item => onTabChange(item)}
-        defaultActiveTabIndex={0}
-        transitionSpeed={100}
-        tabBarContainerBackground={theme.colors.gray4}
+    <Tab.Navigator
+      screenOptions={{ headerShown: false }}
+      tabBar={props => <CustomTabar {...props} />}>
+      <Tab.Screen
+        name={routes.HOME_MY_AP}
+        component={bottom.HOME_MY_AP}
+        options={{
+          tabBarLabel: 'Trang chủ',
+          tabBarIcon: 'home',
+          component: 'AntDesign',
+        }}
       />
-    </View>
+
+      <Tab.Screen
+        name={routes.READING_MY_APP}
+        component={bottom.READING_MY_APP}
+        options={{
+          tabBarLabel: 'Đang đọc',
+          tabBarIcon: 'book-open-variant',
+          component: 'MaterialCommunityIcons',
+        }}
+      />
+
+      <Tab.Screen
+        name={routes.CHAT_MY_AP}
+        component={bottom.CHAT_MY_AP}
+        options={{
+          tabBarLabel: 'Nhắn tin',
+          tabBarIcon: 'chat',
+          tabBarStyle: { display: 'none' },
+          component: 'MaterialIcons',
+        }}
+      />
+
+      <Tab.Screen
+        name={routes.MORE_MY_APP}
+        component={bottom.MORE_MY_APP}
+        options={{
+          tabBarLabel: 'Cài đặt',
+          tabBarIcon: 'ios-settings-outline',
+          component: 'Ionicons',
+        }}
+      />
+    </Tab.Navigator>
+
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
 
 export default BottomTabMyAp;

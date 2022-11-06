@@ -1,15 +1,15 @@
-import {Block, Text} from '@components';
-import {theme} from '@theme';
-import {height, width} from '@utils/responsive';
+import { Block, Text } from '@components';
+import { theme } from '@theme';
+import { height, width } from '@utils/responsive';
 import React from 'react';
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 import LottieView from 'lottie-react-native';
-import {lotties} from '@assets';
-import {useSelector} from 'react-redux';
+import { lotties } from '@assets';
+import { useAppSelector } from '@hooks';
 
 const Loading = () => {
-  const {isShow} = useSelector(state => state.handlerLoadingReducer);
-  if (!isShow) {
+  const isShow = useAppSelector(state => state.root.loading.isLoading);
+  if (isShow === 'HIDE') {
     return null;
   }
   return (

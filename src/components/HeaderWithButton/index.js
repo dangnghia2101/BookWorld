@@ -1,33 +1,28 @@
+import { Block, Text } from '@components';
+import { WINDOW_WIDTH } from '@gorhom/bottom-sheet';
+import { useAppSelector } from '@hooks';
+import { useNavigation } from '@react-navigation/core';
 import React from 'react';
-import {useState, useEffect} from 'react';
-import {
-  StatusBar,
-  StyleSheet,
-  NativeModules,
-  Platform,
-  View,
-} from 'react-native';
+import { Platform } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Feather from 'react-native-vector-icons/Feather';
-import {theme} from '../../theme';
-import {useNavigation} from '@react-navigation/core';
-import {Block, Text} from '@components';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
-const {colors} = theme;
+import { useTheme } from 'themeNew';
 const HeaderWithButton = props => {
-  const {title, isBackHeader, children} = props;
+  const { title, isBackHeader, children, rightIcon, handleBack, backgroundColor } = props;
   const insets = useSafeAreaInsets();
-  const HEIGHT_HEADER = insets.top + 50;
-  const PADDING_TOP = insets.top;
+  const HEIGHT_HEADER = 50;
+  const themeStore = useAppSelector(state => state.root.themeApp.theme);
+  const theme = useTheme(themeStore);
 
   const navigation = useNavigation();
-  const Title = ({title}) => {
+  const Title = ({ title }) => {
     return (
       <Text
         justifyCenter
         alignCenter
         flex
-        size={24}
-        color={theme.colors.white}
+        size={20}
+        color={theme.colors.textInBox}
         fontType="bold">
         {title}
       </Text>
@@ -35,26 +30,33 @@ const HeaderWithButton = props => {
   };
   const backIcon = () => {
     return (
-      <Feather
-        onPress={() => navigation.goBack()}
-        size={Platform.OS === 'ios' ? 30 : 24}
-        color="white"
-        name={Platform.OS === 'ios' ? 'chevron-left' : 'arrow-left'}
-      />
+      <Block justifyCenter width={50} paddingVertical={2}>
+        <Feather
+          onPress={() => {
+            navigation.goBack()
+            handleBack && handleBack()
+          }
+          }
+          size={Platform.OS === 'ios' ? 30 : 24}
+          color={theme.colors.textDark}
+          name={Platform.OS === 'ios' ? 'chevron-left' : 'arrow-left'}
+        />
+      </Block>
+
     );
   };
 
   const renderBackHeader = () => {
     return (
-      <Block flex>
-        <Block style={styles.containHeaderBack}>
-          <Block flex justifyCenter>
-            {backIcon()}
-          </Block>
-          <Block alignCenter justifyCenter>
-            <Text style={styles.title}>{title}</Text>
-          </Block>
-          <Block flex />
+      <Block width={WINDOW_WIDTH - 50} alignSelf='center' row space={'between'}>
+        {backIcon()}
+        <Block alignCenter justifyCenter>
+          <Text color={theme.colors.textInBox} size={18} fontType={'bold'}>
+            {title}
+          </Text>
+        </Block>
+        <Block width={50} justifyCenter alignCenter>
+          {rightIcon}
         </Block>
       </Block>
     );
@@ -62,43 +64,31 @@ const HeaderWithButton = props => {
   return (
     <>
       {isBackHeader ? (
-        <View
-          style={{
-            height: HEIGHT_HEADER,
-            paddingTop: PADDING_TOP,
-            backgroundColor: colors.orange,
-          }}>
+        <Block
+          paddingVertical={15}
+          marginTop={insets.top}
+          justifyCenter
+          backgroundColor={backgroundColor ? backgroundColor : theme.colors.text}
+        >
           {renderBackHeader()}
-        </View>
+        </Block>
       ) : (
         <Block
+
           style={{
+            // marginTop: insets.top,
+            backgroundColor: backgroundColor ? backgroundColor : theme.colors.text,
             height: HEIGHT_HEADER,
-            paddingTop: PADDING_TOP,
-            backgroundColor: colors.orange,
-          }}>
-          <Block alignCenter justifyCenter row paddingHorizontal={20}>
-            <Title title={title} />
-            {children}
-          </Block>
+          }}
+          alignCenter justifyCenter row
+        >
+          <Title title={title} />
+          {children}
         </Block>
-      )}
+      )
+      }
     </>
   );
 };
-
-const styles = StyleSheet.create({
-  title: {
-    color: colors.white,
-    fontSize: 22,
-    fontWeight: 'bold',
-  },
-  containHeaderBack: {
-    flex: 1,
-    flexDirection: 'row',
-    paddingHorizontal: 10,
-    backgroundColor: colors.orange,
-  },
-});
 
 export default HeaderWithButton;

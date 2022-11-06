@@ -1,20 +1,22 @@
-import { StyleSheet, Text, View } from 'react-native';
-import { Block } from '@components';
 import React from 'react';
 import ItemAuthor from './ItemAuthor';
+import { Block, NoData } from '@components';
+import { useGetAllAuthorQuery } from '@redux/servicesNew';
 
 const TapScenceAuthor = ({ route }) => {
-  return route?.bookList?.length > 0 ? (
+
+  const { data: getAllAuthor } = useGetAllAuthorQuery();
+  return getAllAuthor?.length > 0 ? (
     <Block>
-      {route?.bookList.map((item, index) => (
+      {getAllAuthor?.map((item, index) => (
         <ItemAuthor key={index} item={item} />
       ))}
     </Block>
   ) : (
-    <Text>Chua co du lieu</Text>
+    <NoData title={'Chưa có tác giả'}></NoData>
   );
+
 };
 
 export default TapScenceAuthor;
 
-const styles = StyleSheet.create({});

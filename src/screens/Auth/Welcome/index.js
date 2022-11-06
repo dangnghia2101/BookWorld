@@ -6,27 +6,28 @@ import {
   Animated,
   Pressable,
 } from 'react-native';
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import ItemWelcome from './components/ItemWelcome';
-import {data} from './components/data';
-import {Block, Text} from '@components';
-import Login from '../Login/index';
-const {width, heigth} = Dimensions.get('window');
-import {routes} from '@navigation/routes';
-import {useNavigation} from '@react-navigation/native';
+import { data } from './components/data';
+import { Block, Text } from '@components';
+import { routes } from '@navigation/routes';
+import { useNavigation } from '@react-navigation/native';
+import { useRef } from 'react';
 
+import Paginator from './components/Paginator';
+
+const { width, heigth } = Dimensions.get('window');
 const Welcome = () => {
   const navigation = useNavigation();
-  const scrollX = new Animated.Value(0);
+  const scrollX = useRef(new Animated.Value(0)).current;
+  // const slidesRef = useRef(null);
   let position = Animated.divide(scrollX, width);
-
-  console.log(data);
   if (data && data.length) {
     return (
       <View style={styles.Container}>
         <FlatList
           data={data}
-          keyExtractor={(item, index) => 'key' + index}
+          keyExtractor={item => item.id}
           horizontal
           pagingEnabled
           scrollEnabled
@@ -34,34 +35,16 @@ const Welcome = () => {
           scrollEventThrottle={16}
           decelerationRate={'fast'}
           showsHorizontalScrollIndicator={false}
-          renderItem={({item, index}) => {
-            return <ItemWelcome item={item} key={index} />;
-          }}
-          onScroll={Animated.event([
-            {nativeEvent: {contentOffset: {x: scrollX}}},
-          ])}
+          renderItem={({ item }) => <ItemWelcome item={item} />}
+          onScroll={Animated.event(
+            [{ nativeEvent: { contentOffset: { x: scrollX } } }],
+            {
+              useNativeDriver: false,
+            },
+          )}
         />
-        <View style={styles.dotView}>
-          {data.map((_, i) => {
-            let opacity = position.interpolate({
-              inputRange: [i - 1, i, i + 1],
-              outputRange: [0.3, 1, 0.3],
-              extrapolate: 'clamp',
-            });
-            return (
-              <Animated.View
-                key={i}
-                styles={{
-                  opacity,
-                  heigth: 10,
-                  width: 10,
-                  background: '#595959',
-                  margin: 8,
-                  borderRadius: 5,
-                }}
-              />
-            );
-          })}
+        <View style={styles.dot}>
+          <Paginator scrollX={scrollX} data={data} />
         </View>
         <Block style={styles.allButtom}>
           <Pressable
@@ -86,6 +69,11 @@ const Welcome = () => {
 export default Welcome;
 
 const styles = StyleSheet.create({
+  dot: {
+    position: 'absolute',
+    marginTop: width / 0.94,
+    marginLeft: '35%',
+  },
   textDangKy: {
     color: 'black',
     fontSize: 22,
@@ -162,6 +150,7 @@ const styles = StyleSheet.create({
     color: '#19191B',
   },
   Container: {
+    position: 'relative',
     height: '100%',
     paddingTop: 40,
     backgroundColor: 'white',

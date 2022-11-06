@@ -4,54 +4,72 @@ import { Image, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from '@components/Icon';
 import { routes } from '@navigation/routes';
+import { withNamespaces } from 'react-i18next';
+import { useAppSelector } from '@hooks';
+import { useTheme, makeStyles } from 'themeNew';
 
-import { theme } from '@theme';
 const { width, height } = Dimensions.get('window');
 
-const { colors } = theme;
 const PADDING_ITEM = 15;
 
-const ItemCateBook = ({ item }) => {
+const ItemCateBook = ({ item, t }) => {
   const navigation = useNavigation();
+  const themeStore = useAppSelector(state => state.root.themeApp.theme);
+  const theme = useTheme(themeStore);
+
+  const styles = useStyles(themeStore);
+
   return (
-    <TouchableOpacity
+    <Block
       style={{ marginHorizontal: 20 }}
       onPress={() =>
         navigation.navigate(routes.DETAIL_BOOK_MY_AP, { bookmark: true, item })
       }>
-      <Block width={width} marginRight={PADDING_ITEM} row marginTop={20}>
+      <Block width={width} marginRight={PADDING_ITEM} row marginTop={30}>
         <Image
           style={styles.image}
           source={{
             uri: item.image,
           }}
         />
-        <Block marginHorizontal={10}>
-          <Text size={18} fontType="bold">
+        <Block marginHorizontal={10} flex>
+          <Text
+            size={18}
+            fontType="bold"
+            numberOfLines={2}
+            color={theme.colors.textInBox}>
             {item.name}
           </Text>
-          <Text size={14} color={colors.dark}>
-            {item.name_author}
+          <Text size={14} color={theme.colors.textInBox}>
+            {/* {item.name_author} */}
           </Text>
 
           <Block row marginTop={5} alignCenter>
             <Icon
               component={'Foundation'}
               name="page-multiple"
-              color={colors.lightGray}
+              color={theme.colors.textInBox}
               size={16}
             />
-            <Text marginLeft={5} marginRight={20} size={14} color={colors.dark}>
+            <Text
+              marginLeft={5}
+              marginRight={20}
+              size={14}
+              color={theme.colors.textInBox}>
               234
             </Text>
 
             <Icon
               component={'Entypo'}
               name="eye"
-              color={colors.lightGray}
+              color={theme.colors.textInBox}
               size={16}
             />
-            <Text marginLeft={5} marginRight={20} size={14} color={colors.dark}>
+            <Text
+              marginLeft={5}
+              marginRight={20}
+              size={14}
+              color={theme.colors.textInBox}>
               999k
             </Text>
           </Block>
@@ -60,26 +78,26 @@ const ItemCateBook = ({ item }) => {
             <Icon
               component={'AntDesign'}
               name="star"
-              color={colors.yellow}
+              color={theme.colors.yellow}
               size={16}
             />
             <Icon
               component={'AntDesign'}
               name="star"
-              color={colors.yellow}
+              color={theme.colors.yellow}
               size={16}
             />
 
             <Icon
               component={'AntDesign'}
               name="star"
-              color={colors.yellow}
+              color={theme.colors.yellow}
               size={16}
             />
             <Icon
               component={'AntDesign'}
               name="star"
-              color={colors.yellow}
+              color={theme.colors.yellow}
               size={16}
             />
             <Text marginLeft={5}>4.0</Text>
@@ -89,34 +107,37 @@ const ItemCateBook = ({ item }) => {
             <Button
               style={[
                 styles.btnItemCate,
-                { backgroundColor: theme.colors.lightRed },
+                { backgroundColor: theme.colors.primary },
               ]}
               onPress={() =>
                 navigation.navigate(routes.DETAIL_BOOK_MY_AP, { item })
               }>
               <Text size={12} fontType="bold" color="white">
-                Đọc sách
+                {t('readBook')}
               </Text>
             </Button>
             <Button
+              onPress={() =>
+                navigation.navigate(routes.DETAIL_BOOK_MY_AP, { item, _isRead: false })
+              }
               style={[
                 styles.btnItemCate,
                 { backgroundColor: theme.colors.black, marginLeft: 10 },
               ]}>
               <Text size={12} fontType="bold" color="white">
-                Sách nói
+                {t('listenBook')}
               </Text>
             </Button>
           </Block>
         </Block>
       </Block>
-    </TouchableOpacity>
+    </Block>
   );
 };
 
-export default ItemCateBook;
+export default withNamespaces()(ItemCateBook);
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles()(({ colors }) => ({
   inputSection: {
     color: colors.white,
     height: 40,
@@ -184,4 +205,4 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 20,
   },
-});
+}));

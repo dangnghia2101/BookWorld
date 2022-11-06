@@ -1,86 +1,66 @@
+import { Block, HeaderWithButton } from '@components';
+import { useAppSelector } from '@hooks';
+import { useNavigation } from '@react-navigation/core';
+import { useGetAllChapterBookMutation } from '@redux/servicesNew';
+import { theme } from '@theme';
 import React, { useEffect, useState } from 'react';
-import { Block } from '@components';
-import { ScrollView, FlatList } from 'react-native';
+import { ScrollView, StyleSheet } from 'react-native';
+import ChapterBook from './components/ChapterBook';
 import ImageBook from './components/ImageBook';
 import IntroduceText from './components/IntroduceText';
-import ChapterBook from './components/ChapterBook';
-import { useDispatch, useSelector } from 'react-redux';
-import actions from '@redux/actions';
-import { theme } from '@theme';
-import Topbar from 'common/Topbar';
-
-// const detailBook = {
-//   name: 'Đầu sách',
-//   evaluateBook: 3.4,
-//   introduce: 'Gioi thieu sach',
-//   chapter: [
-//     {
-//       id: 1,
-//       name: 1,
-//       content: 'Noi dung chuong 1',
-//     },
-//     {
-//       id: 2,
-//       name: 2,
-//       content: 'Noi dung chuong 2',
-//     },
-//     {
-//       id: 3,
-//       name: 'Chuong 1',
-//       content: 'Noi dung chuong 1',
-//     },
-//     {
-//       id: 4,
-//       name: 'Chuong 2',
-//       content: 'Noi dung chuong 2',
-//     },
-//     {
-//       id: 5,
-//       name: 'Chuong 1',
-//       content: 'Noi dung chuong 1',
-//     },
-//     {
-//       id: 6,
-//       name: 'Chuong 2',
-//       content: 'Noi dung chuong 2',
-//     },
-//     {
-//       id: 7,
-//       name: 'Chuong 1',
-//       content: 'Noi dung chuong 1',
-//     },
-//     {
-//       id: 8,
-//       name: 'Chuong 2',
-//       content: 'Noi dung chuong 2',
-//     },
-//   ],
-// };
 
 const DetailBookScreenMyAp = ({ route }) => {
-  const { bookmark, item } = route.params;
-  const dispatch = useDispatch();
-  const listChapters = useSelector(select => select.getAllChapterBookById);
+  const { bookmark, item, _isRead } = route.params;
+  const [listChapters, setListChapters] = useState([]);
+  const [isRead, setIsRead] = useState(_isRead || true);
+  const navigation = useNavigation();
+
+  const myInfo = useAppSelector(state => state.root.auth);
+
+  const [getAllChapterBook] = useGetAllChapterBookMutation();
 
   useEffect(() => {
-    dispatch({
-      type: actions.GET_ALL_CHAPTER_BY_ID,
-      categoryId: item._id,
-    });
-  }, [dispatch, item._id]);
+    async function fetchAPI() {
+      if (item._id) {
+        const params = [{
+          id: item._id,
+        }, { token: myInfo.token }];
+        const data = await getAllChapterBook(params);
+        setListChapters(data.data);
+      }
+    }
+    fetchAPI();
+  }, [getAllChapterBook, item._id, myInfo._id]);
 
   return (
     <Block>
+      <HeaderWithButton isBackHeader />
+
       <ScrollView showsVerticalScrollIndicator={false}>
-        <Block flex paddingHorizontal={20} backgroundColor={theme.colors.white}>
-          <Topbar bookmark={bookmark} />
+        <Block
+          flex
+          paddingHorizontal={20}
+          backgroundColor={theme.colors.white}>
           <ImageBook item={route.params} />
           <IntroduceText item={route.params} />
-          <ChapterBook detailBook={listChapters?.data} />
+          <ChapterBook
+            detailBook={listChapters}
+            nameBook={route.params.item.name}
+            isRead={_isRead}
+            setIsRead={setIsRead}
+            navigation={navigation}
+          />
         </Block>
       </ScrollView>
     </Block>
   );
 };
+
+const styles = StyleSheet.create({
+  animation: {
+    width: 100,
+    height: 100,
+  },
+});
 
 export default DetailBookScreenMyAp;

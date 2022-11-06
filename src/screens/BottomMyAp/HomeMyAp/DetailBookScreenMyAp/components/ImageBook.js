@@ -1,8 +1,10 @@
-import {StyleSheet, Image, Dimensions} from 'react-native';
-import {Block, Text} from '@components';
-import React from 'react';
-import {theme} from '@theme';
+import { Block, Text } from '@components';
 import Icon from '@components/Icon';
+import { useAppSelector } from '@hooks';
+import { theme } from '@theme';
+import React from 'react';
+import { Dimensions, Image, StyleSheet } from 'react-native';
+import { useTheme } from 'themeNew';
 const widthPhone = Dimensions.get('window').width;
 
 const _renderStar = num => {
@@ -20,14 +22,20 @@ const _renderStar = num => {
   return star;
 };
 
-const ImageBook = ({item}) => {
+const ImageBook = ({ item }) => {
+  const themeStore = useAppSelector(state => state.root.themeApp.theme);
+  const themeNew = useTheme(themeStore);
   return (
     <Block alignCenter>
-      <Image source={{uri: item.item.image}} style={styles.image} />
-      <Text fontType="bold" size={20} marginTop={10}>
+      <Image source={{ uri: item.item.image }} style={styles.image} />
+      <Text
+        fontType="bold"
+        size={20}
+        marginTop={10}
+        color={themeNew.colors.textInBox}>
         {item.item.name}
       </Text>
-      <Text fontType="regular" size={16} color={theme.colors.lightGray}>
+      <Text fontType="regular" size={16} color={themeNew.colors.textInBox}>
         {item.item.name}
       </Text>
       {/* Star */}
