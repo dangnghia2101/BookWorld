@@ -6,12 +6,12 @@ import { withNamespaces } from 'react-i18next';
 import { useAppSelector } from '@hooks';
 import { useNavigation } from '@react-navigation/native';
 import { theme } from '@theme';
-import { black } from 'react-native-paper/lib/typescript/styles/colors';
+import { formatDay } from '@utils/helper';
 
 const ItemNoti = ({ item }) => {
     const themeStore = useAppSelector(state => state.root.themeApp.theme);
     const themeNew = useTheme(themeStore);
-    console.log(item.avt)
+    console.log("itemmmmmmmmmmm", item)
     return (
         <TouchableOpacity>
             <Block
@@ -21,20 +21,19 @@ const ItemNoti = ({ item }) => {
                 marginTop={20}
             >
                 <Block
-                    backgroundColor={theme.colors.white}
                     width={65}
                     height={65}
                     radius={50}
                     justifyCenter
                     alignCenter
                     padding={7}
-                    borderWidth={4}
+                    borderWidth={3}
                     borderColor={theme.colors.creamRed}>
-                    <Image style={styles.avatar} source={{ uri: item.avt }} />
+                    <Image style={styles.avatar} source={{ uri: item.book.image }} />
                 </Block>
                 <Block width={270}>
                     <Text style={styles.content} lineBreakMode='2'>{item.content}</Text>
-                    <Text style={styles.time}>{item.time}</Text>
+                    <Text style={styles.time}>{formatDay(new Date(item.createdAt))}</Text>
                 </Block>
             </Block>
         </TouchableOpacity>
@@ -47,19 +46,21 @@ const styles = StyleSheet.create({
     time: {
         fontSize: 12,
         fontWeight: '400',
-        marginLeft: 12
+        marginLeft: 12,
+        color: theme.colors.text
     },
     content: {
         fontSize: 14,
         fontWeight: '700',
         marginBottom: 10,
-        marginLeft: 12
-
+        marginLeft: 12,
+        color: theme.colors.text
     },
     avatar: {
-        width: 50,
-        height: 50,
+        width: 55,
+        height: 55,
         borderRadius: 40,
-        margin: 7,
+        margin: 5,
+        resizeMode: 'center'
     },
 });

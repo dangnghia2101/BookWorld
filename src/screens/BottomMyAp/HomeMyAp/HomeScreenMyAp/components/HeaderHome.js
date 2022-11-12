@@ -1,6 +1,7 @@
 import { Block, Button, Text } from '@components';
 import IconView from '@components/Icon';
 import { useAppDispatch, useAppSelector } from '@hooks';
+import { routes } from '@navigation/routes';
 import { useNavigation } from '@react-navigation/native';
 import { changeLanguage, changeTheme } from '@redux/reducerNew';
 import { theme } from '@theme';
@@ -69,10 +70,7 @@ const HeaderHome = props => {
 
       <Block marginRight={15}>
         <Button
-          onPress={() => {
-            dispatch(changeTheme(themeStore === 'dark' ? 'light' : 'dark'));
-            dispatch(changeLanguage(languageStore === 'en' ? 'vi' : 'en'));
-          }}>
+          onPress={() => navigation.navigate(routes.NOTIFICATION_SCREEN)}>
           <IconView
             component={'MaterialCommunityIcons'}
             name={'bell-outline'}

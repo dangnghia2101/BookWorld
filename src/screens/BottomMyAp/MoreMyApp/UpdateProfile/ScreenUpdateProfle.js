@@ -8,7 +8,7 @@ import {
     TouchableOpacity
 } from 'react-native';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
-import LinearGradient from 'react-native-linear-gradient';
+import { PermissionsAndroid } from 'react-native';
 import React, { useState, useCallback, useMemo, useRef } from 'react';
 import { Block, HeaderWithButton } from '@components';
 import { theme } from '@theme';
@@ -16,30 +16,44 @@ import IconView from '@components/Icon';
 import { useAppSelector } from '@hooks';
 import BottomSheet, { BottomSheetBackdrop } from '@gorhom/bottom-sheet';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-const ScreenUpdateProfile = () => {
 
+const createFormData = (photo, name) => {
+    const data = new FormData();
+
+    data.append('photo', {
+        name: photo.fileName,
+        type: photo.type,
+        uri: Platform.OS === 'ios' ? photo.replace('file://', '') : photo,
+    });
+
+    data.append('name', name);
+
+    return data;
+};
+
+const ScreenUpdateProfile = () => {
     const myInfo = useAppSelector(state => state.root.auth);
     const [imageUri, setImageUri] = useState(myInfo.image);
+    const [name, setName] = useState(myInfo.name);
     const inset = useSafeAreaInsets();
-
     const snapPoints = useMemo(() => [260 + inset.bottom], [inset.bottom]);
     const bottomSheetRef = useRef(null);
-    const renderBackdrop = useCallback(
-        props => (
-            <BottomSheetBackdrop
-                disappearsOnIndex={-1}
-                appearsOnIndex={0}
-                {...props}
-                enableTouchThrough={true}
-            />
-        ),
-        [],
-    );
+    var snapTI = -1;
+    // const renderBackdrop = useCallback(
+    //     props => (
+    //         <BottomSheetBackdrop
+    //             disappearsOnIndex={-1}
+    //             appearsOnIndex={0}
+    //             {...props}
+    //             enableTouchThrough={true}
+    //         />
+    //     ),
+    //     [],
+    // );
 
     const options = {
         saveToPhotos: true,
         mediaType: 'photo',
-        cameraType: 'back'
     };
 
     const chooseImageGallary = async () => {
@@ -48,8 +62,39 @@ const ScreenUpdateProfile = () => {
     };
 
     const takePhoto = async () => {
-        const result = await launchCamera(options);
-        setImageUri(result.assets[0].uri);
+        const granted = await PermissionsAndroid.request(
+            PermissionsAndroid.PERMISSIONS.CAMERA,
+        );
+        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+            const result = await launchCamera(options);
+            setImageUri(result.assets[0].uri);
+            if (snapTI == 0) {
+                snapTI = -1;
+                bottomSheetRef.current?.snapToIndex(snapTI);
+            } else {
+                snapTI = 0;
+                bottomSheetRef.current?.snapToIndex(snapTI);
+            }
+        }
+    };
+
+    const handleUploadPhoto = () => {
+        fetch(`https://bookworlddasboard.herokuapp.com/api/accounts/getChangeProfile`, {
+            method: 'POST',
+            body: createFormData(imageUri, name),
+            headers: new Headers({
+                'Authorization': 'Bearer ' + myInfo.token,
+                'Content-Type': 'multipart/form-data;application/json; charset=utf-8'
+            }),
+        })
+            .then((response) => response.json())
+            .then((response) => {
+                console.log('response', response);
+            })
+            .catch((error) => {
+                console.log('error', error);
+            });
+        setName('');
     };
 
     return (
@@ -94,7 +139,7 @@ const ScreenUpdateProfile = () => {
                     width={'100%'}
                     marginTop={20}>
                     <Text style={styles.textFullname}>Họ tên</Text>
-                    <TextInput placeholder={myInfo.name} placeholderTextColor={theme.colors.gray2} style={styles.textInput} />
+                    <TextInput onChangeText={setName} value={name} placeholder={myInfo.name} placeholderTextColor={theme.colors.gray2} style={styles.textInput} />
                 </Block>
                 <Block
                     width={'100%'}
@@ -103,6 +148,7 @@ const ScreenUpdateProfile = () => {
                     <TextInput placeholder={'dd/mm/yyyy'} placeholderTextColor={theme.colors.gray2} style={styles.textInput} />
                 </Block>
                 <TouchableOpacity
+                    onPress={handleUploadPhoto}
                     style={styles.TouchableOpacity} >
                     <Text style={styles.textSave} height={55}>
                         Lưu
@@ -113,9 +159,8 @@ const ScreenUpdateProfile = () => {
                     index={-1}
                     ref={bottomSheetRef}
                     snapPoints={snapPoints}
-                    enablePanDownToClose={true}
-                    backdropComponent={renderBackdrop}>
-                    <Block width={'100%'} height={'100%'} justifyCenter alignCenter>
+                    enablePanDownToClose={true}>
+                    <Block width={'100%'} borderWidth={1} borderColor={theme.colors.creamRed} height={'100%'} justifyCenter alignCenter>
                         <TouchableOpacity style={styles.buttomLogin}
                             onPress={() => takePhoto()}>
                             <Text style={styles.textButtomLogin}>Chụp ảnh</Text>

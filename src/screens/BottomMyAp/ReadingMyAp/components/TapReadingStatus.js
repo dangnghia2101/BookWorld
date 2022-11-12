@@ -10,6 +10,8 @@ import actions from '@redux/actions';
 import { makeStyles, useTheme } from 'themeNew';
 import { useAppSelector } from '@hooks';
 import TapScreenFavoriteBook from './TapScreenFavoriteBook';
+import { head } from 'lodash';
+import { height } from '@utils/responsive';
 
 
 const TapReadingStatus = () => {
@@ -122,7 +124,8 @@ const TapReadingStatus = () => {
     ({ route, focused, color }) => {
       return (
         <Block>
-          <Text color={focused ? themeNew.colors.primary : themeNew.colors.grey10}>
+          <Text color={focused ? themeNew.colors.creamRed : themeNew.colors.grey9}
+            size={15}>
             {route.title}
             {/* {route.key !== 'Default' ? strings(`tabReadingnName.${route.code}`) : ''} */}
           </Text>
@@ -147,10 +150,10 @@ const TapReadingStatus = () => {
           <TabBar
             {...props}
             scrollEnabled={true}
-            // indicatorStyle={styles.indicator}
             renderLabel={_renderLabel}
             tabStyle={styles.tabStyle}
-            style={{ backgroundColor: themeNew.colors.text }}
+            indicatorStyle={styles.tabBarIndicatorStyle}
+            style={{ backgroundColor: themeNew.colors.white }}
           />
         )}
       </>
@@ -176,7 +179,6 @@ const TapReadingStatus = () => {
       renderTabBar={rednderTabBar}
       onIndexChange={setIndex}
       style={{ height: 500 }}
-      backgroundColor={theme.colors.red}
     />
   );
 };
@@ -184,5 +186,11 @@ const TapReadingStatus = () => {
 export default TapReadingStatus;
 
 const styles = StyleSheet.create({
-  tabStyle: { width: 'auto' },
+  tabBarIndicatorStyle: {
+    height: 2,
+    backgroundColor: theme.colors.creamRed
+  },
+  tabStyle: {
+    width: 'auto',
+  },
 });

@@ -16,7 +16,7 @@ const ItemAuthor = ({ item, t }) => {
 
   return (
     <TouchableOpacity
-      onPress={() => navigation.navigate(routes.DETAIL_AUTHOR_MY_AP)}>
+      onPress={() => navigation.navigate(routes.DETAIL_AUTHOR_MY_AP, { bookmark: true, item })}>
       <Block width="100%" height={200} alignCenter marginTop={20} relative>
         <Block
           width="100%"

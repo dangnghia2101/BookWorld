@@ -1,13 +1,14 @@
-import {Block} from '@components';
-import {theme} from '@theme';
+import { Block } from '@components';
+import { theme } from '@theme';
 import React from 'react';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {Image, StyleSheet, Text, TouchableOpacity} from 'react-native';
-import {useNavigation} from '@react-navigation/core';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Image, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/core';
+import { useAppSelector } from '@hooks';
 
-const {colors} = theme;
+const { colors } = theme;
 
-const HeaderScheduleMyAp = ({data, action}) => {
+const HeaderScheduleMyAp = ({ data, action }) => {
   const navigation = useNavigation();
   const insets = useSafeAreaInsets();
   const HEIGHT_HEADER = insets.top + 50;
@@ -26,10 +27,10 @@ const HeaderScheduleMyAp = ({data, action}) => {
               style={styles.image}
               source={
                 data?.avatar
-                  ? {uri: data.avatar}
+                  ? { uri: data.avatar }
                   : {
-                      uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRsgyx9VX6fi80cW_Twix5RPFUK2qq9S9PBP_41ONG4V0Sr93CyjuF9L00YDCNRSKoFzpA&usqp=CAU',
-                    }
+                    uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRsgyx9VX6fi80cW_Twix5RPFUK2qq9S9PBP_41ONG4V0Sr93CyjuF9L00YDCNRSKoFzpA&usqp=CAU',
+                  }
               }
             />
           </TouchableOpacity>

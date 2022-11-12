@@ -4,7 +4,6 @@ import { SceneMap, TabBar, TabView } from 'react-native-tab-view';
 import ListTabBook from './ListTabBook';
 import { useAppSelector } from 'hooks';
 import { colors, makeStyles, useTheme } from 'themeNew';
-import { strings } from 'I18n';
 
 const TabTopicSearch = () => {
   const [routes] = useState([{ key: 'Book', title: 'Book' }, { key: 'Author', title: 'Author' }, { key: 'Group', title: 'Group' }])

@@ -7,51 +7,33 @@ import {
 } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { Block } from '@components';
+import TopBar from '../components/TopBar';
 import { theme } from '@theme';
 import { width } from '@utils/responsive';
-import ListBookOfAuthor from '../components/ListBookOfAuthor';
-import { useSelector, useDispatch } from 'react-redux';
-import actions from '@redux/actions';
-import { FlatList } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/core';
 import TabSceneReadingStatus from '../components/TabSceneReadingStatus';
 const widthItemEventIncoming = width - width / 3;
 const WIDTH_ITEM_INVIEW = widthItemEventIncoming - 20;
 
 const DetailAuthor = ({ route }) => {
-  const dispatch = useDispatch();
-  const navigation = useNavigation();
-  const listBookOfAuthor = useSelector(state => state.getAllBookAuthor);
-
-  useEffect(() => {
-    dispatch({ type: actions.GET_ALL_BOOK_AUTHOR });
-  }, []);
-
-  const _renderItemBookOfAuthor = ({ item }) => {
-    return <ListBookOfAuthor item={item} />;
-  };
+  let item = route.params.item;
 
   return (
     <Block backgroundColor={theme.colors.white} flex>
+      <TopBar isBackHeader title={'Chi tiết tác giả'} />
       <Block width="100%" height="60%">
         <Block
           width="100%"
-          height={371}
+          height={'70%'}
           backgroundColor={theme.colors.darkPurple}>
-          <TouchableOpacity style={styles.iconBack}>
-            <Image
-              source={require('@assets/icons/iconback.png')}
-              onPress={() => navigation.goBack()}
-            />
-          </TouchableOpacity>
         </Block>
-        <Block absolute top={158} left={91}>
+        <Block absolute top={150} left={100}>
           <Image
             style={styles.imgAuthor}
-            source={require('@assets/images/imgAuthor.png')}
+            source={{ uri: item.image }}
           />
         </Block>
-        <Text style={styles.nameAuthor}>Johnny Dang</Text>
+        <Text style={styles.nameAuthor}>{item.name}</Text>
       </Block>
       <ScrollView showsVerticalScrollIndicator={false}>
         <Block width="100%" paddingHorizontal={24}>
@@ -106,9 +88,10 @@ const DetailAuthor = ({ route }) => {
 export default DetailAuthor;
 
 const styles = StyleSheet.create({
-  // listBookOfAuthor: {
-  //   height: 500,
-  // },
+  imgAuthor: {
+    width: 300,
+    height: 200
+  },
   textBook: {
     lineHeight: 36,
     fontWeight: '600',
@@ -133,8 +116,8 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     fontSize: 24,
     lineHeight: 36,
-    left: '32.04%',
-    top: '90%',
+    left: '35%',
+    top: '80%',
     color: 'black',
   },
   iconBack: {
