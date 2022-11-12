@@ -27,7 +27,7 @@ export const userApi = createApi({
                     };
                     dispatch(loginReducer(saveData));
                 } catch (err) {
-                    console.log('error api getAllCategories... ', err);
+                    console.log('error api login... ', err);
                 }
             },
             invalidatesTags: ['Post'],
