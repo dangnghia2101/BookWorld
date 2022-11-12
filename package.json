@@ -38,7 +38,7 @@
         "crypto-js": "^4.1.1",
         "d3-shape": "^3.1.0",
         "deprecated-react-native-prop-types": "^2.2.0",
-        "expo-linear-gradient": "^11.3.0",
+        "expo-linear-gradient": "^11.4.0",
         "fbjs": "^3.0.4",
         "i18next": "^21.9.1",
         "issue": "^0.0.6",

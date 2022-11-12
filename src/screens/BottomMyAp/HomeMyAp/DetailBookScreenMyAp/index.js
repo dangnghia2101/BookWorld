@@ -39,22 +39,24 @@ const DetailBookScreenMyAp = ({ route }) => {
         <Block>
             <HeaderWithButton isBackHeader />
 
-            <ScrollView showsVerticalScrollIndicator={false}>
-                <Block
-                    flex
-                    paddingHorizontal={20}
-                    backgroundColor={theme.colors.white}>
-                    <ImageBook item={route.params} />
-                    <IntroduceText item={route.params} />
-                    <ChapterBook
-                        detailBook={listChapters}
-                        nameBook={route.params.item.name}
-                        isRead={_isRead}
-                        setIsRead={setIsRead}
-                        navigation={navigation}
-                    />
-                </Block>
-            </ScrollView>
+      <ScrollView style={{height: '100%'}}  showsVerticalScrollIndicator={false}>
+        <Block
+          flex
+          paddingHorizontal={20}
+          backgroundColor={theme.colors.white}>
+          <ImageBook item={route.params} />
+          <IntroduceText item={route.params} />
+          <ChapterBook
+          infoBook={item}
+            detailBook={listChapters}
+            nameBook={route.params.item.name}
+            isRead={isRead}
+            setIsRead={setIsRead}
+            navigation={navigation}
+          />
+
+        </Block>
+        </ScrollView>
         </Block>
     );
 };
