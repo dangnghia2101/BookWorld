@@ -23,11 +23,11 @@ export const userApi = createApi({
                     const saveData = {
                         ...data?.data?.account,
                         token: data?.data?.token,
+                       
                     };
-
                     dispatch(loginReducer(saveData));
                 } catch (err) {
-                    console.log('error api getAllCategories... ', err);
+                    console.log('error api login... ', err);
                 }
             },
             invalidatesTags: ['Post'],

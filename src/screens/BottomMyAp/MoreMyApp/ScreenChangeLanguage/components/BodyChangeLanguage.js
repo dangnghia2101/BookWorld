@@ -24,7 +24,7 @@ const BodyChangeLanguage = props => {
   }, [value]);
 
   return (
-    <Block marginHorizontal={10} marginVertical={20}>
+    <Block marginHorizontal={5} marginVertical={10}>
       <RadioButton.Group onValueChange={value => setValue(value)} value={value}>
         <RadioButton.Item
           label="Tiếng việt"
@@ -50,6 +50,6 @@ export default withNamespaces()(BodyChangeLanguage);
 const useStyle = makeStyles()(({colors}) => ({
   textLabel: {
     color: colors.textDark,
-    fontSize: 18,
+    fontSize: 16,
   },
 }));

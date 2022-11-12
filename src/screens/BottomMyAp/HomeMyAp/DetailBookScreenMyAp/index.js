@@ -13,6 +13,7 @@ const DetailBookScreenMyAp = ({ route }) => {
     const { bookmark, item, _isRead } = route.params;
     const [listChapters, setListChapters] = useState([]);
     const [isRead, setIsRead] = useState(_isRead || true);
+    const navigation = useNavigation();
 
     const myInfo = useAppSelector(state => state.root.auth);
 
@@ -34,9 +35,9 @@ const DetailBookScreenMyAp = ({ route }) => {
         fetchAPI();
     }, [getAllChapterBook, item._id, myInfo._id]);
 
-  return (
-    <Block>
-      <HeaderWithButton isBackHeader />
+    return (
+        <Block>
+            <HeaderWithButton isBackHeader />
 
       <ScrollView style={{height: '100%'}}  showsVerticalScrollIndicator={false}>
         <Block
@@ -49,7 +50,7 @@ const DetailBookScreenMyAp = ({ route }) => {
           infoBook={item}
             detailBook={listChapters}
             nameBook={route.params.item.name}
-            isRead={_isRead}
+            isRead={isRead}
             setIsRead={setIsRead}
             navigation={navigation}
           />
