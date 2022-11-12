@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import {Block} from '@components';
 import {ScrollView} from 'react-native';
 import Header from './components/Header';
@@ -6,6 +6,7 @@ import ChartMoreMy from './components/ChartMoreMy';
 import BodyEditMoreMy from '../EditMoreMyApp/components/BodyEditMoreMy';
 import ItemMoreMy from './components/ItemMoreMy';
 import ItemLastMoreMy from './components/ItemLastMoreMy';
+import { FlatList } from 'react-native-gesture-handler';
 
 import {useAppSelector} from 'hooks';
 import {makeStyles, useTheme} from 'themeNew';
@@ -17,16 +18,18 @@ const MoreMyApp = props => {
 
   return (
     <Block flex justifyCenter backgroundColor={themeNew.colors.text}>
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <Block height={90}>
         <Header />
+      </Block>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <BodyEditMoreMy
-          name={myInfo?.name}
+          name={myInfo?.name} 
           image={myInfo?.image}
           email={myInfo?.email}
         />
         <ItemMoreMy />
         <ChartMoreMy />
-        <ItemLastMoreMy />
+        <ItemLastMoreMy/>
       </ScrollView>
     </Block>
   );

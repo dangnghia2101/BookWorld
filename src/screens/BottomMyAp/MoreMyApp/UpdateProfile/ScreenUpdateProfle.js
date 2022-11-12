@@ -5,7 +5,7 @@ import {
     StyleSheet,
     TextInput,
     ScrollView,
-    TouchableOpacity
+    TouchableOpacity,
 } from 'react-native';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import { PermissionsAndroid } from 'react-native';
@@ -174,7 +174,6 @@ const ScreenUpdateProfile = () => {
             </ScrollView>
         </Block>
 
-
     );
 };
 
@@ -192,7 +191,6 @@ const styles = StyleSheet.create({
         lineHeight: 50,
         alignItems: 'center',
         fontWeight: '700',
-        fontFamily: 'Poppins',
         color: '#FFFFFF',
     },
     buttomLogin: {

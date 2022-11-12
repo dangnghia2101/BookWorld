@@ -18,19 +18,20 @@ const DetailBookScreenMyAp = ({ route }) => {
   const [listChapters, setListChapters] = useState([]);
   const [isRead, setIsRead] = useState(_isRead || true);
   const navigation = useNavigation();
-  const themeStore = useAppSelector(state => state.root.themeApp.theme);
-  const themeNew = useTheme(themeStore);
+
   const myInfo = useAppSelector(state => state.root.auth);
 
   const [getAllChapterBook] = useGetAllChapterBookMutation();
-  const disPatch = useAppDispatch();
 
   useEffect(() => {
     async function fetchAPI() {
       if (item._id) {
-        const params = [{
-          id: item._id,
-        }, { token: myInfo.token }];
+        const params = [
+          {
+            id: item._id,
+          },
+          { token: myInfo.token },
+        ];
         const data = await getAllChapterBook(params);
         setListChapters(data.data);
       }
@@ -61,7 +62,7 @@ const DetailBookScreenMyAp = ({ route }) => {
     <Block>
       <HeaderWithButton isBackHeader rightIcon={favoriteIcon()} />
 
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView style={{ height: '100%' }} showsVerticalScrollIndicator={false}>
         <Block
           flex
           paddingHorizontal={20}
@@ -69,12 +70,14 @@ const DetailBookScreenMyAp = ({ route }) => {
           <ImageBook item={route.params} />
           <IntroduceText item={route.params} />
           <ChapterBook
+            infoBook={item}
             detailBook={listChapters}
             nameBook={route.params.item.name}
             isRead={isRead}
             setIsRead={setIsRead}
             navigation={navigation}
           />
+
         </Block>
       </ScrollView>
     </Block>

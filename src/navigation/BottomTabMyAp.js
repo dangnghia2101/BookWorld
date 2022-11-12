@@ -164,7 +164,7 @@ const BottomTabMyAp = () => {
         } else if (item.name === 'Cart' && val.name === 'Cart') {
           // val.activeIcon = Object.assign({}, activeList(true));
           // setBgColor('#FF7128');
-          navigation.navigate(routes.CHAT_MY_AP);
+          navigation.navigate(routes.CART_MY_AP);
         } else if (item.name === 'Search' && val.name === 'Search') {
           // val.activeIcon = Object.assign({}, activeCamera(true));
         } else if (item.name === 'Setting' && val.name === 'Setting') {
@@ -186,7 +186,7 @@ const BottomTabMyAp = () => {
         navigation.navigate(routes.READING_MY_APP);
       } else if (item.name === 'Nhắn tin' && val.name === 'Nhắn tin') {
         val.activeIcon = Object.assign({}, activeChat(true));
-        navigation.navigate(routes.CHAT_MY_AP);
+        navigation.navigate(routes.CART_MY_AP);
       } else if (item.name === 'Cài đặt' && val.name === 'Cài đặt') {
         val.activeIcon = Object.assign({}, activeSetting(true));
         navigation.navigate(routes.MORE_MY_APP);
@@ -217,6 +217,17 @@ const BottomTabMyAp = () => {
           tabBarLabel: 'Đang đọc',
           tabBarIcon: 'book-open-variant',
           component: 'MaterialCommunityIcons',
+        }}
+      />
+
+      <Tab.Screen
+        name={routes.CART_MY_AP}
+        component={bottom.CART_MY_AP}
+        options={{
+          tabBarLabel: 'Giỏ hàng',
+          tabBarIcon: 'shopping-cart',
+          tabBarStyle: {display: 'none'},
+          component: 'Feather',
         }}
       />
 

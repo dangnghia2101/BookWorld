@@ -10,225 +10,257 @@ import { useTheme } from 'themeNew';
 import ModalConfirmOtp from './components/ModalConfirmOtp';
 
 async function getToken() {
-  return await messaging().getToken();
+    return await messaging().getToken();
 }
 
 const Register = () => {
-  const themeStore = useAppSelector(state => state.root.themeApp.theme);
+    const themeStore = useAppSelector(state => state.root.themeApp.theme);
 
-  const [loginPhone] = useLoginPhoneMutation();
-  const [phone, setPhone] = useState('');
-  const [newPassword, setNewPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [confirmOTP, setConfirmOTP] = useState(null);
-  const [codeOTP, setCodeOTP] = useState('');
-  const [showModal, setShowModal] = React.useState(false);
-  const { colors } = useTheme(themeStore)
+    const [loginPhone] = useLoginPhoneMutation();
+    const [phone, setPhone] = useState('');
+    const [newPassword, setNewPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [confirmOTP, setConfirmOTP] = useState(null);
+    const [codeOTP, setCodeOTP] = useState('');
+    const [showModal, setShowModal] = React.useState(false);
+    const { colors } = useTheme(themeStore);
 
+    const handleErrorPhone = useMemo(() => {
+        if (phone.match(PHONE_REG_EXP)) {
+            return [false, ''];
+        } else {
+            return [true, 'Format phone invalid'];
+        }
+    }, [phone]);
 
-  const handleErrorPhone = useMemo(() => {
-    if (phone.match(PHONE_REG_EXP)) {
-      return [false, ''];
-    } else {
-      return [true, 'Format phone invalid'];
+    const handleErrorNewPassword = useMemo(() => {
+        if (newPassword.length > 5) {
+            return [false, ''];
+        } else {
+            return [true, 'New password at least 6 character'];
+        }
+    }, [newPassword]);
+
+    const handleErrorComfirmPassword = useMemo(() => {
+        if (newPassword === confirmPassword) {
+            return [false, ''];
+        } else {
+            return [true, 'Confirm password nat match New Password'];
+        }
+    }, [confirmPassword, newPassword]);
+
+    const handleSendLogin = useMemo(() => {
+        if (
+            !handleErrorPhone[0] &&
+            !handleErrorNewPassword[0] &&
+            !handleErrorComfirmPassword[0]
+        ) {
+            return false;
+        } else {
+            return true;
+        }
+    }, [handleErrorPhone, handleErrorNewPassword, handleErrorComfirmPassword]);
+
+    //Send OTP from Firebase
+    const signInWithPhoneNumber = async () => {
+        console.log('PHONE  +84 ' + phone);
+        const confirmation = await auth().signInWithPhoneNumber('+84 ' + phone);
+        setConfirmOTP(confirmation);
+        setShowModal(true);
+    };
+
+    //Confirm code OTP
+    async function confirmCode() {
+        try {
+            await confirmOTP.confirm(codeOTP);
+            await callApiLogin();
+            console.log('Register success.');
+            setShowModal(false);
+        } catch (error) {
+            setShowModal(false);
+            console.log('Invalid code.');
+        }
     }
-  }, [phone])
 
-  const handleErrorNewPassword = useMemo(() => {
-    if (newPassword.length > 5) {
-      return [false, ''];
-    } else {
-      return [true, 'New password at least 6 character'];
-    }
-  }, [newPassword])
+    const callApiLogin = async () => {
+        const data = {
+            phoneUser: phone,
+            passwordUser: newPassword,
+            token_fcm: await getToken(),
+        };
+        await loginPhone(data);
+    };
 
-  const handleErrorComfirmPassword = useMemo(() => {
-    if (newPassword === confirmPassword) {
-      return [false, ''];
-    } else {
-      return [true, 'Confirm password nat match New Password'];
-    }
-  }, [confirmPassword, newPassword])
+    return (
+        <Block
+            flex
+            alignCenter
+            paddingTop={56}
+            backgroundColor={'white'}
+            paddingHorizontal={20}>
+            <Text h1 bold size={30} style={styles.textWelcomLogin}>
+                {' '}
+                Xin Chào Bạn Mới{' '}
+            </Text>
+            <Text paddingHorizontal={45} size={13} lineHeight={20} center>
+                {' '}
+                Vui lòng đăng ký tài khoản để sử dụng ứng dụng Lưu ý nhập đầy đủ
+                thông tin ở bên dưới{' '}
+            </Text>
 
-  const handleSendLogin = useMemo(() => {
-    if (!handleErrorPhone[0] && !handleErrorNewPassword[0] && !handleErrorComfirmPassword[0]) {
-      return false;
-    } else {
-      return true;
-    }
-  }, [handleErrorPhone, handleErrorNewPassword, handleErrorComfirmPassword]);
+            <TextInput
+                onChangeText={setPhone}
+                value={phone}
+                label={'Phone number'}
+                keyboardType="phone-pad"
+                errorText={handleErrorPhone[1]}
+                isError={handleErrorPhone[0]}
+            />
+            <TextInput
+                onChangeText={setNewPassword}
+                value={newPassword}
+                label={'New Password'}
+                isSecure={true}
+                errorText={handleErrorNewPassword[1]}
+                isError={handleErrorNewPassword[0]}
+            />
+            <TextInput
+                onChangeText={setConfirmPassword}
+                value={confirmPassword}
+                label={'Confirm Passord'}
+                isSecure={true}
+                errorText={handleErrorComfirmPassword[1]}
+                isError={handleErrorComfirmPassword[0]}
+            />
 
-  //Send OTP from Firebase
-  const signInWithPhoneNumber = async () => {
-    console.log("PHONE  +84 " + phone)
-    const confirmation = await auth().signInWithPhoneNumber(("+84 " + phone));
-    setConfirmOTP(confirmation);
-    setShowModal(true);
-  }
+            <ModalConfirmOtp
+                confirmCode={confirmCode}
+                setShowModal={setShowModal}
+                showModal={showModal}
+                setConfirmOTP={setConfirmOTP}
+                setCodeOTP={setCodeOTP}
+                codeOTP={codeOTP}
+            />
 
-  //Confirm code OTP
-  async function confirmCode() {
-    try {
-      await confirmOTP.confirm(codeOTP);
-      await callApiLogin();
-      console.log('Register success.');
-      setShowModal(false)
-    } catch (error) {
-      setShowModal(false)
-      console.log('Invalid code.');
-    }
-  }
-
-
-  const callApiLogin = async () => {
-    const data = {
-      phoneUser: phone,
-      passwordUser: newPassword,
-      token_fcm: await getToken()
-
-    }
-    await loginPhone(data);
-  }
-
-  return (
-    <Block flex alignCenter paddingTop={56} backgroundColor={'white'} paddingHorizontal={20}>
-      <Text h1 bold size={30} style={styles.textWelcomLogin}>
-        {' '}
-        Xin Chào Bạn Mới{' '}
-      </Text>
-      <Text paddingHorizontal={45} size={13} lineHeight={20} center>
-        {' '}
-        Vui lòng đăng ký tài khoản để sử dụng ứng dụng Lưu ý nhập đầy đủ thông
-        tin ở bên dưới{' '}
-      </Text>
-
-      <TextInput onChangeText={setPhone} value={phone} label={'Phone number'} keyboardType='phone-pad' errorText={handleErrorPhone[1]} isError={handleErrorPhone[0]} />
-      <TextInput onChangeText={setNewPassword} value={newPassword} label={'New Password'} isSecure={true} errorText={handleErrorNewPassword[1]} isError={handleErrorNewPassword[0]} />
-      <TextInput onChangeText={setConfirmPassword} value={confirmPassword} label={'Confirm Passord'} isSecure={true} errorText={handleErrorComfirmPassword[1]} isError={handleErrorComfirmPassword[0]} />
-
-      <ModalConfirmOtp confirmCode={confirmCode} setShowModal={setShowModal} showModal={showModal} setConfirmOTP={setConfirmOTP} setCodeOTP={setCodeOTP} codeOTP={codeOTP} />
-
-      <TouchableOpacity
-        onPress={signInWithPhoneNumber}
-        style={styles({ isDisable: handleSendLogin }).buttomLogin}
-        height={59}
-        disabled={handleSendLogin}
-      >
-        <Text style={styles.textButtomLogin}>Đăng ký</Text>
-      </TouchableOpacity>
-    </Block>
-  );
+            <TouchableOpacity
+                onPress={signInWithPhoneNumber}
+                style={styles({ isDisable: handleSendLogin }).buttomLogin}
+                height={59}
+                disabled={handleSendLogin}>
+                <Text style={styles.textButtomLogin}>Đăng ký</Text>
+            </TouchableOpacity>
+        </Block>
+    );
 };
 
 export default Register;
 
-const styles = ({ isDisable }) => StyleSheet.create({
-  textOPTContainer: {
-    justifyContent: 'center',
-    flexDirection: 'row',
-    marginTop: 24,
-  },
-  textInputOTP: {
-    width: 50,
-    height: 50,
-    marginHorizontal: 10,
-    backgroundColor: '#FBFBFB',
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: '#14224A',
-    alignContent: 'center',
-    paddingHorizontal: 20,
-    fontSize: 20,
-  },
-  textPhone: {
-    fontWeight: 'bold',
-    fontSize: 15,
-    lineHeight: 23,
-    color: '#000000',
-  },
-  textOTP: {
-    fontSize: 15,
-    lineHeight: 23,
-    color: '#575555',
-    fontStyle: 'normal',
-  },
-  modalContainer: {
-    width: '88%',
-    backgroundColor: 'white',
-    paddingHorizontal: 20,
-    paddingVertical: 30,
-    borderRadius: 30,
-    borderWidth: 1.5,
-    borderColor: 'black',
-  },
-  modalBackGround: {
-    backgroundColor: 'rgba(253,253,253,0.5)',
-    justifyContent: 'center',
-    alignContent: 'center',
-    alignItems: 'center',
-  },
-  textButtomLogin: {
-    fontSize: 16,
-    lineHeight: 50,
-    alignItems: 'center',
-    fontWeight: '700',
-    fontFamily: 'Poppins',
-    color: '#FFFFFF',
-  },
-  buttomLogin: {
-    width: '100%',
-    marginTop: 43,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 15,
-    backgroundColor: isDisable ? '#818181' : '#DD4455',
-    height: 50,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 3,
-    },
-    shadowOpacity: 1,
-    shadowRadius: 6,
-    elevation: 7,
-  },
-  textInput2: {
-    borderRadius: 15,
-    width: '88%',
-    color: '#818181',
-    height: 59,
-    fontWeight: '600',
-    backgroundColor: '#F3F3F3',
-    marginTop: 16,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 3,
-    },
-    paddingLeft: 18,
-    shadowOpacity: 1,
-    shadowRadius: 6,
+const styles = ({ isDisable }) =>
+    StyleSheet.create({
+        textOPTContainer: {
+            justifyContent: 'center',
+            flexDirection: 'row',
+            marginTop: 24,
+        },
+        textInputOTP: {
+            width: 50,
+            height: 50,
+            marginHorizontal: 10,
+            backgroundColor: '#FBFBFB',
+            borderRadius: 8,
+            borderWidth: 1,
+            borderColor: '#14224A',
+            alignContent: 'center',
+            paddingHorizontal: 20,
+            fontSize: 20,
+        },
+        textPhone: {
+            fontWeight: 'bold',
+            fontSize: 15,
+            lineHeight: 23,
+            color: '#000000',
+        },
+        textOTP: {
+            fontSize: 15,
+            lineHeight: 23,
+            color: '#575555',
+            fontStyle: 'normal',
+        },
+        modalContainer: {
+            width: '88%',
+            backgroundColor: 'white',
+            paddingHorizontal: 20,
+            paddingVertical: 30,
+            borderRadius: 30,
+            borderWidth: 1.5,
+            borderColor: 'black',
+        },
+        modalBackGround: {
+            backgroundColor: 'rgba(253,253,253,0.5)',
+            justifyContent: 'center',
+            alignContent: 'center',
+            alignItems: 'center',
+        },
+        textButtomLogin: {
+            fontSize: 16,
+            lineHeight: 50,
+            alignItems: 'center',
+            fontWeight: '700',
+            color: '#FFFFFF',
+        },
+        buttomLogin: {
+            width: '100%',
+            marginTop: 43,
+            justifyContent: 'center',
+            alignItems: 'center',
+            borderRadius: 15,
+            backgroundColor: isDisable ? '#818181' : '#DD4455',
+            height: 50,
+            shadowColor: '#000',
+            shadowOffset: {
+                width: 0,
+                height: 3,
+            },
+            shadowOpacity: 1,
+            shadowRadius: 6,
+            elevation: 7,
+        },
+        textInput2: {
+            borderRadius: 15,
+            width: '88%',
+            color: '#818181',
+            height: 59,
+            fontWeight: '600',
+            backgroundColor: '#F3F3F3',
+            marginTop: 16,
+            shadowColor: '#000',
+            shadowOffset: {
+                width: 0,
+                height: 3,
+            },
+            paddingLeft: 18,
+            shadowOpacity: 1,
+            shadowRadius: 6,
 
-    elevation: 7,
-  },
-  textInput: {
-    borderRadius: 15,
-    width: '88%',
-    color: '#818181',
-    height: 59,
-    fontWeight: '600',
-    backgroundColor: '#F3F3F3',
-    marginTop: 10,
-    paddingHorizontal: 20
-  },
-  textWelcomLogin: {
-    fontFamily: 'Poppins',
-    fontWeight: 'bold',
-    lineHeight: 45,
-    color: '#464444',
-  },
-  textDescribe: {
-    marginTop: 18,
-    fontWeight: '500',
-  },
-});
+            elevation: 7,
+        },
+        textInput: {
+            borderRadius: 15,
+            width: '88%',
+            color: '#818181',
+            height: 59,
+            fontWeight: '600',
+            backgroundColor: '#F3F3F3',
+            marginTop: 10,
+            paddingHorizontal: 20,
+        },
+        textWelcomLogin: {
+            fontWeight: 'bold',
+            lineHeight: 45,
+            color: '#464444',
+        },
+        textDescribe: {
+            marginTop: 18,
+            fontWeight: '500',
+        },
+    });

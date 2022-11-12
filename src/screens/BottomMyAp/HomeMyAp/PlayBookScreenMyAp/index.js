@@ -8,22 +8,30 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { WebView } from 'react-native-webview';
 import { useTheme } from 'themeNew';
 import EvaluateBook from '../DetailBookScreenMyAp/components/EvaluateBook';
+import { BackHandler, Alert } from 'react-native';
+import { useCreateTimeReadMutation } from '@redux/servicesNew';
+
 
 const PlayBookScreenMyAp = ({ route }) => {
   const { htmlChapter, title, image, price, _id } = route.params;
-  console.log
   const webref = useRef(null);
   const [themeBack, setThemeBack] = useState(true); //True background white
   const [size, setSize] = useState(16);
   const themeStore = useAppSelector(state => state.root.themeApp.theme);
   const theme = useTheme(themeStore);
   const inset = useSafeAreaInsets();
-
   const snapPoints = useMemo(() => [300 + inset.bottom], [inset.bottom]);
   const snapPoints2 = useMemo(() => [700 + inset.bottom], [inset.bottom]);
   const bottomSheetRef = useRef(null);
   const bottomSheetCommetnRef = useRef(null);
   var snapTI = -1;
+  const [createTimeRead, { isLoading, data, error }] = useCreateTimeReadMutation();
+  const timeStart = new Date();
+
+  const myInfo = useAppSelector(state => state.root.auth);
+
+  console.log("start: ", timeStart);
+
   const renderBackdrop = useCallback(
     props => (
       <BottomSheetBackdrop
@@ -98,6 +106,51 @@ const PlayBookScreenMyAp = ({ route }) => {
     webref.current.injectJavaScript(changeSize);
   }, [changeSize, size]);
 
+  const endReadBook = async () => {
+    const timeEnd = new Date();
+    const sumTimeReadBook = Math.floor((timeEnd - timeStart) / 1000);
+    const params = {
+      time: sumTimeReadBook,
+      token: myInfo.token
+    };
+
+    console.log("end: ", timeEnd);
+    console.log("sum time read:", sumTimeReadBook);
+
+    const respon = await createTimeRead(params);
+    console.log("respon: ", respon);
+  };
+
+  useEffect(() => {
+    const backHandler = () => {
+      Alert.alert("Hold on!", "Are you sure you want to go back?", [
+        {
+          text: "Cancel",
+          onPress: () => null,
+          style: "cancel"
+        },
+        {
+          text: "YES",
+          onPress: () => {
+            BackHandler.exitApp();
+            endReadBook();
+          }
+        }
+      ]);
+      return true;
+
+    };
+
+    const backHandlerEvent = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backHandler
+    );
+
+    return () => backHandlerEvent.remove()
+
+  }, [])
+
+
   const renderHtml = useCallback(() => {
     return (
       <WebView
@@ -113,6 +166,7 @@ const PlayBookScreenMyAp = ({ route }) => {
   return (
     <Block backgroundColor={theme.colors.text} style={{ flex: 1 }}>
       <HeaderWithButton
+        handleBack={endReadBook}
         title={title}
         isBackHeader
         rightIcon={renderRightIconHeader()}
