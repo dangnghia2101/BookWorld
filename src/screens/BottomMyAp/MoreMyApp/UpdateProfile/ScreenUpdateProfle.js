@@ -6,6 +6,7 @@ import {
     TextInput,
     ScrollView,
     TouchableOpacity,
+    ToastAndroid
 } from 'react-native';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import { PermissionsAndroid } from 'react-native';
@@ -16,18 +17,17 @@ import IconView from '@components/Icon';
 import { useAppSelector } from '@hooks';
 import BottomSheet, { BottomSheetBackdrop } from '@gorhom/bottom-sheet';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useEditProfileMutation } from '@redux/servicesNew/editProflieAPI';
 
 const createFormData = (photo, name) => {
+    console.log('createFormDataaaaaaa', photo);
     const data = new FormData();
-
-    data.append('photo', {
+    data.append('file', {
         name: photo.fileName,
         type: photo.type,
-        uri: Platform.OS === 'ios' ? photo.replace('file://', '') : photo,
+        uri: Platform.OS === 'ios' ? photo.uri.replace('file://', '') : photo.uri,
     });
-
     data.append('name', name);
-
     return data;
 };
 
@@ -35,6 +35,7 @@ const ScreenUpdateProfile = () => {
     const myInfo = useAppSelector(state => state.root.auth);
     const [imageUri, setImageUri] = useState(myInfo.image);
     const [name, setName] = useState(myInfo.name);
+    const [editProfile] = useEditProfileMutation();
     const inset = useSafeAreaInsets();
     const snapPoints = useMemo(() => [260 + inset.bottom], [inset.bottom]);
     const bottomSheetRef = useRef(null);
@@ -54,11 +55,13 @@ const ScreenUpdateProfile = () => {
     const options = {
         saveToPhotos: true,
         mediaType: 'photo',
+        maxWidth: 500,
+        maxHeigth: 500
     };
 
     const chooseImageGallary = async () => {
         const result = await launchImageLibrary(options);
-        setImageUri(result.assets[0].uri);
+        setImageUri({ uri: result.assets[0].uri, name: result.assets[0].fileName, type: result.assets[0].type });
     };
 
     const takePhoto = async () => {
@@ -67,7 +70,8 @@ const ScreenUpdateProfile = () => {
         );
         if (granted === PermissionsAndroid.RESULTS.GRANTED) {
             const result = await launchCamera(options);
-            setImageUri(result.assets[0].uri);
+            setImageUri({ uri: result.assets[0].uri, name: result.assets[0].fileName, type: result.assets[0].type });
+            // console.log("takePhoto result =", result)
             if (snapTI == 0) {
                 snapTI = -1;
                 bottomSheetRef.current?.snapToIndex(snapTI);
@@ -78,23 +82,28 @@ const ScreenUpdateProfile = () => {
         }
     };
 
-    const handleUploadPhoto = () => {
-        fetch(`https://bookworlddasboard.herokuapp.com/api/accounts/getChangeProfile`, {
-            method: 'POST',
-            body: createFormData(imageUri, name),
-            headers: new Headers({
-                'Authorization': 'Bearer ' + myInfo.token,
-                'Content-Type': 'multipart/form-data;application/json; charset=utf-8'
-            }),
-        })
-            .then((response) => response.json())
-            .then((response) => {
-                console.log('response', response);
-            })
-            .catch((error) => {
-                console.log('error', error);
-            });
-        setName('');
+    const handleUploadPhoto = async () => {
+        const body = { formData: createFormData(imageUri, name), token: myInfo.token };
+        // const aw = await editProfile(body);
+        var url = "https://bookworlddasboard.herokuapp.com/api/accounts/getChangeProfile";
+
+        let res = await fetch(url, {
+            method: "POST",
+            body: body.formData,
+            headers: {
+                "Content-Type": "multipart/form-data",
+                Accept: "application/json",
+                Authorization: `Bearer ${myInfo.token}`
+            }
+        });
+        let responseJson = await res.json();
+        if (responseJson.status.response == "success") {
+            Alert.alert("Profile picture updated Successful");
+        } else {
+            Alert.alert("Something went wrong, please try again");
+        }
+
+        console.log("handleUploadPhoto", body)
     };
 
     return (
@@ -113,7 +122,7 @@ const ScreenUpdateProfile = () => {
                         padding={7}>
                         <Image
                             style={styles.avatar}
-                            source={{ uri: imageUri }} />
+                            source={{ uri: imageUri.uri }} />
                         <Block
                             absolute
                             width={40}

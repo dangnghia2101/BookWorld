@@ -50,7 +50,7 @@ const DetailBookScreenMyAp = ({ route }) => {
             component={'AntDesign'}
             name={'hearto'}
             size={25}
-            color={themeNew.colors.textInBox}
+            color={theme.colors.textInBox}
           />
         </Block>
       </TouchableOpacity>

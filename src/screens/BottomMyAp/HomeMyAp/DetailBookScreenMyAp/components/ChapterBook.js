@@ -44,7 +44,7 @@ const ChapterBook = ({
         useEffect(() => {
             toggleModal();
         }, [visible]);
-    
+
         const toggleModal = () => {
             if (visible) {
                 setShowModal(true);
@@ -66,7 +66,7 @@ const ChapterBook = ({
             name: infoBook.name,
             isPrice: infoBook.isPrice,
             image: infoBook.image,
-            chapter: {_item},
+            chapter: { _item },
             status: false,
         };
 
@@ -79,7 +79,7 @@ const ChapterBook = ({
         });
         if (co === 0) {
             dispatch(saveCartReducer(data));
-        }else{
+        } else {
             addChapter(_item);
         }
         setVisible(false);
@@ -251,7 +251,7 @@ const ChapterBook = ({
     );
 };
 
-const useStyle = makeStyles()(({ normalize, colors }) =>({
+const useStyle = makeStyles()(({ normalize, colors }) => ({
     textButtomLogin: {
         fontSize: 16,
         fontWeight: '700',

@@ -1,55 +1,39 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 import {MAIN_API} from './endpoint';
 
-type CommentState = {
-    _id?: string;
-    idChapter?: string;
-    userName?:string;
-    content?:string;
-    image: string;
-    time?: string;
-  };
-
-  export const commentAPI = createApi({
-    reducerPath: 'commentAPI',
+  export const editProfileAPI = createApi({
+    reducerPath: 'editProfileAPI',
     tagTypes: [],
     baseQuery: fetchBaseQuery({
       baseUrl: MAIN_API,
     }),
     endpoints: builder => ({
-      getAllComment: builder.query<CommentState[], string>({
-        query: (body) => ({
-          url: `books/${body}/getCommentChapter`,
-        // Our tricky API always returns a 200, but sets an `isError` property when there is an error.
-        }),
-        transformResponse: (response: any) => response,
-        async onQueryStarted(id, {dispatch, queryFulfilled}) {
-            try {
-              const {data} = await queryFulfilled;// Save data in store, using reducer
-            } catch (err) {
-              console.log('error api getAllComment... ', err);
-            }
-          },
-      }),
-
-      postComment: builder.mutation({
+      editProfile: builder.mutation({
         query: body => {
+          // console.log("body--------------------",body.FormData);
           return {
-            url: 'comments/postComment',
+            url: 'accounts/getChangeProfile',
             method: 'POST',
-            body: body,
+            body: body.formData,
             headers: {
-              'Content-type': 'application/json; charset=UTF-8',
+               Accept: 'application/json', 'Content-Type': 'multipart/form-data',
+               Authorization: `Bearer ${body.token}`
             },
           };
         },
+        async onQueryStarted(id, { dispatch, queryFulfilled }) {
+          try {
+              const data  = await queryFulfilled;
+              console.log("data++++++++",data)
+          } catch (err) {
+              console.log('error api editProdile... ', err);
+          }
+      },
       }),
     }),
   });
   
 export const {
-    useGetAllCommentQuery,
-    useLazyGetAllCommentQuery,
-    usePostCommentMutation
-  } = commentAPI;
+    useEditProfileMutation
+  } = editProfileAPI;
   
