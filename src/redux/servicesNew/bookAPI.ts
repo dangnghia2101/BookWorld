@@ -90,13 +90,13 @@ export const bookAPI = createApi({
         }),
         getAllChapterBook: builder.mutation<
             chapterType[],
-            [{ id: string }, { token: string }]
+            { id: string; token: string }
         >({
             query: body => ({
                 url: 'books/getChapterBook',
                 method: 'POST',
-                body: body[0],
-                headers: { Authorization: `Bearer ${body[1].token}` },
+                body: { id: body.id },
+                headers: { Authorization: `Bearer ${body.token}` },
             }),
             transformResponse: (response: { data: chapterType[] }) =>
                 response.data,
@@ -106,7 +106,8 @@ export const bookAPI = createApi({
                     const { data } = await queryFulfilled;
                     dispatch(changeLoading('HIDE')); // Save data in store, using reducer
                 } catch (err) {
-                    // console.log('error api getAllCategories... ', err);
+                    dispatch(changeLoading('HIDE'));
+                    console.log('error api getAllChapterBook... ', err);
                 }
             },
         }),

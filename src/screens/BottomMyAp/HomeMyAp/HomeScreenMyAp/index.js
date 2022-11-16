@@ -139,7 +139,7 @@ const HomeScreenMyAp = () => {
                 />
             </Block>
         );
-    }, [_renderItemMostBookRead, allBooks, scrollX]);
+    }, [_renderItemMostBookRead, allCategories]);
 
     const renderListBookFree = useCallback(() => {
         return (
