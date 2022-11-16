@@ -5,13 +5,11 @@ import { StyleSheet } from 'react-native';
 import { TabBar, TabView } from 'react-native-tab-view';
 import TabSceneReadingStatus from './TabSceneReadingStatus';
 import TapScenceAuthor from './TapScenceAuthor';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import actions from '@redux/actions';
 import { makeStyles, useTheme } from 'themeNew';
 import { useAppSelector } from '@hooks';
 import TapScreenFavoriteBook from './TapScreenFavoriteBook';
-import { head } from 'lodash';
-import { height } from '@utils/responsive';
 
 
 const TapReadingStatus = () => {
@@ -124,15 +122,14 @@ const TapReadingStatus = () => {
     ({ route, focused, color }) => {
       return (
         <Block>
-          <Text color={focused ? themeNew.colors.creamRed : themeNew.colors.grey9}
+          <Text color={focused ? themeNew.colors.primary : themeNew.colors.grey9}
             size={15}>
             {route.title}
-            {/* {route.key !== 'Default' ? strings(`tabReadingnName.${route.code}`) : ''} */}
           </Text>
         </Block>
       );
     },
-    [themeNew.colors.grey10, themeNew.colors.primary],
+    // [themeNew.colors.grey10, themeNew.colors.primary],
   );
 
   useEffect(() => {

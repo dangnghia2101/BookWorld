@@ -1,12 +1,10 @@
 import {
-    View,
     Text,
     Image,
     StyleSheet,
     TextInput,
     ScrollView,
     TouchableOpacity,
-    ToastAndroid
 } from 'react-native';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import { PermissionsAndroid } from 'react-native';
@@ -18,6 +16,7 @@ import { useAppSelector } from '@hooks';
 import BottomSheet, { BottomSheetBackdrop } from '@gorhom/bottom-sheet';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useEditProfileMutation } from '@redux/servicesNew/editProflieAPI';
+import { width } from '@utils/responsive';
 
 const createFormData = (photo, name) => {
     console.log('createFormDataaaaaaa', photo);
@@ -33,6 +32,7 @@ const createFormData = (photo, name) => {
 
 const ScreenUpdateProfile = () => {
     const myInfo = useAppSelector(state => state.root.auth);
+    console.log('myInfooooooo', myInfo.image)
     const [imageUri, setImageUri] = useState(myInfo.image);
     const [name, setName] = useState(myInfo.name);
     const [editProfile] = useEditProfileMutation();
@@ -40,17 +40,18 @@ const ScreenUpdateProfile = () => {
     const snapPoints = useMemo(() => [260 + inset.bottom], [inset.bottom]);
     const bottomSheetRef = useRef(null);
     var snapTI = -1;
-    // const renderBackdrop = useCallback(
-    //     props => (
-    //         <BottomSheetBackdrop
-    //             disappearsOnIndex={-1}
-    //             appearsOnIndex={0}
-    //             {...props}
-    //             enableTouchThrough={true}
-    //         />
-    //     ),
-    //     [],
-    // );
+    const renderBackdrop = useCallback(
+        props => (
+            <BottomSheetBackdrop
+                disappearsOnIndex={-1}
+                appearsOnIndex={0}
+                {...props}
+                enableTouchThrough={true}
+
+            />
+        ),
+        [],
+    );
 
     const options = {
         saveToPhotos: true,
@@ -70,11 +71,14 @@ const ScreenUpdateProfile = () => {
         );
         if (granted === PermissionsAndroid.RESULTS.GRANTED) {
             const result = await launchCamera(options);
-            setImageUri({ uri: result.assets[0].uri, name: result.assets[0].fileName, type: result.assets[0].type });
+            // setImageUri({ uri: result.assets[0].uri, name: result.assets[0].fileName, type: result.assets[0].type });
+            let imageLoaded = setImageUri(result.assets[0].uri);
             // console.log("takePhoto result =", result)
-            if (snapTI == 0) {
-                snapTI = -1;
-                bottomSheetRef.current?.snapToIndex(snapTI);
+            if (imageLoaded) {
+                if (snapTI == 0) {
+                    // snapTI = -1;
+                    bottomSheetRef.current?.snapToIndex(-1);
+                }
             } else {
                 snapTI = 0;
                 bottomSheetRef.current?.snapToIndex(snapTI);
@@ -102,12 +106,11 @@ const ScreenUpdateProfile = () => {
         } else {
             Alert.alert("Something went wrong, please try again");
         }
-
         console.log("handleUploadPhoto", body)
     };
 
     return (
-        <Block flex paddingHorizontal={40} backgroundColor={theme.colors.white}>
+        <Block flex backgroundColor={theme.colors.white}>
             <HeaderWithButton isBackHeader title={'Chỉnh sửa thông tin'} />
             <ScrollView>
                 <Block width={150} marginTop={30} marginBottom={50} marginLeft={100} relative>
@@ -122,23 +125,24 @@ const ScreenUpdateProfile = () => {
                         padding={7}>
                         <Image
                             style={styles.avatar}
-                            source={{ uri: imageUri.uri }} />
+                            source={{ uri: imageUri }} />
                         <Block
                             absolute
-                            width={40}
-                            height={40}
+                            width={35}
+                            height={35}
                             radius={50}
-                            backgroundColor={'#FDFDFD'}
-                            opacity={0.7}
+                            left={90}
+                            top={105}
+                            backgroundColor={theme.colors.gray4}
                             justifyCenter
                             alignCenter>
                             <TouchableOpacity
+                                style={styles.iconPen}
                                 onPress={() => bottomSheetRef.current?.snapToIndex(0)}>
                                 <IconView
                                     component={'SimpleLineIcons'}
                                     name={'pencil'}
-                                    size={32}
-                                    color={theme.colors.pinkRed}
+                                    size={25}
                                 />
                             </TouchableOpacity>
                         </Block>
@@ -146,41 +150,47 @@ const ScreenUpdateProfile = () => {
                 </Block>
                 <Block
                     width={'100%'}
-                    marginTop={20}>
-                    <Text style={styles.textFullname}>Họ tên</Text>
-                    <TextInput onChangeText={setName} value={name} placeholder={myInfo.name} placeholderTextColor={theme.colors.gray2} style={styles.textInput} />
-                </Block>
-                <Block
-                    width={'100%'}
-                    marginTop={20}>
-                    <Text style={styles.textFullname}>Ngày sinh</Text>
-                    <TextInput placeholder={'dd/mm/yyyy'} placeholderTextColor={theme.colors.gray2} style={styles.textInput} />
-                </Block>
-                <TouchableOpacity
-                    onPress={handleUploadPhoto}
-                    style={styles.TouchableOpacity} >
-                    <Text style={styles.textSave} height={55}>
-                        Lưu
-                    </Text>
-                </TouchableOpacity>
-                <BottomSheet
-                    style={styles.bottomSheet}
-                    index={-1}
-                    ref={bottomSheetRef}
-                    snapPoints={snapPoints}
-                    enablePanDownToClose={true}>
-                    <Block width={'100%'} borderWidth={1} borderColor={theme.colors.creamRed} height={'100%'} justifyCenter alignCenter>
-                        <TouchableOpacity style={styles.buttomLogin}
-                            onPress={() => takePhoto()}>
-                            <Text style={styles.textButtomLogin}>Chụp ảnh</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={styles.buttomLogin}
-                            onPress={() => chooseImageGallary()}>
-                            <Text style={styles.textButtomLogin}>Chọn sẵn có</Text>
-                        </TouchableOpacity>
+                    paddingHorizontal={30}>
+                    <Block
+                        // width={'100%'}
+                        marginTop={20}>
+                        <Text style={styles.textFullname}>Họ tên</Text>
+                        <TextInput onChangeText={setName} value={name} placeholder={myInfo.name} placeholderTextColor={theme.colors.gray2} style={styles.textInput} />
                     </Block>
-                </BottomSheet>
+                    <Block
+                        width={'100%'}
+                        marginTop={20}>
+                        <Text style={styles.textFullname}>Ngày sinh</Text>
+                        <TextInput placeholder={'dd/mm/yyyy'} placeholderTextColor={theme.colors.gray2} style={styles.textInput} />
+                    </Block>
+                    <TouchableOpacity
+                        onPress={handleUploadPhoto}
+                        style={styles.TouchableOpacity} >
+                        <Text style={styles.textSave} height={55}>
+                            Lưu
+                        </Text>
+                    </TouchableOpacity>
+                </Block>
+
             </ScrollView>
+            <BottomSheet
+                style={styles.bottomSheet}
+                index={snapTI}
+                ref={bottomSheetRef}
+                renderBackdrop={renderBackdrop}
+                snapPoints={snapPoints}
+                enablePanDownToClose={true}>
+                <Block width={'100%'} justifyCenter alignCenter borderColor={theme.colors.creamRed} height={'100%'} >
+                    <TouchableOpacity style={styles.buttomLogin}
+                        onPress={() => takePhoto()}>
+                        <Text style={styles.textButtomLogin}>Chụp ảnh</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.buttomLogin}
+                        onPress={() => chooseImageGallary()}>
+                        <Text style={styles.textButtomLogin}>Chọn sẵn có</Text>
+                    </TouchableOpacity>
+                </Block>
+            </BottomSheet>
         </Block>
 
     );
@@ -189,6 +199,13 @@ const ScreenUpdateProfile = () => {
 export default ScreenUpdateProfile;
 
 const styles = StyleSheet.create({
+    bottomSheet: {
+        borderWidth: 1,
+        borderColor: theme.colors.gray,
+        borderTopLeftRadius: 10,
+        borderTopRightRadius: 10
+
+    },
     textFullname: {
         color: theme.colors.text,
         fontSize: 17,
@@ -196,28 +213,26 @@ const styles = StyleSheet.create({
         marginLeft: 10
     },
     textButtomLogin: {
-        fontSize: 22,
-        lineHeight: 50,
+        fontSize: 18,
+        // lineHeight: 50,
         alignItems: 'center',
         fontWeight: '700',
         color: '#FFFFFF',
     },
     buttomLogin: {
         width: '70%',
-        height: 59,
+        height: 50,
         marginTop: 20,
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: 10,
+        borderRadius: 50,
         backgroundColor: '#DD4455',
         shadowColor: '#000',
         shadowOffset: {
             width: 0,
-            height: 3,
+            height: 5,
         },
-        shadowOpacity: 1,
         shadowRadius: 6,
-
         elevation: 7,
     },
     textSave: {

@@ -14,7 +14,7 @@ const TapScreenFavoriteBook = () => {
             ))}
         </Block>
     ) : (
-        <NoData title={'Chưa có sách'}></NoData>
+        <NoData title={'Chưa có sách yêu thích'}></NoData>
     );
 }
 

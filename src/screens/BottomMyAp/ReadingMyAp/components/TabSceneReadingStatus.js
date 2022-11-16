@@ -1,15 +1,15 @@
-import { StyleSheet, FlatList } from 'react-native';
+import { StyleSheet, ScrollView } from 'react-native';
 import React from 'react';
 import { Block, Text } from '@components';
 import ItemCateBook from '@screens/BottomMyAp/HomeMyAp/HomeScreenMyAp/components/ItemCateBook';
 
 const TabSceneReadingStatus = ({ route }) => {
   return route?.bookList?.length > 0 ? (
-    <Block>
+    <ScrollView>
       {route?.bookList.map((item, index) => (
         <ItemCateBook key={index} item={item} />
       ))}
-    </Block>
+    </ScrollView>
   ) : (
     <Text> Khong co sach </Text>
   );

@@ -1,4 +1,4 @@
-import { StyleSheet, View, Image, FlatList } from 'react-native'
+import { StyleSheet, View, Image, FlatList, ScrollView } from 'react-native'
 import React, { useState } from 'react';
 import { Block, HeaderWithButton, Text } from '@components';
 import { theme } from '@theme';
@@ -17,16 +17,11 @@ const ScreenNotification = () => {
     return (
         <Block flex backgroundColor={themeNew.colors.text} >
             <HeaderWithButton isBackHeader title={'Thông báo'} />
-
-            {/* <FlatList
-                data={dataNoti}
-                keyExtractor={item => item._id}
-                renderItem={({ item }) => <ItemNoti item={item} />}
-            /> */}
-            {dataNoti.map((item, index) => (
-                <ItemNoti key={index} item={item} />
-            ))}
-
+            <ScrollView>
+                {dataNoti.map((item, index) => (
+                    <ItemNoti key={index} item={item} />
+                ))}
+            </ScrollView>
         </Block >
     )
 }

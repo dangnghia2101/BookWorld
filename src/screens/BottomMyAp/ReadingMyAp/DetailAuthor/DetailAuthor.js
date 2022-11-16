@@ -20,14 +20,14 @@ const DetailAuthor = ({ route }) => {
 
   return (
     <Block backgroundColor={theme.colors.white} flex>
-      <TopBar isBackHeader title={'Chi tiết tác giả'} />
+      <TopBar isBackHeader />
       <Block width="100%" height="60%">
         <Block
           width="100%"
-          height={'70%'}
+          height={'50%'}
           backgroundColor={theme.colors.darkPurple}>
         </Block>
-        <Block absolute top={150} left={100}>
+        <Block width={'70%'} height={'50%'} absolute top={65} left={100} >
           <Image
             style={styles.imgAuthor}
             source={{ uri: item.image }}
@@ -35,7 +35,7 @@ const DetailAuthor = ({ route }) => {
         </Block>
         <Text style={styles.nameAuthor}>{item.name}</Text>
       </Block>
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView style={styles.ScrollView} showsVerticalScrollIndicator={false}>
         <Block width="100%" paddingHorizontal={24}>
           <Block>
             <Text style={styles.textIntro}>Giới thiệu về tác giả</Text>
@@ -88,9 +88,13 @@ const DetailAuthor = ({ route }) => {
 export default DetailAuthor;
 
 const styles = StyleSheet.create({
+  ScrollView: {
+    marginTop: '-20%'
+  },
   imgAuthor: {
-    width: 300,
-    height: 200
+    width: '100%',
+    height: '100%',
+    borderRadius: 5
   },
   textBook: {
     lineHeight: 36,
@@ -117,7 +121,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     lineHeight: 36,
     left: '35%',
-    top: '80%',
+    top: '65%',
     color: 'black',
   },
   iconBack: {

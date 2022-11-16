@@ -38,7 +38,7 @@ const TopBarrr = props => {
             handleBack && handleBack()
           }
           }
-          size={Platform.OS === 'ios' ? 30 : 24}
+          size={Platform.OS === 'ios' ? 40 : 28}
           color={theme.colors.textDark}
           name={Platform.OS === 'ios' ? 'chevron-left' : 'arrow-left'}
         />
@@ -52,7 +52,7 @@ const TopBarrr = props => {
       <Block width={WINDOW_WIDTH - 50} alignSelf='center' row space={'between'}>
         {backIcon()}
         <Block alignCenter justifyCenter>
-          <Text color={theme.colors.textInBox} size={18} fontType={'bold'}>
+          <Text color={themeNew.colors.text} size={18} fontType={'bold'}>
             {title}
           </Text>
         </Block>
