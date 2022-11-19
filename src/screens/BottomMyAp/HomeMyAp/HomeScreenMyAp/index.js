@@ -2,7 +2,11 @@ import { images } from '@assets';
 import { Block, Container, Icon, Text } from '@components';
 import { routes } from '@navigation/routes';
 import { useNavigation } from '@react-navigation/native';
-import { useGetAllBookQuery, useGetAllCategoryQuery } from '@redux/servicesNew';
+import {
+    useGetAllAuthorQuery,
+    useGetAllBookQuery,
+    useGetAllCategoryQuery,
+} from '@redux/servicesNew';
 import { height, width } from '@utils/responsive';
 import { useAppSelector } from 'hooks';
 import React, { useCallback, useState } from 'react';
@@ -23,31 +27,13 @@ const ITEM_WITH = width * 0.6;
 const widthItemEventIncoming = width - width / 3;
 const WIDTH_ITEM_INVIEW = widthItemEventIncoming - 20;
 
-const listTopAuthor = [
-    {
-        _id: '63441225c532a4c786a3fda5',
-        name: 'abcd',
-        email: 'phucho1907@gmail.com',
-        phone: ' ',
-        permission: 'author',
-        fcmtokens: [],
-        image: 'https://res.cloudinary.com/cao-ng-fpt-polytechnic/image/upload/v1666510883/nkfmf4vvwj5gypulp3vm.png',
-    },
-    {
-        _id: '63441225c532a4c786a3fda32',
-        name: 'abcd',
-        email: 'phucho1907@gmail.com',
-        phone: ' ',
-        permission: 'author',
-        fcmtokens: [],
-        image: 'https://res.cloudinary.com/cao-ng-fpt-polytechnic/image/upload/v1666510883/nkfmf4vvwj5gypulp3vm.png',
-    },
-];
-
 const HomeScreenMyAp = () => {
     useGetAllBookQuery();
     useGetAllCategoryQuery();
     const navigation = useNavigation();
+    useGetAllAuthorQuery();
+
+    const authors = useAppSelector(state => state.root.author.authors);
 
     const [isCollapsible, setIsCollapsible] = useState(true);
 
@@ -173,8 +159,8 @@ const HomeScreenMyAp = () => {
             <Block>
                 <HeaderListBook title={'Tác giả hàng đầu'} action={() => {}} />
                 <Animated.FlatList
-                    data={listTopAuthor}
-                    keyExtractor={item => Math.random() + item._id}
+                    data={authors}
+                    keyExtractor={item => item.toString()}
                     renderItem={item => <ItemAuthor item={item.item} />}
                     bounces={false}
                     horizontal
@@ -193,7 +179,7 @@ const HomeScreenMyAp = () => {
                 />
             </Block>
         );
-    }, [_renderItemMostBookRead, allBooks, scrollX]);
+    }, [_renderItemMostBookRead, authors, scrollX]);
 
     const renderSearch = () => {
         return (

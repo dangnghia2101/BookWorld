@@ -6,6 +6,7 @@ import {
     AppSettingReducer,
     LoadingReducer,
     CartReducer,
+    AuthorReducer,
 } from '@redux/reducerNew';
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import {
@@ -39,6 +40,7 @@ const rootReducer = combineReducers({
     setting: AppSettingReducer,
     loading: LoadingReducer,
     cart: CartReducer,
+    author: AuthorReducer,
     // ...other reducers here
 });
 

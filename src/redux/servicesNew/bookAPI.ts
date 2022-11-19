@@ -95,7 +95,7 @@ export const bookAPI = createApi({
             query: body => ({
                 url: 'books/getChapterBook',
                 method: 'POST',
-                body: { id: body.id },
+                body: { idBook: body.id },
                 headers: { Authorization: `Bearer ${body.token}` },
             }),
             transformResponse: (response: { data: chapterType[] }) =>

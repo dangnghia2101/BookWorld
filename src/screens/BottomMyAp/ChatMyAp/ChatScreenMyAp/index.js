@@ -1,5 +1,5 @@
 import { Block, Container, Icon, Text, TextInput } from '@components';
-import { useAppSelector } from '@hooks';
+import { useAppSelector, useDebounce } from '@hooks';
 import { routes } from '@navigation/routes';
 import { useNavigation } from '@react-navigation/core';
 import {
@@ -7,31 +7,55 @@ import {
     useLazyGetRoomChatQuery,
 } from '@redux/servicesNew';
 import { theme } from '@theme';
-import React, { useCallback, useMemo, useRef, useState } from 'react';
+import React, {
+    useCallback,
+    useEffect,
+    useMemo,
+    useRef,
+    useState,
+} from 'react';
 import { FlatList, Image, Pressable } from 'react-native';
 import { makeStyles, useTheme } from 'themeNew';
-import BottomSheet, { BottomSheetBackdrop } from '@gorhom/bottom-sheet';
+import BottomSheet, {
+    BottomSheetBackdrop,
+    BottomSheetScrollView,
+} from '@gorhom/bottom-sheet';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { width } from '@utils/responsive';
+import { height, width } from '@utils/responsive';
 
 const ChatScreenMyApp = () => {
-    const [clicked, setClicked] = useState(false);
     const [searchPhrase, setSearchPhrase] = useState('');
     const socketRef = useRef();
     const [getRoomChat, { isSuccess, error }] = useLazyGetRoomChatQuery();
     const themeStore = useAppSelector(state => state.root.themeApp.theme);
+    const authors = useAppSelector(state => state.root.author.authors);
     const { colors } = useTheme(themeStore);
     const styles = useStyle(themeStore);
     const navigation = useNavigation();
     const bottomSheetRef = useRef();
     const inset = useSafeAreaInsets();
-    const snapPoints = useMemo(() => [570 + inset.bottom], [inset.bottom]);
+    const snapPoints = useMemo(
+        () => [height - 300 + inset.bottom],
+        [inset.bottom],
+    );
+    const [peopleSearch, setPeopleSearch] = useState(authors);
+    const [peoplesChoose, setPeopleChoose] = useState({});
+    const [searchText, setSearchText] = useState('');
 
     const myInfo = useAppSelector(state => state.root.auth);
     const { data } = useGetRoomChatQuery(myInfo.token);
 
     const handleKeyExtractor = item => item.toString();
+
+    const searchDebounce = useDebounce(searchText, 300);
+
+    useEffect(() => {
+        const findPeople = authors.filter(item =>
+            item.name.includes(searchDebounce),
+        );
+        setPeopleSearch(findPeople);
+    }, [searchDebounce]);
 
     const renderItemChat = useCallback(({ item }) => {
         return (
@@ -103,7 +127,7 @@ const ChatScreenMyApp = () => {
                 alignCenter
                 flex>
                 <Text marginVertical={10} size={16} fontType="bold">
-                    Tao nhom moi
+                    Tạo nhóm mới
                 </Text>
                 <Block
                     flex
@@ -129,24 +153,80 @@ const ChatScreenMyApp = () => {
 
                     <Block width="90%" paddingVertical={10}>
                         <Text marginBottom={-20} size={16} fontType="bold">
-                            Ten nhom
+                            Tên nhóm
                         </Text>
 
                         <TextInput
-                            placeholder="Nhap ten nhom"
+                            placeholder="Nhập tên nhóm"
                             style={styles.containerSearch}
                         />
                     </Block>
                     <Block width="90%">
                         <Text marginBottom={-20} size={16} fontType="bold">
-                            Them thanh vien
+                            Thêm thành viên
                         </Text>
 
                         <TextInput
-                            placeholder="Nhap ten, email hoac so dien thoai"
+                            placeholder="Nhập tên, email hoặc số điện thoại"
                             style={styles.containerSearch}
+                            onChangeText={setSearchText}
+                            value={searchText}
                         />
                     </Block>
+
+                    <BottomSheetScrollView
+                        style={{
+                            width: width,
+                            paddingHorizontal: 30,
+                            marginTop: 10,
+                        }}>
+                        {peopleSearch.map(item => (
+                            <TouchableOpacity
+                                onPress={() => {
+                                    if (peoplesChoose[item._id]) {
+                                        setPeopleChoose({
+                                            ...peoplesChoose,
+                                            [item._id]: false,
+                                        });
+                                    } else {
+                                        setPeopleChoose({
+                                            ...peoplesChoose,
+                                            [item._id]: true,
+                                        });
+                                    }
+                                }}>
+                                <Block
+                                    borderColor={
+                                        peoplesChoose[item._id]
+                                            ? colors.green
+                                            : colors.white
+                                    }
+                                    borderWidth={2}
+                                    radius={15}
+                                    row
+                                    padding={10}
+                                    marginVertical={5}
+                                    alignCenter
+                                    flex>
+                                    <Image
+                                        source={{ uri: item.image }}
+                                        style={styles.imagePeople}
+                                    />
+                                    <Text flex marginLeft={10}>
+                                        {item.name}
+                                    </Text>
+                                    {peoplesChoose[item._id] && (
+                                        <Icon
+                                            component="AntDesign"
+                                            name="checkcircleo"
+                                            color={colors.green}
+                                            size={20}
+                                        />
+                                    )}
+                                </Block>
+                            </TouchableOpacity>
+                        ))}
+                    </BottomSheetScrollView>
                 </Block>
                 <TouchableOpacity>
                     <Block
@@ -156,12 +236,23 @@ const ChatScreenMyApp = () => {
                         alignCenter
                         backgroundColor={colors.primary}
                         radius={10}>
-                        <Text color={colors.white}>Tao nhom</Text>
+                        <Text color={colors.white}>Tạo nhóm</Text>
                     </Block>
                 </TouchableOpacity>
             </Block>
         </BottomSheet>
     );
+
+    const renderGroup = useCallback(() => {
+        return (
+            <FlatList
+                data={data}
+                keyExtractor={handleKeyExtractor}
+                renderItem={renderItemChat}
+                ItemSeparatorComponent={renderSpace}
+            />
+        );
+    }, [data]);
 
     return (
         <Container style={styles.root} statusColor={colors.white}>
@@ -174,7 +265,11 @@ const ChatScreenMyApp = () => {
                         Explore
                     </Text>
                     <TouchableOpacity
-                        onPress={() => bottomSheetRef.current.snapToIndex(0)}>
+                        onPress={() => {
+                            bottomSheetRef.current.snapToIndex(0);
+                            setSearchText('');
+                            setPeopleSearch([]);
+                        }}>
                         <Block
                             height={30}
                             width={30}
@@ -203,12 +298,7 @@ const ChatScreenMyApp = () => {
                     />
                 </Block>
 
-                <FlatList
-                    data={data}
-                    keyExtractor={handleKeyExtractor}
-                    renderItem={renderItemChat}
-                    ItemSeparatorComponent={renderSpace}
-                />
+                {renderGroup()}
                 {bottomSheetInfo()}
             </Block>
         </Container>
@@ -228,5 +318,10 @@ const useStyle = makeStyles()(({ normalize, colors }) => ({
     },
     containerSearch: {
         height: normalize(45)('moderate'),
+    },
+    imagePeople: {
+        height: 40,
+        width: 40,
+        borderRadius: 10,
     },
 }));

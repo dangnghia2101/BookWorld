@@ -1,3 +1,4 @@
+import { saveAuthor } from '@redux/reducerNew';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { MAIN_API } from './endpoint';
 
@@ -33,12 +34,12 @@ export const authorAPI = createApi({
                 url: `accounts/allAuthor`,
                 // Our tricky API always returns a 200, but sets an `isError` property when there is an error.
             }),
-            transformResponse: (response: any) => response,
             async onQueryStarted(id, { dispatch, queryFulfilled }) {
                 try {
-                    const data = await queryFulfilled;
+                    const { data } = await queryFulfilled;
+                    dispatch(saveAuthor(data));
                 } catch (err) {
-                    console.log('error api getAllBook... ', err);
+                    console.log('error api getAllAuthor... ', err);
                 }
             },
         }),
