@@ -21,19 +21,14 @@ import { width } from '@utils/responsive';
 const createFormData = (photo, name) => {
     console.log('createFormDataaaaaaa', photo);
     const data = new FormData();
-    data.append('file', {
-        name: photo.fileName,
-        type: photo.type,
-        uri: Platform.OS === 'ios' ? photo.uri.replace('file://', '') : photo.uri,
-    });
+    data.append('file', photo.base64);
     data.append('name', name);
     return data;
 };
 
 const ScreenUpdateProfile = () => {
     const myInfo = useAppSelector(state => state.root.auth);
-    console.log('myInfooooooo', myInfo.image)
-    const [imageUri, setImageUri] = useState(myInfo.image);
+    const [imageUri, setImageUri] = useState({ uri: myInfo.image });
     const [name, setName] = useState(myInfo.name);
     const [editProfile] = useEditProfileMutation();
     const inset = useSafeAreaInsets();
@@ -47,7 +42,6 @@ const ScreenUpdateProfile = () => {
                 appearsOnIndex={0}
                 {...props}
                 enableTouchThrough={true}
-
             />
         ),
         [],
@@ -57,12 +51,18 @@ const ScreenUpdateProfile = () => {
         saveToPhotos: true,
         mediaType: 'photo',
         maxWidth: 500,
-        maxHeigth: 500
+        maxHeigth: 500,
+        includeBase64: true,
     };
 
     const chooseImageGallary = async () => {
         const result = await launchImageLibrary(options);
-        setImageUri({ uri: result.assets[0].uri, name: result.assets[0].fileName, type: result.assets[0].type });
+        setImageUri({
+            uri: result.assets[0].uri,
+            name: result.assets[0].fileName,
+            type: result.assets[0].type,
+            base64: result.assets[0].base64,
+        });
     };
 
     const takePhoto = async () => {
@@ -72,45 +72,40 @@ const ScreenUpdateProfile = () => {
         if (granted === PermissionsAndroid.RESULTS.GRANTED) {
             const result = await launchCamera(options);
             // setImageUri({ uri: result.assets[0].uri, name: result.assets[0].fileName, type: result.assets[0].type });
-            setImageUri(result.assets[0].uri);
-            // console.log("takePhoto result =", result)
+            setImageUri({
+                uri: result.assets[0].uri,
+                name: result.assets[0].fileName,
+                type: result.assets[0].type,
+                base64: result.assets[0].base64,
+            }); // console.log("takePhoto result =", result)
 
             if (snapTI == 0) {
                 // snapTI = -1;
                 bottomSheetRef.current?.snapToIndex(-1);
             }
-
         }
     };
 
     const handleUploadPhoto = async () => {
-        const body = { formData: createFormData(imageUri, name), token: myInfo.token };
-        // const aw = await editProfile(body);
-        var url = "https://bookworlddasboard.herokuapp.com/api/accounts/getChangeProfile";
+        const body = {
+            formData: createFormData(imageUri, name),
+            token: myInfo.token,
+        };
+        const aw = await editProfile(body);
 
-        let res = await fetch(url, {
-            method: "POST",
-            body: body.formData,
-            headers: {
-                "Content-Type": "multipart/form-data",
-                Accept: "application/json",
-                Authorization: `Bearer ${myInfo.token}`
-            }
-        });
-        let responseJson = await res.json();
-        if (responseJson.status.response == "success") {
-            Alert.alert("Profile picture updated Successful");
-        } else {
-            Alert.alert("Something went wrong, please try again");
-        }
-        console.log("handleUploadPhoto", body)
+        console.log('handleUploadPhoto', aw);
     };
 
     return (
         <Block flex backgroundColor={theme.colors.white}>
             <HeaderWithButton isBackHeader title={'Chỉnh sửa thông tin'} />
             <ScrollView>
-                <Block width={150} marginTop={30} marginBottom={50} marginLeft={135} relative>
+                <Block
+                    width={150}
+                    marginTop={30}
+                    marginBottom={50}
+                    marginLeft={135}
+                    relative>
                     <Block
                         relative
                         backgroundColor={theme.colors.white}
@@ -132,7 +127,8 @@ const ScreenUpdateProfile = () => {
                             padding={7}>
                             <Image
                                 style={styles.avatar}
-                                source={{ uri: imageUri }} />
+                                source={{ uri: imageUri.uri }}
+                            />
                             <Block
                                 absolute
                                 width={35}
@@ -145,7 +141,9 @@ const ScreenUpdateProfile = () => {
                                 alignCenter>
                                 <TouchableOpacity
                                     style={styles.iconPen}
-                                    onPress={() => bottomSheetRef.current?.snapToIndex(0)}>
+                                    onPress={() =>
+                                        bottomSheetRef.current?.snapToIndex(0)
+                                    }>
                                     <IconView
                                         component={'SimpleLineIcons'}
                                         name={'pencil'}
@@ -154,33 +152,35 @@ const ScreenUpdateProfile = () => {
                                 </TouchableOpacity>
                             </Block>
                         </Block>
-
                     </Block>
                 </Block>
-                <Block
-                    width={'100%'}
-                    paddingHorizontal={30}>
-                    <Block
-                        width={'100%'}
-                        marginTop={20}>
+                <Block width={'100%'} paddingHorizontal={30}>
+                    <Block width={'100%'} marginTop={20}>
                         <Text style={styles.textFullname}>Họ tên</Text>
-                        <TextInput onChangeText={setName} value={name} placeholder={myInfo.name} placeholderTextColor={theme.colors.gray2} style={styles.textInput} />
+                        <TextInput
+                            onChangeText={setName}
+                            value={name}
+                            placeholder={myInfo.name}
+                            placeholderTextColor={theme.colors.gray2}
+                            style={styles.textInput}
+                        />
                     </Block>
-                    <Block
-                        width={'100%'}
-                        marginTop={20}>
+                    <Block width={'100%'} marginTop={20}>
                         <Text style={styles.textFullname}>Ngày sinh</Text>
-                        <TextInput placeholder={'dd/mm/yyyy'} placeholderTextColor={theme.colors.gray2} style={styles.textInput} />
+                        <TextInput
+                            placeholder={'dd/mm/yyyy'}
+                            placeholderTextColor={theme.colors.gray2}
+                            style={styles.textInput}
+                        />
                     </Block>
                     <TouchableOpacity
                         onPress={handleUploadPhoto}
-                        style={styles.TouchableOpacity} >
+                        style={styles.TouchableOpacity}>
                         <Text style={styles.textSave} height={55}>
                             Lưu
                         </Text>
                     </TouchableOpacity>
                 </Block>
-
             </ScrollView>
             <BottomSheet
                 style={styles.bottomSheet}
@@ -189,8 +189,14 @@ const ScreenUpdateProfile = () => {
                 renderBackdrop={renderBackdrop}
                 snapPoints={snapPoints}
                 enablePanDownToClose={true}>
-                <Block width={'100%'} row justifyCenter alignCenter height={'100%'} >
-                    <TouchableOpacity style={styles.buttomLogin}
+                <Block
+                    width={'100%'}
+                    row
+                    justifyCenter
+                    alignCenter
+                    height={'100%'}>
+                    <TouchableOpacity
+                        style={styles.buttomLogin}
                         onPress={() => takePhoto()}>
                         <IconView
                             component={'Ionicons'}
@@ -199,7 +205,8 @@ const ScreenUpdateProfile = () => {
                         />
                         <Text style={styles.textButtomLogin}>Chụp ảnh</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.buttomLogin}
+                    <TouchableOpacity
+                        style={styles.buttomLogin}
                         onPress={() => chooseImageGallary()}>
                         <IconView
                             component={'FontAwesome'}
@@ -227,7 +234,7 @@ const styles = StyleSheet.create({
         color: theme.colors.text,
         fontSize: 17,
         fontWeight: '500',
-        marginLeft: 10
+        marginLeft: 10,
     },
     textButtomLogin: {
         fontSize: 12,
@@ -245,7 +252,6 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         borderWidth: 1,
         borderColor: theme.colors.gray2,
-
     },
     textSave: {
         fontSize: 20,
@@ -259,7 +265,7 @@ const styles = StyleSheet.create({
         borderRadius: 50,
         marginTop: '40%',
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
     },
     textInput: {
         fontSize: 18,
@@ -267,7 +273,7 @@ const styles = StyleSheet.create({
         marginLeft: 10,
         color: theme.colors.text,
         borderBottomWidth: 1,
-        borderBottomColor: theme.colors.gray2
+        borderBottomColor: theme.colors.gray2,
     },
     avatar: {
         width: 135,
