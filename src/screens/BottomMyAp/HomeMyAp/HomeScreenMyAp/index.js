@@ -12,8 +12,9 @@ import { useAppSelector } from 'hooks';
 import React, { useCallback, useState } from 'react';
 import { withNamespaces } from 'react-i18next';
 import { Animated, Image, LogBox, Platform, ScrollView } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
-import { makeStyles, useTheme } from 'themeNew';
+import { colors, makeStyles, useTheme } from 'themeNew';
 import HeaderHome from './components/HeaderHome';
 import HeaderListBook from './components/HeaderListEvent';
 import ItemAuthor from './components/ItemAuthor';
@@ -46,6 +47,7 @@ const HomeScreenMyAp = () => {
 
     const theme = useTheme(themeStore);
     const styles = useStyle(themeStore);
+    const inset = useSafeAreaInsets();
 
     //Cập nhật mỗi lần thay đổi TabView
 
@@ -157,7 +159,7 @@ const HomeScreenMyAp = () => {
     const renderListTopAuthor = useCallback(() => {
         return (
             <Block>
-                <HeaderListBook title={'Tác giả hàng đầu'} action={() => {}} />
+                <HeaderListBook title={'Tác giả hàng đầu'} />
                 <Animated.FlatList
                     data={authors}
                     keyExtractor={item => item.toString()}
@@ -165,7 +167,7 @@ const HomeScreenMyAp = () => {
                     bounces={false}
                     horizontal
                     showsHorizontalScrollIndicator={false}
-                    scrollEventThrottle={16}
+                    // scrollEventThrottle={16}
                     nestedScrollEnabled={true}
                     ListEmptyComponent={
                         <Block
@@ -200,7 +202,7 @@ const HomeScreenMyAp = () => {
     };
 
     return (
-        <Container statusColor={theme.colors.grey16} edges={['right', 'left']}>
+        <Container statusColor={theme.colors.grey16} edges={['left', 'right']}>
             <HeaderHome
                 name={myInfo?.name}
                 image={myInfo?.image}

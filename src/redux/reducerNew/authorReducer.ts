@@ -1,8 +1,14 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { AuthState } from './authReducer';
+
+type AuthorState = {
+    _id: string;
+    name: string;
+    avatar: string;
+    aboutAuthor?: {};
+};
 
 export type AuthorArrayState = {
-    authors: AuthState[];
+    authors: AuthorState[];
 };
 
 const defaultAuthorState: AuthorArrayState = {
@@ -15,7 +21,7 @@ const authorSlice = createSlice({
     reducers: {
         saveAuthor: (
             state: AuthorArrayState,
-            action: PayloadAction<AuthState[]>,
+            action: PayloadAction<AuthorState[]>,
         ) => {
             state.authors = action.payload;
             return state;

@@ -5,22 +5,8 @@ import { MAIN_API } from './endpoint';
 type AuthorState = {
     _id?: string;
     name?: string;
-    email?: string;
-    phone?: string;
-    permission?: string;
-    fcmtokens: Array<string>;
-    image: string;
-    bookmark: string;
-    role: number;
-    authorAcess: number;
-    updatedAt: string;
-    createdAt: string;
-    wallet: number;
-    notification: Array<string>;
-    favoriteBooks: Array<String>;
-    followBooks: Array<String>;
-    historyBookRead: Array<String>;
-    payBook: Array<String>;
+    avatar?: string;
+    aboutAuthor?: {};
 };
 export const authorAPI = createApi({
     reducerPath: 'authorAPI',
@@ -37,7 +23,7 @@ export const authorAPI = createApi({
             async onQueryStarted(id, { dispatch, queryFulfilled }) {
                 try {
                     const { data } = await queryFulfilled;
-                    dispatch(saveAuthor(data));
+                    dispatch(saveAuthor(data.data));
                 } catch (err) {
                     console.log('error api getAllAuthor... ', err);
                 }

@@ -6,7 +6,13 @@ import { changeLanguage, changeTheme } from '@redux/reducerNew';
 import { theme } from '@theme';
 import React, { useEffect, useState } from 'react';
 import { withNamespaces } from 'react-i18next';
-import { Image, NativeModules, Platform, StatusBar } from 'react-native';
+import {
+    Image,
+    NativeModules,
+    Platform,
+    StatusBar,
+    Text as Text1,
+} from 'react-native';
 import { makeStyles, useTheme } from 'themeNew';
 
 const { fonts } = theme;
@@ -63,7 +69,7 @@ const HeaderHome = props => {
                         size={18}
                         marginHorizontal={5}
                         color={themeNew.colors.textInBox}
-                        fontType="bold"
+                        fontType="bold1"
                         numberOfLines={1}>
                         {name}
                     </Text>

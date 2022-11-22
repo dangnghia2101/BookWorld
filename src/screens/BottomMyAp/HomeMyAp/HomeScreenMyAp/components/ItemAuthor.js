@@ -22,7 +22,7 @@ const ItemAuthor = ({ item, t }) => {
             }}>
             <Image
                 source={{
-                    uri: item.image,
+                    uri: item.avatar,
                 }}
                 style={styles.image}
             />

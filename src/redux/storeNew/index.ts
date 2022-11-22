@@ -7,6 +7,7 @@ import {
     LoadingReducer,
     CartReducer,
     AuthorReducer,
+    ReadingReducer,
 } from '@redux/reducerNew';
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import {
@@ -41,6 +42,7 @@ const rootReducer = combineReducers({
     loading: LoadingReducer,
     cart: CartReducer,
     author: AuthorReducer,
+    reading: ReadingReducer,
     // ...other reducers here
 });
 
@@ -50,7 +52,7 @@ const persistConfig = {
     key: 'roott',
     storage: AsyncStorage,
     timeout: 30000,
-    whitelist: ['setting', 'themeApp', 'auth', 'cart'],
+    whitelist: ['setting', 'themeApp', 'auth', 'cart', 'reading'],
     stateReconciler: autoMergeLevel2,
 };
 
