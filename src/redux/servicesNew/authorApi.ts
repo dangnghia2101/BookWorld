@@ -27,7 +27,6 @@ export const authorAPI = createApi({
     baseQuery: fetchBaseQuery({
         baseUrl: MAIN_API,
     }),
-    
     endpoints: builder => ({
         getAllAuthor: builder.query<AuthorState[], string>({
             query: () => ({
