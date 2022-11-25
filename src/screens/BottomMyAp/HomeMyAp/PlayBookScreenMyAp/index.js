@@ -4,12 +4,23 @@ import BottomSheet, { BottomSheetBackdrop, BottomSheetScrollView } from '@gorhom
 import { useAppSelector } from '@hooks';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { StyleSheet, ScrollView } from 'react-native';
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
+import { StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { WebView } from 'react-native-webview';
 import { useTheme } from 'themeNew';
 import EvaluateBook from '../DetailBookScreenMyAp/components/EvaluateBook';
 import { BackHandler, Alert } from 'react-native';
-import { useCreateTimeReadMutation } from '@redux/servicesNew';
+import {
+  useCreateTimeReadMutation,
+  useGetDetailChapterBookQuery,
+} from '@redux/servicesNew';
 
 
 const PlayBookScreenMyAp = ({ route }) => {
@@ -27,10 +38,6 @@ const PlayBookScreenMyAp = ({ route }) => {
   var snapTI = -1;
   const [createTimeRead, { isLoading, data, error }] = useCreateTimeReadMutation();
   const timeStart = new Date();
-
-  const myInfo = useAppSelector(state => state.root.auth);
-
-  console.log("start: ", timeStart);
 
   const renderBackdrop = useCallback(
     props => (
@@ -140,16 +147,12 @@ const PlayBookScreenMyAp = ({ route }) => {
       return true;
 
     };
-
     const backHandlerEvent = BackHandler.addEventListener(
-      "hardwareBackPress",
-      backHandler
+      'hardwareBackPress',
+      backHandler,
     );
 
-    return () => backHandlerEvent.remove()
-
   }, [])
-
 
   const renderHtml = useCallback(() => {
     return (
@@ -158,21 +161,21 @@ const PlayBookScreenMyAp = ({ route }) => {
         scalesPageToFit={false}
         injectedJavaScript={initailStyle}
         originWhitelist={['*']}
-        source={{ html: htmlChapter }}
+        source={{ html: dataGet.htmlChapter }}
       />
     );
-  }, [htmlChapter, initailStyle]);
+  }, [dataGet, initailStyle]);
 
   return (
     <Block backgroundColor={theme.colors.text} style={{ flex: 1 }}>
       <HeaderWithButton
         handleBack={endReadBook}
-        title={title}
+        title={dataGet?.title}
         isBackHeader
         rightIcon={renderRightIconHeader()}
       />
 
-      {renderHtml()}
+      {dataGet && renderHtml()}
 
       {/* {renderHtml()} */}
       <BottomSheet
@@ -182,11 +185,19 @@ const PlayBookScreenMyAp = ({ route }) => {
         enablePanDownToClose={true}
         backdropComponent={renderBackdrop}>
         <Block
-          backgroundColor={!themeBack ? theme.colors.black : theme.colors.white}
+          backgroundColor={
+            !themeBack ? theme.colors.black : theme.colors.white
+          }
           borderWidth={!themeBack ? 1 : 0}
-          borderColor={!themeBack ? theme.colors.white : theme.colors.red}
+          borderColor={
+            !themeBack ? theme.colors.white : theme.colors.red
+          }
           paddingHorizontal={10}>
-          <Text center size={18} fontType={'bold'} color={theme.colors.grey4}>
+          <Text
+            center
+            size={18}
+            fontType={'bold'}
+            color={theme.colors.grey4}>
             Cài đặt
           </Text>
           <Block
@@ -199,47 +210,20 @@ const PlayBookScreenMyAp = ({ route }) => {
               component={'MaterialIcons'}
               name={true ? 'favorite' : 'favorite-border'}
               size={20}
-              color={themeBack ? theme.colors.red : theme.colors.white}
+              color={
+                themeBack
+                  ? theme.colors.red
+                  : theme.colors.white
+              }
             />
             <Text
               style={styles.textRowModal}
-              color={!themeBack ? theme.colors.white : theme.colors.dark2}>
+              color={
+                !themeBack
+                  ? theme.colors.white
+                  : theme.colors.dark2
+              }>
               {true ? 'Lưu sách yêu thích ' : 'Đã lưu'}
-            </Text>
-          </Button>
-
-          {/* Che do ban ngay */}
-          <Button
-            row
-            style={[styles.rowModal]}
-            onPress={() => setThemeBack(!themeBack)}>
-            <IconView
-              component={'Ionicons'}
-              name={themeBack ? 'ios-sunny-outline' : 'moon-outline'}
-              size={20}
-              color={!themeBack ? theme.colors.white : theme.colors.dark2}
-            />
-            <Text
-              style={styles.textRowModal}
-              color={!themeBack ? theme.colors.white : theme.colors.dark2}>
-              {themeBack ? 'Chế độ ban ngày' : 'Chế độ ban đêm'}
-            </Text>
-          </Button>
-
-          <Button
-            row
-            style={[styles.rowModal]}
-            onPress={() => setSize(size + 2)}>
-            <IconView
-              component={'AntDesign'}
-              name={'plus'}
-              size={20}
-              color={!themeBack ? theme.colors.white : theme.colors.dark2}
-            />
-            <Text
-              style={styles.textRowModal}
-              color={!themeBack ? theme.colors.white : theme.colors.dark2}>
-              Tăng kích cỡ chữ
             </Text>
           </Button>
 

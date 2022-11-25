@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>1078600024718-tu7l97je3pk0lnsdfemkqsho59m76env.apps.googleusercontent.com</string>
+	<string>1078600024718-aej719396knc3qrborvdm5jtfvoe9ult.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.1078600024718-tu7l97je3pk0lnsdfemkqsho59m76env</string>
+	<string>com.googleusercontent.apps.1078600024718-aej719396knc3qrborvdm5jtfvoe9ult</string>
 	<key>ANDROID_CLIENT_ID</key>
 	<string>1078600024718-3jm2ieq98d2fvico2ueq09ekar23nqis.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
@@ -15,7 +15,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.bookworld</string>
+	<string>org.reactjs.native.example.BookWorld</string>
 	<key>PROJECT_ID</key>
 	<string>duantotnghiep-e8aff</string>
 	<key>STORAGE_BUCKET</key>
@@ -31,7 +31,7 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:1078600024718:ios:f0dfc647af75acdc02ffdf</string>
+	<string>1:1078600024718:ios:bee3c923b3153cfc02ffdf</string>
 	<key>DATABASE_URL</key>
 	<string>https://duantotnghiep-e8aff-default-rtdb.firebaseio.com</string>
 </dict>

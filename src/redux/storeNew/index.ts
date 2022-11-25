@@ -1,47 +1,51 @@
 // import { pokemonApi } from '@redux-setup/api';
 import {
-  AuthReducer,
-  ThemeReducer,
-  BookReducer,
-  AppSettingReducer,
-  LoadingReducer,
-  CartReducer,
+    AuthReducer,
+    ThemeReducer,
+    BookReducer,
+    AppSettingReducer,
+    LoadingReducer,
+    CartReducer,
+    AuthorReducer,
+    ReadingReducer,
 } from '@redux/reducerNew';
-import {combineReducers, configureStore} from '@reduxjs/toolkit';
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import {
-  persistStore,
-  persistReducer,
-  FLUSH,
-  REHYDRATE,
-  PAUSE,
-  PERSIST,
-  PURGE,
-  REGISTER,
+    persistStore,
+    persistReducer,
+    FLUSH,
+    REHYDRATE,
+    PAUSE,
+    PERSIST,
+    PURGE,
+    REGISTER,
 } from 'redux-persist';
 import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {userApi, bookAPI, paymentApi, timereadAPI, authorAPI, profileAPI,editProfileAPI} from '@redux/servicesNew';
-import {setupListeners} from '@reduxjs/toolkit/query';
+import { setupListeners } from '@reduxjs/toolkit/query';
 import { userPhoneApi } from '@redux/servicesNew/userPhoneAPI';
 
 const rootReducer = combineReducers({
-  auth: AuthReducer,
-  themeApp: ThemeReducer,
-  book: BookReducer,
-  setting: AppSettingReducer,
-  loading: LoadingReducer,
-  cart: CartReducer,
-  // ...other reducers here
+    auth: AuthReducer,
+    themeApp: ThemeReducer,
+    book: BookReducer,
+    setting: AppSettingReducer,
+    loading: LoadingReducer,
+    cart: CartReducer,
+    author: AuthorReducer,
+    reading: ReadingReducer,
+    // ...other reducers here
 });
 
 export type RootState = ReturnType<typeof rootReducer>;
 
 const persistConfig = {
-  key: 'roott',
-  storage: AsyncStorage,
-  timeout: 30000,
-  whitelist: ['setting', 'themeApp', 'auth','cart'],
-  stateReconciler: autoMergeLevel2,
+    key: 'roott',
+    storage: AsyncStorage,
+    timeout: 30000,
+    whitelist: ['setting', 'themeApp', 'auth', 'cart', 'reading'],
+    stateReconciler: autoMergeLevel2,
 };
 
 const persistedReducer = persistReducer<RootState>(persistConfig, rootReducer);
@@ -72,6 +76,5 @@ export const store = configureStore({
       .concat(timereadAPI.middleware)
       .concat(editProfileAPI.middleware),
 });
-
 
 export const persistor = persistStore(store);

@@ -26,6 +26,12 @@ export type BookState = {
     imageAuthor: string;
 };
 
+type AllChapterType = {
+    isPay: boolean;
+    idChapter: string;
+    chapterNumber: number;
+};
+
 export const bookAPI = createApi({
     reducerPath: 'bookAPI',
     tagTypes: [],
@@ -89,24 +95,44 @@ export const bookAPI = createApi({
             },
         }),
         getAllChapterBook: builder.mutation<
-            chapterType[],
-            [{ id: string }, { token: string }]
+            AllChapterType[],
+            { id: string; token: string }
         >({
             query: body => ({
                 url: 'books/getChapterBook',
                 method: 'POST',
-                body: body[0],
-                headers: { Authorization: `Bearer ${body[1].token}` },
+                body: { idBook: body.id },
+                headers: { Authorization: `Bearer ${body.token}` },
             }),
-            transformResponse: (response: { data: chapterType[] }) =>
+            transformResponse: (response: { data: AllChapterType[] }) =>
                 response.data,
             async onQueryStarted(id, { dispatch, queryFulfilled }) {
                 try {
                     dispatch(changeLoading('SHOW'));
-                    const { data } = await queryFulfilled;
                     dispatch(changeLoading('HIDE')); // Save data in store, using reducer
                 } catch (err) {
-                    // console.log('error api getAllCategories... ', err);
+                    dispatch(changeLoading('HIDE'));
+                    console.log('error api getAllChapterBook... ', err);
+                }
+            },
+        }),
+        getDetailChapterBook: builder.query<
+            chapterType,
+            { id: string; token: string }
+        >({
+            query: body => ({
+                url: `chapters/${body.id}/getChapterDetails`,
+                headers: { Authorization: `Bearer ${body.token}` },
+            }),
+            transformResponse: (response: { data: chapterType }) =>
+                response.data,
+            async onQueryStarted(id, { dispatch, queryFulfilled }) {
+                try {
+                    dispatch(changeLoading('SHOW'));
+                    dispatch(changeLoading('HIDE')); // Save data in store, using reducer
+                } catch (err) {
+                    dispatch(changeLoading('HIDE'));
+                    console.log('error api getDetailChapterBook... ', err);
                 }
             },
         }),
@@ -119,4 +145,5 @@ export const {
     useLazyGetAllBookByCategoryQuery,
     useGetAllCategoryQuery,
     useGetAllChapterBookMutation,
+    useGetDetailChapterBookQuery,
 } = bookAPI;

@@ -18,8 +18,6 @@ import { saveChapterReducer } from '@redux/reducerNew/cartReducer';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import { theme } from '@theme';
 
-
-
 const ChapterBook = ({
     detailBook,
     nameBook,
@@ -184,15 +182,15 @@ const ChapterBook = ({
                 {data?.map((item, index) => (
                     <TouchableOpacity
                         onPress={() => {
-                            if (item.ispay == true) {
-                                if (isRead) {
+                            if (item.isPay === true) {
+                                if (!isRead) {
                                     navigation.navigate(
                                         routes.PLAY_BOOK_MY_AP,
-                                        item.element,
+                                        { idChapter: item.idChapter },
                                     );
                                 } else {
                                     navigation.navigate(routes.LISTEN_BOOK, {
-                                        item: item.element,
+                                        idChapter: item.idChapter,
                                         nameBook: nameBook,
                                     });
                                 }
@@ -208,13 +206,20 @@ const ChapterBook = ({
                             radius={5}
                             width={'100%'}
                             backgroundColor={
-                                item.ispay
+                                item.isPay
                                     ? themeNew.colors.primary
                                     : themeNew.colors.grey12
                             }
                             paddingVertical={10}
                             paddingHorizontal={5}>
-                            <Text>{item.element.chapterNumber}</Text>
+                            <Text
+                                color={
+                                    item.isPay
+                                        ? themeNew.colors.white
+                                        : themeNew.colors.grey6
+                                }>
+                                {item?.chapterNumber}
+                            </Text>
                         </Block>
                     </TouchableOpacity>
                 ))}

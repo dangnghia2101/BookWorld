@@ -5,3 +5,5 @@ export * from './appSettingReducer';
 export * from './loadingReducer';
 export * from './favoriteBookReduer';
 export * from './cartReducer';
+export * from './authorReducer';
+export * from './readingReducer';
