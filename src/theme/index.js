@@ -33,6 +33,7 @@ export const theme = {
         redTranparent: '#e8a5a5',
         gray3: '#E0E0E0',
         gray4: '#F6F6F6',
+        gray5: 'rgba(71, 71, 72, 0.9)',
         backgroundOpacity: 'rgba(0, 0, 0, 0.4)',
         blueTitle: '#092C4C',
         orange2: '#F95B00',

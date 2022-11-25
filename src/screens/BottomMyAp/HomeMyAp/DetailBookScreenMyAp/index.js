@@ -12,7 +12,6 @@ import IntroduceText from './components/IntroduceText';
 import IconView from '@components/Icon';
 import { saveFavoriteBookReducer } from '@redux/reducerNew';
 import { useAppDispatch } from '@hooks';
-
 const DetailBookScreenMyAp = ({ route }) => {
   const { bookmark, item, _isRead } = route.params;
   const [listChapters, setListChapters] = useState([]);

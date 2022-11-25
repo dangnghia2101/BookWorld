@@ -16,7 +16,6 @@ import { useAppSelector } from '@hooks';
 import BottomSheet, { BottomSheetBackdrop } from '@gorhom/bottom-sheet';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useEditProfileMutation } from '@redux/servicesNew/editProflieAPI';
-import { width } from '@utils/responsive';
 
 const createFormData = (photo, name) => {
     console.log('createFormDataaaaaaa', photo);
@@ -37,9 +36,10 @@ const ScreenUpdateProfile = () => {
     const [name, setName] = useState(myInfo.name);
     const [editProfile] = useEditProfileMutation();
     const inset = useSafeAreaInsets();
-    const snapPoints = useMemo(() => [260 + inset.bottom], [inset.bottom]);
+    const snapPoints = useMemo(() => [130 + inset.bottom], [inset.bottom]);
     const bottomSheetRef = useRef(null);
     var snapTI = -1;
+
     const renderBackdrop = useCallback(
         props => (
             <BottomSheetBackdrop
@@ -47,7 +47,7 @@ const ScreenUpdateProfile = () => {
                 appearsOnIndex={0}
                 {...props}
                 enableTouchThrough={true}
-
+                backgroundColor={theme.colors.black}
             />
         ),
         [],
@@ -60,9 +60,20 @@ const ScreenUpdateProfile = () => {
         maxHeigth: 500
     };
 
+    const changBottomSheet = () => {
+        if (snapTI == 0) {
+            snapTI = -1;
+            bottomSheetRef.current?.snapToIndex(snapTI);
+        } else {
+            snapTI = 0;
+            bottomSheetRef.current?.snapToIndex(snapTI);
+        }
+    }
+
     const chooseImageGallary = async () => {
-        const result = await launchImageLibrary(options);
-        setImageUri({ uri: result.assets[0].uri, name: result.assets[0].fileName, type: result.assets[0].type });
+        // const result = await launchImageLibrary(options);
+        // setImageUri(result.assets[0].uri);
+        bottomSheetRef.current?.snapToIndex(-1)
     };
 
     const takePhoto = async () => {
@@ -70,17 +81,11 @@ const ScreenUpdateProfile = () => {
             PermissionsAndroid.PERMISSIONS.CAMERA,
         );
         if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-            const result = await launchCamera(options);
-            // setImageUri({ uri: result.assets[0].uri, name: result.assets[0].fileName, type: result.assets[0].type });
+            const result = await launchCamera(options)
             setImageUri(result.assets[0].uri);
-            // console.log("takePhoto result =", result)
-
-            if (snapTI == 0) {
-                // snapTI = -1;
-                bottomSheetRef.current?.snapToIndex(-1);
-            }
-
+            // setImageUri({ uri: result.assets[0].uri, name: result.assets[0].fileName, type: result.assets[0].type });
         }
+        bottomSheetRef.current.snapToIndex(-1)
     };
 
     const handleUploadPhoto = async () => {
@@ -135,21 +140,21 @@ const ScreenUpdateProfile = () => {
                                 source={{ uri: imageUri }} />
                             <Block
                                 absolute
-                                width={35}
-                                height={35}
+                                width={40}
+                                height={40}
                                 radius={50}
-                                left={90}
-                                top={105}
-                                backgroundColor={theme.colors.white}
+                                backgroundColor={theme.colors.gray4}
                                 justifyCenter
-                                alignCenter>
+                                alignCenter
+                                style={styles.blockIcon}>
                                 <TouchableOpacity
                                     style={styles.iconPen}
                                     onPress={() => bottomSheetRef.current?.snapToIndex(0)}>
                                     <IconView
-                                        component={'SimpleLineIcons'}
-                                        name={'pencil'}
+                                        component={'MaterialIcons'}
+                                        name={'add-a-photo'}
                                         size={25}
+                                        color={theme.colors.gray}
                                     />
                                 </TouchableOpacity>
                             </Block>
@@ -184,18 +189,19 @@ const ScreenUpdateProfile = () => {
             </ScrollView>
             <BottomSheet
                 style={styles.bottomSheet}
-                index={snapTI}
+                index={-1}
                 ref={bottomSheetRef}
-                renderBackdrop={renderBackdrop}
+                backdropComponent={renderBackdrop}
                 snapPoints={snapPoints}
                 enablePanDownToClose={true}>
-                <Block width={'100%'} row justifyCenter alignCenter height={'100%'} >
+                <Block width={'100%'} justifyCenter alignCenter height={'100%'} >
                     <TouchableOpacity style={styles.buttomLogin}
                         onPress={() => takePhoto()}>
                         <IconView
                             component={'Ionicons'}
                             name={'camera-outline'}
-                            size={50}
+                            size={35}
+                            color={theme.colors.gray5}
                         />
                         <Text style={styles.textButtomLogin}>Chụp ảnh</Text>
                     </TouchableOpacity>
@@ -204,7 +210,8 @@ const ScreenUpdateProfile = () => {
                         <IconView
                             component={'FontAwesome'}
                             name={'picture-o'}
-                            size={50}
+                            size={30}
+                            color={theme.colors.gray5}
                         />
                         <Text style={styles.textButtomLogin}>Chọn ảnh</Text>
                     </TouchableOpacity>
@@ -217,9 +224,13 @@ const ScreenUpdateProfile = () => {
 export default ScreenUpdateProfile;
 
 const styles = StyleSheet.create({
+    blockIcon: {
+        top: '80%',
+        left: '75%'
+    },
     bottomSheet: {
         borderWidth: 1,
-        borderColor: theme.colors.gray,
+        borderColor: theme.colors.gray2,
         borderTopLeftRadius: 10,
         borderTopRightRadius: 10,
     },
@@ -230,22 +241,20 @@ const styles = StyleSheet.create({
         marginLeft: 10
     },
     textButtomLogin: {
-        fontSize: 12,
-        // lineHeight: 50,
+        fontSize: 16,
         alignItems: 'center',
         fontWeight: '700',
-        color: theme.colors.text,
+        color: theme.colors.gray5,
+        marginLeft: '10%'
     },
     buttomLogin: {
-        width: '35%',
+        width: '100%',
         height: '40%',
         marginLeft: '2%',
-        justifyContent: 'center',
+        flexDirection: 'row',
         alignItems: 'center',
-        borderRadius: 10,
-        borderWidth: 1,
-        borderColor: theme.colors.gray2,
-
+        paddingHorizontal: 20,
+        marginBottom: 10,
     },
     textSave: {
         fontSize: 20,
