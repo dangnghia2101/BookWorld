@@ -7,3 +7,4 @@ export * from './timereadAPI';
 export * from './profileAPI';
 export * from './editProflieAPI';
 export * from './chatAPI';
+export * from './bookOfAuthAPI';

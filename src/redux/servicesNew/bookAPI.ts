@@ -4,6 +4,7 @@ import {
     changeLoading,
     saveTabCategoryReducer,
     saveCategoryReducer,
+    saveFavoriteBookReducer,
     AuthState,
 } from '@redux/reducerNew';
 

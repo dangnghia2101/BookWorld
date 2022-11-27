@@ -8,6 +8,7 @@ import {
     CartReducer,
     AuthorReducer,
     ReadingReducer,
+    FavoriteBookReducer,
 } from '@redux/reducerNew';
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import {
@@ -22,7 +23,7 @@ import {
 } from 'redux-persist';
 import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {userApi, bookAPI, paymentApi, timereadAPI, authorAPI, profileAPI,editProfileAPI} from '@redux/servicesNew';
+import {userApi, bookAPI, paymentApi, timereadAPI, authorAPI, profileAPI,editProfileAPI,bookOfAuthAPI} from '@redux/servicesNew';
 import { setupListeners } from '@reduxjs/toolkit/query';
 import { userPhoneApi } from '@redux/servicesNew/userPhoneAPI';
 
@@ -35,6 +36,7 @@ const rootReducer = combineReducers({
     cart: CartReducer,
     author: AuthorReducer,
     reading: ReadingReducer,
+    favoriteBook: FavoriteBookReducer,
     // ...other reducers here
 });
 
@@ -60,7 +62,8 @@ export const store = configureStore({
     [timereadAPI.reducerPath]: timereadAPI.reducer,
     [authorAPI.reducerPath]: authorAPI.reducer,
     [profileAPI.reducerPath]: profileAPI.reducer,
-    [editProfileAPI.reducerPath]: editProfileAPI.reducer
+    [editProfileAPI.reducerPath]: editProfileAPI.reducer,
+    [bookOfAuthAPI.reducerPath]: bookOfAuthAPI.reducer
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
@@ -74,7 +77,8 @@ export const store = configureStore({
       .concat(userPhoneApi.middleware)
       .concat(authorAPI.middleware)
       .concat(timereadAPI.middleware)
-      .concat(editProfileAPI.middleware),
+      .concat(editProfileAPI.middleware)
+      .concat(bookOfAuthAPI.middleware),
 });
 
 export const persistor = persistStore(store);

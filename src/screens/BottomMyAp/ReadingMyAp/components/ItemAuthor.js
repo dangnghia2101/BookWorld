@@ -25,10 +25,9 @@ const ItemAuthor = ({ item, t }) => {
           radius={20}
           absolute
           row
-          shadowColor={theme.colors.blue}
-          shadowOffset
           top={50}
         >
+
           <Block width="50%" height="100%">
             <Text style={styles.textName}>{t('textNameAuthor')}</Text>
             <Text style={styles.nameAuthor}>{item.name}</Text>
@@ -83,7 +82,7 @@ const ItemAuthor = ({ item, t }) => {
           borderColor={theme.colors.text}
         >
           <Block
-            backgroundColor={theme.colors.white}
+            // backgroundColor={theme.colors.white}
             width={100}
             height={100}
             radius={50}
@@ -92,7 +91,7 @@ const ItemAuthor = ({ item, t }) => {
             padding={7}
             borderWidth={4}
             borderColor={theme.colors.black}>
-            <Image style={styles.avatar} source={{ uri: item.image }} />
+            <Image style={styles.avatar} source={{ uri: item.avatar }} />
           </Block>
         </Block>
 

@@ -28,7 +28,6 @@ const defaultBookState: BookListFavorite = {
       saveFavoriteBookReducer: (
         state: BookListFavorite,
         action: PayloadAction<BookFavoriteState>,
-        
       ) => {
         console.log(action.payload);
         state.bookListFavorite = [...state.bookListFavorite, action.payload];
@@ -39,4 +38,4 @@ const defaultBookState: BookListFavorite = {
   
   export const {saveFavoriteBookReducer} =
     bookSlice.actions;
-  export const favoriteBookReducer = bookSlice.reducer;
+  export const FavoriteBookReducer = bookSlice.reducer;

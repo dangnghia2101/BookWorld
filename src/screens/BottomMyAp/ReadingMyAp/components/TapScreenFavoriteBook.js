@@ -3,14 +3,17 @@ import React from 'react'
 import { useAppSelector } from '@hooks'
 import { NoData, Block } from '@components'
 import ItemCateBook from '@screens/BottomMyAp/HomeMyAp/HomeScreenMyAp/components/ItemCateBook'
-
+import { useGetFavoriteBookQuery } from '@redux/servicesNew'
 const TapScreenFavoriteBook = () => {
-    const favoriteBook = useAppSelector(state => state.root.favoriteBook);
-    console.log("favoriteeeeeeeeeeee", favoriteBook);
-    return favoriteBook?.bookListFavorite?.length > 0 ? (
+    // const favoriteBook = useAppSelector(state => state.root.favoriteBook);
+    const myInfo = useAppSelector(state => state.root.auth);
+    const { data } = useGetFavoriteBookQuery(myInfo._id);
+    console.log("favoriteeeeeeeeeeee", data?.data[0]?.favoriteBooks);
+
+    return data ? (
         <Block>
-            {favoriteBook?.bookListFavorite?.map((item, index) => (
-                <ItemCateBook key={index} item={item} />
+            {data?.data[0]?.favoriteBooks?.map((item, index) => (
+                <ItemCateBook key={index} item={item.idBook} />
             ))}
         </Block>
     ) : (

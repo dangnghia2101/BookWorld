@@ -30,7 +30,7 @@ const DetailAuthor = ({ route }) => {
         <Block width={'70%'} height={'50%'} absolute top={65} left={100} >
           <Image
             style={styles.imgAuthor}
-            source={{ uri: item.image }}
+            source={{ uri: item.avatar }}
           />
         </Block>
         <Text style={styles.nameAuthor}>{item.name}</Text>
@@ -40,24 +40,18 @@ const DetailAuthor = ({ route }) => {
           <Block>
             <Text style={styles.textIntro}>Giới thiệu về tác giả</Text>
             <Text style={styles.IntroduceAuthor} numberOfLines={2}>
-              J.D. Salinger was an American writer, best known for his 1951
-              novel The Catcher in the Rye. Before its publi cation, Salinger
-              published several short stories in Story magazine xem thêm
+              {item.aboutAuthor.introduce}
             </Text>
           </Block>
           <Block marginTop={18}>
             <Text style={styles.textIntro}>Tổng quan</Text>
-            <Text style={styles.IntroduceAuthor} numberOfLines={4}>
-              The Catcher in the Rye is a novel by J. D. Salinger, partially
-              published in serial form in 1945–1946 and as a novel in 1951. It
-              was originally intended for adu lts but is often read by
-              adolescents for its theme of angst, alienation and as a critique
-              xem thêm
+            <Text style={styles.IntroduceAuthor}>
+              {item.aboutAuthor.details}
             </Text>
           </Block>
           <Block marginTop={18}>
             <Text style={styles.textIntro}>Thông tin liên hệ</Text>
-            <Text style={styles.IntroduceAuthor}>Facebook: facebook..com</Text>
+            <Text style={styles.IntroduceAuthor}>Facebook: facebook..co m</Text>
             <Text style={styles.IntroduceAuthor}>Youtube: youtube.com </Text>
             <Text style={styles.IntroduceAuthor}>Instagram: instagram</Text>
             <Text style={styles.IntroduceAuthor}>Number phone: 0977777777</Text>

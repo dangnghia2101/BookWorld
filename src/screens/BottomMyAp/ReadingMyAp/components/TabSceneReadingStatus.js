@@ -2,11 +2,14 @@ import { StyleSheet, ScrollView } from 'react-native';
 import React from 'react';
 import { Block, Text } from '@components';
 import ItemCateBook from '@screens/BottomMyAp/HomeMyAp/HomeScreenMyAp/components/ItemCateBook';
+import { useAppSelector } from 'hooks';
 
 const TabSceneReadingStatus = ({ route }) => {
-  return route?.bookList?.length > 0 ? (
+  const allBooks = useAppSelector(state => state.root.book.bookList);
+
+  return allBooks?.length > 0 ? (
     <ScrollView>
-      {route?.bookList.map((item, index) => (
+      {allBooks.map((item, index) => (
         <ItemCateBook key={index} item={item} />
       ))}
     </ScrollView>

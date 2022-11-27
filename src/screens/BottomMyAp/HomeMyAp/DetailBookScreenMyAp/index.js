@@ -1,6 +1,4 @@
 import { Block, HeaderWithButton, Icon } from '@components';
-import { useAppSelector } from '@hooks';
-import { Block, HeaderWithButton } from '@components';
 import {
   useAppDispatch,
   useAppSelector,
@@ -21,7 +19,6 @@ import ImageBook from './components/ImageBook';
 import IntroduceText from './components/IntroduceText';
 import IconView from '@components/Icon';
 import { saveFavoriteBookReducer } from '@redux/reducerNew';
-import { useAppDispatch } from '@hooks';
 
 const DetailBookScreenMyAp = ({ route }) => {
   const { bookmark, item, _isRead } = route.params;
@@ -68,7 +65,7 @@ const DetailBookScreenMyAp = ({ route }) => {
   const favoriteIcon = () => {
     return (
       <TouchableOpacity
-        onPress={() => disPatch(saveFavoriteBookReducer(item))}
+        onPress={() => dispatch(saveFavoriteBookReducer(item))}
       >
         <Block justifyCenter width={50} paddingVertical={2}>
           <IconView

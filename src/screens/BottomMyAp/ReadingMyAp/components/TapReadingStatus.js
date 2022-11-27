@@ -103,6 +103,8 @@ const TapReadingStatus = () => {
     ],
     isLoading: false,
   };
+  const myInfo = useAppSelector(state => state.root.auth);
+  console.log("myInfooooooooooooooooooooo", myInfo);
 
   const formatRouter = data => {
     return data?.map(item => {
