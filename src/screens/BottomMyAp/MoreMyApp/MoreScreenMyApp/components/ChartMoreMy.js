@@ -2,7 +2,7 @@ import {StyleSheet, TouchableOpacity, Dimensions} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {Block, Text, Button} from '@components';
 
-import Plot from 'react-plotly.js';
+import { VictoryBar, VictoryChart, VictoryTheme } from 'victory-native';
 const screenWidth = Dimensions.get('window').width;
 
 import {makeStyles, useTheme} from 'themeNew';
@@ -10,6 +10,7 @@ import {withNamespaces} from 'react-i18next';
 import {useAppSelector, useAppDispatch} from '@hooks';
 
 import { useGetReadTimeBookQuery, useLazyGetReadTimeBookQuery } from '@redux/servicesNew';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const ChartMoreMy = props => {
   const [data, setData] = useState([]);
@@ -17,8 +18,9 @@ const ChartMoreMy = props => {
   //thuc hien dau goi do getReadTimeBook(id);
   const myInfo = useAppSelector(state => state.root.auth);
   const actions = myInfo._id;
+  //console.log("token", myInfo.token);
   //console.log("id >>>", actions);
-  // data = useGetReadTimeBookQuery(actions);
+  //data = useGetReadTimeBookQuery(actions);
   //chay 1 lan
 
   const {t} = props;
@@ -27,91 +29,41 @@ const ChartMoreMy = props => {
   const styles = useStyle(props, themeStore);
   
  useEffect(async () => {
-  // const dataChart = await getReadTimeBook(actions);
-  // setData(dataChart.data)
-  console.log("datasever >>");
-  // if(data?.data[0]){
-  //   const dataChart = await getReadTimeBook(actions);
-  //   setData(dataChart.data)
-  // console.log(">>", setData(data?.data[0][2022]));
-  // //useState
-  // }
-
-  // const getDataChart = async () => {
-  //   const data2 = await getReadTimeBook(actions);
-  //   console.log("datasever >>", data2);
-  // }
-  // getDataChart();
- }, [])
-
-//  const data2 = getReadTimeBook(actions);
-
-  
-  // const data = [
-  //   {
-  //     month: 'January',
-  //     time: 500,
-  //   },
-  //   {
-  //     month: 'February',
-  //     time: 400,
-  //   },
-  //   {
-  //     month: 'March',
-  //     time: 450,
-  //   },
-  //   {
-  //     month: 'April',
-  //     time: 480,
-  //   },
-  //   {
-  //     month: 'May',
-  //     time: 500,
-  //   },
-  //   {
-  //     month: 'June',
-  //     time: 500,
-  //   },
-  //   {
-  //     month: 'July',
-  //     time: 500,
-  //   },
-  //   {
-  //     month: 'August',
-  //     time: 500,
-  //   },
-  //   {
-  //     month: 'Setember',
-  //     time: 500,
-  //   },
-  //   {
-  //     month: 'October',
-  //     time: 200,
-  //   },
-  //   {
-  //     month: 'November',
-  //     time: 500,
-  //   },
-  //   {
-  //     month: 'December',
-  //     time: 500,
-  //   },
-  // ];
-
-  const sample = [
-    { cate: 'A', values: [20, 31, 24, 60], types: ['1', '2', '3', '4']},
-    { cate: 'B', values: [20, 2, 1, 60], types: ['1', '2', '3', '4']},
-    { cate: 'C', values: [1, 31, 24, 60], types: ['1', '2', '3', '4']},
-  ]
-
-  function handleClick(e){
-    sample.forEach(each => {
-      if(each.cate === e.target.id){
-        setData({values: each.values, types: each.types})
-      }
-    })
+  const getDataChart = async () => {
+    const dataChart = await getReadTimeBook(actions);
+    setData(dataChart.data);
+    console.log(dataChart.data[0]);
+    console.log(dataChart.data[0][2022][0]);
+    console.log("datachart: ", dataChart.data[0][2022][0].November[0][16]);
+    // if(data?.data[0]){
+    // console.log(">>", setData(data?.data[0][2022]));
+    // }
+    // console.log("datasever >>", setData(data?.data[0][2022]));
   }
+  getDataChart();
+ }, [getReadTimeBook])
 
+  const dataMonth = [
+    // {
+    //   "month": data?.data[0][2022][0].map(x => x.November),
+    //   "time":  data?.data[0][2022][0].map(x => x.November)
+    // },
+    {
+        "month": "February",
+        "time": 300000,
+    }
+  ]
+ 
+
+  // function handleClick(e){
+  //   data.forEach(each => {
+  //     if(each. === e.target.id){
+  //       setData({values: each.values, types: each.types})
+  //       console.log(">>>", {values: each.values, types: each.types});
+  //     }
+  //   })
+  // }
+ 
   return (
     <Block marginVertical={20} column justifyCenter>
       <Block
@@ -120,20 +72,21 @@ const ChartMoreMy = props => {
         justifyContent={'space-around'}
         marginHorizontal={15}>
         <TouchableOpacity
-          style={[styles.itemChartContainer, styles.shadowColor]} onPress={handleClick} id='A'>
+          style={[styles.itemChartContainer, styles.shadowColor]}>
           <Text color={themeNew.colors.textDark}>{t('day')}</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={[styles.itemChartContainer, styles.shadowColor]} onPress={handleClick} id='B'>
+          style={[styles.itemChartContainer, styles.shadowColor]}>
           <Text color={themeNew.colors.textDark}>{t('month')}</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={[styles.itemChartContainer, styles.shadowColor]} onPress={handleClick} id='C'>
+          style={[styles.itemChartContainer, styles.shadowColor]}>
           <Text color={themeNew.colors.textDark}>{t('year')}</Text>
         </TouchableOpacity>
       </Block>
 
-      {/* <VictoryChart theme={VictoryTheme.material}>
+<ScrollView>
+<VictoryChart theme={VictoryTheme.material}>
         <VictoryBar
           style={{data: {fill: '#0D7EF9', width: 15}}}
           animate={{
@@ -142,21 +95,11 @@ const ChartMoreMy = props => {
               duration: 3000,
             },
           }}
-          // data={data2}
-          // x={data2.month}
-          // y={data2.time}
+          data={dataMonth} x="month" y="time"
         />
-      </VictoryChart> */}
-      <Plot
-        data={[
-          {
-          type: 'bar',
-          x: [1, 2, 3],
-          y: [24, 15, 30]
-          }
-        ]}
-        layout = {{width: 800, height: 500, title: 'Thời gian đọc'}}
-        />
+      </VictoryChart>
+</ScrollView>
+      
     </Block>
   );
 };
