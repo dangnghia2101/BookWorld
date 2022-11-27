@@ -126,15 +126,6 @@ export const bookAPI = createApi({
             }),
             transformResponse: (response: { data: chapterType }) =>
                 response.data,
-            async onQueryStarted(id, { dispatch, queryFulfilled }) {
-                try {
-                    dispatch(changeLoading('SHOW'));
-                    dispatch(changeLoading('HIDE')); // Save data in store, using reducer
-                } catch (err) {
-                    dispatch(changeLoading('HIDE'));
-                    console.log('error api getDetailChapterBook... ', err);
-                }
-            },
         }),
     }),
 });

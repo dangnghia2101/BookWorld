@@ -28,15 +28,15 @@ const PlayBookScreenMyAp = ({ route }) => {
         token: myInfo.token,
     }).data;
 
-    const webref = useRef(null);
+    const webref = useRef();
     const [themeBack, setThemeBack] = useState(true); //True background white
-    const [size, setSize] = useState(16);
+    const [size, setSize] = useState(40);
     const themeStore = useAppSelector(state => state.root.themeApp.theme);
     const theme = useTheme(themeStore);
     const inset = useSafeAreaInsets();
 
     const snapPoints = useMemo(() => [260 + inset.bottom], [inset.bottom]);
-    const bottomSheetRef = useRef(null);
+    const bottomSheetRef = useRef();
 
     const [createTimeRead, { isLoading, data, error }] =
         useCreateTimeReadMutation();
@@ -94,16 +94,20 @@ const PlayBookScreenMyAp = ({ route }) => {
   });`;
 
     useEffect(() => {
-        if (themeBack === true) {
-            webref.current.injectJavaScript(backgroundWhite);
-        } else {
-            webref.current.injectJavaScript(backgroundBlack);
+        if (webref.current) {
+            if (themeBack === true) {
+                webref.current.injectJavaScript(backgroundWhite);
+            } else {
+                webref.current.injectJavaScript(backgroundBlack);
+            }
         }
-    }, [backgroundBlack, backgroundWhite, themeBack]);
+    }, [backgroundBlack, backgroundWhite, themeBack, dataGet]);
 
     useEffect(() => {
-        webref.current.injectJavaScript(changeSize);
-    }, [changeSize, size]);
+        if (webref.current) {
+            webref.current.injectJavaScript(changeSize);
+        }
+    }, [changeSize, size, dataGet]);
 
     const endReadBook = async () => {
         const timeEnd = new Date();
@@ -153,7 +157,7 @@ const PlayBookScreenMyAp = ({ route }) => {
                 source={{ html: dataGet.htmlChapter }}
             />
         );
-    }, [dataGet, initailStyle]);
+    }, [dataGet, initailStyle, webref]);
 
     return (
         <Block backgroundColor={theme.colors.text} style={{ flex: 1 }}>
