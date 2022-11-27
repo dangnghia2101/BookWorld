@@ -5,7 +5,7 @@ import {
     StyleSheet,
     TextInput,
     ScrollView,
-    TouchableOpacity
+    TouchableOpacity,
 } from 'react-native';
 import { launchImageLibrary } from 'react-native-image-picker';
 import LinearGradient from 'react-native-linear-gradient';
@@ -55,10 +55,7 @@ const ScreenUpdateProfile = () => {
                     padding={7}
                     borderWidth={5}
                     borderColor={theme.colors.creamRed}>
-                    <Image
-                        style={styles.avatar}
-                        source={{ uri: imageUri }}
-                    />
+                    <Image style={styles.avatar} source={{ uri: imageUri }} />
                 </Block>
                 <Block
                     absolute
@@ -69,8 +66,7 @@ const ScreenUpdateProfile = () => {
                     radius={50}
                     justifyCenter
                     alignCenter
-                    backgroundColor={theme.colors.white}
-                >
+                    backgroundColor={theme.colors.white}>
                     <TouchableOpacity
                         onPress={() => bottomSheetRef.current?.snapToIndex(0)}>
                         <IconView
@@ -103,7 +99,10 @@ const ScreenUpdateProfile = () => {
                         size={32}
                         color={theme.colors.pinkRed}
                     />
-                    <TextInput placeholder={'Họ tên...'} style={styles.textInput} />
+                    <TextInput
+                        placeholder={'Họ tên...'}
+                        style={styles.textInput}
+                    />
                 </Block>
                 <Block
                     row
@@ -119,11 +118,12 @@ const ScreenUpdateProfile = () => {
                         size={32}
                         color={theme.colors.pinkRed}
                     />
-                    <TextInput placeholder={'dd/mm/yyyy'} style={styles.textInput} />
+                    <TextInput
+                        placeholder={'dd/mm/yyyy'}
+                        style={styles.textInput}
+                    />
                 </Block>
-                <TouchableOpacity
-                    style={styles.TouchableOpacity}
-                >
+                <TouchableOpacity style={styles.TouchableOpacity}>
                     <LinearGradient
                         style={styles.btnSave}
                         colors={['#CD58E0', '#DB4040']}>
@@ -144,7 +144,8 @@ const ScreenUpdateProfile = () => {
                     <TouchableOpacity style={styles.buttomLogin}>
                         <Text style={styles.textButtomLogin}>Chụp ảnh</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.buttomLogin}
+                    <TouchableOpacity
+                        style={styles.buttomLogin}
                         onPress={() => launchImageLibrary()}>
                         <Text style={styles.textButtomLogin}>Chọn sẵn có</Text>
                     </TouchableOpacity>
@@ -157,13 +158,11 @@ const ScreenUpdateProfile = () => {
 export default ScreenUpdateProfile;
 
 const styles = StyleSheet.create({
-
     textButtomLogin: {
         fontSize: 22,
         lineHeight: 50,
         alignItems: 'center',
         fontWeight: '700',
-        fontFamily: 'Poppins',
         color: '#FFFFFF',
     },
     buttomLogin: {
@@ -207,7 +206,7 @@ const styles = StyleSheet.create({
     },
     TouchableOpacity: {
         width: '50%',
-        height: 55
+        height: 55,
     },
     textInput: {
         fontSize: 20,

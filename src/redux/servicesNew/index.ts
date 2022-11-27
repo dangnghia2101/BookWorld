@@ -4,3 +4,4 @@ export * from './paymentAPI';
 export * from './timereadAPI';
 export * from './authorApi';
 export * from './profileAPI';
+export * from './chatAPI';

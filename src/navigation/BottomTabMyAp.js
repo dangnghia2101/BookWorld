@@ -164,7 +164,7 @@ const BottomTabMyAp = () => {
         } else if (item.name === 'Cart' && val.name === 'Cart') {
           // val.activeIcon = Object.assign({}, activeList(true));
           // setBgColor('#FF7128');
-          navigation.navigate(routes.CHAT_MY_AP);
+          navigation.navigate(routes.CART_MY_AP);
         } else if (item.name === 'Search' && val.name === 'Search') {
           // val.activeIcon = Object.assign({}, activeCamera(true));
         } else if (item.name === 'Setting' && val.name === 'Setting') {
@@ -186,7 +186,7 @@ const BottomTabMyAp = () => {
         navigation.navigate(routes.READING_MY_APP);
       } else if (item.name === 'Nhắn tin' && val.name === 'Nhắn tin') {
         val.activeIcon = Object.assign({}, activeChat(true));
-        navigation.navigate(routes.CHAT_MY_AP);
+        navigation.navigate(routes.CART_MY_AP);
       } else if (item.name === 'Cài đặt' && val.name === 'Cài đặt') {
         val.activeIcon = Object.assign({}, activeSetting(true));
         navigation.navigate(routes.MORE_MY_APP);
@@ -221,6 +221,17 @@ const BottomTabMyAp = () => {
       />
 
       <Tab.Screen
+        name={routes.CART_MY_AP}
+        component={bottom.CART_MY_AP}
+        options={{
+          tabBarLabel: 'Giỏ hàng',
+          tabBarIcon: 'shopping-cart',
+          tabBarStyle: {display: 'none'},
+          component: 'Feather',
+        }}
+      />
+
+      <Tab.Screen
         name={routes.CHAT_MY_AP}
         component={bottom.CHAT_MY_AP}
         options={{
@@ -242,32 +253,6 @@ const BottomTabMyAp = () => {
       />
     </Tab.Navigator>
 
-    // <View style={[styles.container]}>
-    //   <Stack.Navigator
-    //     screenOptions={screenOptionStyle}
-    //     initialRouteName={routes.HOME_MY_AP}>
-    //     <Stack.Screen name={routes.HOME_MY_AP} component={bottom.HOME_MY_AP} />
-    //     <Stack.Screen name={routes.CHAT_MY_AP} component={bottom.CHAT_MY_AP} />
-    //     <Stack.Screen
-    //       name={routes.READING_MY_APP}
-    //       component={bottom.READING_MY_APP}
-    //     />
-    //     <Stack.Screen
-    //       name={routes.MORE_MY_APP}
-    //       component={bottom.MORE_MY_APP}
-    //     />
-    //   </Stack.Navigator>
-
-    //   <Tabbar
-    //     tabs={tabs}
-    //     tabBarBackground={'white'}
-    //     labelStyle={{ color: 'black', fontWeight: '600', fontSize: 11 }}
-    //     onTabChange={item => onTabChange(item)}
-    //     defaultActiveTabIndex={0}
-    //     transitionSpeed={100}
-    //     tabBarContainerBackground={theme.colors.gray4}
-    //   />
-    // </View>
   );
 };
 

@@ -10,43 +10,54 @@ import { Image, TouchableOpacity } from 'react-native';
 import { makeStyles, useTheme } from 'themeNew';
 
 const ItemCategory = ({ item }) => {
-  const themeStore = useAppSelector(state => state.root.themeApp.theme);
-  const { colors } = useTheme(themeStore);
-  const styles = useStyle(themeStore);
+    const themeStore = useAppSelector(state => state.root.themeApp.theme);
+    const { colors } = useTheme(themeStore);
+    const styles = useStyle(themeStore);
 
-  const navigation = useNavigation();
+    const navigation = useNavigation();
 
-  return (
-    <TouchableOpacity
-      style={styles.container}
-      onPress={() =>
-        navigation.navigate(routes.BOOKS_BY_CATEGORY, {
-          id: item.item._id,
-          title: item.item.name,
-        })
-      }>
-      <Block alignCenter justifyCenter >
-        <Image style={styles.image} source={{ uri: item.item.image }} />
-        <Text size={12} marginHorizontal={5} marginTop={5} numberOfLines={2} flexGrow>{item?.item?.name}</Text>
-      </Block>
-    </TouchableOpacity>
-  );
+    return (
+        <TouchableOpacity
+            style={styles.container}
+            onPress={() =>
+                navigation.navigate(routes.BOOKS_BY_CATEGORY, {
+                    id: item.item._id,
+                    title: item.item.name,
+                })
+            }>
+            <Block alignCenter justifyCenter>
+                {item?.item?.image && (
+                    <Image
+                        style={styles.image}
+                        source={{ uri: item.item.image || '' }}
+                    />
+                )}
+                <Text
+                    size={12}
+                    marginHorizontal={5}
+                    marginTop={5}
+                    numberOfLines={2}
+                    flexGrow>
+                    {item?.item?.name}
+                </Text>
+            </Block>
+        </TouchableOpacity>
+    );
 };
 
 const useStyle = makeStyles()(({ colors, normalize }) => ({
-  container: {
-    marginTop: 10,
-    marginBottom: 5,
-    marginHorizontal: width * 0.01,
-    width: width * 0.22,
-    height: normalize(85)('moderate'),
-
-  },
-  image: {
-    height: normalize(40)('moderate'),
-    width: normalize(40)('moderate'),
-    marginTop: 5
-  }
+    container: {
+        marginTop: 10,
+        marginBottom: 5,
+        marginHorizontal: width * 0.01,
+        width: width * 0.22,
+        height: normalize(85)('moderate'),
+    },
+    image: {
+        height: normalize(40)('moderate'),
+        width: normalize(40)('moderate'),
+        marginTop: 5,
+    },
 }));
 
 export default withNamespaces()(ItemCategory);

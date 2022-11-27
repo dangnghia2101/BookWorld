@@ -1,13 +1,13 @@
-import {StyleSheet, TouchableOpacity, Dimensions} from 'react-native';
-import React, {useEffect, useState} from 'react';
-import {Block, Text, Button} from '@components';
+import { StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Block, Text, Button } from '@components';
 
 import { VictoryBar, VictoryChart, VictoryTheme } from 'victory-native';
 const screenWidth = Dimensions.get('window').width;
 
-import {makeStyles, useTheme} from 'themeNew';
-import {withNamespaces} from 'react-i18next';
-import {useAppSelector, useAppDispatch} from '@hooks';
+import { makeStyles, useTheme } from 'themeNew';
+import { withNamespaces } from 'react-i18next';
+import { useAppSelector, useAppDispatch } from '@hooks';
 
 import { useGetReadTimeBookQuery, useLazyGetReadTimeBookQuery } from '@redux/servicesNew';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -101,28 +101,27 @@ const ChartMoreMy = props => {
 </ScrollView>
       
     </Block>
-  );
 };
 
 export default withNamespaces()(ChartMoreMy);
 
-const useStyle = makeStyles()(({colors}) => ({
-  shadowColor: {
-    shadowColor: colors.shadowDark,
-    shadowOffset: {
-      width: 0,
-      height: 3,
+const useStyle = makeStyles()(({ colors }) => ({
+    shadowColor: {
+        shadowColor: colors.shadowDark,
+        shadowOffset: {
+            width: 0,
+            height: 3,
+        },
+        shadowOpacity: 1.27,
+        shadowRadius: 4.65,
+        elevation: 6,
     },
-    shadowOpacity: 1.27,
-    shadowRadius: 4.65,
-    elevation: 6,
-  },
-  itemChartContainer: {
-    width: 118,
-    height: 32,
-    backgroundColor: colors.backgroundDark2,
-    borderRadius: 6,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
+    itemChartContainer: {
+        width: 118,
+        height: 32,
+        backgroundColor: colors.backgroundDark2,
+        borderRadius: 6,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
 }));
