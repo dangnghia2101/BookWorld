@@ -41,6 +41,7 @@ const HomeScreenMyAp = () => {
     const scrollX = React.useRef(new Animated.Value(0)).current;
 
     const myInfo = useAppSelector(state => state.root.auth);
+
     const allBooks = useAppSelector(state => state.root.book.bookList);
     const allCategories = useAppSelector(state => state.root.book.categoryList);
     const themeStore = useAppSelector(state => state.root.themeApp.theme);
@@ -132,7 +133,7 @@ const HomeScreenMyAp = () => {
     const renderListBookFree = useCallback(() => {
         return (
             <Block>
-                <HeaderListBook title={'Sách miễn phí'} action={() => {}} />
+                <HeaderListBook title={'Sách miễn phí'} action={() => { }} />
                 <Animated.FlatList
                     data={allBooks}
                     keyExtractor={item => Math.random() + item._id}

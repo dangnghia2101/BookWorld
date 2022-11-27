@@ -16,16 +16,18 @@ const ItemAuthor = ({ item, t }) => {
 
   return (
     <TouchableOpacity
-      onPress={() => navigation.navigate(routes.DETAIL_AUTHOR_MY_AP)}>
-      <Block width="100%" height={200} alignCenter marginTop={20} relative>
+      onPress={() => navigation.navigate(routes.DETAIL_AUTHOR_MY_AP, { bookmark: true, item })}>
+      <Block width="100%" height={200} alignCenter marginTop={20} relative >
         <Block
           width="100%"
           height={145}
-          backgroundColor={theme.colors.darkGray}
+          backgroundColor={theme.colors.grey12}
           radius={20}
           absolute
           row
-          top={50}>
+          top={50}
+        >
+
           <Block width="50%" height="100%">
             <Text style={styles.textName}>{t('textNameAuthor')}</Text>
             <Text style={styles.nameAuthor}>{item.name}</Text>
@@ -70,16 +72,29 @@ const ItemAuthor = ({ item, t }) => {
         </Block>
         <Block
           backgroundColor={theme.colors.white}
-          width={100}
-          height={100}
+          width={110}
+          height={110}
           radius={50}
           justifyCenter
           alignCenter
           padding={7}
           borderWidth={4}
-          borderColor={theme.colors.creamRed}>
-          <Image style={styles.avatar} source={{ uri: item.image }} />
+          borderColor={theme.colors.text}
+        >
+          <Block
+            // backgroundColor={theme.colors.white}
+            width={100}
+            height={100}
+            radius={50}
+            justifyCenter
+            alignCenter
+            padding={7}
+            borderWidth={4}
+            borderColor={theme.colors.black}>
+            <Image style={styles.avatar} source={{ uri: item.avatar }} />
+          </Block>
         </Block>
+
       </Block>
     </TouchableOpacity>
   );
@@ -89,9 +104,10 @@ export default withNamespaces()(ItemAuthor);
 
 const styles = StyleSheet.create({
   totalRead: {
-    color: '#19191B',
+    color: theme.colors.black,
     fontSize: 16,
     marginTop: 3,
+    marginLeft: '15%',
     lineHeight: 21,
     fontWeight: '900',
   },
@@ -100,37 +116,40 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 18,
     textAlign: 'center',
-    marginTop: 14,
-    marginLeft: 11,
+    marginTop: '8%',
+    marginLeft: '20%',
     width: 122,
+    color: '#464444'
   },
   totalRate: {
     fontWeight: '400',
     fontSize: 14,
     lineHeight: 21,
-    color: '#19191B',
+    color: theme.colors.black,
     marginLeft: 3.21,
   },
   textRate: {
-    marginTop: 17,
-    marginLeft: 22,
+    marginTop: '10%',
+    marginLeft: '12%',
     fontWeight: '500',
     fontSize: 12,
     lineHeight: 15,
+    color: theme.colors.black
   },
   nameAuthor: {
-    marginTop: 11,
-    marginLeft: 22,
+    marginTop: '5%',
+    marginLeft: '12%',
     fontWeight: '600',
+    fontSize: 15,
     lineHeight: 21,
     color: '#19191B',
   },
   textName: {
-    marginTop: 22,
-    marginLeft: 22,
+    marginTop: '10%',
+    marginLeft: '12%',
     color: '#464444',
     fontWeight: '500',
-    fontSize: 12,
+    fontSize: 14,
     lineHeight: 15,
   },
   avatar: {
@@ -139,4 +158,13 @@ const styles = StyleSheet.create({
     borderRadius: 40,
     margin: 7,
   },
+  Container: {
+    shadowColor: theme.colors.black,
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 1,
+    shadowRadius: 6,
+  }
 });
