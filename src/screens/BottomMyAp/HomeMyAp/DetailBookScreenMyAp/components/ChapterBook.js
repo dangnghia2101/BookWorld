@@ -2,23 +2,16 @@ import { Block, Button, Text } from '@components';
 import { WINDOW_WIDTH } from '@gorhom/bottom-sheet';
 import { useAppSelector } from '@hooks';
 import { routes } from '@navigation/routes';
-import React, { useEffect, useState } from 'react';
-import {
-    StyleSheet,
-    TouchableOpacity,
-    TextInput,
-    Pressable,
-    Modal,
-} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import {
+    saveCartReducer,
+    saveChapterReducer,
+} from '@redux/reducerNew/cartReducer';
 import { useAppDispatch } from 'hooks';
-import { makeStyles, useTheme } from 'themeNew';
-import { saveCartReducer } from '@redux/reducerNew/cartReducer';
-import { saveChapterReducer } from '@redux/reducerNew/cartReducer';
+import React, { useEffect, useState } from 'react';
+import { Modal, TouchableOpacity } from 'react-native';
 import Fontisto from 'react-native-vector-icons/Fontisto';
-import { theme } from '@theme';
-
-
+import { makeStyles, useTheme } from 'themeNew';
 
 const ChapterBook = ({
     detailBook,
@@ -44,7 +37,7 @@ const ChapterBook = ({
         useEffect(() => {
             toggleModal();
         }, [visible]);
-    
+
         const toggleModal = () => {
             if (visible) {
                 setShowModal(true);
@@ -66,7 +59,7 @@ const ChapterBook = ({
             name: infoBook.name,
             isPrice: infoBook.isPrice,
             image: infoBook.image,
-            chapter: {_item},
+            chapter: { _item },
             status: false,
         };
 
@@ -79,7 +72,7 @@ const ChapterBook = ({
         });
         if (co === 0) {
             dispatch(saveCartReducer(data));
-        }else{
+        } else {
             addChapter(_item);
         }
         setVisible(false);
@@ -99,17 +92,19 @@ const ChapterBook = ({
         });
     };
     useEffect(() => {
-        if (isRead) {
-            setData(
-                detailBook?.filter(item => item?.element?.htmlChapter !== ''),
-            );
-        } else {
-            setData(
-                detailBook?.filter(
-                    item => item?.element?.linkAudio?.length > 0,
-                ),
-            );
-        }
+        // if (isRead) {
+        //     setData(
+        //         detailBook?.filter(item => item?.element?.htmlChapter !== ''),
+        //     );
+        // } else {
+        //     setData(
+        //         detailBook?.filter(
+        //             item => item?.element?.linkAudio?.length > 0,
+        //         ),
+        //     );
+        // }
+
+        setData(detailBook?.filter(item => item?.element?.htmlChapter !== ''));
     }, [detailBook, isRead]);
 
     return (
@@ -184,15 +179,15 @@ const ChapterBook = ({
                 {data?.map((item, index) => (
                     <TouchableOpacity
                         onPress={() => {
-                            if (item.ispay == true) {
+                            if (item.isPay === true) {
                                 if (isRead) {
                                     navigation.navigate(
                                         routes.PLAY_BOOK_MY_AP,
-                                        item.element,
+                                        { idChapter: item.idChapter },
                                     );
                                 } else {
                                     navigation.navigate(routes.LISTEN_BOOK, {
-                                        item: item.element,
+                                        idChapter: item.idChapter,
                                         nameBook: nameBook,
                                     });
                                 }
@@ -208,13 +203,20 @@ const ChapterBook = ({
                             radius={5}
                             width={'100%'}
                             backgroundColor={
-                                item.ispay
+                                item.isPay
                                     ? themeNew.colors.primary
                                     : themeNew.colors.grey12
                             }
                             paddingVertical={10}
                             paddingHorizontal={5}>
-                            <Text>{item.element.chapterNumber}</Text>
+                            <Text
+                                color={
+                                    item.isPay
+                                        ? themeNew.colors.white
+                                        : themeNew.colors.grey6
+                                }>
+                                {item?.chapterNumber}
+                            </Text>
                         </Block>
                     </TouchableOpacity>
                 ))}
@@ -251,7 +253,7 @@ const ChapterBook = ({
     );
 };
 
-const useStyle = makeStyles()(({ normalize, colors }) =>({
+const useStyle = makeStyles()(({ normalize, colors }) => ({
     textButtomLogin: {
         fontSize: 16,
         fontWeight: '700',
