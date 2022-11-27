@@ -8,18 +8,18 @@ const screenWidth = Dimensions.get('window').width;
 import { makeStyles, useTheme } from 'themeNew';
 import { withNamespaces } from 'react-i18next';
 import { useAppSelector, useAppDispatch } from '@hooks';
-
 import { useGetReadTimeBookQuery, useLazyGetReadTimeBookQuery } from '@redux/servicesNew';
 import { ScrollView } from 'react-native-gesture-handler';
 
 const ChartMoreMy = props => {
   const [data, setData] = useState([]);
+  const [nameXChart, setNameXChart] = useState('month');
   const [getReadTimeBook] = useLazyGetReadTimeBookQuery();
   //thuc hien dau goi do getReadTimeBook(id);
   const myInfo = useAppSelector(state => state.root.auth);
   const actions = myInfo._id;
   //console.log("token", myInfo.token);
-  //console.log("id >>>", actions);
+  console.log("id >>>", actions);
   //data = useGetReadTimeBookQuery(actions);
   //chay 1 lan
 
@@ -48,21 +48,11 @@ const ChartMoreMy = props => {
     //   "month": data?.data[0][2022][0].map(x => x.November),
     //   "time":  data?.data[0][2022][0].map(x => x.November)
     // },
-    {
-        "month": "February",
-        "time": 300000,
-    }
+    // {
+    //     "month": "February",
+    //     "time": 300000,
+    // }
   ]
- 
-
-  // function handleClick(e){
-  //   data.forEach(each => {
-  //     if(each. === e.target.id){
-  //       setData({values: each.values, types: each.types})
-  //       console.log(">>>", {values: each.values, types: each.types});
-  //     }
-  //   })
-  // }
  
   return (
     <Block marginVertical={20} column justifyCenter>
@@ -84,23 +74,22 @@ const ChartMoreMy = props => {
           <Text color={themeNew.colors.textDark}>{t('year')}</Text>
         </TouchableOpacity>
       </Block>
-
-<ScrollView>
-<VictoryChart theme={VictoryTheme.material}>
-        <VictoryBar
-          style={{data: {fill: '#0D7EF9', width: 15}}}
-          animate={{
-            duration: 3000,
-            onLoad: {
-              duration: 3000,
-            },
-          }}
-          data={dataMonth} x="month" y="time"
-        />
-      </VictoryChart>
-</ScrollView>
-      
+        <ScrollView>
+        <VictoryChart theme={VictoryTheme.material}>
+                <VictoryBar
+                  style={{data: {fill: '#0D7EF9', width: 15}}}
+                  animate={{
+                    duration: 3000,
+                    onLoad: {
+                      duration: 3000,
+                    },
+                  }}
+                  data={dataMonth} x={nameXChart} y="hour"
+                />
+              </VictoryChart>
+        </ScrollView>                        
     </Block>
+  );
 };
 
 export default withNamespaces()(ChartMoreMy);
