@@ -29,7 +29,7 @@ const ItemCategory = ({ item }) => {
                 {item?.item?.image && (
                     <Image
                         style={styles.image}
-                        source={{ uri: item.item.image }}
+                        source={{ uri: item.item.image || '' }}
                     />
                 )}
                 <Text

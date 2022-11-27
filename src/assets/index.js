@@ -7,6 +7,8 @@ const icons = {
     star_happy: require('./icons/star_happy.png'),
     star_sad: require('./icons/star_sad.png'),
     logo: require('./icons/logo.png'),
+    facebook: require('./icons/facebook.png'),
+    twitter: require('./icons/twitter.png'),
 };
 
 const images = {

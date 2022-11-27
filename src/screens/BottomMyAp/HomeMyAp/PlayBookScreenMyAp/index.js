@@ -51,9 +51,10 @@ const PlayBookScreenMyAp = ({ route }) => {
     [],
   );
 
+
+
   const renderRightIconHeader = () => (
-    <Button
-      onPress={changBottomSheet}>
+    <Button onPress={() => bottomSheetRef.current?.snapToIndex(0)}>
       <IconView
         component={'Entypo'}
         name={'dots-three-vertical'}
@@ -62,16 +63,6 @@ const PlayBookScreenMyAp = ({ route }) => {
       />
     </Button>
   );
-  const changBottomSheet = () => {
-    if (snapTI == 0) {
-      snapTI = -1;
-      bottomSheetRef.current?.snapToIndex(snapTI);
-      bottomSheetCommetnRef.current?.snapToIndex(0);
-    } else {
-      snapTI = 0;
-      bottomSheetRef.current?.snapToIndex(snapTI);
-    }
-  }
 
   const initailStyle = `
   document.body.style.marginLeft = '5%'
@@ -102,16 +93,20 @@ const PlayBookScreenMyAp = ({ route }) => {
   });`;
 
   useEffect(() => {
-    if (themeBack === true) {
-      webref.current.injectJavaScript(backgroundWhite);
-    } else {
-      webref.current.injectJavaScript(backgroundBlack);
+    if (webref.current) {
+      if (themeBack === true) {
+        webref.current.injectJavaScript(backgroundWhite);
+      } else {
+        webref.current.injectJavaScript(backgroundBlack);
+      }
     }
-  }, [backgroundBlack, backgroundWhite, themeBack]);
+  }, [backgroundBlack, backgroundWhite, themeBack, dataGet]);
 
   useEffect(() => {
-    webref.current.injectJavaScript(changeSize);
-  }, [changeSize, size]);
+    if (webref.current) {
+      webref.current.injectJavaScript(changeSize);
+    }
+  }, [changeSize, size, dataGet]);
 
   const endReadBook = async () => {
     const timeEnd = new Date();

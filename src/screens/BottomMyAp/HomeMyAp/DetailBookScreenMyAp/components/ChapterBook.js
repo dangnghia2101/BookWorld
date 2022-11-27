@@ -2,21 +2,16 @@ import { Block, Button, Text } from '@components';
 import { WINDOW_WIDTH } from '@gorhom/bottom-sheet';
 import { useAppSelector } from '@hooks';
 import { routes } from '@navigation/routes';
-import React, { useEffect, useState } from 'react';
-import {
-    StyleSheet,
-    TouchableOpacity,
-    TextInput,
-    Pressable,
-    Modal,
-} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import {
+    saveCartReducer,
+    saveChapterReducer,
+} from '@redux/reducerNew/cartReducer';
 import { useAppDispatch } from 'hooks';
-import { makeStyles, useTheme } from 'themeNew';
-import { saveCartReducer } from '@redux/reducerNew/cartReducer';
-import { saveChapterReducer } from '@redux/reducerNew/cartReducer';
+import React, { useEffect, useState } from 'react';
+import { Modal, TouchableOpacity } from 'react-native';
 import Fontisto from 'react-native-vector-icons/Fontisto';
-import { theme } from '@theme';
+import { makeStyles, useTheme } from 'themeNew';
 
 const ChapterBook = ({
     detailBook,
@@ -97,17 +92,19 @@ const ChapterBook = ({
         });
     };
     useEffect(() => {
-        if (isRead) {
-            setData(
-                detailBook?.filter(item => item?.element?.htmlChapter !== ''),
-            );
-        } else {
-            setData(
-                detailBook?.filter(
-                    item => item?.element?.linkAudio?.length > 0,
-                ),
-            );
-        }
+        // if (isRead) {
+        //     setData(
+        //         detailBook?.filter(item => item?.element?.htmlChapter !== ''),
+        //     );
+        // } else {
+        //     setData(
+        //         detailBook?.filter(
+        //             item => item?.element?.linkAudio?.length > 0,
+        //         ),
+        //     );
+        // }
+
+        setData(detailBook?.filter(item => item?.element?.htmlChapter !== ''));
     }, [detailBook, isRead]);
 
     return (
@@ -183,7 +180,7 @@ const ChapterBook = ({
                     <TouchableOpacity
                         onPress={() => {
                             if (item.isPay === true) {
-                                if (!isRead) {
+                                if (isRead) {
                                     navigation.navigate(
                                         routes.PLAY_BOOK_MY_AP,
                                         { idChapter: item.idChapter },
