@@ -1571,6 +1571,11 @@
   dependencies:
     invariant "^2.2.4"
 
+"@react-native-community/slider@^4.3.3":
+  version "4.3.3"
+  resolved "https://registry.yarnpkg.com/@react-native-community/slider/-/slider-4.3.3.tgz#281e90523ab3fac3463edf271ffe465cfd9932c9"
+  integrity sha512-eVhMaVR08wWlseVWlDS7zgdhbVY0n2i7BF1qRxK+2N1VIKd7NsTIRzL57sFLgHVjbUmu/+hHfxCzLHmEaGxIQg==
+
 "@react-native-firebase/app@15.4.0":
   version "15.4.0"
   resolved "https://registry.yarnpkg.com/@react-native-firebase/app/-/app-15.4.0.tgz#616a6d13956fbed1ee010ca05b9e62969d19b5c5"
@@ -7581,6 +7586,11 @@ react-native-select-dropdown@^1.13.0:
   resolved "https://registry.npmjs.org/react-native-select-dropdown/-/react-native-select-dropdown-1.13.0.tgz"
   integrity sha512-UGXWbuEqsG6B6O+tle77yJH3+DXfmh4cpit0v8az824y0rZLUWuRzlfeLYlaeZ80mqIF6Xtvx/pBtIsG1OdaLg==
 
+react-native-share@^8.0.0:
+  version "8.0.0"
+  resolved "https://registry.yarnpkg.com/react-native-share/-/react-native-share-8.0.0.tgz#95520a16fca151822ce8a3b00240cf3a17eacb97"
+  integrity sha512-IFUKcWQ1/VgtsQmuC3EKaIPMhKqssTblwCojtTB4dehWJ2ZUPsIstPXJGqcmWqg7/S3cLNfCLvxf/tVaZvptxw==
+
 react-native-simple-toast@^1.1.3:
   version "1.1.3"
   resolved "https://registry.npmjs.org/react-native-simple-toast/-/react-native-simple-toast-1.1.3.tgz"
@@ -7639,6 +7649,11 @@ react-native-tab-view@^3.1.1:
   version "3.1.1"
   resolved "https://registry.npmjs.org/react-native-tab-view/-/react-native-tab-view-3.1.1.tgz"
   integrity sha512-M5pRN6utQfytKWoKlKVzg5NbkYu308qNoW1khGTtEOTs1k14p2dHJ/BWOJoJYHKbPVUyZldbG9MFT7gUl4YHnw==
+
+react-native-track-player@^3.2.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/react-native-track-player/-/react-native-track-player-3.2.0.tgz#c7b7a53eaf4c248af2ac876ef349feaee2ef774a"
+  integrity sha512-svv6TOgU/quFV1aajG5PskVhgFG0wHQtO+aYs6cIH0D27ckzN8WVoC3jI94m1CVaSgLMw48P911csYuD2fIcqA==
 
 react-native-vector-icons@^9.1.0:
   version "9.1.0"

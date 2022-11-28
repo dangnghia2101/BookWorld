@@ -118,6 +118,7 @@ export const colors = {
     blue: '#4484FF',
     loss: '#DF554A',
     icon: '#45464D',
+    darkPurple: '#331A45',
   },
 };
 

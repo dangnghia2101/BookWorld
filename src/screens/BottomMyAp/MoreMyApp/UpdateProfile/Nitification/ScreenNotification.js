@@ -15,7 +15,7 @@ const ScreenNotification = () => {
     let dataNoti = myInfo.notification;
     console.log("dataNotiiiiiiiiiiii", dataNoti);
     return (
-        <Block flex backgroundColor={themeNew.colors.text} >
+        <Block flex backgroundColor={themeNew.colors.grey16} >
             <HeaderWithButton isBackHeader title={'Thông báo'} />
             <ScrollView>
                 {dataNoti.map((item, index) => (
