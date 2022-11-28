@@ -152,7 +152,7 @@ const TapReadingStatus = () => {
             renderLabel={_renderLabel}
             tabStyle={styles.tabStyle}
             indicatorStyle={styles.tabBarIndicatorStyle}
-            style={{ backgroundColor: themeNew.colors.white }}
+            style={{ backgroundColor: themeNew.colors.grey16 }}
           />
         )}
       </>
@@ -163,7 +163,7 @@ const TapReadingStatus = () => {
       case 'cate01':
         return index === 0 ? <TabSceneReadingStatus route={route} /> : null;
       case 'cate02':
-        return index === 1 ? <TapScreenFavoriteBook /> : null;
+        return index === 1 ? <TapScreenFavoriteBook route={route} /> : null;
       case 'cate03':
         return index === 2 ? <TapScenceAuthor /> : null;
       default:

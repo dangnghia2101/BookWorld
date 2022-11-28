@@ -16,6 +16,7 @@ import { useAppSelector } from '@hooks';
 import BottomSheet, { BottomSheetBackdrop } from '@gorhom/bottom-sheet';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useEditProfileMutation } from '@redux/servicesNew/editProflieAPI';
+import { makeStyles, useTheme } from 'themeNew';
 
 const createFormData = (photo, name) => {
     console.log('createFormDataaaaaaa', photo);
@@ -27,6 +28,8 @@ const createFormData = (photo, name) => {
 
 const ScreenUpdateProfile = () => {
     const myInfo = useAppSelector(state => state.root.auth);
+    const themeStore = useAppSelector(state => state.root.themeApp.theme);
+    const theme = useTheme(themeStore);
     const [imageUri, setImageUri] = useState({ uri: myInfo.image });
     const [name, setName] = useState(myInfo.name);
     const [editProfile] = useEditProfileMutation();
@@ -115,7 +118,7 @@ const ScreenUpdateProfile = () => {
     };
 
     return (
-        <Block flex backgroundColor={theme.colors.white}>
+        <Block flex backgroundColor={theme.colors.grey16}>
             <HeaderWithButton isBackHeader title={'Chỉnh sửa thông tin'} />
             <ScrollView>
                 <Block

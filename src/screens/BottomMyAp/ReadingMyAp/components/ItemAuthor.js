@@ -21,7 +21,7 @@ const ItemAuthor = ({ item, t }) => {
         <Block
           width="100%"
           height={145}
-          backgroundColor={theme.colors.grey12}
+          backgroundColor={theme.colors.white}
           radius={20}
           absolute
           row
@@ -79,7 +79,7 @@ const ItemAuthor = ({ item, t }) => {
           alignCenter
           padding={7}
           borderWidth={4}
-          borderColor={theme.colors.text}
+          borderColor={theme.colors.grey16}
         >
           <Block
             // backgroundColor={theme.colors.white}

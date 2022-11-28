@@ -3,6 +3,7 @@ import {
   Text,
   ScrollView,
   Image,
+  FlatList,
   TouchableOpacity,
 } from 'react-native';
 import React, { useState, useEffect } from 'react';
@@ -12,30 +13,38 @@ import { theme } from '@theme';
 import { width } from '@utils/responsive';
 import { useNavigation } from '@react-navigation/core';
 import TabSceneReadingStatus from '../components/TabSceneReadingStatus';
+import { useAppSelector } from '@hooks';
+import { makeStyles, useTheme } from 'themeNew';
+import { useGetFavoriteBookQuery } from '@redux/servicesNew'
+import ItemCateBook from '@screens/BottomMyAp/HomeMyAp/HomeScreenMyAp/components/ItemCateBook';
+import BookOfauthor from '../components/BookOfAuthor';
+
 const widthItemEventIncoming = width - width / 3;
 const WIDTH_ITEM_INVIEW = widthItemEventIncoming - 20;
 
 const DetailAuthor = ({ route }) => {
   let item = route.params.item;
+  const themeStore = useAppSelector(state => state.root.themeApp.theme);
+  const theme = useTheme(themeStore);
 
   return (
-    <Block backgroundColor={theme.colors.white} flex>
-      <TopBar isBackHeader />
-      <Block width="100%" height="60%">
-        <Block
-          width="100%"
-          height={'50%'}
-          backgroundColor={theme.colors.darkPurple}>
+    <Block backgroundColor={theme.colors.grey16} flex>
+      <ScrollView>
+        <TopBar isBackHeader />
+        <Block width="100%" height="15%">
+          <Block
+            width="100%"
+            height={'50%'}
+            backgroundColor={theme.colors.darkPurple}>
+          </Block>
+          <Block width={'75%'} height={'60%'} absolute top={65} left={70} >
+            <Image
+              style={styles.imgAuthor}
+              source={{ uri: item.avatar }}
+            />
+          </Block>
+          <Text style={styles.nameAuthor}>{item.name}</Text>
         </Block>
-        <Block width={'70%'} height={'50%'} absolute top={65} left={100} >
-          <Image
-            style={styles.imgAuthor}
-            source={{ uri: item.avatar }}
-          />
-        </Block>
-        <Text style={styles.nameAuthor}>{item.name}</Text>
-      </Block>
-      <ScrollView style={styles.ScrollView} showsVerticalScrollIndicator={false}>
         <Block width="100%" paddingHorizontal={24}>
           <Block>
             <Text style={styles.textIntro}>Giới thiệu về tác giả</Text>
@@ -59,9 +68,9 @@ const DetailAuthor = ({ route }) => {
           <Block marginTop={42}>
             <Text style={styles.textBook}>Sách của tác giả</Text>
             {/* <FlatList
-              data={listBookOfAuthor?.data}
+              data={data}
               keyExtractor={item => item._id}
-              renderItem={_renderItemBookOfAuthor}
+              renderItem={item => <ItemCateBook item={item.item} />}
               ListEmptyComponent={
                 <Block
                   width={width}
@@ -70,8 +79,9 @@ const DetailAuthor = ({ route }) => {
                   alignCenter>
                   <Text>Chưa có sach</Text>
                 </Block>
-              } */}
-            <TabSceneReadingStatus route={route} />
+              } /> */}
+            <BookOfauthor />
+            {/* <TabSceneReadingStatus /> */}
           </Block>
         </Block>
       </ScrollView>
@@ -82,9 +92,7 @@ const DetailAuthor = ({ route }) => {
 export default DetailAuthor;
 
 const styles = StyleSheet.create({
-  ScrollView: {
-    marginTop: '-20%'
-  },
+
   imgAuthor: {
     width: '100%',
     height: '100%',
@@ -114,8 +122,8 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     fontSize: 24,
     lineHeight: 36,
-    left: '35%',
-    top: '65%',
+    left: '32%',
+    top: '76%',
     color: 'black',
   },
   iconBack: {

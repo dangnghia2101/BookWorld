@@ -16,7 +16,7 @@ const ReadingScreenMyAp = () => {
   const theme = useTheme(themeStore);
   const styles = useStyle(themeStore);
   return (
-    <Block flex paddingHorizontal={10} backgroundColor={theme.colors.white}>
+    <Block flex paddingHorizontal={10} backgroundColor={theme.colors.grey16}>
       <Block width={'100%'} height={'10%'} marginVertical={10}>
         <Pressable
           onPress={() => navigation.navigate(routes.SEARCH)}

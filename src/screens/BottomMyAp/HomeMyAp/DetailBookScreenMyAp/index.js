@@ -19,13 +19,14 @@ import ImageBook from './components/ImageBook';
 import IntroduceText from './components/IntroduceText';
 import IconView from '@components/Icon';
 import { saveFavoriteBookReducer } from '@redux/reducerNew';
-
+import { usePostSaveFavoriteBooksMutation } from '@redux/servicesNew';
 const DetailBookScreenMyAp = ({ route }) => {
   const { bookmark, item, _isRead } = route.params;
   const [listChapters, setListChapters] = useState([]);
   const [isRead, setIsRead] = useState(_isRead || true);
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
+  const [saveFavoriteBook] = usePostSaveFavoriteBooksMutation()
   const { progressInDay, target } = useAppSelector(
     state => state.root.reading,
   );
@@ -61,11 +62,14 @@ const DetailBookScreenMyAp = ({ route }) => {
     fetchAPI();
   }, [getAllChapterBook, item._id, myInfo._id]);
 
-
+  const handleSaveFavoriteBook = async () => {
+    const body = { id: myInfo._id, idBook: item }
+    await saveFavoriteBook(body);
+  }
   const favoriteIcon = () => {
     return (
       <TouchableOpacity
-        onPress={() => dispatch(saveFavoriteBookReducer(item))}
+        onPress={handleSaveFavoriteBook}
       >
         <Block justifyCenter width={50} paddingVertical={2}>
           <IconView
