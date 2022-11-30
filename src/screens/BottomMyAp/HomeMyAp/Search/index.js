@@ -48,10 +48,12 @@ const useStyle = makeStyles()(({ normalize, colors }) => ({
     styleSearch: {
         backgroundColor: colors.grey13,
         borderColor: colors.grey13,
+        height: normalize(50)('moderate'),
     },
     styleSearchFocus: {
         borderColor: colors.primary,
         borderWidth: 2,
+        height: normalize(50)('moderate'),
     },
 }));
 

@@ -37,6 +37,8 @@ import BottomSheet, {
 } from '@gorhom/bottom-sheet';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { icons, NotFoundIcon } from '@assets';
+import Share from 'react-native-share';
+import { color } from 'react-native-reanimated';
 
 const { width, height } = Dimensions.get('window');
 
@@ -261,19 +263,21 @@ export const ListenBook = ({ route }) => {
                 snapPoints={snapPoints}
                 enablePanDownToClose={true}
                 backdropComponent={renderBackdrop}>
-                <Block
-                    backgroundColor={colors.white}
-                    paddingHorizontal={10}
-                    alignCenter
-                    flex>
+                <Block backgroundColor={colors.white} alignCenter flex>
                     <Text marginVertical={10} size={16} fontType="bold">
-                        Danh sach cho
+                        Danh sách chờ
                     </Text>
+                    <Block
+                        height={1}
+                        backgroundColor={colors.grey12}
+                        width={'100%'}
+                    />
 
                     <BottomSheetFlatList
                         data={allBooks}
                         renderItem={ItemBook}
                         keyExtractor={keyExtractor}
+                        showsVerticalScrollIndicator={false}
                         style={{
                             width: width,
                             paddingHorizontal: 30,
@@ -284,10 +288,26 @@ export const ListenBook = ({ route }) => {
         );
     };
 
+    const shareToFacebookStory = async _social => {
+        const shareOptions = {
+            message: `Sách ${nameBook} hay quá`,
+            title: `Sách ${nameBook} hay quá`,
+            url: trackArtwork,
+            social: _social,
+        };
+
+        try {
+            const ShareResponse = await Share.shareSingle(shareOptions);
+            console.log('Response =>', ShareResponse);
+        } catch (error) {
+            console.log('Error =>', error);
+        }
+    };
+
     const renderShare = () => {
         return (
             <ModalBox
-                isVisible={true}
+                isVisible={visibleModal}
                 onBackdropPress={() => setVisibleModal(!visibleModal)}>
                 <Block
                     width={width * 0.7}
@@ -297,7 +317,11 @@ export const ListenBook = ({ route }) => {
                     justifyCenter={'center'}
                     alignCenter
                     padding={20}>
-                    <Text color={colors.grey6} fontType="bold1" size={16}>
+                    <Text
+                        color={colors.grey4}
+                        fontType="bold1"
+                        size={16}
+                        marginBottom={15}>
                         Chia sẻ cuốn sách thú vị
                     </Text>
                     {trackArtwork ? (
@@ -309,14 +333,37 @@ export const ListenBook = ({ route }) => {
                     ) : (
                         <NotFoundIcon width={100} height={100} />
                     )}
+                    <Text
+                        color={colors.grey4}
+                        size={14}
+                        fontType="bold1"
+                        marginTop={10}>
+                        {nameBook}
+                    </Text>
 
                     <Block
                         marginTop={20}
                         row
                         width={width * 0.3}
                         space="around">
-                        <Image source={icons.facebook} style={style.iconLogo} />
-                        <Image source={icons.twitter} style={style.iconLogo} />
+                        <TouchableOpacity
+                            onPress={() =>
+                                shareToFacebookStory(Share.Social.FACEBOOK)
+                            }>
+                            <Image
+                                source={icons.facebook}
+                                style={style.iconLogo}
+                            />
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={() =>
+                                shareToFacebookStory(Share.Social.TWITTER)
+                            }>
+                            <Image
+                                source={icons.twitter}
+                                style={style.iconLogo}
+                            />
+                        </TouchableOpacity>
                     </Block>
                 </Block>
             </ModalBox>
@@ -455,7 +502,7 @@ export const ListenBook = ({ route }) => {
                         />
                     </TouchableOpacity>
 
-                    <TouchableOpacity onPress={() => {}}>
+                    <TouchableOpacity onPress={() => setVisibleModal(true)}>
                         <Ionicons
                             name="share-outline"
                             size={25}
@@ -580,5 +627,6 @@ const useStyle = makeStyles()(({ normalize, colors }) => ({
     imageBookShare: {
         height: normalize(200)('moderate'),
         width: normalize(150)('moderate'),
+        borderRadius: normalize(10)('moderate'),
     },
 }));

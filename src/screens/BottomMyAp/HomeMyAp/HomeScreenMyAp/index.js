@@ -133,7 +133,7 @@ const HomeScreenMyAp = () => {
     const renderListBookFree = useCallback(() => {
         return (
             <Block>
-                <HeaderListBook title={'Sách miễn phí'} action={() => { }} />
+                <HeaderListBook title={'Sách miễn phí'} action={() => {}} />
                 <Animated.FlatList
                     data={allBooks}
                     keyExtractor={item => Math.random() + item._id}
