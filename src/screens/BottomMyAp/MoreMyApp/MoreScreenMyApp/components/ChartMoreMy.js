@@ -174,14 +174,14 @@ export default withNamespaces()(ChartMoreMy);
 
 const useStyle = makeStyles()(({ colors }) => ({
     shadowColor: {
-        shadowColor: colors.shadowDark,
+        shadowColor: colors.grey12,
         shadowOffset: {
             width: 0,
-            height: 3,
+            height: 2,
         },
-        shadowOpacity: 1.27,
+        shadowOpacity: 1,
         shadowRadius: 4.65,
-        elevation: 6,
+        elevation: 2,
     },
     itemChartContainer: {
         width: 118,

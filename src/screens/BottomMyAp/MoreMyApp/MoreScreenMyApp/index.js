@@ -17,8 +17,8 @@ const MoreMyApp = props => {
     const themeNew = useTheme(themeStore);
 
     return (
-        <Block flex justifyCenter backgroundColor={themeNew.colors.text}>
-            <HeaderWithButton title="Hồ sơ của bạn" />
+        <Block flex justifyCenter backgroundColor={themeNew.colors.grey16}>
+            <Header />
             <ScrollView showsVerticalScrollIndicator={false}>
                 <BodyEditMoreMy
                     name={myInfo?.name}
