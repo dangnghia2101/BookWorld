@@ -15,12 +15,14 @@ const Search = () => {
     const styles = useStyle(themeStore);
 
     const renderIconLeft = () => (
-        <IconView
-            component="Ionicons"
-            name="ios-search-outline"
-            color={colors.grey10}
-            size={22}
-        />
+        <Block marginRight={5}>
+            <IconView
+                component="Ionicons"
+                name="ios-search-outline"
+                color={colors.grey10}
+                size={22}
+            />
+        </Block>
     );
 
     return (

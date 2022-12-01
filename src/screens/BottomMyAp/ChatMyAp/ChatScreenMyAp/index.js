@@ -1,12 +1,19 @@
 import { Block, Container, Icon, Text, TextInput } from '@components';
+import BottomSheet, {
+    BottomSheetBackdrop,
+    BottomSheetScrollView,
+} from '@gorhom/bottom-sheet';
 import { useAppSelector, useDebounce } from '@hooks';
 import { routes } from '@navigation/routes';
 import { useNavigation } from '@react-navigation/core';
 import {
+    useCreateGroupMutation,
     useGetRoomChatQuery,
     useLazyGetRoomChatQuery,
 } from '@redux/servicesNew';
 import { theme } from '@theme';
+import { CustomToast } from '@utils/helper';
+import { height, width } from '@utils/responsive';
 import React, {
     useCallback,
     useEffect,
@@ -15,21 +22,18 @@ import React, {
     useState,
 } from 'react';
 import { FlatList, Image, Pressable } from 'react-native';
-import { makeStyles, useTheme } from 'themeNew';
-import BottomSheet, {
-    BottomSheetBackdrop,
-    BottomSheetScrollView,
-} from '@gorhom/bottom-sheet';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { height, width } from '@utils/responsive';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { makeStyles, useTheme } from 'themeNew';
+
+const handleKeyExtractor = item => item.toString();
 
 const ChatScreenMyApp = () => {
     const [searchPhrase, setSearchPhrase] = useState('');
     const socketRef = useRef();
     const [getRoomChat, { isSuccess, error }] = useLazyGetRoomChatQuery();
     const themeStore = useAppSelector(state => state.root.themeApp.theme);
-    const authors = useAppSelector(state => state.root.author.authors);
+    const { authors } = useAppSelector(state => state.root.author);
     const { colors } = useTheme(themeStore);
     const styles = useStyle(themeStore);
     const navigation = useNavigation();
@@ -42,11 +46,21 @@ const ChatScreenMyApp = () => {
     const [peopleSearch, setPeopleSearch] = useState(authors);
     const [peoplesChoose, setPeopleChoose] = useState({});
     const [searchText, setSearchText] = useState('');
+    const [nameGroup, setNameGroup] = useState('');
+    const [dataGroups, setDataGroups] = useState([]);
 
     const myInfo = useAppSelector(state => state.root.auth);
-    const { data } = useGetRoomChatQuery(myInfo.token);
+    // const { data } = useGetRoomChatQuery(myInfo.token);
+    const [createGroup] = useCreateGroupMutation();
 
-    const handleKeyExtractor = item => item.toString();
+    useEffect(() => {
+        const fetchGetGroups = async () => {
+            let { data } = await getRoomChat(myInfo.token);
+            // const reversedData = data.reverse();
+            setDataGroups(data);
+        };
+        fetchGetGroups();
+    }, []);
 
     const searchDebounce = useDebounce(searchText, 300);
 
@@ -157,6 +171,8 @@ const ChatScreenMyApp = () => {
                         </Text>
 
                         <TextInput
+                            value={nameGroup}
+                            onChangeText={setNameGroup}
                             placeholder="Nhập tên nhóm"
                             style={styles.containerSearch}
                         />
@@ -228,7 +244,34 @@ const ChatScreenMyApp = () => {
                         ))}
                     </BottomSheetScrollView>
                 </Block>
-                <TouchableOpacity>
+                <TouchableOpacity
+                    onPress={async () => {
+                        const body = {
+                            bodySend: {
+                                name: nameGroup,
+                                image: '',
+                                users: [
+                                    ...Object.keys(peoplesChoose),
+                                    myInfo._id,
+                                ],
+                            },
+                            token: myInfo.token,
+                        };
+
+                        const response = await createGroup(body);
+
+                        if (response.data.statusCode === 200) {
+                            bottomSheetRef.current.snapToIndex(-1);
+                            setPeopleChoose({});
+                            setNameGroup('');
+                            CustomToast('Tạo nhóm thành công');
+
+                            const { data } = await getRoomChat(myInfo.token);
+                            setDataGroups(data);
+                        } else {
+                            CustomToast('Đăng kí thất bại');
+                        }
+                    }}>
                     <Block
                         width={width * 0.85}
                         height={50}
@@ -246,13 +289,14 @@ const ChatScreenMyApp = () => {
     const renderGroup = useCallback(() => {
         return (
             <FlatList
-                data={data}
+                data={dataGroups}
                 keyExtractor={handleKeyExtractor}
                 renderItem={renderItemChat}
                 ItemSeparatorComponent={renderSpace}
+                showsVerticalScrollIndicator={false}
             />
         );
-    }, [data]);
+    }, [dataGroups]);
 
     return (
         <Container style={styles.root} statusColor={colors.white}>

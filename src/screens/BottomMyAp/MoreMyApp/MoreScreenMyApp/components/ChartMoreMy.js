@@ -20,9 +20,8 @@ const ChartMoreMy = props => {
     const [getReadTimeBook] = useLazyGetReadTimeBookQuery();
     //thuc hien dau goi do getReadTimeBook(id);
     const myInfo = useAppSelector(state => state.root.auth);
-    const actions = myInfo._id;
-    //console.log("id >>>", actions);
-    // data = useGetReadTimeBookQuery(actions);
+    const { data: dataReadTime } = useGetReadTimeBookQuery(myInfo._id);
+    console.log('Data read time ', dataReadTime);
     //chay 1 lan
 
     const { t } = props;

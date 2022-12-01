@@ -1,5 +1,6 @@
 import { Block, Icon, Text } from '@components';
 import { useAppSelector } from '@hooks';
+import { useNavigation } from '@react-navigation/core';
 import React, { useEffect, useState } from 'react';
 import { FlatList, View, Pressable, Image } from 'react-native';
 import { makeStyles, useTheme } from 'themeNew';
@@ -16,6 +17,7 @@ const ListTabBook = ({ route, search, setSearch }) => {
     const { colors } = useTheme(themeStore);
     const styles = useStyle(themeStore);
     const [listSearch, setListSearch] = useState([]);
+    const navigation = useNavigation();
 
     useEffect(() => {
         if (search) {

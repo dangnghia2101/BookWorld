@@ -1,3 +1,4 @@
+import { changeLoading } from '@redux/reducerNew';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { string } from 'prop-types';
 
@@ -76,6 +77,33 @@ export const chatAPI = createApi({
             transformResponse: (response: { data: MessageState[] }) =>
                 response.data,
         }),
+        createGroup: builder.mutation<
+            MessageState[],
+            {
+                bodySend: { name: string; image: string; users: [] };
+                token: string;
+            }
+        >({
+            query: body => {
+                return {
+                    url: 'rooms/create-room',
+                    method: 'POST',
+                    headers: { Authorization: `Bearer ${body.token}` },
+                    body: body.bodySend,
+                };
+            },
+            transformResponse: (response: any) => response,
+            async onQueryStarted(id, { dispatch, queryFulfilled }) {
+                try {
+                    dispatch(changeLoading('SHOW'));
+                    const { data } = await queryFulfilled;
+                    dispatch(changeLoading('HIDE')); // Save data in store, using reducer
+                } catch (err) {
+                    dispatch(changeLoading('HIDE'));
+                    console.log('error api getAllChapterBook... ', err);
+                }
+            },
+        }),
     }),
 });
 
@@ -84,4 +112,5 @@ export const {
     useGetRoomChatQuery,
     useGetChatsMutation,
     useSendMessageMutation,
+    useCreateGroupMutation,
 } = chatAPI;

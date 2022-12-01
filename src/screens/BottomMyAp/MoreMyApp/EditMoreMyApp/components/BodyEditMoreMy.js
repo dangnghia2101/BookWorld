@@ -36,7 +36,7 @@ const BodyEditMoreMy = props => {
                 <Text fontSize={13} color={themeNew.colors.textDark}>
                     {email}
                 </Text>
-                <Block row marginVertical={10}>
+                <Block row marginVertical={15}>
                     <Image
                         style={styles.imageRank}
                         source={require('../../../../../assets/images/rank3.png')}
@@ -63,7 +63,8 @@ export default withNamespaces()(BodyEditMoreMy);
 
 const useStyle = makeStyles()(({ colors }) => ({
     container: {
-        marginVertical: 10,
+        marginTop: 25,
+        marginBottom: 10,
         alignItems: 'center',
         justifyContent: 'center',
         flex: 1,
@@ -82,8 +83,8 @@ const useStyle = makeStyles()(({ colors }) => ({
         marginVertical: 15,
     },
     imageRank: {
-        width: 45,
-        height: 45,
+        width: 35,
+        height: 35,
         borderRadius: 25,
         marginHorizontal: 15,
         marginBottom: 10,

@@ -227,7 +227,6 @@ const HomeScreenMyAp = () => {
                     {renderListBookFree()}
                     {renderListTopAuthor()}
                     <Image source={images.banner} style={styles.banner} />
-                    {/* {renderListCategory()} */}
                 </Block>
             </ScrollView>
         </Container>
