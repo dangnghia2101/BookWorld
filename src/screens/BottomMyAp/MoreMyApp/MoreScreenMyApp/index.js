@@ -17,7 +17,7 @@ const MoreMyApp = props => {
     const themeNew = useTheme(themeStore);
 
     return (
-        <Block flex justifyCenter backgroundColor={themeNew.colors.grey16}>
+        <Block flex justifyCenter backgroundColor={themeNew.colors.background}>
             <Header />
             <ScrollView showsVerticalScrollIndicator={false}>
                 <BodyEditMoreMy

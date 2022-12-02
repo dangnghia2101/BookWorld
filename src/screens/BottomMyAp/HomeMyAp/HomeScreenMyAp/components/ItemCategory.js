@@ -37,6 +37,7 @@ const ItemCategory = ({ item }) => {
                     marginHorizontal={5}
                     marginTop={5}
                     numberOfLines={2}
+                    color={colors.textInBox}
                     flexGrow>
                     {item?.item?.name}
                 </Text>

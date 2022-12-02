@@ -49,7 +49,7 @@ const HeaderHome = props => {
             borderColor={themeNew.colors.grey12}
             space={'between'}
             row
-            backgroundColor={themeNew.colors.grey14}
+            backgroundColor={themeNew.colors.background}
             paddingVertical={20}>
             <Block alignCenter row marginLeft={15} flex>
                 <Image

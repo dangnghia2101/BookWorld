@@ -70,7 +70,7 @@ const ItemMostBookRead = ({ item, index, scrollX, size, t }) => {
                     }}
                 />
                 <Text
-                    color={theme.colors.textInBox}
+                    color={theme.colors.text}
                     marginHorizontal={10}
                     numberOfLines={1}
                     marginTop={10}

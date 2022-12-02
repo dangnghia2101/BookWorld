@@ -5,7 +5,6 @@ import { ScrollView } from 'react-native';
 import ItemEditLastMoreMy from './components/ItemEditLastMoreMy';
 import ItemEditMoreMy from './components/ItemEditMoreMy';
 import BodyEditMoreMy from './components/BodyEditMoreMy';
-
 import { useAppSelector } from 'hooks';
 import { makeStyles, useTheme } from 'themeNew';
 import { withNamespaces } from 'react-i18next';
@@ -17,8 +16,8 @@ const MoreMyApp = props => {
     const themeNew = useTheme(themeStore);
 
     return (
-        <Block flex>
-            <HeaderWithButton title="Hồ sơ của bạn" isBackHeader />
+        <Block backgroundColor={themeNew.colors.background} flex>
+            <HeaderWithButton title={t('profile')} isBackHeader />
             <ScrollView showsVerticalScrollIndicator={false}>
                 <BodyEditMoreMy
                     name={myInfo?.name}

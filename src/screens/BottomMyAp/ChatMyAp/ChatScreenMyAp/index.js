@@ -25,10 +25,10 @@ import { FlatList, Image, Pressable } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { makeStyles, useTheme } from 'themeNew';
-
+import { withNamespaces } from 'react-i18next';
 const handleKeyExtractor = item => item.toString();
 
-const ChatScreenMyApp = () => {
+const ChatScreenMyApp = ({ t }) => {
     const [searchPhrase, setSearchPhrase] = useState('');
     const socketRef = useRef();
     const [getRoomChat, { isSuccess, error }] = useLazyGetRoomChatQuery();
@@ -88,13 +88,13 @@ const ChatScreenMyApp = () => {
                         style={styles.imageGroup}
                     />
                     <Block marginLeft={10} flex>
-                        <Text size={14} fontType="bold">
+                        <Text color={colors.textInBox} size={14} fontType="bold">
                             {item.name}
                         </Text>
-                        <Text>{item.description}</Text>
+                        <Text color={colors.textInBox}>{item.description}</Text>
                     </Block>
                     <Block>
-                        <Text size={10}>12:40</Text>
+                        <Text color={colors.textInBox} size={10}>12:40</Text>
                     </Block>
                 </Block>
             </Pressable>
@@ -106,7 +106,7 @@ const ChatScreenMyApp = () => {
             component="Ionicons"
             name="ios-search-outline"
             size={22}
-            color={theme.colors.grey4}
+            color={colors.textInBox}
         />
     );
 
@@ -136,12 +136,12 @@ const ChatScreenMyApp = () => {
             enablePanDownToClose={true}
             backdropComponent={renderBackdrop}>
             <Block
-                backgroundColor={colors.white}
+                backgroundColor={colors.background}
                 paddingHorizontal={10}
                 alignCenter
                 flex>
-                <Text marginVertical={10} size={16} fontType="bold">
-                    Tạo nhóm mới
+                <Text color={colors.textInBox} marginVertical={10} size={16} fontType="bold">
+                    {t('createNewGroup')}
                 </Text>
                 <Block
                     flex
@@ -154,36 +154,36 @@ const ChatScreenMyApp = () => {
                         component="Ionicons"
                         name="ios-person-circle-outline"
                         size={100}
-                        color={colors.grey4}
+                        color={colors.textInBox}
                     />
                     <Block row alignCenter>
                         <Icon
                             component="Feather"
                             name="edit-3"
-                            color={colors.grey4}
+                            color={colors.textInBox}
                             size={20}
                         />
                     </Block>
 
                     <Block width="90%" paddingVertical={10}>
-                        <Text marginBottom={-20} size={16} fontType="bold">
-                            Tên nhóm
+                        <Text color={colors.textInBox} marginBottom={-20} size={16} fontType="bold">
+                            {t('groupName')}
                         </Text>
 
                         <TextInput
                             value={nameGroup}
                             onChangeText={setNameGroup}
-                            placeholder="Nhập tên nhóm"
+                            placeholder={t('enterGroupName')}
                             style={styles.containerSearch}
                         />
                     </Block>
                     <Block width="90%">
-                        <Text marginBottom={-20} size={16} fontType="bold">
-                            Thêm thành viên
+                        <Text color={colors.textInBox} marginBottom={-20} size={16} fontType="bold">
+                            {t('addMember')}
                         </Text>
 
                         <TextInput
-                            placeholder="Nhập tên, email hoặc số điện thoại"
+                            placeholder={t('enterInfo')}
                             style={styles.containerSearch}
                             onChangeText={setSearchText}
                             value={searchText}
@@ -228,9 +228,10 @@ const ChatScreenMyApp = () => {
                                         source={{ uri: item.image }}
                                         style={styles.imagePeople}
                                     />
-                                    <Text flex marginLeft={10}>
+                                    <Text color={colors.textInBox} flex marginLeft={10}>
                                         {item.name}
                                     </Text>
+
                                     {peoplesChoose[item._id] && (
                                         <Icon
                                             component="AntDesign"
@@ -279,7 +280,7 @@ const ChatScreenMyApp = () => {
                         alignCenter
                         backgroundColor={colors.primary}
                         radius={10}>
-                        <Text color={colors.white}>Tạo nhóm</Text>
+                        <Text color={colors.white}>{t('createGroup')}</Text>
                     </Block>
                 </TouchableOpacity>
             </Block>
@@ -303,7 +304,7 @@ const ChatScreenMyApp = () => {
             <Block
                 flex
                 paddingHorizontal={20}
-                backgroundColor={theme.colors.white}>
+                backgroundColor={colors.background}>
                 <Block row alignCenter>
                     <Text flex size={28} fontType="bold" color={colors.primary}>
                         Explore
@@ -317,7 +318,7 @@ const ChatScreenMyApp = () => {
                         <Block
                             height={30}
                             width={30}
-                            borderColor={colors.grey4}
+                            borderColor={colors.textInBox}
                             borderWidth={2}
                             radius={6}
                             justifyCenter
@@ -325,7 +326,7 @@ const ChatScreenMyApp = () => {
                             <Icon
                                 component="Ionicons"
                                 name="md-add"
-                                color={colors.grey4}
+                                color={colors.textInBox}
                                 size={25}
                             />
                         </Block>
@@ -349,7 +350,7 @@ const ChatScreenMyApp = () => {
     );
 };
 
-export default ChatScreenMyApp;
+export default withNamespaces()(ChatScreenMyApp);
 
 const useStyle = makeStyles()(({ normalize, colors }) => ({
     imageGroup: {

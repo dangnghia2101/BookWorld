@@ -5,7 +5,7 @@ import { makeStyles, useTheme } from 'themeNew';
 import { withNamespaces } from 'react-i18next';
 import { useAppSelector, useAppDispatch } from '@hooks';
 
-const ItemMoreMy = props => {
+const ItemMoreMy = ({ props, t }) => {
     const themeStore = useAppSelector(state => state.root.themeApp.theme);
     const themeNew = useTheme(themeStore);
     const styles = useStyle(props, themeStore);
@@ -20,24 +20,25 @@ const ItemMoreMy = props => {
                 marginRight={20}
                 style={[styles.dataContainer, styles.shadowColor]}>
                 <Text center color={themeNew.colors.textDark}>
-                    Tổng thời gian đọc
+                    {t('totalReadingTime')}
                 </Text>
                 <Text size={40} center color={themeNew.colors.textDark}>
                     1280
                 </Text>
                 <Text center color={themeNew.colors.textDark}>
-                    phút
+                    {t('minute')}
                 </Text>
             </Block>
             <Block style={[styles.dataContainer, styles.shadowColor]}>
                 <Text center color={themeNew.colors.textDark}>
-                    Số sách đã đọc
+                    {t('numberOfBooksRead')}
+
                 </Text>
                 <Text size={40} center color={themeNew.colors.textDark}>
                     23
                 </Text>
                 <Text center color={themeNew.colors.textDark}>
-                    sách
+                    {t('book')}
                 </Text>
             </Block>
         </Block>

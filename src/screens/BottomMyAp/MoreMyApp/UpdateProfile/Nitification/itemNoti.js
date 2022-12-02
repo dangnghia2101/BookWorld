@@ -1,6 +1,6 @@
-import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
+import { StyleSheet, View, Image, TouchableOpacity } from 'react-native'
 import React from 'react';
-import { Block } from '@components';
+import { Block, Text } from '@components';
 import { makeStyles, useTheme } from 'themeNew';
 import { withNamespaces } from 'react-i18next';
 import { useAppSelector } from '@hooks';
@@ -11,7 +11,6 @@ import { formatDay } from '@utils/helper';
 const ItemNoti = ({ item }) => {
     const themeStore = useAppSelector(state => state.root.themeApp.theme);
     const themeNew = useTheme(themeStore);
-    console.log("itemmmmmmmmmmm", item)
     return (
         <TouchableOpacity>
             <Block
@@ -32,8 +31,8 @@ const ItemNoti = ({ item }) => {
                     <Image style={styles.avatar} source={{ uri: item.book.image }} />
                 </Block>
                 <Block width={270}>
-                    <Text style={styles.content} lineBreakMode='2'>{item.content}</Text>
-                    <Text style={styles.time}>{formatDay(new Date(item.createdAt))}</Text>
+                    <Text color={themeNew.colors.textInBox} style={styles.content} lineBreakMode='2'>{item.content}</Text>
+                    <Text color={themeNew.colors.textInBox} style={styles.time}>{formatDay(new Date(item.createdAt))}</Text>
                 </Block>
             </Block>
         </TouchableOpacity>
@@ -47,14 +46,12 @@ const styles = StyleSheet.create({
         fontSize: 12,
         fontWeight: '400',
         marginLeft: 12,
-        color: theme.colors.text
     },
     content: {
         fontSize: 14,
         fontWeight: '700',
         marginBottom: 10,
         marginLeft: 12,
-        color: theme.colors.text
     },
     avatar: {
         width: 55,

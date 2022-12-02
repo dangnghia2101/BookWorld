@@ -5,12 +5,12 @@ import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { withNamespaces } from 'react-i18next';
 import { Image, TouchableOpacity } from 'react-native';
-import { makeStyles } from 'themeNew';
+import { makeStyles, useTheme } from 'themeNew';
 
 const ItemAuthor = ({ item, t }) => {
     const navigation = useNavigation();
     const themeStore = useAppSelector(state => state.root.themeApp.theme);
-
+    const theme = useTheme(themeStore);
     const styles = useStyles(themeStore);
 
     return (
@@ -26,7 +26,7 @@ const ItemAuthor = ({ item, t }) => {
                 }}
                 style={styles.image}
             />
-            <Text size={12} marginTop={5}>
+            <Text color={theme.colors.textInBox} size={12} marginTop={5}>
                 {item?.name.slice(0, 12)}
             </Text>
         </TouchableOpacity>

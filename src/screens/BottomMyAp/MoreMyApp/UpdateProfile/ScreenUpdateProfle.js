@@ -1,5 +1,4 @@
 import {
-    Text,
     Image,
     StyleSheet,
     TextInput,
@@ -9,7 +8,7 @@ import {
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import { PermissionsAndroid } from 'react-native';
 import React, { useState, useCallback, useMemo, useRef } from 'react';
-import { Block, HeaderWithButton } from '@components';
+import { Block, Text, HeaderWithButton } from '@components';
 import { theme } from '@theme';
 import IconView from '@components/Icon';
 import { useAppSelector } from '@hooks';
@@ -17,7 +16,7 @@ import BottomSheet, { BottomSheetBackdrop } from '@gorhom/bottom-sheet';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useEditProfileMutation } from '@redux/servicesNew/editProflieAPI';
 import { makeStyles, useTheme } from 'themeNew';
-
+import { withNamespaces } from 'react-i18next';
 const createFormData = (photo, name) => {
     console.log('createFormDataaaaaaa', photo);
     const data = new FormData();
@@ -26,10 +25,11 @@ const createFormData = (photo, name) => {
     return data;
 };
 
-const ScreenUpdateProfile = () => {
+const ScreenUpdateProfile = ({ t }) => {
     const myInfo = useAppSelector(state => state.root.auth);
     const themeStore = useAppSelector(state => state.root.themeApp.theme);
     const theme = useTheme(themeStore);
+    const styles = useStyle(themeStore);
     const [imageUri, setImageUri] = useState({ uri: myInfo.image });
     const [name, setName] = useState(myInfo.name);
     const [editProfile] = useEditProfileMutation();
@@ -118,8 +118,8 @@ const ScreenUpdateProfile = () => {
     };
 
     return (
-        <Block flex backgroundColor={theme.colors.grey16}>
-            <HeaderWithButton isBackHeader title={'Chỉnh sửa thông tin'} />
+        <Block flex backgroundColor={theme.colors.background}>
+            <HeaderWithButton isBackHeader title={t('editProfile')} />
             <ScrollView>
                 <Block
                     width={150}
@@ -177,20 +177,20 @@ const ScreenUpdateProfile = () => {
                 </Block>
                 <Block width={'100%'} paddingHorizontal={30}>
                     <Block width={'100%'} marginTop={20}>
-                        <Text style={styles.textFullname}>Họ tên</Text>
+                        <Text color={theme.colors.textInBox} style={styles.textFullname}>{t('fullName')}</Text>
                         <TextInput
                             onChangeText={setName}
                             value={name}
                             placeholder={myInfo.name}
-                            placeholderTextColor={theme.colors.gray2}
+                            placeholderTextColor={theme.colors.textInBox}
                             style={styles.textInput}
                         />
                     </Block>
                     <Block width={'100%'} marginTop={20}>
-                        <Text style={styles.textFullname}>Ngày sinh</Text>
+                        <Text color={theme.colors.textInBox} style={styles.textFullname}>{t('birthDay')}</Text>
                         <TextInput
                             placeholder={'dd/mm/yyyy'}
-                            placeholderTextColor={theme.colors.gray2}
+                            placeholderTextColor={theme.colors.textInBox}
                             style={styles.textInput}
                         />
                     </Block>
@@ -198,7 +198,7 @@ const ScreenUpdateProfile = () => {
                         onPress={handleUploadPhoto}
                         style={styles.TouchableOpacity}>
                         <Text style={styles.textSave} height={55}>
-                            Lưu
+                            {t('save')}
                         </Text>
                     </TouchableOpacity>
                 </Block>
@@ -212,7 +212,6 @@ const ScreenUpdateProfile = () => {
                 enablePanDownToClose={true}>
                 <Block
                     width={'100%'}
-                    row
                     justifyCenter
                     alignCenter
                     height={'100%'}>
@@ -223,9 +222,9 @@ const ScreenUpdateProfile = () => {
                             component={'Ionicons'}
                             name={'camera-outline'}
                             size={35}
-                            color={theme.colors.gray5}
+                            color={theme.colors.grey5}
                         />
-                        <Text style={styles.textButtomLogin}>Chụp ảnh</Text>
+                        <Text style={styles.textButtomLogin}>{t('takePhoto')}</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                         style={styles.buttomLogin}
@@ -234,9 +233,9 @@ const ScreenUpdateProfile = () => {
                             component={'FontAwesome'}
                             name={'picture-o'}
                             size={30}
-                            color={theme.colors.gray5}
+                            color={theme.colors.grey5}
                         />
-                        <Text style={styles.textButtomLogin}>Chọn ảnh</Text>
+                        <Text style={styles.textButtomLogin}>{t('choosePhoto')}</Text>
                     </TouchableOpacity>
                 </Block>
             </BottomSheet >
@@ -244,9 +243,17 @@ const ScreenUpdateProfile = () => {
     );
 };
 
-export default ScreenUpdateProfile;
+export default withNamespaces()(ScreenUpdateProfile);
 
-const styles = StyleSheet.create({
+const useStyle = makeStyles()(({ normalize, colors }) => ({
+    iconPen: {
+        width: 35,
+        height: 35,
+        justifyContent: 'center',
+        alignItems: "center",
+        backgroundColor: colors.text,
+        borderRadius: 50
+    },
     blockIcon: {
         top: '80%',
         left: '75%'
@@ -258,7 +265,6 @@ const styles = StyleSheet.create({
         borderTopRightRadius: 10,
     },
     textFullname: {
-        color: theme.colors.text,
         fontSize: 17,
         fontWeight: '500',
         marginLeft: 10,
@@ -277,8 +283,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         borderRadius: 10,
-        borderWidth: 1,
-        borderColor: theme.colors.gray2,
     },
     textSave: {
         fontSize: 20,
@@ -298,9 +302,9 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: '500',
         marginLeft: 10,
-        color: theme.colors.text,
         borderBottomWidth: 1,
         borderBottomColor: theme.colors.gray2,
+        color: colors.text
     },
     avatar: {
         width: 135,
@@ -308,4 +312,4 @@ const styles = StyleSheet.create({
         borderRadius: 100,
         margin: 7,
     },
-});
+}));

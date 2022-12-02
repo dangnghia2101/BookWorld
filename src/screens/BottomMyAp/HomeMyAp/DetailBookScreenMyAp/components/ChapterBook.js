@@ -12,6 +12,7 @@ import React, { useEffect, useState } from 'react';
 import { Modal, TouchableOpacity } from 'react-native';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import { makeStyles, useTheme } from 'themeNew';
+import { withNamespaces } from 'react-i18next';
 
 const ChapterBook = ({
     detailBook,
@@ -19,6 +20,7 @@ const ChapterBook = ({
     isRead,
     setIsRead,
     infoBook,
+    t
     // navigation,
 }) => {
     const [visible, setVisible] = useState(false);
@@ -137,7 +139,7 @@ const ChapterBook = ({
                             }
                             fontType={'bold'}
                             size={12}>
-                            Sach doc
+                            {t('bookToRead')}
                         </Text>
                     </Block>
                 </Button>
@@ -159,7 +161,7 @@ const ChapterBook = ({
                             }
                             fontType={'bold'}
                             size={12}>
-                            Sach Nghe
+                            {t('bookToListen')}
                         </Text>
                     </Block>
                 </Button>
@@ -169,7 +171,7 @@ const ChapterBook = ({
                 color={themeNew.colors.textInBox}
                 fontType={'bold'}
                 size={20}>
-                Tập
+                {t('chapTer')}
             </Text>
             <Block
                 row
@@ -306,4 +308,4 @@ const useStyle = makeStyles()(({ normalize, colors }) => ({
     },
 }));
 
-export default ChapterBook;
+export default withNamespaces()(ChapterBook);

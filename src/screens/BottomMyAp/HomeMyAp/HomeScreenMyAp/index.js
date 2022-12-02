@@ -28,7 +28,7 @@ const ITEM_WITH = width * 0.6;
 const widthItemEventIncoming = width - width / 3;
 const WIDTH_ITEM_INVIEW = widthItemEventIncoming - 20;
 
-const HomeScreenMyAp = () => {
+const HomeScreenMyAp = ({ t }) => {
     useGetAllBookQuery();
     useGetAllCategoryQuery();
     const navigation = useNavigation();
@@ -68,7 +68,7 @@ const HomeScreenMyAp = () => {
 
     const renderListMostRead = useCallback(() => {
         return (
-            <Block height={height * 0.6} backgroundColor={theme.colors.grey14}>
+            <Block height={height * 0.6} >
                 <Animated.FlatList
                     data={allBooks}
                     keyExtractor={item => Math.random() + item._id}
@@ -105,7 +105,7 @@ const HomeScreenMyAp = () => {
     const renderListCategory = useCallback(() => {
         return (
             <Block>
-                <HeaderListBook title={'Thể loại sách'} />
+                <HeaderListBook title={t('bookCategory')} />
 
                 <Animated.FlatList
                     data={allCategories}
@@ -133,7 +133,7 @@ const HomeScreenMyAp = () => {
     const renderListBookFree = useCallback(() => {
         return (
             <Block>
-                <HeaderListBook title={'Sách miễn phí'} action={() => {}} />
+                <HeaderListBook title={t('freeBook')} action={() => { }} />
                 <Animated.FlatList
                     data={allBooks}
                     keyExtractor={item => Math.random() + item._id}
@@ -160,7 +160,7 @@ const HomeScreenMyAp = () => {
     const renderListTopAuthor = useCallback(() => {
         return (
             <Block>
-                <HeaderListBook title={'Tác giả hàng đầu'} />
+                <HeaderListBook title={t('topAuthor')} />
                 <Animated.FlatList
                     data={authors}
                     keyExtractor={item => item.toString()}
@@ -190,7 +190,7 @@ const HomeScreenMyAp = () => {
                 onPress={() => navigation.navigate(routes.SEARCH)}
                 style={styles.searchStyle}>
                 <Text color={theme.colors.grey4} size={14}>
-                    Search here
+                    {t('searchHere')}
                 </Text>
                 <Icon
                     component="Ionicons"
@@ -216,11 +216,11 @@ const HomeScreenMyAp = () => {
                 nestedScrollEnabled={true}
                 style={{
                     position: 'relative',
-                    backgroundColor: theme.colors.grey14,
+                    backgroundColor: theme.colors.background,
                 }}>
-                <Block>
+                <Block >
                     {renderSearch()}
-                    <HeaderListBook title={'Sách xem nhiều nhất'} />
+                    <HeaderListBook title={t('mostViewedBooks')} />
                     {/* {Backdrop()} */}
                     {renderListMostRead()}
                     {renderListCategory()}
