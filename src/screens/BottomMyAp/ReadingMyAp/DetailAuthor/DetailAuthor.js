@@ -1,13 +1,12 @@
 import {
   StyleSheet,
-  Text,
   ScrollView,
   Image,
   FlatList,
   TouchableOpacity,
 } from 'react-native';
 import React, { useState, useEffect } from 'react';
-import { Block } from '@components';
+import { Block, Text } from '@components';
 import TopBar from '../components/TopBar';
 import { theme } from '@theme';
 import { width } from '@utils/responsive';
@@ -15,20 +14,18 @@ import { useNavigation } from '@react-navigation/core';
 import TabSceneReadingStatus from '../components/TabSceneReadingStatus';
 import { useAppSelector } from '@hooks';
 import { makeStyles, useTheme } from 'themeNew';
-import { useGetFavoriteBookQuery } from '@redux/servicesNew'
-import ItemCateBook from '@screens/BottomMyAp/HomeMyAp/HomeScreenMyAp/components/ItemCateBook';
-import BookOfauthor from '../components/BookOfAuthor';
+import { withNamespaces } from 'react-i18next';
 
 const widthItemEventIncoming = width - width / 3;
 const WIDTH_ITEM_INVIEW = widthItemEventIncoming - 20;
 
-const DetailAuthor = ({ route }) => {
+const DetailAuthor = ({ route, t }) => {
   let item = route.params.item;
   const themeStore = useAppSelector(state => state.root.themeApp.theme);
-  const theme = useTheme(themeStore);
+  const themeNew = useTheme(themeStore);
 
   return (
-    <Block backgroundColor={theme.colors.grey16} flex>
+    <Block backgroundColor={themeNew.colors.background} flex>
       <ScrollView>
         <TopBar isBackHeader />
         <Block width="100%" height="15%">
@@ -43,30 +40,30 @@ const DetailAuthor = ({ route }) => {
               source={{ uri: item.avatar }}
             />
           </Block>
-          <Text style={styles.nameAuthor}>{item.name}</Text>
+          <Text color={themeNew.colors.textInBox} style={styles.nameAuthor}>{item.name}</Text>
         </Block>
         <Block width="100%" paddingHorizontal={24}>
           <Block>
-            <Text style={styles.textIntro}>Giới thiệu về tác giả</Text>
-            <Text style={styles.IntroduceAuthor} numberOfLines={2}>
+            <Text color={themeNew.colors.textInBox} style={styles.textIntro}>{t('aboutAuthor')}</Text>
+            <Text color={themeNew.colors.textInBox} style={styles.IntroduceAuthor} numberOfLines={2}>
               {item.aboutAuthor.introduce}
             </Text>
           </Block>
           <Block marginTop={18}>
-            <Text style={styles.textIntro}>Tổng quan</Text>
-            <Text style={styles.IntroduceAuthor}>
+            <Text color={themeNew.colors.textInBox} style={styles.textIntro}>{t('overview')}</Text>
+            <Text color={themeNew.colors.textInBox} style={styles.IntroduceAuthor}>
               {item.aboutAuthor.details}
             </Text>
           </Block>
           <Block marginTop={18}>
-            <Text style={styles.textIntro}>Thông tin liên hệ</Text>
-            <Text style={styles.IntroduceAuthor}>Facebook: facebook..co m</Text>
-            <Text style={styles.IntroduceAuthor}>Youtube: youtube.com </Text>
-            <Text style={styles.IntroduceAuthor}>Instagram: instagram</Text>
-            <Text style={styles.IntroduceAuthor}>Number phone: 0977777777</Text>
+            <Text color={themeNew.colors.textInBox} style={styles.textIntro}>{t('contactInfo')}</Text>
+            <Text color={themeNew.colors.textInBox} style={styles.IntroduceAuthor}>Facebook: facebook..co m</Text>
+            <Text color={themeNew.colors.textInBox} style={styles.IntroduceAuthor}>Youtube: youtube.com </Text>
+            <Text color={themeNew.colors.textInBox} style={styles.IntroduceAuthor}>Instagram: instagram</Text>
+            <Text color={themeNew.colors.textInBox} style={styles.IntroduceAuthor}>Number phone: 0977777777</Text>
           </Block>
           <Block marginTop={42}>
-            <Text style={styles.textBook}>Sách của tác giả</Text>
+            <Text color={themeNew.colors.textInBox} style={styles.textBook}>{t('bookOfAuthor')}</Text>
             {/* <FlatList
               data={data}
               keyExtractor={item => item._id}
@@ -80,8 +77,8 @@ const DetailAuthor = ({ route }) => {
                   <Text>Chưa có sach</Text>
                 </Block>
               } /> */}
-            <BookOfauthor />
-            {/* <TabSceneReadingStatus /> */}
+            {/* <BookOfauthor /> */}
+            <TabSceneReadingStatus />
           </Block>
         </Block>
       </ScrollView>
@@ -89,7 +86,7 @@ const DetailAuthor = ({ route }) => {
   );
 };
 
-export default DetailAuthor;
+export default withNamespaces()(DetailAuthor);
 
 const styles = StyleSheet.create({
 
@@ -102,7 +99,6 @@ const styles = StyleSheet.create({
     lineHeight: 36,
     fontWeight: '600',
     fontSize: 24,
-    color: '#19191B',
   },
   IntroduceAuthor: {
     lineHeight: 21,
@@ -115,7 +111,6 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     fontSize: 18,
     lineHeight: 27,
-    color: '#19191B',
   },
   nameAuthor: {
     position: 'absolute',
@@ -124,7 +119,6 @@ const styles = StyleSheet.create({
     lineHeight: 36,
     left: '32%',
     top: '76%',
-    color: 'black',
   },
   iconBack: {
     position: 'absolute',

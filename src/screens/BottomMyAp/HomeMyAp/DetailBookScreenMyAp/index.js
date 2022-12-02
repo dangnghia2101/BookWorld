@@ -18,12 +18,14 @@ import ChapterBook from './components/ChapterBook';
 import ImageBook from './components/ImageBook';
 import IntroduceText from './components/IntroduceText';
 import IconView from '@components/Icon';
-import { saveFavoriteBookReducer } from '@redux/reducerNew';
 import { usePostSaveFavoriteBooksMutation } from '@redux/servicesNew';
+
 const DetailBookScreenMyAp = ({ route }) => {
   const { bookmark, item, _isRead } = route.params;
   const [listChapters, setListChapters] = useState([]);
   const [isRead, setIsRead] = useState(_isRead || true);
+  const themeStore = useAppSelector(state => state.root.themeApp.theme);
+  const themeNew = useTheme(themeStore);
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
   const [saveFavoriteBook] = usePostSaveFavoriteBooksMutation()
@@ -76,7 +78,7 @@ const DetailBookScreenMyAp = ({ route }) => {
             component={'AntDesign'}
             name={'hearto'}
             size={25}
-            color={theme.colors.textInBox}
+            color={themeNew.colors.textInBox}
           />
         </Block>
       </TouchableOpacity>
@@ -85,14 +87,13 @@ const DetailBookScreenMyAp = ({ route }) => {
 
 
   return (
-    <Block>
+    <Block >
       <HeaderWithButton isBackHeader rightIcon={favoriteIcon()} />
-
       <ScrollView style={{ height: '100%' }} showsVerticalScrollIndicator={false}>
         <Block
           flex
           paddingHorizontal={20}
-          backgroundColor={theme.colors.white}>
+          backgroundColor={themeNew.colors.background}>
           <ImageBook item={route.params} />
           <IntroduceText item={route.params} />
           <ChapterBook

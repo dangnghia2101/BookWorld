@@ -46,9 +46,9 @@ const TabTopicSearch = ({ search, setSearch }) => {
                         pressColor={theme.colors.white}
                         scrollEnabled={true}
                         style={{
-                            backgroundColor: theme.colors.text,
+                            backgroundColor: theme.colors.background,
                         }}
-                        // inactiveColor='yellow'
+                    // inactiveColor='yellow'
                     />
                 </>
             );

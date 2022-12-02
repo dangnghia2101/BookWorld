@@ -31,7 +31,7 @@ import { saveStatusCartReducer } from '@redux/reducerNew/cartReducer';
 import { removeItem } from '@redux/reducerNew/cartReducer';
 import { removeChapter } from '@redux/reducerNew/cartReducer';
 import { theme } from '@theme';
-
+import { withNamespaces } from 'react-i18next';
 const ModalPoup = ({ visible, children }) => {
     const [showModal, setShowModal] = React.useState(visible);
     useEffect(() => {
@@ -54,7 +54,7 @@ const ModalPoup = ({ visible, children }) => {
     );
 };
 
-const Cart = () => {
+const Cart = ({ t }) => {
     const [visibleCart, setVisibleCart] = useState(false);
     const navigation = useNavigation();
     const [allPrice, setAllPrice] = useState();
@@ -65,7 +65,7 @@ const Cart = () => {
     const snapPoints = useMemo(() => [440 + inset.bottom], [inset.bottom]);
     const bottomSheetRef = useRef(null);
     const bookStore = useAppSelector(state => state.root.cart.cartList);
-    const dispatch = useAppDispatch();    
+    const dispatch = useAppDispatch();
     const themeStore = useAppSelector(state => state.root.themeApp.theme);
     const theme = useTheme(themeStore);
     let all = 0;
@@ -133,7 +133,7 @@ const Cart = () => {
                             size={14}
                             numberOfLines={1}
                             marginTop={5}>
-                            Số tập: {Object.keys(item.chapter).length}
+                            {t('numberOfEpisodes')}: {Object.keys(item.chapter).length}
                         </Text>
                         <Text style={styles.TextPrice}>
                             {priceBook()
@@ -142,23 +142,23 @@ const Cart = () => {
                             đ
                         </Text>
                     </Block>
-                        <TouchableOpacity
-                            style={{
-                                alignItems: 'flex-start',
-                                width: 40,
-                                position: 'absolute',
-                                marginLeft: '95%',
-                                marginTop: '26%'
-                            }}
-                            onPress={() => {
-                                setVisibleCart(true);
-                            }}>
-                            <Feather
-                                name={'trash-2'}
-                                size={18}
-                                color={theme.colors.grey1}
-                            />
-                        </TouchableOpacity>
+                    <TouchableOpacity
+                        style={{
+                            alignItems: 'flex-start',
+                            width: 40,
+                            position: 'absolute',
+                            marginLeft: '95%',
+                            marginTop: '26%'
+                        }}
+                        onPress={() => {
+                            setVisibleCart(true);
+                        }}>
+                        <Feather
+                            name={'trash-2'}
+                            size={18}
+                            color={theme.colors.grey1}
+                        />
+                    </TouchableOpacity>
                     {item.status ? (
                         <TouchableOpacity
                             style={styles.CheckBox1}
@@ -208,7 +208,7 @@ const Cart = () => {
                     </Block>
                     <Block alignCenter={'center'}>
                         <Text style={styles.textOTP} center>
-                            Bạn muốn xóa sách khỏi giỏ hàng
+                            {t('askRemove')}
                         </Text>
                         <Block>
                             <Image
@@ -223,7 +223,7 @@ const Cart = () => {
                                     { setVisibleCart: setVisibleCart(false) };
                             }}>
                             <Text style={styles.textButtomLogin} height={55}>
-                                Xóa
+                                {t('delete')}
                             </Text>
                         </TouchableOpacity>
                     </Block>
@@ -239,28 +239,28 @@ const Cart = () => {
                         {
                             cartItem.SL !== 1
                                 ? (console.log(
-                                      '................... Xóa chương',
-                                  ),
-                                  dispatch(
-                                      removeChapter({
-                                          element: item,
-                                          index: cartItem.index,
-                                          keyChapter:
-                                              cartItem?.chapter[item]
-                                                  ?.chapterNumber,
-                                      }),
-                                  ),
-                                  setCartItem(
-                                      data.filter(
-                                          (item, index) =>
-                                              index != item.chapterNumber,
-                                      ),
-                                  ))
+                                    '................... Xóa chương',
+                                ),
+                                    dispatch(
+                                        removeChapter({
+                                            element: item,
+                                            index: cartItem.index,
+                                            keyChapter:
+                                                cartItem?.chapter[item]
+                                                    ?.chapterNumber,
+                                        }),
+                                    ),
+                                    setCartItem(
+                                        data.filter(
+                                            (item, index) =>
+                                                index != item.chapterNumber,
+                                        ),
+                                    ))
                                 : (console.log(
-                                      '................... Xoasaaa Sách',
-                                      cartItem._id,
-                                  ),
-                                  dispatch(removeItem({ _id: cartItem._id })));
+                                    '................... Xoasaaa Sách',
+                                    cartItem._id,
+                                ),
+                                    dispatch(removeItem({ _id: cartItem._id })));
                         }
                     }}>
                     <Entypo
@@ -282,22 +282,22 @@ const Cart = () => {
     };
 
     return (
-        <Block style={styles.Container}>
+        <Block backgroundColor={theme.colors.background} style={styles.Container}>
             <Block
                 justifyCenter
                 alignCenter
                 marginTop={10}
-                backgroundColor={'white'}
+                backgroundColor={theme.colors.background}
                 height={50}
                 row>
-                <Text size={20} style={styles.textTitle}>
-                    Giỏ hàng
+                <Text color={theme.colors.textInBox} size={20} style={styles.textTitle}>
+                    {t('yourCart')}
                 </Text>
             </Block>
             <Block height={'80%'}>
                 {bookStore == [] ? (
                     <Block alignCenter>
-                        <Text center marginTop={260} size={16}>
+                        <Text color={theme.colors.textInBox} center marginTop={260} size={16}>
                             Giỏ hàng trống
                         </Text>
                     </Block>
@@ -317,12 +317,12 @@ const Cart = () => {
                     width={'100%'}
                     paddingHorizontal={5}
                     paddingVertical={5}
-                    backgroundColor={'white'}
+                    backgroundColor={theme.colors.background}
                     style={styles.ContainerCheckOut}
                     marginTop={10}>
                     <Block marginLeft={10}>
-                        <Text size={16} style={styles.TextCart}>
-                            Tổng
+                        <Text color={theme.colors.textInBox} size={16} style={styles.TextCart}>
+                            {t('toTal')}
                         </Text>
                         <Text
                             color="#D45555"
@@ -331,9 +331,9 @@ const Cart = () => {
                             marginTop={5}>
                             {allPrice
                                 ? allPrice &&
-                                  allPrice
-                                      .toFixed(0)
-                                      .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')
+                                allPrice
+                                    .toFixed(0)
+                                    .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')
                                 : 0}{' '}
                             đ
                         </Text>
@@ -347,7 +347,7 @@ const Cart = () => {
                         }
                         style={styles.BottomCheckOut(allPrice)}>
                         <Text marginRight={10} color="#ffffff" size={18}>
-                            Mua sách
+                            {t('buy')}
                         </Text>
                         <Image
                             marginTop={5}
@@ -385,7 +385,7 @@ const Cart = () => {
                                 đ
                             </Text>
                         </Block>
-                        <TouchableOpacity onPress={() => {}}>
+                        <TouchableOpacity onPress={() => { }}>
                             <Fontisto
                                 name={'close-a'}
                                 size={20}
@@ -406,7 +406,7 @@ const Cart = () => {
                         marginLeft={30}
                         style={styles.Name}
                         size={20}>
-                        Chương
+                        {t('chapTer')}
                     </Text>
                     <Block paddingLeft={10}>
                         <FlatList
@@ -637,5 +637,5 @@ const styles = StyleSheet.create({
         fontWeight: '600',
     },
 });
-export default Cart;
+export default withNamespaces()(Cart);
 

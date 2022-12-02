@@ -4,14 +4,14 @@ import { useNavigation } from '@react-navigation/core';
 import React, { useEffect, useState } from 'react';
 import { FlatList, View, Pressable, Image } from 'react-native';
 import { makeStyles, useTheme } from 'themeNew';
-
+import { withNamespaces } from 'react-i18next';
 const DATA_SEARCH = [
     { name: 'Sach 1', key: 1 },
     { name: 'Sach 1', key: 1 },
     { name: 'Sach 1', key: 1 },
 ];
 
-const ListTabBook = ({ route, search, setSearch }) => {
+const ListTabBook = ({ route, search, setSearch, t }) => {
     const themeStore = useAppSelector(state => state.root.themeApp.theme);
     const allBooks = useAppSelector(state => state.root.book.bookList);
     const { colors } = useTheme(themeStore);
@@ -92,7 +92,7 @@ const ListTabBook = ({ route, search, setSearch }) => {
                 </Text>
             )}
             <FlatList
-                ListHeaderComponent={SectionHeader('Research History')}
+                ListHeaderComponent={SectionHeader(t('researchHistory'))}
                 data={DATA_SEARCH}
                 keyExtractor={item => item._id}
                 renderItem={item => <ItemHistory title={item.item.name} />}
@@ -101,7 +101,7 @@ const ListTabBook = ({ route, search, setSearch }) => {
     );
 };
 
-export default ListTabBook;
+export default withNamespaces()(ListTabBook);
 
 const useStyle = makeStyles()(({ colors }) => ({
     itemHistory: {

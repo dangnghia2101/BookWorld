@@ -1,5 +1,5 @@
-import { StyleSheet, Text, TouchableOpacity, Image } from 'react-native';
-import { Block } from '@components';
+import { StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { Block, Text } from '@components';
 import { theme } from '@theme';
 import Icon from '@components/Icon';
 import { useNavigation } from '@react-navigation/native';
@@ -13,6 +13,7 @@ const ItemAuthor = ({ item, t }) => {
   const navigation = useNavigation();
   const themeStore = useAppSelector(state => state.root.themeApp.theme);
   const theme = useTheme(themeStore);
+  const styles = useStyle(themeStore);
 
   return (
     <TouchableOpacity
@@ -21,7 +22,7 @@ const ItemAuthor = ({ item, t }) => {
         <Block
           width="100%"
           height={145}
-          backgroundColor={theme.colors.white}
+          backgroundColor={theme.colors.text}
           radius={20}
           absolute
           row
@@ -29,9 +30,9 @@ const ItemAuthor = ({ item, t }) => {
         >
 
           <Block width="50%" height="100%">
-            <Text style={styles.textName}>{t('textNameAuthor')}</Text>
-            <Text style={styles.nameAuthor}>{item.name}</Text>
-            <Text style={styles.textRate}>{t('textRating')}</Text>
+            <Text color={theme.colors.textInBox} style={styles.textName}>{t('textNameAuthor')}</Text>
+            <Text color={theme.colors.textInBox} style={styles.nameAuthor}>{item.name}</Text>
+            <Text color={theme.colors.textInBox} style={styles.textRate}>{t('textRating')}</Text>
             <Block row marginLeft={22} marginTop={5}>
               <Icon
                 component={'AntDesign'}
@@ -57,17 +58,17 @@ const ItemAuthor = ({ item, t }) => {
                 color={theme.colors.yellow}
                 size={16}
               />
-              <Text style={styles.totalRate}>4.0</Text>
+              <Text color={theme.colors.textInBox} style={styles.totalRate}>4.0</Text>
             </Block>
           </Block>
 
           <Block width="50%" height="100%" alignCenter>
-            <Text numberOfLines={2} style={styles.textQuantity}>
+            <Text color={theme.colors.textInBox} numberOfLines={2} style={styles.textQuantity}>
               {t('texQuantity')}
             </Text>
-            <Text style={styles.totalRead}>23</Text>
-            <Text style={styles.textName}>{t('textToltalRead')}</Text>
-            <Text style={styles.totalRead}>23</Text>
+            <Text color={theme.colors.textInBox} style={styles.totalRead}>23</Text>
+            <Text color={theme.colors.textInBox} style={styles.textName}>{t('textToltalRead')}</Text>
+            <Text color={theme.colors.textInBox} style={styles.totalRead}>23</Text>
           </Block>
         </Block>
         <Block
@@ -102,9 +103,8 @@ const ItemAuthor = ({ item, t }) => {
 
 export default withNamespaces()(ItemAuthor);
 
-const styles = StyleSheet.create({
+const useStyle = makeStyles()(({ normalize, colors }) => ({
   totalRead: {
-    color: theme.colors.black,
     fontSize: 16,
     marginTop: 3,
     marginLeft: '15%',
@@ -119,13 +119,11 @@ const styles = StyleSheet.create({
     marginTop: '8%',
     marginLeft: '20%',
     width: 122,
-    color: '#464444'
   },
   totalRate: {
     fontWeight: '400',
     fontSize: 14,
     lineHeight: 21,
-    color: theme.colors.black,
     marginLeft: 3.21,
   },
   textRate: {
@@ -134,7 +132,6 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     fontSize: 12,
     lineHeight: 15,
-    color: theme.colors.black
   },
   nameAuthor: {
     marginTop: '5%',
@@ -142,12 +139,10 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     fontSize: 15,
     lineHeight: 21,
-    color: '#19191B',
   },
   textName: {
     marginTop: '10%',
     marginLeft: '12%',
-    color: '#464444',
     fontWeight: '500',
     fontSize: 14,
     lineHeight: 15,
@@ -167,4 +162,4 @@ const styles = StyleSheet.create({
     shadowOpacity: 1,
     shadowRadius: 6,
   }
-});
+}));

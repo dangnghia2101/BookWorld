@@ -5,8 +5,8 @@ import React, { useState } from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { makeStyles, useTheme } from 'themeNew';
 import TabTopicSearch from './components/TabTopicSearch';
-
-const Search = () => {
+import { withNamespaces } from 'react-i18next';
+const Search = ({ t }) => {
     const themeStore = useAppSelector(state => state.root.themeApp.theme);
     const { colors } = useTheme(themeStore);
     const inset = useSafeAreaInsets();
@@ -26,10 +26,10 @@ const Search = () => {
     );
 
     return (
-        <Block backgroundColor={colors.text} flex>
+        <Block backgroundColor={colors.background} flex>
             <HeaderWithButton title="Explore" isBackHeader />
             <TextInput
-                placeholder="Search here"
+                placeholder={t('searchHere')}
                 onSubmitEditing={() => setFocus(false)}
                 onFocus={() => setFocus(true)}
                 iconLeft={renderIconLeft}
@@ -59,4 +59,4 @@ const useStyle = makeStyles()(({ normalize, colors }) => ({
     },
 }));
 
-export default Search;
+export default withNamespaces()(Search);

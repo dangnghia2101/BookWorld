@@ -45,7 +45,8 @@ const HeaderWithButton = props => {
                 width={WINDOW_WIDTH - 50}
                 alignSelf="center"
                 row
-                space={'between'}>
+                space={'between'}
+                backgroundColor={theme.colors.background}>
                 {backIcon()}
                 <Block alignCenter justifyCenter>
                     <Text
@@ -69,7 +70,7 @@ const HeaderWithButton = props => {
                     marginTop={insets.top}
                     justifyCenter
                     backgroundColor={
-                        backgroundColor ? backgroundColor : theme.colors.text
+                        backgroundColor ? backgroundColor : theme.colors.background
                     }>
                     {renderBackHeader()}
                 </Block>
@@ -78,7 +79,7 @@ const HeaderWithButton = props => {
                     style={{
                         backgroundColor: backgroundColor
                             ? backgroundColor
-                            : theme.colors.text,
+                            : theme.colors.background,
                         height: HEIGHT_HEADER,
                     }}
                     flex

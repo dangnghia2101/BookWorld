@@ -11,7 +11,7 @@ import { withNamespaces } from 'react-i18next';
 import TapReadingStatus from '../components/TapReadingStatus';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-const ReadingScreenMyAp = () => {
+const ReadingScreenMyAp = ({ t }) => {
     const navigation = useNavigation();
     const themeStore = useAppSelector(state => state.root.themeApp.theme);
     const theme = useTheme(themeStore);
@@ -22,13 +22,13 @@ const ReadingScreenMyAp = () => {
             marginTop={inset.top}
             flex
             paddingHorizontal={10}
-            backgroundColor={theme.colors.grey16}>
+            backgroundColor={theme.colors.background}>
             <Block width={'100%'} height={'10%'} marginVertical={10}>
                 <Pressable
                     onPress={() => navigation.navigate(routes.SEARCH)}
                     style={styles.searchStyle}>
                     <Text color={theme.colors.grey4} size={14}>
-                        Search here
+                        {t('searchHere')}
                     </Text>
                     <Icon
                         component="Ionicons"

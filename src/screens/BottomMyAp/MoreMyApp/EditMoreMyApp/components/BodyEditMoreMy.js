@@ -19,7 +19,7 @@ const BodyEditMoreMy = props => {
                 width="90%"
                 alignCenter
                 radius={15}
-                backgroundColor={colors.white}
+                backgroundColor={colors.text}
                 style={styles.shadowColor}>
                 <Image
                     source={{
