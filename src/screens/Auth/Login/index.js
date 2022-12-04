@@ -52,7 +52,7 @@ const Login = () => {
     const [visibleModal, setVisibleModal] = useState(false);
     const [phoneUser, setPhoneUser] = useState('');
     const [password, setPassword] = useState('');
-    const [auth, setAuth] = useState('signin');
+    // const [auth, setAuth] = useState('signin');
 
     const handleErrorPhone = useMemo(() => {
         if (phoneUser.match(PHONE_REG_EXP) || phoneUser.length == 0) {
@@ -71,9 +71,9 @@ const Login = () => {
     }, [password]);
 
     const LoginPhone = () => {
-        if (auth == 'signin') {
-            dispatch(login({ phoneUser, password }));
-        }
+        // if (auth == 'signin') {
+        // dispatch(login({ phoneUser, password }));
+        // }
     };
 
     const HidePassword = () => {
@@ -132,7 +132,6 @@ const Login = () => {
             // Get the users ID token
             // await GoogleSignin.hasPlayServices();
             const { idToken } = await GoogleSignin.signIn();
-            console.log(">>> idToken ", idToken);
             // get fcm token
             const fcmToken = await getToken();
 
@@ -168,11 +167,22 @@ const Login = () => {
             paddingTop={56}
             backgroundColor={'white'}
             paddingHorizontal={15}>
-            <Text marginTop={20} h1 bold size={30} style={styles.textWelcomLogin}>
+            <Text
+                marginTop={20}
+                h1
+                bold
+                size={30}
+                style={styles.textWelcomLogin}>
                 {' '}
                 Chào Mừng Trở Lại{' '}
             </Text>
-            <Text marginTop={10} marginBottom={30} paddingHorizontal={61} size={13} lineHeight={20} center>
+            <Text
+                marginTop={10}
+                marginBottom={30}
+                paddingHorizontal={61}
+                size={13}
+                lineHeight={20}
+                center>
                 {' '}
                 Bạn phải đăng nhập để sử dụng ứng dụng Chúng tôi có hỗ trợ đăng
                 nhập bằng số điện thoại hoặc gmail{' '}
@@ -185,15 +195,15 @@ const Login = () => {
                 errorText={handleErrorPhone[1]}
                 isError={handleErrorPhone[0]}
             />
-                <TextInput
+            <TextInput
                 value={password}
                 onChangeText={text => setPassword(text)}
-                    secureTextEntry={hide}
-                    placeholder={'Mật khẩu'}
+                secureTextEntry={hide}
+                placeholder={'Mật khẩu'}
                 isSecure={true}
                 errorText={handleErrorNewPassword[1]}
                 isError={handleErrorNewPassword[0]}
-                />
+            />
             <Block style={styles.inputPassword}>
                 {hide === false ? (
                     <MaterialCommunityIcons

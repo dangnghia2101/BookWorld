@@ -24,7 +24,10 @@ import { theme } from '@theme';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import { changeLoading } from '@redux/reducerNew';
 import { useAppDispatch } from 'hooks';
-import { removeBookCart } from '@redux/reducerNew/cartReducer';
+import {
+    removeBookCart,
+    removeBookPayment,
+} from '@redux/reducerNew/cartReducer';
 
 const PaymentScreen = ({ price }) => {
     const ModalPoup = ({ visible, children }) => {
@@ -78,10 +81,12 @@ const PaymentScreen = ({ price }) => {
         let pay = {
             idChapter: [],
         };
+        let idProducts = [];
 
         {
             bookStore.map(item => {
                 if (item.status === true) {
+                    idProducts.push(item._id);
                     let arrIdChapter = [];
                     for (var key of Object.keys(item.chapter)) {
                         arrIdChapter.push(item.chapter[key].idChapter);
@@ -100,9 +105,10 @@ const PaymentScreen = ({ price }) => {
         };
 
         const response = await createPaymentChapter(params);
+        dispatch(removeBookPayment(idProducts));
 
-        if(response.data){
-            console.log("response: ");
+        if (response.data) {
+            console.log('response: ');
         }
     };
 

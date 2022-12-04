@@ -58,11 +58,11 @@ const cartSlice = createSlice({
             state.cartList = arr;
         },
         removeBookCart: (state: CartList, action) => {
-            let {id, index} = action.payload;
-                state.cartList = state.cartList.splice(
-                    state.cartList.findIndex(arrow => arrow._id === id),
-                    index
-                )
+            let { id, index } = action.payload;
+            state.cartList = state.cartList.splice(
+                state.cartList.findIndex(arrow => arrow._id === id),
+                index,
+            );
         },
         removeChapter: (state: CartList, action) => {
             let { id, index, keyChapter } = action.payload;
@@ -72,7 +72,23 @@ const cartSlice = createSlice({
             state.cartList[index] = arr;
         },
         removeBookPayment: (state: CartList, action) => {
-            
+            const data = action.payload;
+            let newCart: CartState[] = [];
+
+            state.cartList.forEach(item => {
+                let flag = false;
+                for (const _id of data) {
+                    if (item._id === _id) {
+                        flag = true;
+                        return;
+                    }
+                }
+                if (!flag) {
+                    newCart.push(item);
+                }
+            });
+
+            state.cartList = newCart;
         },
     },
 });
@@ -83,5 +99,6 @@ export const {
     removeItem: removeItem,
     removeChapter,
     removeBookCart,
+    removeBookPayment,
 } = cartSlice.actions;
 export const CartReducer = cartSlice.reducer;
