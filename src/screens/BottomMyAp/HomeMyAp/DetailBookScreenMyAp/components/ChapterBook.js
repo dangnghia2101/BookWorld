@@ -61,7 +61,7 @@ const ChapterBook = ({
             name: infoBook.name,
             isPrice: infoBook.isPrice,
             image: infoBook.image,
-            chapter: { _item },
+            chapter: {[_item.chapterNumber]: _item} ,
             status: false,
         };
 
@@ -83,7 +83,7 @@ const ChapterBook = ({
         bookStore.map((item, index) => {
             if (item._id === infoBook._id) {
                 const data = {
-                    _id: chapter._id,
+                    idChapter: chapter.idChapter,
                     title: chapter.title,
                     price: chapter.price,
                     chapterNumber: chapter.chapterNumber,
@@ -182,7 +182,7 @@ const ChapterBook = ({
                     <TouchableOpacity
                         onPress={() => {
                             if (item.isPay === true) {
-                                if (isRead) {
+                                if (!isRead) {
                                     navigation.navigate(
                                         routes.PLAY_BOOK_MY_AP,
                                         { idChapter: item.idChapter },
@@ -194,7 +194,7 @@ const ChapterBook = ({
                                     });
                                 }
                             } else {
-                                setChapItem(item.element);
+                                setChapItem(item);
                                 setVisible(true);
                             }
                         }}

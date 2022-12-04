@@ -12,7 +12,7 @@ export type CartState = {
 };
 
 type ChapterState = {
-    _id: string;
+    idChapter: string;
     title: string;
     price: number;
     chapterNumber: number;
@@ -57,6 +57,13 @@ const cartSlice = createSlice({
             );
             state.cartList = arr;
         },
+        removeBookCart: (state: CartList, action) => {
+            let {id, index} = action.payload;
+                state.cartList = state.cartList.splice(
+                    state.cartList.findIndex(arrow => arrow._id === id),
+                    index
+                )
+        },
         removeChapter: (state: CartList, action) => {
             let { id, index, keyChapter } = action.payload;
 
@@ -64,13 +71,17 @@ const cartSlice = createSlice({
             delete arr.chapter[keyChapter];
             state.cartList[index] = arr;
         },
+        removeBookPayment: (state: CartList, action) => {
+            
+        },
     },
 });
 export const {
     saveCartReducer,
     saveChapterReducer,
     saveStatusCartReducer,
-    removeItem,
+    removeItem: removeItem,
     removeChapter,
+    removeBookCart,
 } = cartSlice.actions;
 export const CartReducer = cartSlice.reducer;

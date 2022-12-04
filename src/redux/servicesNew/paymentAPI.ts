@@ -25,7 +25,22 @@ export const paymentApi = createApi({
 
       invalidatesTags: ['Post'],
     }),
+
+    createPaymentChapter: builder.mutation({
+      query: body =>{
+        console.log('  BODY ', body);
+        return {
+          url: 'accounts/postChapterBought',
+          method: 'POST',
+          body: body.body,
+          headers: { Authorization: `Bearer ${body.token}` },
+          validateStatus: (response, result) =>
+            response.status === 200 && !result.isError,
+        }
+      },
+      invalidatesTags: ['Post'],
+    })
   }),
 });
 
-export const {useCreatePaymentMutation} = paymentApi;
+export const {useCreatePaymentMutation, useCreatePaymentChapterMutation} = paymentApi;

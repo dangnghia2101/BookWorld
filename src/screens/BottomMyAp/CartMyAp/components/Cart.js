@@ -29,6 +29,7 @@ import { useAppSelector } from '@hooks';
 import { useAppDispatch } from 'hooks';
 import { saveStatusCartReducer } from '@redux/reducerNew/cartReducer';
 import { removeItem } from '@redux/reducerNew/cartReducer';
+import { removeBookCart } from '@redux/reducerNew/cartReducer';
 import { removeChapter } from '@redux/reducerNew/cartReducer';
 import { theme } from '@theme';
 import { withNamespaces } from 'react-i18next';
@@ -107,7 +108,6 @@ const Cart = ({ t }) => {
             setCartItem({ ...item, priceBook: sum, index: index, SL: SL });
             bottomSheetRef.current?.snapToIndex(0);
         };
-        // console.log('>>>>>>>>>>>>>> CartItem', cartItem.SL);
         bookStore.map(item => {
             if (item.status == false) {
                 setAllPrice((all += 0));
@@ -219,7 +219,9 @@ const Cart = ({ t }) => {
                         <TouchableOpacity
                             style={styles.buttomAddCart}
                             onPress={() => {
-                                dispatch(removeItem({ _id: item._id })),
+                                console.log(">>>>>>>>>>>> item._id", item._id, index)
+                                // dispatch(removeItem({_id : item._id })),
+                                dispatch(removeBookCart({_id: item._id, index: index})),
                                     { setVisibleCart: setVisibleCart(false) };
                             }}>
                             <Text style={styles.textButtomLogin} height={55}>
@@ -260,7 +262,7 @@ const Cart = ({ t }) => {
                                     '................... Xoasaaa Sách',
                                     cartItem._id,
                                 ),
-                                    dispatch(removeItem({ _id: cartItem._id })));
+                                  dispatch(removeBookCart({ _id: cartItem._id })));
                         }
                     }}>
                     <Entypo
