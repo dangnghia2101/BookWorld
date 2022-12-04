@@ -97,6 +97,7 @@ export const store = configureStore({
             .concat(timereadAPI.middleware)
             .concat(editProfileAPI.middleware)
             .concat(bookOfAuthAPI.middleware)
+            .concat(profileAPI.middleware)
             .concat(chatAPI.middleware),
 });
 

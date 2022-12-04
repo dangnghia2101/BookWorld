@@ -1,6 +1,7 @@
 import { useAppSelector } from '@hooks';
 import { routes } from '@navigation/routes';
 import { useNavigation } from '@react-navigation/native';
+import { isEmpty } from 'lodash';
 import React from 'react';
 import { withNamespaces } from 'react-i18next';
 import { Image, TouchableOpacity } from 'react-native';
@@ -21,12 +22,14 @@ const ItemBookFree = ({ item, t }) => {
                     item,
                 })
             }>
-            <Image
-                source={{
-                    uri: item.image || '',
-                }}
-                style={styles.image}
-            />
+            {!isEmpty(item.image) ? (
+                <Image
+                    source={{
+                        uri: item.image,
+                    }}
+                    style={styles.image}
+                />
+            ) : null}
         </TouchableOpacity>
     );
 };

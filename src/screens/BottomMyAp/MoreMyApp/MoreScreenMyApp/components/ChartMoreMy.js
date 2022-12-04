@@ -22,6 +22,7 @@ const ChartMoreMy = props => {
     const myInfo = useAppSelector(state => state.root.auth);
     const { data: dataReadTime } = useGetReadTimeBookQuery(myInfo._id);
     console.log('Data read time ', dataReadTime);
+    console.log('Data myInfo ', myInfo.token);
     //chay 1 lan
 
     const { t } = props;

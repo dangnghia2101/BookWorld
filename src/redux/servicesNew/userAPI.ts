@@ -10,14 +10,17 @@ export const userApi = createApi({
     baseQuery: fetchBaseQuery({ baseUrl: MAIN_API }),
     endpoints: builder => ({
         login: builder.mutation({
-            query: body => ({
-                url: '/auth/login',
-                method: 'POST',
-                body: body,
-                headers: {
-                    'Content-type': 'application/json; charset=UTF-8',
-                },
-            }),
+            query: body => {
+                console.log('BODY ', body);
+                return {
+                    url: '/auth/login',
+                    method: 'POST',
+                    body: body,
+                    headers: {
+                        'Content-type': 'application/json; charset=UTF-8',
+                    },
+                };
+            },
             async onQueryStarted(id, { dispatch, queryFulfilled }) {
                 try {
                     const { data } = await queryFulfilled;
