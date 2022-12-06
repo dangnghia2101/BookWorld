@@ -1,30 +1,14 @@
-import {Image, StyleSheet, TextInput, Dimensions} from 'react-native';
-import {Block, Text, Button} from '@components';
-import React, {useState} from 'react';
-import {theme} from '@theme';
-import {icons} from '@assets';
+import { Image, StyleSheet, TextInput, Dimensions, ToastAndroid } from 'react-native';
+import { Block, Text, Button } from '@components';
+import React, { useState, useEffect } from 'react';
+import { theme } from '@theme';
+import { icons } from '@assets';
 import ItemComment from './ItemComment';
 import * as Progress from 'react-native-progress';
 import Icon from '@components/Icon';
+import { usePostCommentMutation, useGetAllCommentQuery, useLazyGetAllCommentQuery } from '@redux/servicesNew';
+import { useAppSelector } from '@hooks';
 
-const listComment = [
-  {
-    Image:
-      'https://cafebiz.cafebizcdn.vn/162123310254002176/2021/7/7/photo-1-162564020223387683391.jpg',
-    UserName: 'Nguyễn Văn A',
-    Content: 'Đọc rất hay, cảm ơn bạn',
-    Evaluate: 4,
-    Time: '20/10/2020',
-  },
-  {
-    Image:
-      'https://cafebiz.cafebizcdn.vn/162123310254002176/2021/7/7/photo-1-162564020223387683391.jpg',
-    UserName: 'Nguyễn Văn A',
-    Content: 'Đọc rất hay, cảm ơn bạn',
-    Evaluate: 4,
-    Time: '20/10/2020',
-  },
-];
 
 const _renderStar = num => {
   let star = [];
@@ -41,9 +25,47 @@ const _renderStar = num => {
   return star;
 };
 
-const EvaluateBook = ({}) => {
+const EvaluateBook = ({ idChapter }) => {
   const [evaluate, setEvaluate] = useState(0);
   const [comment, setComment] = useState('');
+
+  const [postComment] = usePostCommentMutation();
+  const [getAllComment, status, error] = useLazyGetAllCommentQuery();
+  const [listComment, setListComment] = useState([]);
+
+  useEffect(() => {
+    const getDataComment = async () => {
+      const dataComment = await getAllComment(idChapter);
+      let listReverse = [];
+      dataComment.data.data.map(item => {
+        listReverse = [item, ...listReverse]
+      })
+      setListComment(listReverse);
+    }
+    getDataComment();
+  }, [status])
+  const myInfo = useAppSelector(state => state.root.auth);
+
+
+  const handleSubmitComment = async () => {
+    if (evaluate > 0 && comment.length != 0) {
+      const body = { idChapter: idChapter, content: comment, idUser: myInfo._id, userName: myInfo.name, evaluate: evaluate };
+      await postComment(body);
+      ToastAndroid.show("Đăng bình luận thành công!", ToastAndroid.SHORT);
+      setEvaluate(0);
+      setComment('');
+      // listComment = getAllComment(idChapter);
+      const dataComment = await getAllComment(idChapter);
+      setListComment(dataComment?.data?.data?.reverse());
+    } else {
+      if (evaluate <= 0) {
+        ToastAndroid.show("Bạn chưa đánh giá!", ToastAndroid.SHORT);
+      } else {
+        ToastAndroid.show("Bạn chưa viết bình luận!", ToastAndroid.SHORT);
+      }
+    }
+  }
+
   return (
     <Block marginHorizontal={10} marginTop={40}>
       <Text center marginTop={30} color={theme.colors.black} size={18}>
@@ -185,6 +207,7 @@ const EvaluateBook = ({}) => {
           />
         </Button>
       </Block>
+
       <TextInput
         value={comment}
         onChangeText={setComment}
@@ -196,7 +219,8 @@ const EvaluateBook = ({}) => {
       />
 
       <Block width={'100%'} alignCenter marginTop={20}>
-        <Button style={styles.btn_submit_comment}>
+        <Button style={styles.btn_submit_comment}
+          onPress={handleSubmitComment}>
           <Text center color={theme.colors.gray3} size={16}>
             {' '}
             Đăng bình luận{' '}
@@ -205,7 +229,7 @@ const EvaluateBook = ({}) => {
       </Block>
 
       {/* List comment */}
-      {listComment?.map((item, index) => (
+      {listComment.map((item, index) => (
         <ItemComment key={index} item={item} />
       ))}
     </Block>

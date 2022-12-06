@@ -1,5 +1,4 @@
 import {
-    View,
     Text,
     Image,
     StyleSheet,
@@ -7,21 +6,38 @@ import {
     ScrollView,
     TouchableOpacity,
 } from 'react-native';
-import { launchImageLibrary } from 'react-native-image-picker';
-import LinearGradient from 'react-native-linear-gradient';
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import { PermissionsAndroid } from 'react-native';
 import React, { useState, useCallback, useMemo, useRef } from 'react';
-import { Block } from '@components';
+import { Block, HeaderWithButton } from '@components';
 import { theme } from '@theme';
 import IconView from '@components/Icon';
+import { useAppSelector } from '@hooks';
 import BottomSheet, { BottomSheetBackdrop } from '@gorhom/bottom-sheet';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import TopBar from '@screens/BottomMyAp/ReadingMyAp/components/TopBar';
-const ScreenUpdateProfile = () => {
-    const [imageUri, setImageUri] = useState('');
-    const inset = useSafeAreaInsets();
+import { useEditProfileMutation } from '@redux/servicesNew/editProflieAPI';
+import { makeStyles, useTheme } from 'themeNew';
 
-    const snapPoints = useMemo(() => [260 + inset.bottom], [inset.bottom]);
+const createFormData = (photo, name) => {
+    console.log('createFormDataaaaaaa', photo);
+    const data = new FormData();
+    data.append('file', photo.base64);
+    data.append('name', name);
+    return data;
+};
+
+const ScreenUpdateProfile = () => {
+    const myInfo = useAppSelector(state => state.root.auth);
+    const themeStore = useAppSelector(state => state.root.themeApp.theme);
+    const theme = useTheme(themeStore);
+    const [imageUri, setImageUri] = useState({ uri: myInfo.image });
+    const [name, setName] = useState(myInfo.name);
+    const [editProfile] = useEditProfileMutation();
+    const inset = useSafeAreaInsets();
+    const snapPoints = useMemo(() => [130 + inset.bottom], [inset.bottom]);
     const bottomSheetRef = useRef(null);
+    var snapTI = -1;
+
     const renderBackdrop = useCallback(
         props => (
             <BottomSheetBackdrop
@@ -29,190 +45,262 @@ const ScreenUpdateProfile = () => {
                 appearsOnIndex={0}
                 {...props}
                 enableTouchThrough={true}
+                backgroundColor={theme.colors.black}
             />
         ),
         [],
     );
+
     const options = {
         saveToPhotos: true,
         mediaType: 'photo',
+        maxWidth: 500,
+        maxHeigth: 500,
+        includeBase64: true,
     };
+
+    const changBottomSheet = () => {
+        if (snapTI == 0) {
+            snapTI = -1;
+            bottomSheetRef.current?.snapToIndex(snapTI);
+        } else {
+            snapTI = 0;
+            bottomSheetRef.current?.snapToIndex(snapTI);
+        }
+    }
+
     const chooseImageGallary = async () => {
+        // const result = await launchImageLibrary(options);
+        // setImageUri(result.assets[0].uri);
+        bottomSheetRef.current?.snapToIndex(-1)
         const result = await launchImageLibrary(options);
-        setImageUri(result.assets[0].uri);
+        setImageUri({
+            uri: result.assets[0].uri,
+            name: result.assets[0].fileName,
+            type: result.assets[0].type,
+            base64: result.assets[0].base64,
+        });
     };
+
+    const takePhoto = async () => {
+        const granted = await PermissionsAndroid.request(
+            PermissionsAndroid.PERMISSIONS.CAMERA,
+        );
+        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+            // const result = await launchCamera(options)
+            // setImageUri(result.assets[0].uri);
+            // setImageUri({ uri: result.assets[0].uri, name: result.assets[0].fileName, type: result.assets[0].type });
+            const result = await launchCamera(options);
+            // setImageUri({ uri: result.assets[0].uri, name: result.assets[0].fileName, type: result.assets[0].type });
+            setImageUri({
+                uri: result.assets[0].uri,
+                name: result.assets[0].fileName,
+                type: result.assets[0].type,
+                base64: result.assets[0].base64,
+            }); // console.log("takePhoto result =", result)
+
+            if (snapTI == 0) {
+                // snapTI = -1;
+                bottomSheetRef.current?.snapToIndex(-1);
+            }
+        }
+        bottomSheetRef.current.snapToIndex(-1)
+    };
+
+    const handleUploadPhoto = async () => {
+        const body = {
+            formData: createFormData(imageUri, name),
+            token: myInfo.token,
+        };
+        const aw = await editProfile(body);
+
+        console.log('handleUploadPhoto', aw);
+    };
+
     return (
-        <Block flex backgroundColor={theme.colors.white}>
-            <TopBar headerTitle={'Chỉnh sửa thông tin'} />
-            <Block width={150} marginTop={-60} marginLeft={140} relative>
+        <Block flex backgroundColor={theme.colors.grey16}>
+            <HeaderWithButton isBackHeader title={'Chỉnh sửa thông tin'} />
+            <ScrollView>
                 <Block
-                    backgroundColor={theme.colors.white}
                     width={150}
-                    height={150}
-                    radius={100}
-                    justifyCenter
-                    alignCenter
-                    padding={7}
-                    borderWidth={5}
-                    borderColor={theme.colors.creamRed}>
-                    <Image style={styles.avatar} source={{ uri: imageUri }} />
+                    marginTop={30}
+                    marginBottom={50}
+                    marginLeft={135}
+                    relative>
+                    <Block
+                        relative
+                        backgroundColor={theme.colors.white}
+                        width={150}
+                        height={150}
+                        radius={100}
+                        justifyCenter
+                        alignCenter
+                        padding={7}>
+                        <Block
+                            backgroundColor={theme.colors.white}
+                            width={155}
+                            height={155}
+                            radius={100}
+                            justifyCenter
+                            alignCenter
+                            borderColor={theme.colors.gray2}
+                            borderWidth={1.5}
+                            padding={7}>
+                            <Image
+                                style={styles.avatar}
+                                source={{ uri: imageUri.uri }}
+                            />
+                            <Block
+                                absolute
+                                width={40}
+                                height={40}
+                                radius={50}
+                                backgroundColor={theme.colors.gray4}
+                                justifyCenter
+                                alignCenter
+                                style={styles.blockIcon}>
+                                <TouchableOpacity
+                                    style={styles.iconPen}
+                                    onPress={() =>
+                                        bottomSheetRef.current?.snapToIndex(0)
+                                    }>
+                                    <IconView
+                                        component={'MaterialIcons'}
+                                        name={'add-a-photo'}
+                                        size={25}
+                                        color={theme.colors.gray}
+                                    />
+                                </TouchableOpacity>
+                            </Block>
+                        </Block>
+                    </Block>
                 </Block>
-                <Block
-                    absolute
-                    bottom={-5}
-                    right={5}
-                    width={40}
-                    height={40}
-                    radius={50}
-                    justifyCenter
-                    alignCenter
-                    backgroundColor={theme.colors.white}>
-                    <TouchableOpacity
-                        onPress={() => bottomSheetRef.current?.snapToIndex(0)}>
-                        <IconView
-                            component={'AntDesign'}
-                            name={'camerao'}
-                            size={32}
-                            color={theme.colors.pinkRed}
+                <Block width={'100%'} paddingHorizontal={30}>
+                    <Block width={'100%'} marginTop={20}>
+                        <Text style={styles.textFullname}>Họ tên</Text>
+                        <TextInput
+                            onChangeText={setName}
+                            value={name}
+                            placeholder={myInfo.name}
+                            placeholderTextColor={theme.colors.gray2}
+                            style={styles.textInput}
                         />
-                    </TouchableOpacity>
-                </Block>
-            </Block>
-            <Block
-                width={'100%'}
-                height={100}
-                paddingHorizontal={24}
-                marginTop={100}
-                alignCenter>
-                <Block
-                    row
-                    width={'100%'}
-                    height={60}
-                    radius={25}
-                    alignCenter
-                    marginBottom={30}
-                    paddingHorizontal={10}
-                    backgroundColor={theme.colors.blurGray}>
-                    <IconView
-                        component={'AntDesign'}
-                        name={'user'}
-                        size={32}
-                        color={theme.colors.pinkRed}
-                    />
-                    <TextInput
-                        placeholder={'Họ tên...'}
-                        style={styles.textInput}
-                    />
-                </Block>
-                <Block
-                    row
-                    width={'100%'}
-                    height={60}
-                    radius={25}
-                    alignCenter
-                    paddingHorizontal={10}
-                    backgroundColor={theme.colors.blurGray}>
-                    <IconView
-                        component={'AntDesign'}
-                        name={'calendar'}
-                        size={32}
-                        color={theme.colors.pinkRed}
-                    />
-                    <TextInput
-                        placeholder={'dd/mm/yyyy'}
-                        style={styles.textInput}
-                    />
-                </Block>
-                <TouchableOpacity style={styles.TouchableOpacity}>
-                    <LinearGradient
-                        style={styles.btnSave}
-                        colors={['#CD58E0', '#DB4040']}>
+                    </Block>
+                    <Block width={'100%'} marginTop={20}>
+                        <Text style={styles.textFullname}>Ngày sinh</Text>
+                        <TextInput
+                            placeholder={'dd/mm/yyyy'}
+                            placeholderTextColor={theme.colors.gray2}
+                            style={styles.textInput}
+                        />
+                    </Block>
+                    <TouchableOpacity
+                        onPress={handleUploadPhoto}
+                        style={styles.TouchableOpacity}>
                         <Text style={styles.textSave} height={55}>
                             Lưu
                         </Text>
-                    </LinearGradient>
-                </TouchableOpacity>
-            </Block>
+                    </TouchableOpacity>
+                </Block>
+            </ScrollView>
             <BottomSheet
                 style={styles.bottomSheet}
                 index={-1}
                 ref={bottomSheetRef}
+                backdropComponent={renderBackdrop}
                 snapPoints={snapPoints}
-                enablePanDownToClose={true}
-                backdropComponent={renderBackdrop}>
-                <Block width={'100%'} height={'100%'} justifyCenter alignCenter>
-                    <TouchableOpacity style={styles.buttomLogin}>
+                enablePanDownToClose={true}>
+                <Block
+                    width={'100%'}
+                    row
+                    justifyCenter
+                    alignCenter
+                    height={'100%'}>
+                    <TouchableOpacity
+                        style={styles.buttomLogin}
+                        onPress={() => takePhoto()}>
+                        <IconView
+                            component={'Ionicons'}
+                            name={'camera-outline'}
+                            size={35}
+                            color={theme.colors.gray5}
+                        />
                         <Text style={styles.textButtomLogin}>Chụp ảnh</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                         style={styles.buttomLogin}
-                        onPress={() => launchImageLibrary()}>
-                        <Text style={styles.textButtomLogin}>Chọn sẵn có</Text>
+                        onPress={() => chooseImageGallary()}>
+                        <IconView
+                            component={'FontAwesome'}
+                            name={'picture-o'}
+                            size={30}
+                            color={theme.colors.gray5}
+                        />
+                        <Text style={styles.textButtomLogin}>Chọn ảnh</Text>
                     </TouchableOpacity>
                 </Block>
-            </BottomSheet>
-        </Block>
+            </BottomSheet >
+        </Block >
     );
 };
 
 export default ScreenUpdateProfile;
 
 const styles = StyleSheet.create({
+    blockIcon: {
+        top: '80%',
+        left: '75%'
+    },
+    bottomSheet: {
+        borderWidth: 1,
+        borderColor: theme.colors.gray2,
+        borderTopLeftRadius: 10,
+        borderTopRightRadius: 10,
+    },
+    textFullname: {
+        color: theme.colors.text,
+        fontSize: 17,
+        fontWeight: '500',
+        marginLeft: 10,
+    },
     textButtomLogin: {
-        fontSize: 22,
-        lineHeight: 50,
+        fontSize: 16,
         alignItems: 'center',
         fontWeight: '700',
-        color: '#FFFFFF',
+        color: theme.colors.gray5,
+        marginLeft: '10%'
     },
     buttomLogin: {
-        width: '70%',
-        height: 59,
-        marginTop: 20,
-        justifyContent: 'center',
+        width: '100%',
+        height: '40%',
+        marginLeft: '2%',
+        flexDirection: 'row',
         alignItems: 'center',
         borderRadius: 10,
-        backgroundColor: '#DD4455',
-        shadowColor: '#000',
-        shadowOffset: {
-            width: 0,
-            height: 3,
-        },
-        shadowOpacity: 1,
-        shadowRadius: 6,
-
-        elevation: 7,
+        borderWidth: 1,
+        borderColor: theme.colors.gray2,
     },
     textSave: {
         fontSize: 20,
         fontWeight: '700',
         color: 'white',
     },
-    btnSave: {
+    TouchableOpacity: {
         width: '100%',
-        height: '100%',
-        marginTop: 100,
+        height: 55,
+        backgroundColor: theme.colors.creamRed,
+        borderRadius: 50,
+        marginTop: '40%',
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: 20,
-        shadowColor: '#000',
-        shadowOffset: {
-            width: 0,
-            height: 3,
-        },
-        shadowOpacity: 1,
-        shadowRadius: 6,
-        elevation: 7,
-    },
-    TouchableOpacity: {
-        width: '50%',
-        height: 55,
     },
     textInput: {
-        fontSize: 20,
+        fontSize: 18,
         fontWeight: '500',
-        color: '#898585',
         marginLeft: 10,
+        color: theme.colors.text,
+        borderBottomWidth: 1,
+        borderBottomColor: theme.colors.gray2,
     },
     avatar: {
         width: 135,

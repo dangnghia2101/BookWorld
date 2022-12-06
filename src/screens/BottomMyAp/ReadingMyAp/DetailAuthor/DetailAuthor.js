@@ -3,79 +3,64 @@ import {
   Text,
   ScrollView,
   Image,
+  FlatList,
   TouchableOpacity,
 } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { Block } from '@components';
+import TopBar from '../components/TopBar';
 import { theme } from '@theme';
 import { width } from '@utils/responsive';
-import ListBookOfAuthor from '../components/ListBookOfAuthor';
-import { useSelector, useDispatch } from 'react-redux';
-import actions from '@redux/actions';
-import { FlatList } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/core';
 import TabSceneReadingStatus from '../components/TabSceneReadingStatus';
+import { useAppSelector } from '@hooks';
+import { makeStyles, useTheme } from 'themeNew';
+import { useGetFavoriteBookQuery } from '@redux/servicesNew'
+import ItemCateBook from '@screens/BottomMyAp/HomeMyAp/HomeScreenMyAp/components/ItemCateBook';
+import BookOfauthor from '../components/BookOfAuthor';
+
 const widthItemEventIncoming = width - width / 3;
 const WIDTH_ITEM_INVIEW = widthItemEventIncoming - 20;
 
 const DetailAuthor = ({ route }) => {
-  const dispatch = useDispatch();
-  const navigation = useNavigation();
-  const listBookOfAuthor = useSelector(state => state.getAllBookAuthor);
-
-  useEffect(() => {
-    dispatch({ type: actions.GET_ALL_BOOK_AUTHOR });
-  }, []);
-
-  const _renderItemBookOfAuthor = ({ item }) => {
-    return <ListBookOfAuthor item={item} />;
-  };
+  let item = route.params.item;
+  const themeStore = useAppSelector(state => state.root.themeApp.theme);
+  const theme = useTheme(themeStore);
 
   return (
-    <Block backgroundColor={theme.colors.white} flex>
-      <Block width="100%" height="60%">
-        <Block
-          width="100%"
-          height={371}
-          backgroundColor={theme.colors.darkPurple}>
-          <TouchableOpacity style={styles.iconBack}>
+    <Block backgroundColor={theme.colors.grey16} flex>
+      <ScrollView>
+        <TopBar isBackHeader />
+        <Block width="100%" height="15%">
+          <Block
+            width="100%"
+            height={'50%'}
+            backgroundColor={theme.colors.darkPurple}>
+          </Block>
+          <Block width={'75%'} height={'60%'} absolute top={65} left={70} >
             <Image
-              source={require('@assets/icons/iconback.png')}
-              onPress={() => navigation.goBack()}
+              style={styles.imgAuthor}
+              source={{ uri: item.avatar }}
             />
-          </TouchableOpacity>
+          </Block>
+          <Text style={styles.nameAuthor}>{item.name}</Text>
         </Block>
-        <Block absolute top={158} left={91}>
-          <Image
-            style={styles.imgAuthor}
-            source={require('@assets/images/imgAuthor.png')}
-          />
-        </Block>
-        <Text style={styles.nameAuthor}>Johnny Dang</Text>
-      </Block>
-      <ScrollView showsVerticalScrollIndicator={false}>
         <Block width="100%" paddingHorizontal={24}>
           <Block>
             <Text style={styles.textIntro}>Giới thiệu về tác giả</Text>
             <Text style={styles.IntroduceAuthor} numberOfLines={2}>
-              J.D. Salinger was an American writer, best known for his 1951
-              novel The Catcher in the Rye. Before its publi cation, Salinger
-              published several short stories in Story magazine xem thêm
+              {item.aboutAuthor.introduce}
             </Text>
           </Block>
           <Block marginTop={18}>
             <Text style={styles.textIntro}>Tổng quan</Text>
-            <Text style={styles.IntroduceAuthor} numberOfLines={4}>
-              The Catcher in the Rye is a novel by J. D. Salinger, partially
-              published in serial form in 1945–1946 and as a novel in 1951. It
-              was originally intended for adu lts but is often read by
-              adolescents for its theme of angst, alienation and as a critique
-              xem thêm
+            <Text style={styles.IntroduceAuthor}>
+              {item.aboutAuthor.details}
             </Text>
           </Block>
           <Block marginTop={18}>
             <Text style={styles.textIntro}>Thông tin liên hệ</Text>
-            <Text style={styles.IntroduceAuthor}>Facebook: facebook..com</Text>
+            <Text style={styles.IntroduceAuthor}>Facebook: facebook..co m</Text>
             <Text style={styles.IntroduceAuthor}>Youtube: youtube.com </Text>
             <Text style={styles.IntroduceAuthor}>Instagram: instagram</Text>
             <Text style={styles.IntroduceAuthor}>Number phone: 0977777777</Text>
@@ -83,9 +68,9 @@ const DetailAuthor = ({ route }) => {
           <Block marginTop={42}>
             <Text style={styles.textBook}>Sách của tác giả</Text>
             {/* <FlatList
-              data={listBookOfAuthor?.data}
+              data={data}
               keyExtractor={item => item._id}
-              renderItem={_renderItemBookOfAuthor}
+              renderItem={item => <ItemCateBook item={item.item} />}
               ListEmptyComponent={
                 <Block
                   width={width}
@@ -94,8 +79,9 @@ const DetailAuthor = ({ route }) => {
                   alignCenter>
                   <Text>Chưa có sach</Text>
                 </Block>
-              } */}
-            <TabSceneReadingStatus route={route} />
+              } /> */}
+            <BookOfauthor />
+            {/* <TabSceneReadingStatus /> */}
           </Block>
         </Block>
       </ScrollView>
@@ -106,9 +92,12 @@ const DetailAuthor = ({ route }) => {
 export default DetailAuthor;
 
 const styles = StyleSheet.create({
-  // listBookOfAuthor: {
-  //   height: 500,
-  // },
+
+  imgAuthor: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 5
+  },
   textBook: {
     lineHeight: 36,
     fontWeight: '600',
@@ -133,8 +122,8 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     fontSize: 24,
     lineHeight: 36,
-    left: '32.04%',
-    top: '90%',
+    left: '32%',
+    top: '76%',
     color: 'black',
   },
   iconBack: {

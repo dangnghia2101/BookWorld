@@ -1,42 +1,31 @@
-import { StyleSheet, View, Image, FlatList } from 'react-native'
-import React from 'react';
-import { Block, Text } from '@components';
+import { StyleSheet, View, Image, FlatList, ScrollView } from 'react-native'
+import React, { useState } from 'react';
+import { Block, HeaderWithButton, Text } from '@components';
 import { theme } from '@theme';
-import { dataNoti } from './dataNoti';
-import ItemNoti from './ItemNoti';
+import ItemNoti from './itemNoti';
 import { useAppSelector } from 'hooks';
 import { makeStyles, useTheme } from 'themeNew';
 
 const ScreenNotification = () => {
     const themeStore = useAppSelector(state => state.root.themeApp.theme);
     const themeNew = useTheme(themeStore);
-    console.log(dataNoti);
-    if (dataNoti && dataNoti.length) {
-        return (
-            <Block flex relative>
-                <Block absolute>
-                    <Image resizeMode='cover' style={styles.image} source={require('assets/images/Mask.png')} />
-                </Block>
-                <Block alignCenter marginTop={20}>
-                    <Text color={themeNew.colors.text}
-                        size={20}
-                        fontType={'bold'}
-                    >Notification</Text>
-                </Block>
-                <Block absolute
-                    top={100}
-                    width="100%">
-                    <FlatList
-                        data={dataNoti}
-                        keyExtractor={item => item._id}
-                        renderItem={({ item }) => <ItemNoti item={item} />}
-                    />
-                </Block>
-            </Block >
-        )
-    }
-    return null;
-};
+    const myInfo = useAppSelector(state => state.root.auth);
+    // const [dataNoti, setDataNoti] = useState([]);
+    // setDataNoti(myInfo.notification)
+    let dataNoti = myInfo.notification;
+    console.log("dataNotiiiiiiiiiiii", dataNoti);
+    return (
+        <Block flex backgroundColor={themeNew.colors.grey16} >
+            <HeaderWithButton isBackHeader title={'Thông báo'} />
+            <ScrollView>
+                {dataNoti.map((item, index) => (
+                    <ItemNoti key={index} item={item} />
+                ))}
+            </ScrollView>
+        </Block >
+    )
+}
+
 
 export default ScreenNotification;
 

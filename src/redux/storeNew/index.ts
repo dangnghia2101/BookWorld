@@ -8,6 +8,7 @@ import {
     CartReducer,
     AuthorReducer,
     ReadingReducer,
+    FavoriteBookReducer,
 } from '@redux/reducerNew';
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import {
@@ -22,15 +23,7 @@ import {
 } from 'redux-persist';
 import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {
-    userApi,
-    bookAPI,
-    paymentApi,
-    timereadAPI,
-    authorAPI,
-    profileAPI,
-    chatAPI,
-} from '@redux/servicesNew';
+import {userApi, bookAPI, paymentApi, timereadAPI, authorAPI, profileAPI,editProfileAPI,bookOfAuthAPI} from '@redux/servicesNew';
 import { setupListeners } from '@reduxjs/toolkit/query';
 import { userPhoneApi } from '@redux/servicesNew/userPhoneAPI';
 
@@ -43,6 +36,7 @@ const rootReducer = combineReducers({
     cart: CartReducer,
     author: AuthorReducer,
     reading: ReadingReducer,
+    favoriteBook: FavoriteBookReducer,
     // ...other reducers here
 });
 
@@ -59,37 +53,32 @@ const persistConfig = {
 const persistedReducer = persistReducer<RootState>(persistConfig, rootReducer);
 
 export const store = configureStore({
-    reducer: {
-        root: persistedReducer,
-        [userApi.reducerPath]: userApi.reducer,
-        [bookAPI.reducerPath]: bookAPI.reducer,
-        [paymentApi.reducerPath]: paymentApi.reducer,
-        [userPhoneApi.reducerPath]: userPhoneApi.reducer,
-        [timereadAPI.reducerPath]: timereadAPI.reducer,
-        [authorAPI.reducerPath]: authorAPI.reducer,
-        [profileAPI.reducerPath]: profileAPI.reducer,
-        [chatAPI.reducerPath]: chatAPI.reducer,
-    },
-    middleware: getDefaultMiddleware =>
-        getDefaultMiddleware({
-            serializableCheck: {
-                ignoredActions: [
-                    FLUSH,
-                    REHYDRATE,
-                    PAUSE,
-                    PERSIST,
-                    PURGE,
-                    REGISTER,
-                ],
-            },
-        })
-            .concat(userApi.middleware)
-            .concat(bookAPI.middleware)
-            .concat(paymentApi.middleware)
-            .concat(userPhoneApi.middleware)
-            .concat(authorAPI.middleware)
-            .concat(timereadAPI.middleware)
-            .concat(chatAPI.middleware),
+  reducer: {
+    root: persistedReducer,
+    [userApi.reducerPath]: userApi.reducer,
+    [bookAPI.reducerPath]: bookAPI.reducer,
+    [paymentApi.reducerPath]: paymentApi.reducer,
+    [userPhoneApi.reducerPath]: userPhoneApi.reducer,
+    [timereadAPI.reducerPath]: timereadAPI.reducer,
+    [authorAPI.reducerPath]: authorAPI.reducer,
+    [profileAPI.reducerPath]: profileAPI.reducer,
+    [editProfileAPI.reducerPath]: editProfileAPI.reducer,
+    [bookOfAuthAPI.reducerPath]: bookOfAuthAPI.reducer
+  },
+  middleware: getDefaultMiddleware =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
+    })
+      .concat(userApi.middleware)
+      .concat(bookAPI.middleware)
+      .concat(paymentApi.middleware)
+      .concat(userPhoneApi.middleware)
+      .concat(authorAPI.middleware)
+      .concat(timereadAPI.middleware)
+      .concat(editProfileAPI.middleware)
+      .concat(bookOfAuthAPI.middleware),
 });
 
 export const persistor = persistStore(store);
