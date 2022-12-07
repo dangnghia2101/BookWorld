@@ -19,25 +19,25 @@ const ItemMoreMy = ({ props, t }) => {
             <Block
                 marginRight={20}
                 style={[styles.dataContainer, styles.shadowColor]}>
-                <Text center color={themeNew.colors.textDark}>
+                <Text fontType={'medium1'} center color={themeNew.colors.textDark}>
                     {t('totalReadingTime')}
                 </Text>
                 <Text size={40} center color={themeNew.colors.textDark}>
                     1280
                 </Text>
-                <Text center color={themeNew.colors.textDark}>
+                <Text fontType={'medium1'} center color={themeNew.colors.textDark}>
                     {t('minute')}
                 </Text>
             </Block>
             <Block style={[styles.dataContainer, styles.shadowColor]}>
-                <Text center color={themeNew.colors.textDark}>
+                <Text fontType={'medium1'} center color={themeNew.colors.textDark}>
                     {t('numberOfBooksRead')}
 
                 </Text>
                 <Text size={40} center color={themeNew.colors.textDark}>
                     23
                 </Text>
-                <Text center color={themeNew.colors.textDark}>
+                <Text fontType={'medium1'} center color={themeNew.colors.textDark}>
                     {t('book')}
                 </Text>
             </Block>

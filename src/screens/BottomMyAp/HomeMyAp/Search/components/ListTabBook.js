@@ -74,7 +74,7 @@ const ListTabBook = ({ route, search, setSearch, t }) => {
 
     const SectionHeader = title => (
         <View style={styles.containerSection}>
-            <Text style={styles.headerSection}>{title}</Text>
+            <Text fontType='medium1' style={styles.headerSection}>{title}</Text>
         </View>
     );
 
@@ -124,7 +124,6 @@ const useStyle = makeStyles()(({ colors }) => ({
     },
     headerSection: {
         fontSize: 20,
-        fontWeight: 'bold',
         marginLeft: 20,
     },
     imageStyle: {

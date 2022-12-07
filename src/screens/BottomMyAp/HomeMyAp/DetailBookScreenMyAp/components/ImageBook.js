@@ -29,13 +29,13 @@ const ImageBook = ({ item }) => {
     <Block alignCenter>
       <Image source={{ uri: item.item.image }} style={styles.image} />
       <Text
-        fontType="bold"
+        fontType="bold1"
         size={20}
         marginTop={10}
         color={themeNew.colors.textInBox}>
         {item.item.name}
       </Text>
-      <Text fontType="regular" size={16} color={themeNew.colors.textInBox}>
+      <Text fontType="regular1" size={16} color={themeNew.colors.textInBox}>
         {item.item.name}
       </Text>
       {/* Star */}

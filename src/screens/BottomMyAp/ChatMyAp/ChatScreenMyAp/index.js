@@ -140,7 +140,7 @@ const ChatScreenMyApp = ({ t }) => {
                 paddingHorizontal={10}
                 alignCenter
                 flex>
-                <Text color={colors.textInBox} marginVertical={10} size={16} fontType="bold">
+                <Text fontType={'bold1'} color={colors.textInBox} marginVertical={10} size={16}>
                     {t('createNewGroup')}
                 </Text>
                 <Block
@@ -166,7 +166,7 @@ const ChatScreenMyApp = ({ t }) => {
                     </Block>
 
                     <Block width="90%" paddingVertical={10}>
-                        <Text color={colors.textInBox} marginBottom={-20} size={16} fontType="bold">
+                        <Text color={colors.textInBox} marginBottom={-20} size={16} fontType="bold1">
                             {t('groupName')}
                         </Text>
 
@@ -178,7 +178,7 @@ const ChatScreenMyApp = ({ t }) => {
                         />
                     </Block>
                     <Block width="90%">
-                        <Text color={colors.textInBox} marginBottom={-20} size={16} fontType="bold">
+                        <Text color={colors.textInBox} marginBottom={-20} size={16} fontType="bold1">
                             {t('addMember')}
                         </Text>
 
@@ -280,7 +280,7 @@ const ChatScreenMyApp = ({ t }) => {
                         alignCenter
                         backgroundColor={colors.primary}
                         radius={10}>
-                        <Text color={colors.white}>{t('createGroup')}</Text>
+                        <Text fontType={'bold1'} color={colors.white}>{t('createGroup')}</Text>
                     </Block>
                 </TouchableOpacity>
             </Block>
@@ -306,7 +306,7 @@ const ChatScreenMyApp = ({ t }) => {
                 paddingHorizontal={20}
                 backgroundColor={colors.background}>
                 <Block row alignCenter>
-                    <Text flex size={28} fontType="bold" color={colors.primary}>
+                    <Text flex size={28} fontType="bold1" color={colors.primary}>
                         Explore
                     </Text>
                     <TouchableOpacity

@@ -1,13 +1,13 @@
-import {Block, Text} from '@components';
-import React, {useState} from 'react';
-import {StyleSheet, Pressable} from 'react-native';
-import {useDispatch} from 'react-redux';
-import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import { Block, Text } from '@components';
+import React, { useState } from 'react';
+import { StyleSheet, Pressable } from 'react-native';
+import { useDispatch } from 'react-redux';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import actions from '@redux/actions';
-import {makeStyles, useTheme} from 'themeNew';
-import {useAppSelector, useAppDispatch} from '@hooks';
-import {withNamespaces} from 'react-i18next';
-import {logoutReducer} from '@redux/reducerNew';
+import { makeStyles, useTheme } from 'themeNew';
+import { useAppSelector, useAppDispatch } from '@hooks';
+import { withNamespaces } from 'react-i18next';
+import { logoutReducer } from '@redux/reducerNew';
 
 const ItemEditLastMoreMy = props => {
   GoogleSignin.configure({
@@ -15,7 +15,7 @@ const ItemEditLastMoreMy = props => {
       '1078600024718-r4kttklrp4av6li4mqs9b5ctnhbm6aob.apps.googleusercontent.com',
   });
 
-  const {t} = props;
+  const { t } = props;
 
   const themeStore = useAppSelector(state => state.root.themeApp.theme);
   const themeNew = useTheme(themeStore);
@@ -36,7 +36,7 @@ const ItemEditLastMoreMy = props => {
       <Pressable
         onPress={handleLogOut}
         style={[styles.buttonLastMoreMy, styles.shadowColor]}>
-        <Text color={themeNew.colors.white} size={16}>
+        <Text fontType={'bold1'} color={themeNew.colors.white} size={16}>
           {t('logout')}
         </Text>
       </Pressable>
@@ -46,7 +46,7 @@ const ItemEditLastMoreMy = props => {
 
 export default withNamespaces()(ItemEditLastMoreMy);
 
-const useStyle = makeStyles()(({colors}) => ({
+const useStyle = makeStyles()(({ colors }) => ({
   buttonLastMoreMy: {
     width: '100%',
     height: 60,

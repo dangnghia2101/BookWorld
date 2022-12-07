@@ -125,17 +125,18 @@ const Cart = ({ t }) => {
                         resizeMode="cover"
                     />
                     <Block marginHorizontal={20} marginTop={5} width={'55%'}>
-                        <Text numberOfLines={1} size={20} fontType={'bold'}>
+                        <Text numberOfLines={1} size={20} fontType={'bold1'}>
                             {item.name}
                         </Text>
                         <Text
                             color="#9D9D9D"
                             size={14}
                             numberOfLines={1}
-                            marginTop={5}>
+                            marginTop={5}
+                            fontType={'medium1'}>
                             {t('numberOfEpisodes')}: {Object.keys(item.chapter).length}
                         </Text>
-                        <Text style={styles.TextPrice}>
+                        <Text fontType={'medium1'} style={styles.TextPrice}>
                             {priceBook()
                                 .toFixed(0)
                                 .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')}{' '}
@@ -207,7 +208,7 @@ const Cart = ({ t }) => {
                         />
                     </Block>
                     <Block alignCenter={'center'}>
-                        <Text style={styles.textOTP} center>
+                        <Text fontType={'medium1'} style={styles.textOTP} center>
                             {t('askRemove')}
                         </Text>
                         <Block>
@@ -222,7 +223,7 @@ const Cart = ({ t }) => {
                                 dispatch(removeItem({ _id: item._id })),
                                     { setVisibleCart: setVisibleCart(false) };
                             }}>
-                            <Text style={styles.textButtomLogin} height={55}>
+                            <Text fontType={'bold1'} style={styles.textButtomLogin} height={55}>
                                 {t('delete')}
                             </Text>
                         </TouchableOpacity>
@@ -290,7 +291,7 @@ const Cart = ({ t }) => {
                 backgroundColor={theme.colors.background}
                 height={50}
                 row>
-                <Text color={theme.colors.textInBox} size={20} style={styles.textTitle}>
+                <Text fontType='bold1' color={theme.colors.textInBox} size={20} style={styles.textTitle}>
                     {t('yourCart')}
                 </Text>
             </Block>
@@ -321,10 +322,11 @@ const Cart = ({ t }) => {
                     style={styles.ContainerCheckOut}
                     marginTop={10}>
                     <Block marginLeft={10}>
-                        <Text color={theme.colors.textInBox} size={16} style={styles.TextCart}>
+                        <Text fontType={'medium1'} color={theme.colors.textInBox} size={16} style={styles.TextCart}>
                             {t('toTal')}
                         </Text>
                         <Text
+                            fontType={'bold1'}
                             color="#D45555"
                             size={20}
                             style={styles.TextCart}
@@ -346,7 +348,7 @@ const Cart = ({ t }) => {
                             })
                         }
                         style={styles.BottomCheckOut(allPrice)}>
-                        <Text marginRight={10} color="#ffffff" size={18}>
+                        <Text fontType={'blod1'} marginRight={10} color="#ffffff" size={18}>
                             {t('buy')}
                         </Text>
                         <Image
@@ -371,10 +373,10 @@ const Cart = ({ t }) => {
                             />
                         </Block>
                         <Block width={'53%'} marginTop={25}>
-                            <Text size={20} style={styles.Name}>
+                            <Text fontType={'bold1'} size={20} style={styles.Name}>
                                 {cartItem?.name}
                             </Text>
-                            <Text style={styles.Price}>
+                            <Text fontType={'medium1'} style={styles.Price}>
                                 {cartItem?.priceBook &&
                                     cartItem?.priceBook
                                         .toFixed(0)
@@ -445,7 +447,6 @@ const styles = StyleSheet.create({
     },
     textButtomLogin: {
         fontSize: 18,
-        fontWeight: '700',
         color: 'white',
     },
     clone: {
@@ -454,7 +455,6 @@ const styles = StyleSheet.create({
     },
     textOTP: {
         marginTop: 20,
-        fontWeight: '700',
         fontSize: 16,
         marginBottom: 20,
     },
@@ -475,9 +475,6 @@ const styles = StyleSheet.create({
     hide: {
         position: 'absolute',
         marginLeft: 85,
-    },
-    textTitle: {
-        fontWeight: '700',
     },
     textBottom: {
         color: 'white',
@@ -529,13 +526,11 @@ const styles = StyleSheet.create({
         elevation: 2,
     },
     Name: {
-        fontWeight: '700',
         lineHeight: 30,
     },
     Price: {
         marginTop: 10,
         fontSize: 20,
-        fontWeight: 'bold',
         color: '#D45555',
     },
     Container1: {
@@ -579,7 +574,6 @@ const styles = StyleSheet.create({
         marginTop: 5,
         color: '#D45555',
         fontSize: 20,
-        fontWeight: '700',
     },
     BottomCheckOut: item => ({
         marginRight: 15,

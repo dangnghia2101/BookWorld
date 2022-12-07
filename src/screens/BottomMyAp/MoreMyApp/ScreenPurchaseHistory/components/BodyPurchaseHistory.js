@@ -20,7 +20,7 @@ const BodyPurchaseHistory = props => {
     <Block marginHorizontal={20} flex height={20000}>
       <Block>
         <Text
-          fontType={'bold'}
+          fontType={'bold1'}
           color={themeNew.colors.textDark}
           size={16}
           marginVertical={10}>
@@ -36,15 +36,15 @@ const BodyPurchaseHistory = props => {
               <Block column marginLeft={10}>
                 <Text
                   size={18}
-                  fontType="bold"
+                  fontType="bold1"
                   numberOfLines={2}
                   color={themeNew.colors.textDark}>
                   Tên sách
                 </Text>
-                <Text size={14} color={themeNew.colors.textDark}>
+                <Text fontType={'regular1'} size={14} color={themeNew.colors.textDark}>
                   Tên tác giả
                 </Text>
-                <Text size={14} color={themeNew.colors.textDark}>
+                <Text fontType={'regular1'} size={14} color={themeNew.colors.textDark}>
                   Tên tác giả
                 </Text>
               </Block>
@@ -54,7 +54,7 @@ const BodyPurchaseHistory = props => {
             </Block>
             <Block row marginHorizontal={15} marginVertical={15} alignSelf={'baseline'}>
               <Block width={'40%'}>
-                <Text size={12} color={themeNew.colors.grey8}>
+                <Text fontType='medium1' size={12} color={themeNew.colors.grey8}>
                   2 {t('product')}
                 </Text>
               </Block>
@@ -63,10 +63,10 @@ const BodyPurchaseHistory = props => {
                   style={styles.icon_logo}
                   source={require('../../../../../assets/images/logo_icon.png')}
                 />
-                <Text size={14} color={themeNew.colors.grey8}>
+                <Text fontType='medium1' size={14} color={themeNew.colors.grey8}>
                   {t('intoMoney')}:
                 </Text>
-                <Text size={14} color={themeNew.colors.grey8}>
+                <Text fontType='medium1' size={14} color={themeNew.colors.grey8}>
                   15.000 VNĐ
                 </Text>
               </Block>
@@ -78,7 +78,7 @@ const BodyPurchaseHistory = props => {
             </Block>
             <Block alignItems={'flex-end'} right={10}>
               <TouchableOpacity style={[styles.btnCmt, styles.shadowColor]}>
-                <Text size={14} color={themeNew.colors.white}>{t('rate')}</Text>
+                <Text fontType='medium1' size={14} color={themeNew.colors.white}>{t('rate')}</Text>
               </TouchableOpacity>
             </Block>
 

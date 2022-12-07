@@ -40,30 +40,30 @@ const DetailAuthor = ({ route, t }) => {
               source={{ uri: item.avatar }}
             />
           </Block>
-          <Text color={themeNew.colors.textInBox} style={styles.nameAuthor}>{item.name}</Text>
+          <Text fontType='bold1' color={themeNew.colors.textInBox} style={styles.nameAuthor}>{item.name}</Text>
         </Block>
         <Block width="100%" paddingHorizontal={24}>
           <Block>
-            <Text color={themeNew.colors.textInBox} style={styles.textIntro}>{t('aboutAuthor')}</Text>
-            <Text color={themeNew.colors.textInBox} style={styles.IntroduceAuthor} numberOfLines={2}>
+            <Text fontType='bold1' color={themeNew.colors.textInBox} style={styles.textIntro}>{t('aboutAuthor')}</Text>
+            <Text fontType='medium1' color={themeNew.colors.textInBox} style={styles.IntroduceAuthor} numberOfLines={2}>
               {item.aboutAuthor.introduce}
             </Text>
           </Block>
           <Block marginTop={18}>
-            <Text color={themeNew.colors.textInBox} style={styles.textIntro}>{t('overview')}</Text>
-            <Text color={themeNew.colors.textInBox} style={styles.IntroduceAuthor}>
+            <Text fontType='bold1' color={themeNew.colors.textInBox} style={styles.textIntro}>{t('overview')}</Text>
+            <Text fontType='medium1' color={themeNew.colors.textInBox} style={styles.IntroduceAuthor}>
               {item.aboutAuthor.details}
             </Text>
           </Block>
           <Block marginTop={18}>
-            <Text color={themeNew.colors.textInBox} style={styles.textIntro}>{t('contactInfo')}</Text>
-            <Text color={themeNew.colors.textInBox} style={styles.IntroduceAuthor}>Facebook: facebook..co m</Text>
-            <Text color={themeNew.colors.textInBox} style={styles.IntroduceAuthor}>Youtube: youtube.com </Text>
-            <Text color={themeNew.colors.textInBox} style={styles.IntroduceAuthor}>Instagram: instagram</Text>
-            <Text color={themeNew.colors.textInBox} style={styles.IntroduceAuthor}>Number phone: 0977777777</Text>
+            <Text fontType='bold1' color={themeNew.colors.textInBox} style={styles.textIntro}>{t('contactInfo')}</Text>
+            <Text fontType='medium1' color={themeNew.colors.textInBox} style={styles.IntroduceAuthor}>Facebook: facebook..co m</Text>
+            <Text fontType='medium1' color={themeNew.colors.textInBox} style={styles.IntroduceAuthor}>Youtube: youtube.com </Text>
+            <Text fontType='medium1' color={themeNew.colors.textInBox} style={styles.IntroduceAuthor}>Instagram: instagram</Text>
+            <Text fontType='medium1' color={themeNew.colors.textInBox} style={styles.IntroduceAuthor}>Number phone: 0977777777</Text>
           </Block>
           <Block marginTop={42}>
-            <Text color={themeNew.colors.textInBox} style={styles.textBook}>{t('bookOfAuthor')}</Text>
+            <Text fontType='bold1' color={themeNew.colors.textInBox} style={styles.textBook}>{t('bookOfAuthor')}</Text>
             {/* <FlatList
               data={data}
               keyExtractor={item => item._id}
@@ -97,7 +97,6 @@ const styles = StyleSheet.create({
   },
   textBook: {
     lineHeight: 36,
-    fontWeight: '600',
     fontSize: 24,
   },
   IntroduceAuthor: {
@@ -108,13 +107,11 @@ const styles = StyleSheet.create({
     marginTop: 6,
   },
   textIntro: {
-    fontWeight: '600',
     fontSize: 18,
     lineHeight: 27,
   },
   nameAuthor: {
     position: 'absolute',
-    fontWeight: '700',
     fontSize: 24,
     lineHeight: 36,
     left: '32%',

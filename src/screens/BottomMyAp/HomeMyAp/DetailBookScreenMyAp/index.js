@@ -13,7 +13,7 @@ import { makeStyles, useTheme } from 'themeNew';
 import { CountUpTime } from '@utils/helper';
 import CricleProgress from 'common/CircleProgress';
 import React, { useEffect, useState } from 'react';
-import { ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
+import { ScrollView, StyleSheet, TouchableOpacity, ToastAndroid } from 'react-native';
 import ChapterBook from './components/ChapterBook';
 import ImageBook from './components/ImageBook';
 import IntroduceText from './components/IntroduceText';
@@ -65,8 +65,14 @@ const DetailBookScreenMyAp = ({ route }) => {
   }, [getAllChapterBook, item._id, myInfo._id]);
 
   const handleSaveFavoriteBook = async () => {
-    const body = { id: myInfo._id, idBook: item }
-    await saveFavoriteBook(body);
+    try {
+      const body = { id: myInfo._id, idBook: item }
+      await saveFavoriteBook(body);
+      ToastAndroid.show("Đã thêm vào sách yêu thích", ToastAndroid.SHORT);
+    } catch (error) {
+      ToastAndroid.show(error, ToastAndroid.SHORT);
+    }
+
   }
   const favoriteIcon = () => {
     return (

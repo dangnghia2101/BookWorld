@@ -28,11 +28,10 @@ const ItemAuthor = ({ item, t }) => {
           row
           top={50}
         >
-
           <Block width="50%" height="100%">
-            <Text color={theme.colors.textInBox} style={styles.textName}>{t('textNameAuthor')}</Text>
-            <Text color={theme.colors.textInBox} style={styles.nameAuthor}>{item.name}</Text>
-            <Text color={theme.colors.textInBox} style={styles.textRate}>{t('textRating')}</Text>
+            <Text fontType='bold1' color={theme.colors.textInBox} style={styles.textName}>{t('textNameAuthor')}</Text>
+            <Text fontType='regular1' color={theme.colors.textInBox} style={styles.nameAuthor}>{item.name}</Text>
+            <Text fontType='bold1' color={theme.colors.textInBox} style={styles.textRate}>{t('textRating')}</Text>
             <Block row marginLeft={22} marginTop={5}>
               <Icon
                 component={'AntDesign'}
@@ -58,39 +57,34 @@ const ItemAuthor = ({ item, t }) => {
                 color={theme.colors.yellow}
                 size={16}
               />
-              <Text color={theme.colors.textInBox} style={styles.totalRate}>4.0</Text>
+              <Text fontType='bold1' color={theme.colors.textInBox} style={styles.totalRate}>4.0</Text>
             </Block>
           </Block>
 
           <Block width="50%" height="100%" alignCenter>
-            <Text color={theme.colors.textInBox} numberOfLines={2} style={styles.textQuantity}>
+            <Text fontType='bold1' color={theme.colors.textInBox} numberOfLines={2} style={styles.textQuantity}>
               {t('texQuantity')}
             </Text>
-            <Text color={theme.colors.textInBox} style={styles.totalRead}>23</Text>
-            <Text color={theme.colors.textInBox} style={styles.textName}>{t('textToltalRead')}</Text>
-            <Text color={theme.colors.textInBox} style={styles.totalRead}>23</Text>
+            <Text fontType='medium1' color={theme.colors.textInBox} style={styles.totalRead}>23</Text>
+            <Text fontType='bold1' color={theme.colors.textInBox} style={styles.textName}>{t('textToltalRead')}</Text>
+            <Text fontType='medium1' color={theme.colors.textInBox} style={styles.totalRead}>23</Text>
           </Block>
         </Block>
         <Block
-          backgroundColor={theme.colors.white}
-          width={110}
-          height={110}
-          radius={50}
+          style={styles.blockAvt}
           justifyCenter
           alignCenter
           padding={7}
-          borderWidth={4}
-          borderColor={theme.colors.grey16}
+          backgroundColor={theme.colors.grey16}
         >
           <Block
-            // backgroundColor={theme.colors.white}
+            backgroundColor={theme.colors.white}
+            style={styles.blockAvt2}
             width={100}
-            height={100}
-            radius={50}
             justifyCenter
             alignCenter
             padding={7}
-            borderWidth={4}
+            borderWidth={3}
             borderColor={theme.colors.black}>
             <Image style={styles.avatar} source={{ uri: item.avatar }} />
           </Block>
@@ -104,12 +98,21 @@ const ItemAuthor = ({ item, t }) => {
 export default withNamespaces()(ItemAuthor);
 
 const useStyle = makeStyles()(({ normalize, colors }) => ({
+  blockAvt2: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 60
+  },
+  blockAvt: {
+    width: '27%',
+    height: '55%',
+    borderRadius: 60
+  },
   totalRead: {
     fontSize: 16,
     marginTop: 3,
     marginLeft: '15%',
     lineHeight: 21,
-    fontWeight: '900',
   },
   textQuantity: {
     fontWeight: '500',
@@ -130,7 +133,7 @@ const useStyle = makeStyles()(({ normalize, colors }) => ({
     marginTop: '10%',
     marginLeft: '12%',
     fontWeight: '500',
-    fontSize: 12,
+    fontSize: 14,
     lineHeight: 15,
   },
   nameAuthor: {
@@ -148,9 +151,9 @@ const useStyle = makeStyles()(({ normalize, colors }) => ({
     lineHeight: 15,
   },
   avatar: {
-    width: 86,
-    height: 86,
-    borderRadius: 40,
+    width: 83,
+    height: 83,
+    borderRadius: 50,
     margin: 7,
   },
   Container: {

@@ -15,10 +15,10 @@ const HeaderListBook = ({ title, action }) => {
 
   return (
     <Block row justifyContent={'space-between'} alignCenter marginLeft={12} marginTop={20}>
-      <Text color={theme.colors.textInBox} style={styles.titleSection}>{title}</Text>
+      <Text fontType='bold1' color={theme.colors.textInBox} style={styles.titleSection}>{title}</Text>
       {action && (
         <TouchableOpacity onPress={action}>
-          <Text style={styles.titleViewAll}>{t('seeMore')}</Text>
+          <Text fontType='bold1' style={styles.titleViewAll}>{t('seeMore')}</Text>
         </TouchableOpacity>
       )}
     </Block>
@@ -28,7 +28,6 @@ const HeaderListBook = ({ title, action }) => {
 const useStyle = makeStyles()(({ normalize, colors }) => ({
   titleSection: {
     fontSize: 18,
-    fontWeight: 'bold',
   },
   titleViewAll: {
     color: colors.primary,

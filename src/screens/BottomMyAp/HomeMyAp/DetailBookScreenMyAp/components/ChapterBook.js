@@ -137,7 +137,7 @@ const ChapterBook = ({
                                     ? themeNew.colors.text
                                     : themeNew.colors.grey10
                             }
-                            fontType={'bold'}
+                            fontType={'bold1'}
                             size={12}>
                             {t('bookToRead')}
                         </Text>
@@ -159,7 +159,7 @@ const ChapterBook = ({
                                     ? themeNew.colors.text
                                     : themeNew.colors.grey10
                             }
-                            fontType={'bold'}
+                            fontType={'bold1'}
                             size={12}>
                             {t('bookToListen')}
                         </Text>
@@ -169,7 +169,7 @@ const ChapterBook = ({
             <Text
                 marginTop={5}
                 color={themeNew.colors.textInBox}
-                fontType={'bold'}
+                fontType={'bold1'}
                 size={20}>
                 {t('chapTer')}
             </Text>
@@ -237,16 +237,16 @@ const ChapterBook = ({
                 </Block>
                 <Block alignCenter={'center'}>
                     <Text style={styles.textOTP} center>
-                        Mua để có thể xem sách
+                        {t('buyToSeeBook')}
                     </Text>
                     <Text size={18} center>
-                        Chương {chapItem?.chapterNumber}
+                        {t('chapTer')} {chapItem?.chapterNumber}
                     </Text>
                     <TouchableOpacity
                         style={styles.buttomAddCart}
                         onPress={() => addCart(chapItem)}>
                         <Text style={styles.textButtomLogin} height={55}>
-                            Thêm vào giỏ hàng
+                            {t('addToCart')}
                         </Text>
                     </TouchableOpacity>
                 </Block>
