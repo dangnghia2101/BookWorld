@@ -29,6 +29,7 @@ import { useAppSelector } from '@hooks';
 import { useAppDispatch } from 'hooks';
 import { saveStatusCartReducer } from '@redux/reducerNew/cartReducer';
 import { removeItem } from '@redux/reducerNew/cartReducer';
+import { removeBookCart } from '@redux/reducerNew/cartReducer';
 import { removeChapter } from '@redux/reducerNew/cartReducer';
 import { theme } from '@theme';
 import { withNamespaces } from 'react-i18next';
@@ -107,7 +108,6 @@ const Cart = ({ t }) => {
             setCartItem({ ...item, priceBook: sum, index: index, SL: SL });
             bottomSheetRef.current?.snapToIndex(0);
         };
-        // console.log('>>>>>>>>>>>>>> CartItem', cartItem.SL);
         bookStore.map(item => {
             if (item.status == false) {
                 setAllPrice((all += 0));
@@ -133,13 +133,14 @@ const Cart = ({ t }) => {
                             size={14}
                             numberOfLines={1}
                             marginTop={5}>
-                            {t('numberOfEpisodes')}: {Object.keys(item.chapter).length}
+                            {t('numberOfEpisodes')}:{' '}
+                            {Object.keys(item.chapter).length}
                         </Text>
                         <Text style={styles.TextPrice}>
                             {priceBook()
                                 .toFixed(0)
                                 .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')}{' '}
-                            đ
+                                ₫
                         </Text>
                     </Block>
                     <TouchableOpacity
@@ -148,7 +149,7 @@ const Cart = ({ t }) => {
                             width: 40,
                             position: 'absolute',
                             marginLeft: '95%',
-                            marginTop: '26%'
+                            marginTop: '26%',
                         }}
                         onPress={() => {
                             setVisibleCart(true);
@@ -219,7 +220,17 @@ const Cart = ({ t }) => {
                         <TouchableOpacity
                             style={styles.buttomAddCart}
                             onPress={() => {
-                                dispatch(removeItem({ _id: item._id })),
+                                console.log(
+                                    item._id,
+                                    index,
+                                );
+                                dispatch(removeItem({_id : item._id })),
+                                // dispatch(
+                                //     removeBookCart({
+                                //         _id: item._id,
+                                //         index: index,
+                                //     }),
+                                // ),
                                     { setVisibleCart: setVisibleCart(false) };
                             }}>
                             <Text style={styles.textButtomLogin} height={55}>
@@ -238,29 +249,15 @@ const Cart = ({ t }) => {
                     onPress={() => {
                         {
                             cartItem.SL !== 1
-                                ? (console.log(
-                                    '................... Xóa chương',
-                                ),
-                                    dispatch(
-                                        removeChapter({
-                                            element: item,
-                                            index: cartItem.index,
-                                            keyChapter:
-                                                cartItem?.chapter[item]
-                                                    ?.chapterNumber,
-                                        }),
-                                    ),
-                                    setCartItem(
-                                        data.filter(
-                                            (item, index) =>
-                                                index != item.chapterNumber,
-                                        ),
-                                    ))
-                                : (console.log(
-                                    '................... Xoasaaa Sách',
-                                    cartItem._id,
-                                ),
-                                    dispatch(removeItem({ _id: cartItem._id })));
+                                ? dispatch(
+                                      removeChapter({
+                                          _id: cartItem._id,
+                                          index: index,
+                                      }),
+                                  )
+                                : dispatch(
+                                      removeItem({ _id: cartItem._id }),
+                                  );
                         }
                     }}>
                     <Entypo
@@ -282,26 +279,25 @@ const Cart = ({ t }) => {
     };
 
     return (
-        <Block backgroundColor={theme.colors.background} style={styles.Container}>
+        <Block
+            paddingTop={inset.top}
+            backgroundColor={theme.colors.background}
+            flex>
             <Block
                 justifyCenter
                 alignCenter
-                marginTop={10}
-                backgroundColor={theme.colors.background}
+                // backgroundColor={theme.colors.white}
                 height={50}
                 row>
-                <Text color={theme.colors.textInBox} size={20} style={styles.textTitle}>
+                <Text
+                    color={theme.colors.textInBox}
+                    size={20}
+                    style={styles.textTitle}>
                     {t('yourCart')}
                 </Text>
             </Block>
             <Block height={'80%'}>
-                {bookStore == [] ? (
-                    <Block alignCenter>
-                        <Text color={theme.colors.textInBox} center marginTop={260} size={16}>
-                            Giỏ hàng trống
-                        </Text>
-                    </Block>
-                ) : (
+                {bookStore ? (
                     <FlatList
                         data={bookStore}
                         renderItem={renderItem}
@@ -309,52 +305,62 @@ const Cart = ({ t }) => {
                         showsVerticalScrollIndicator={false}
                         style={styles.FlatList}
                     />
-                )}
-            </Block>
-            <Block bottom={7}>
-                <Block
-                    row
-                    width={'100%'}
-                    paddingHorizontal={5}
-                    paddingVertical={5}
-                    backgroundColor={theme.colors.background}
-                    style={styles.ContainerCheckOut}
-                    marginTop={10}>
-                    <Block marginLeft={10}>
-                        <Text color={theme.colors.textInBox} size={16} style={styles.TextCart}>
-                            {t('toTal')}
-                        </Text>
+                ) : (
+                    
+                    <Block alignCenter>
                         <Text
-                            color="#D45555"
-                            size={20}
-                            style={styles.TextCart}
-                            marginTop={5}>
-                            {allPrice
-                                ? allPrice &&
-                                allPrice
-                                    .toFixed(0)
-                                    .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')
-                                : 0}{' '}
-                            đ
+                            color={theme.colors.black}
+                            center
+                            marginTop={260}
+                            size={16}>
+                            Giỏ hàng trống
                         </Text>
                     </Block>
-                    <TouchableOpacity
-                        disabled={allPrice === 0}
-                        onPress={() =>
-                            navigation.navigate(routes.DETAIL_CART, {
-                                allPrice: allPrice,
-                            })
-                        }
-                        style={styles.BottomCheckOut(allPrice)}>
-                        <Text marginRight={10} color="#ffffff" size={18}>
-                            {t('buy')}
-                        </Text>
-                        <Image
-                            marginTop={5}
-                            source={require('../../../../assets/icons/nextCheckOut.png')}
-                        />
-                    </TouchableOpacity>
+                )}
+            </Block>
+            <Block
+                row
+                width={'100%'}
+                paddingHorizontal={5}
+                paddingVertical={5}
+                backgroundColor={theme.colors.white}
+                style={styles.ContainerCheckOut}
+                borderBottomWidth={10}
+                borderColor={theme.colors.grey14}>
+                <Block marginLeft={10}>
+                    <Text color={theme.colors.textInBox} size={14}>
+                        {t('toTal')}
+                    </Text>
+                    <Text
+                        fontType="bold1"
+                        color={theme.colors.primary}
+                        size={22}
+                        marginTop={5}>
+                        {allPrice
+                            ? allPrice &&
+                              allPrice
+                                  .toFixed(0)
+                                  .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')
+                            : 0}{' '}
+                            ₫
+                    </Text>
                 </Block>
+                <TouchableOpacity
+                    disabled={allPrice === 0}
+                    onPress={() =>
+                        navigation.navigate(routes.DETAIL_CART, {
+                            allPrice: allPrice,
+                        })
+                    }
+                    style={styles.BottomCheckOut(allPrice)}>
+                    <Text fontType="bold1" color={theme.colors.white} size={16}>
+                        {t('buy')}
+                    </Text>
+                    <Image
+                        marginTop={5}
+                        source={require('../../../../assets/icons/nextCheckOut.png')}
+                    />
+                </TouchableOpacity>
             </Block>
             <BottomSheet
                 index={-1}
@@ -382,10 +388,10 @@ const Cart = ({ t }) => {
                                             /(\d)(?=(\d{3})+(?!\d))/g,
                                             '$1.',
                                         )}{' '}
-                                đ
+                                        ₫
                             </Text>
                         </Block>
-                        <TouchableOpacity onPress={() => { }}>
+                        <TouchableOpacity onPress={() => {}}>
                             <Fontisto
                                 name={'close-a'}
                                 size={20}
@@ -585,13 +591,13 @@ const styles = StyleSheet.create({
         marginRight: 15,
         marginVertical: 10,
         flexDirection: 'row',
-        marginLeft: 100,
         height: 50,
         backgroundColor: item === 0 ? '#bdc3c7' : theme.colors.lightRed,
         borderRadius: 10,
         width: 160,
         alignItems: 'center',
-        justifyContent: 'center',
+        justifyContent: 'space-between',
+        paddingHorizontal: 15,
     }),
     BottomCheckOut1: {
         marginRight: 15,
@@ -614,7 +620,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
     },
-    Container: { flex: 1, marginTop: 50, marginBottom: 5 },
     ItemCart: {
         marginHorizontal: 10,
         paddingHorizontal: 15,
@@ -633,9 +638,5 @@ const styles = StyleSheet.create({
 
         elevation: 17,
     },
-    TextCart: {
-        fontWeight: '600',
-    },
 });
 export default withNamespaces()(Cart);
-

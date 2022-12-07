@@ -1,20 +1,20 @@
 import { icons } from '@assets';
-import { Block, ModalBox, Text } from '@components';
+import { Block, ModalBox, Text, TextInput } from '@components';
 import { routes } from '@navigation/routes';
 import auth from '@react-native-firebase/auth';
 import messaging from '@react-native-firebase/messaging';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { useNavigation } from '@react-navigation/native';
+import { PHONE_REG_EXP } from '@utils/constants';
 import { changeLoading } from '@redux/reducerNew';
 import { useLoginMutation } from '@redux/servicesNew';
 import { useAppDispatch } from 'hooks';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import {
     Image,
     Modal,
     Pressable,
     StyleSheet,
-    TextInput,
     TouchableOpacity,
 } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -45,16 +45,42 @@ const Login = () => {
     const [visible2, setVisible2] = useState(false);
     const [visible1, setVisible1] = useState(false);
     const [visible, setVisible] = useState(false);
-    const [hide, setHide] = useState(true);
+    const [hide, setHide] = useState(false);
     const navigation = useNavigation();
     const [login, { isLoading: isUpdating }] = useLoginMutation();
     const dispatch = useAppDispatch();
     const [visibleModal, setVisibleModal] = useState(false);
-    const HidePassword = () => {
-        if (hide === true) {
-            setHide(false);
+    const [phoneUser, setPhoneUser] = useState('');
+    const [password, setPassword] = useState('');
+    // const [auth, setAuth] = useState('signin');
+
+    const handleErrorPhone = useMemo(() => {
+        if (phoneUser.match(PHONE_REG_EXP) || phoneUser.length == 0) {
+            return [false, ''];
         } else {
+            return [true, 'Format phone invalid'];
+        }
+    }, [phoneUser]);
+
+    const handleErrorNewPassword = useMemo(() => {
+        if (password.length > 5 || password.length == 0) {
+            return [false, ''];
+        } else {
+            return [true, 'New password at least 6 character'];
+        }
+    }, [password]);
+
+    const LoginPhone = () => {
+        // if (auth == 'signin') {
+        // dispatch(login({ phoneUser, password }));
+        // }
+    };
+
+    const HidePassword = () => {
+        if (hide === false) {
             setHide(true);
+        } else {
+            setHide(false);
         }
     };
 
@@ -94,7 +120,7 @@ const Login = () => {
         return await messaging().getToken();
     }
 
-    const _signIn = async () => {
+    const _signIngoogle = async () => {
         await GoogleSignin.signOut();
         const currentUser = await GoogleSignin.getCurrentUser();
 
@@ -135,28 +161,51 @@ const Login = () => {
     };
 
     return (
-        <Block flex alignCenter paddingTop={56} backgroundColor={'white'}>
-            <Text h1 bold size={30} style={styles.textWelcomLogin}>
+        <Block
+            flex
+            alignCenter
+            paddingTop={56}
+            backgroundColor={'white'}
+            paddingHorizontal={15}>
+            <Text
+                marginTop={20}
+                h1
+                bold
+                size={30}
+                style={styles.textWelcomLogin}>
                 {' '}
                 Chào Mừng Trở Lại{' '}
             </Text>
-            <Text paddingHorizontal={61} size={13} lineHeight={20} center>
+            <Text
+                marginTop={10}
+                marginBottom={30}
+                paddingHorizontal={61}
+                size={13}
+                lineHeight={20}
+                center>
                 {' '}
                 Bạn phải đăng nhập để sử dụng ứng dụng Chúng tôi có hỗ trợ đăng
                 nhập bằng số điện thoại hoặc gmail{' '}
             </Text>
             <TextInput
+                value={phoneUser}
+                onChangeText={text => setPhoneUser(text)}
                 keyboardType="numeric"
                 placeholder={'Số điện thoại'}
-                style={styles.textInput}
+                errorText={handleErrorPhone[1]}
+                isError={handleErrorPhone[0]}
+            />
+            <TextInput
+                value={password}
+                onChangeText={text => setPassword(text)}
+                secureTextEntry={hide}
+                placeholder={'Mật khẩu'}
+                isSecure={true}
+                errorText={handleErrorNewPassword[1]}
+                isError={handleErrorNewPassword[0]}
             />
             <Block style={styles.inputPassword}>
-                <TextInput
-                    secureTextEntry={hide}
-                    placeholder={'Mật khẩu'}
-                    style={styles.textInput2}
-                />
-                {hide === true ? (
+                {hide === false ? (
                     <MaterialCommunityIcons
                         name={'eye-off-outline'}
                         size={25}
@@ -172,6 +221,7 @@ const Login = () => {
                     />
                 )}
             </Block>
+
             <Text
                 bold
                 size={15}
@@ -180,12 +230,12 @@ const Login = () => {
                 {' '}
                 Quên mật khẩu ?{' '}
             </Text>
-            <Pressable style={styles.buttomLogin}>
+            <Pressable style={styles.buttomLogin} onPress={() => LoginPhone()}>
                 <Text style={styles.textButtomLogin}>Đăng nhập</Text>
             </Pressable>
             <Block marginTop={20}>
                 <TouchableOpacity
-                    onPress={_signIn}
+                    onPress={_signIngoogle}
                     style={styles.loginGoogle}
                     marginHorizontal={10}>
                     <Image
@@ -197,7 +247,7 @@ const Login = () => {
                     </Text>
                 </TouchableOpacity>
             </Block>
-            <Block marginTop={100}>
+            <Block marginTop={50}>
                 <Text>
                     Bạn chưa có tài khoản? {'  '}
                     <Text
@@ -446,18 +496,18 @@ const styles = StyleSheet.create({
         shadowColor: '#000',
         shadowOffset: {
             width: 0,
-            height: 3,
+            height: 1,
         },
-        shadowOpacity: 1,
-        shadowRadius: 6,
+        shadowOpacity: 0.22,
+        shadowRadius: 2.22,
 
-        elevation: 7,
+        elevation: 3,
     },
     textRemember: {
         lineHeight: 23,
         color: '#2D2626',
         fontWeight: '700',
-        marginTop: 22,
+        marginTop: 10,
         marginLeft: '57%',
     },
     textInput2: {
@@ -467,18 +517,16 @@ const styles = StyleSheet.create({
         height: 59,
         fontWeight: '600',
         backgroundColor: '#F3F3F3',
-        marginTop: 16,
         fontSize: 16,
         shadowColor: '#000',
         shadowOffset: {
             width: 0,
-            height: 3,
+            height: 1,
         },
-        paddingLeft: 18,
-        shadowOpacity: 1,
-        shadowRadius: 6,
+        shadowOpacity: 0.22,
+        shadowRadius: 2.22,
 
-        elevation: 7,
+        elevation: 3,
     },
     textInput: {
         borderRadius: 10,
@@ -492,15 +540,15 @@ const styles = StyleSheet.create({
         shadowColor: '#000',
         shadowOffset: {
             width: 0,
-            height: 3,
+            height: 1,
         },
-        paddingLeft: 18,
-        shadowOpacity: 1,
-        shadowRadius: 6,
+        shadowOpacity: 0.22,
+        shadowRadius: 2.22,
 
-        elevation: 7,
+        elevation: 3,
     },
     textWelcomLogin: {
+        fontFamily: 'Poppins',
         fontWeight: 'bold',
         lineHeight: 45,
         color: '#464444',

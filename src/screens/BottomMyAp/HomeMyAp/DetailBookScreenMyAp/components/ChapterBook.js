@@ -20,7 +20,7 @@ const ChapterBook = ({
     isRead,
     setIsRead,
     infoBook,
-    t
+    t,
     // navigation,
 }) => {
     const [visible, setVisible] = useState(false);
@@ -31,37 +31,39 @@ const ChapterBook = ({
     const navigation = useNavigation();
     const bookStore = useAppSelector(state => state.root.cart.cartList);
     const dispatch = useAppDispatch();
-
+    const [showModal, setShowModal] = React.useState(visible);
     const theme = useTheme(themeStore);
     const styles = useStyle(themeStore);
-    const ModalPoup = ({ visible, children }) => {
-        const [showModal, setShowModal] = React.useState(visible);
-        useEffect(() => {
-            toggleModal();
-        }, [visible]);
 
-        const toggleModal = () => {
-            if (visible) {
-                setShowModal(true);
-            } else {
-                setShowModal(false);
-            }
-        };
-        return (
-            <Modal transparent visible={showModal}>
-                <Block flex={1} style={styles.modalBackGround}>
-                    <Block style={styles.modalContainer}>{children}</Block>
-                </Block>
-            </Modal>
-        );
+    useEffect(() => {
+        toggleModal();
+    }, [visible]);
+
+    const toggleModal = () => {
+        if (visible) {
+            setShowModal(true);
+        } else {
+            setShowModal(false);
+        }
     };
+
+    const addAllCart =_item => {
+        const data ={
+            _id: infoBook._id,
+            name: infoBook.name,
+            isPrice: infoBook.isPrice,
+            image: infoBook.image,
+            chapter: { [_item.chapterNumber]: _item },
+            status: false,
+        }
+    }
     const addCart = _item => {
         const data = {
             _id: infoBook._id,
             name: infoBook.name,
             isPrice: infoBook.isPrice,
             image: infoBook.image,
-            chapter: { _item },
+            chapter: { [_item.chapterNumber]: _item },
             status: false,
         };
 
@@ -83,7 +85,7 @@ const ChapterBook = ({
         bookStore.map((item, index) => {
             if (item._id === infoBook._id) {
                 const data = {
-                    _id: chapter._id,
+                    idChapter: chapter.idChapter,
                     title: chapter.title,
                     price: chapter.price,
                     chapterNumber: chapter.chapterNumber,
@@ -182,7 +184,7 @@ const ChapterBook = ({
                     <TouchableOpacity
                         onPress={() => {
                             if (item.isPay === true) {
-                                if (isRead) {
+                                if (!isRead) {
                                     navigation.navigate(
                                         routes.PLAY_BOOK_MY_AP,
                                         { idChapter: item.idChapter },
@@ -194,7 +196,7 @@ const ChapterBook = ({
                                     });
                                 }
                             } else {
-                                setChapItem(item.element);
+                                setChapItem(item);
                                 setVisible(true);
                             }
                         }}
@@ -224,33 +226,39 @@ const ChapterBook = ({
                 ))}
             </Block>
 
-            <ModalPoup visible={visible}>
-                <Block style={styles.clone}>
-                    <Fontisto
-                        name={'close-a'}
-                        size={12}
-                        color={'black'}
-                        onPress={() => {
-                            setVisible(false);
-                        }}
-                    />
+            <Modal transparent visible={showModal}>
+                <Block flex={1} style={styles.modalBackGround}>
+                    <Block style={styles.modalContainer}>
+                        <Block style={styles.clone}>
+                            <Fontisto
+                                name={'close-a'}
+                                size={12}
+                                color={'black'}
+                                onPress={() => {
+                                    setVisible(false);
+                                }}
+                            />
+                        </Block>
+                        <Block alignCenter={'center'}>
+                            <Text style={styles.textOTP} center>
+                                Mua để có thể xem sách
+                            </Text>
+                            <Text size={18} center>
+                                Chương {chapItem?.chapterNumber}
+                            </Text>
+                            <TouchableOpacity
+                                style={styles.buttomAddCart}
+                                onPress={() => addCart(chapItem)}>
+                                <Text
+                                    style={styles.textButtomLogin}
+                                    height={55}>
+                                    Thêm vào giỏ hàng
+                                </Text>
+                            </TouchableOpacity>
+                        </Block>
+                    </Block>
                 </Block>
-                <Block alignCenter={'center'}>
-                    <Text style={styles.textOTP} center>
-                        Mua để có thể xem sách
-                    </Text>
-                    <Text size={18} center>
-                        Chương {chapItem?.chapterNumber}
-                    </Text>
-                    <TouchableOpacity
-                        style={styles.buttomAddCart}
-                        onPress={() => addCart(chapItem)}>
-                        <Text style={styles.textButtomLogin} height={55}>
-                            Thêm vào giỏ hàng
-                        </Text>
-                    </TouchableOpacity>
-                </Block>
-            </ModalPoup>
+            </Modal>
         </Block>
     );
 };
