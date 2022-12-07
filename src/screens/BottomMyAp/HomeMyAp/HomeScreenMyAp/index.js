@@ -223,8 +223,8 @@ const HomeScreenMyAp = ({ t }) => {
                     <HeaderListBook title={t('mostViewedBooks')} />
                     {/* {Backdrop()} */}
                     {renderListMostRead()}
-                    {renderListCategory()}
-                    {renderListBookFree()}
+                    {/* {renderListCategory()}
+                    {renderListBookFree()} */}
                     {renderListTopAuthor()}
                     <Image source={images.banner} style={styles.banner} />
                 </Block>
