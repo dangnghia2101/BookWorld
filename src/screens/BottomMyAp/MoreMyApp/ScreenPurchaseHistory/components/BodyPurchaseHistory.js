@@ -1,16 +1,16 @@
-import {Block, Text} from '@components';
+import { Block, Text } from '@components';
 import React from 'react';
-import {StyleSheet, Pressable, TouchableOpacity, Image, View} from 'react-native';
+import { StyleSheet, Pressable, TouchableOpacity, Image, View } from 'react-native';
 import IconView from '@components/Icon';
-import {routes} from '@navigation/routes';
-import {useNavigation} from '@react-navigation/native';
-import {colors, makeStyles, useTheme} from 'themeNew';
-import {useAppSelector, useAppDispatch} from '@hooks';
-import {withNamespaces} from 'react-i18next';
+import { routes } from '@navigation/routes';
+import { useNavigation } from '@react-navigation/native';
+import { colors, makeStyles, useTheme } from 'themeNew';
+import { useAppSelector, useAppDispatch } from '@hooks';
+import { withNamespaces } from 'react-i18next';
 
 const BodyPurchaseHistory = props => {
   const navigation = useNavigation();
-  const {t} = props;
+  const { t } = props;
 
   const themeStore = useAppSelector(state => state.root.themeApp.theme);
   const themeNew = useTheme(themeStore);
@@ -50,38 +50,38 @@ const BodyPurchaseHistory = props => {
               </Block>
             </Block>
             <Block borderBottomWidth={0.4}
-                    backgroundColor={themeNew.colors.grey8}>
-              </Block>
-              <Block row marginHorizontal={15} marginVertical={15} alignSelf={'baseline'}>
-                <Block width={'40%'}>
+              backgroundColor={themeNew.colors.grey8}>
+            </Block>
+            <Block row marginHorizontal={15} marginVertical={15} alignSelf={'baseline'}>
+              <Block width={'40%'}>
                 <Text size={12} color={themeNew.colors.grey8}>
-                  2 sản phẩm
+                  2 {t('product')}
                 </Text>
-                </Block>
-               <Block row width={'60%'} alignItems={'flex-end'}>
-               <Image
-                style={styles.icon_logo}
-                source={require('../../../../../assets/images/logo_icon.png')}
-              />
-               <Text size={14} color={themeNew.colors.grey8}>
-                  Thành tiền:
+              </Block>
+              <Block row width={'60%'} alignItems={'flex-end'}>
+                <Image
+                  style={styles.icon_logo}
+                  source={require('../../../../../assets/images/logo_icon.png')}
+                />
+                <Text size={14} color={themeNew.colors.grey8}>
+                  {t('intoMoney')}:
                 </Text>
                 <Text size={14} color={themeNew.colors.grey8}>
                   15.000 VNĐ
                 </Text>
-               </Block>
-              
               </Block>
-              
-                <Block borderBottomWidth={0.4}
-                       backgroundColor={themeNew.colors.grey8}>
-              </Block>
-              <Block alignItems={'flex-end'} right={10}>
-                <TouchableOpacity style={[styles.btnCmt, styles.shadowColor]}>
-                  <Text size={14} color={themeNew.colors.white}>Đánh giá</Text>
-                </TouchableOpacity>
-              </Block>
-              
+
+            </Block>
+
+            <Block borderBottomWidth={0.4}
+              backgroundColor={themeNew.colors.grey8}>
+            </Block>
+            <Block alignItems={'flex-end'} right={10}>
+              <TouchableOpacity style={[styles.btnCmt, styles.shadowColor]}>
+                <Text size={14} color={themeNew.colors.white}>{t('rate')}</Text>
+              </TouchableOpacity>
+            </Block>
+
           </TouchableOpacity>
         </Block>
       </Block>
@@ -91,7 +91,7 @@ const BodyPurchaseHistory = props => {
 
 export default withNamespaces()(BodyPurchaseHistory);
 
-const useStyle = makeStyles()(({colors}) => ({
+const useStyle = makeStyles()(({ colors }) => ({
   itemPurchase: {
     width: '100%',
     backgroundColor: colors.backgroundDark2,

@@ -1,12 +1,19 @@
 import { Block, Container, Icon, Text, TextInput } from '@components';
+import BottomSheet, {
+    BottomSheetBackdrop,
+    BottomSheetScrollView,
+} from '@gorhom/bottom-sheet';
 import { useAppSelector, useDebounce } from '@hooks';
 import { routes } from '@navigation/routes';
 import { useNavigation } from '@react-navigation/core';
 import {
+    useCreateGroupMutation,
     useGetRoomChatQuery,
     useLazyGetRoomChatQuery,
 } from '@redux/servicesNew';
 import { theme } from '@theme';
+import { CustomToast } from '@utils/helper';
+import { height, width } from '@utils/responsive';
 import React, {
     useCallback,
     useEffect,
@@ -15,21 +22,18 @@ import React, {
     useState,
 } from 'react';
 import { FlatList, Image, Pressable } from 'react-native';
-import { makeStyles, useTheme } from 'themeNew';
-import BottomSheet, {
-    BottomSheetBackdrop,
-    BottomSheetScrollView,
-} from '@gorhom/bottom-sheet';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { height, width } from '@utils/responsive';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { makeStyles, useTheme } from 'themeNew';
+import { withNamespaces } from 'react-i18next';
+const handleKeyExtractor = item => item.toString();
 
-const ChatScreenMyApp = () => {
+const ChatScreenMyApp = ({ t }) => {
     const [searchPhrase, setSearchPhrase] = useState('');
     const socketRef = useRef();
     const [getRoomChat, { isSuccess, error }] = useLazyGetRoomChatQuery();
     const themeStore = useAppSelector(state => state.root.themeApp.theme);
-    const authors = useAppSelector(state => state.root.author.authors);
+    const { authors } = useAppSelector(state => state.root.author);
     const { colors } = useTheme(themeStore);
     const styles = useStyle(themeStore);
     const navigation = useNavigation();
@@ -42,11 +46,21 @@ const ChatScreenMyApp = () => {
     const [peopleSearch, setPeopleSearch] = useState(authors);
     const [peoplesChoose, setPeopleChoose] = useState({});
     const [searchText, setSearchText] = useState('');
+    const [nameGroup, setNameGroup] = useState('');
+    const [dataGroups, setDataGroups] = useState([]);
 
     const myInfo = useAppSelector(state => state.root.auth);
-    const { data } = useGetRoomChatQuery(myInfo.token);
+    // const { data } = useGetRoomChatQuery(myInfo.token);
+    const [createGroup] = useCreateGroupMutation();
 
-    const handleKeyExtractor = item => item.toString();
+    useEffect(() => {
+        const fetchGetGroups = async () => {
+            let { data } = await getRoomChat(myInfo.token);
+            // const reversedData = data.reverse();
+            setDataGroups(data);
+        };
+        fetchGetGroups();
+    }, []);
 
     const searchDebounce = useDebounce(searchText, 300);
 
@@ -74,13 +88,13 @@ const ChatScreenMyApp = () => {
                         style={styles.imageGroup}
                     />
                     <Block marginLeft={10} flex>
-                        <Text size={14} fontType="bold">
+                        <Text color={colors.textInBox} size={14} fontType="bold">
                             {item.name}
                         </Text>
-                        <Text>{item.description}</Text>
+                        <Text color={colors.textInBox}>{item.description}</Text>
                     </Block>
                     <Block>
-                        <Text size={10}>12:40</Text>
+                        <Text color={colors.textInBox} size={10}>12:40</Text>
                     </Block>
                 </Block>
             </Pressable>
@@ -92,7 +106,7 @@ const ChatScreenMyApp = () => {
             component="Ionicons"
             name="ios-search-outline"
             size={22}
-            color={theme.colors.grey4}
+            color={colors.textInBox}
         />
     );
 
@@ -122,12 +136,12 @@ const ChatScreenMyApp = () => {
             enablePanDownToClose={true}
             backdropComponent={renderBackdrop}>
             <Block
-                backgroundColor={colors.white}
+                backgroundColor={colors.background}
                 paddingHorizontal={10}
                 alignCenter
                 flex>
-                <Text marginVertical={10} size={16} fontType="bold">
-                    Tạo nhóm mới
+                <Text color={colors.textInBox} marginVertical={10} size={16} fontType="bold">
+                    {t('createNewGroup')}
                 </Text>
                 <Block
                     flex
@@ -140,34 +154,36 @@ const ChatScreenMyApp = () => {
                         component="Ionicons"
                         name="ios-person-circle-outline"
                         size={100}
-                        color={colors.grey4}
+                        color={colors.textInBox}
                     />
                     <Block row alignCenter>
                         <Icon
                             component="Feather"
                             name="edit-3"
-                            color={colors.grey4}
+                            color={colors.textInBox}
                             size={20}
                         />
                     </Block>
 
                     <Block width="90%" paddingVertical={10}>
-                        <Text marginBottom={-20} size={16} fontType="bold">
-                            Tên nhóm
+                        <Text color={colors.textInBox} marginBottom={-20} size={16} fontType="bold">
+                            {t('groupName')}
                         </Text>
 
                         <TextInput
-                            placeholder="Nhập tên nhóm"
+                            value={nameGroup}
+                            onChangeText={setNameGroup}
+                            placeholder={t('enterGroupName')}
                             style={styles.containerSearch}
                         />
                     </Block>
                     <Block width="90%">
-                        <Text marginBottom={-20} size={16} fontType="bold">
-                            Thêm thành viên
+                        <Text color={colors.textInBox} marginBottom={-20} size={16} fontType="bold">
+                            {t('addMember')}
                         </Text>
 
                         <TextInput
-                            placeholder="Nhập tên, email hoặc số điện thoại"
+                            placeholder={t('enterInfo')}
                             style={styles.containerSearch}
                             onChangeText={setSearchText}
                             value={searchText}
@@ -212,9 +228,10 @@ const ChatScreenMyApp = () => {
                                         source={{ uri: item.image }}
                                         style={styles.imagePeople}
                                     />
-                                    <Text flex marginLeft={10}>
+                                    <Text color={colors.textInBox} flex marginLeft={10}>
                                         {item.name}
                                     </Text>
+
                                     {peoplesChoose[item._id] && (
                                         <Icon
                                             component="AntDesign"
@@ -228,7 +245,34 @@ const ChatScreenMyApp = () => {
                         ))}
                     </BottomSheetScrollView>
                 </Block>
-                <TouchableOpacity>
+                <TouchableOpacity
+                    onPress={async () => {
+                        const body = {
+                            bodySend: {
+                                name: nameGroup,
+                                image: '',
+                                users: [
+                                    ...Object.keys(peoplesChoose),
+                                    myInfo._id,
+                                ],
+                            },
+                            token: myInfo.token,
+                        };
+
+                        const response = await createGroup(body);
+
+                        if (response.data.statusCode === 200) {
+                            bottomSheetRef.current.snapToIndex(-1);
+                            setPeopleChoose({});
+                            setNameGroup('');
+                            CustomToast('Tạo nhóm thành công');
+
+                            const { data } = await getRoomChat(myInfo.token);
+                            setDataGroups(data);
+                        } else {
+                            CustomToast('Đăng kí thất bại');
+                        }
+                    }}>
                     <Block
                         width={width * 0.85}
                         height={50}
@@ -236,7 +280,7 @@ const ChatScreenMyApp = () => {
                         alignCenter
                         backgroundColor={colors.primary}
                         radius={10}>
-                        <Text color={colors.white}>Tạo nhóm</Text>
+                        <Text color={colors.white}>{t('createGroup')}</Text>
                     </Block>
                 </TouchableOpacity>
             </Block>
@@ -246,20 +290,21 @@ const ChatScreenMyApp = () => {
     const renderGroup = useCallback(() => {
         return (
             <FlatList
-                data={data}
+                data={dataGroups}
                 keyExtractor={handleKeyExtractor}
                 renderItem={renderItemChat}
                 ItemSeparatorComponent={renderSpace}
+                showsVerticalScrollIndicator={false}
             />
         );
-    }, [data]);
+    }, [dataGroups]);
 
     return (
         <Container style={styles.root} statusColor={colors.white}>
             <Block
                 flex
                 paddingHorizontal={20}
-                backgroundColor={theme.colors.white}>
+                backgroundColor={colors.background}>
                 <Block row alignCenter>
                     <Text flex size={28} fontType="bold" color={colors.primary}>
                         Explore
@@ -273,7 +318,7 @@ const ChatScreenMyApp = () => {
                         <Block
                             height={30}
                             width={30}
-                            borderColor={colors.grey4}
+                            borderColor={colors.textInBox}
                             borderWidth={2}
                             radius={6}
                             justifyCenter
@@ -281,7 +326,7 @@ const ChatScreenMyApp = () => {
                             <Icon
                                 component="Ionicons"
                                 name="md-add"
-                                color={colors.grey4}
+                                color={colors.textInBox}
                                 size={25}
                             />
                         </Block>
@@ -305,7 +350,7 @@ const ChatScreenMyApp = () => {
     );
 };
 
-export default ChatScreenMyApp;
+export default withNamespaces()(ChatScreenMyApp);
 
 const useStyle = makeStyles()(({ normalize, colors }) => ({
     imageGroup: {

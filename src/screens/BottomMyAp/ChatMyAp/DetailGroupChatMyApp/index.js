@@ -322,7 +322,7 @@ const RoomChat = ({ route }) => {
             flex
             marginTop={inset.top}
             paddingHorizontal={10}
-            backgroundColor={theme.colors.white}>
+            backgroundColor={colors.background}>
             <Block
                 borderBottomWidth={2}
                 borderColor={colors.grey16}

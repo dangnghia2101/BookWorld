@@ -152,7 +152,7 @@ const TapReadingStatus = () => {
             renderLabel={_renderLabel}
             tabStyle={styles.tabStyle}
             indicatorStyle={styles.tabBarIndicatorStyle}
-            style={{ backgroundColor: themeNew.colors.grey16 }}
+            style={{ backgroundColor: themeNew.colors.background }}
           />
         )}
       </>

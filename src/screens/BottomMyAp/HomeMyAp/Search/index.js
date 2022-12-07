@@ -5,8 +5,8 @@ import React, { useState } from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { makeStyles, useTheme } from 'themeNew';
 import TabTopicSearch from './components/TabTopicSearch';
-
-const Search = () => {
+import { withNamespaces } from 'react-i18next';
+const Search = ({ t }) => {
     const themeStore = useAppSelector(state => state.root.themeApp.theme);
     const { colors } = useTheme(themeStore);
     const inset = useSafeAreaInsets();
@@ -15,19 +15,21 @@ const Search = () => {
     const styles = useStyle(themeStore);
 
     const renderIconLeft = () => (
-        <IconView
-            component="Ionicons"
-            name="ios-search-outline"
-            color={colors.grey10}
-            size={22}
-        />
+        <Block marginRight={5}>
+            <IconView
+                component="Ionicons"
+                name="ios-search-outline"
+                color={colors.grey10}
+                size={22}
+            />
+        </Block>
     );
 
     return (
-        <Block backgroundColor={colors.text} flex>
+        <Block backgroundColor={colors.background} flex>
             <HeaderWithButton title="Explore" isBackHeader />
             <TextInput
-                placeholder="Search here"
+                placeholder={t('searchHere')}
                 onSubmitEditing={() => setFocus(false)}
                 onFocus={() => setFocus(true)}
                 iconLeft={renderIconLeft}
@@ -48,11 +50,13 @@ const useStyle = makeStyles()(({ normalize, colors }) => ({
     styleSearch: {
         backgroundColor: colors.grey13,
         borderColor: colors.grey13,
+        height: normalize(50)('moderate'),
     },
     styleSearchFocus: {
         borderColor: colors.primary,
         borderWidth: 2,
+        height: normalize(50)('moderate'),
     },
 }));
 
-export default Search;
+export default withNamespaces()(Search);

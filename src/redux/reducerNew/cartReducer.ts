@@ -12,7 +12,7 @@ export type CartState = {
 };
 
 type ChapterState = {
-    _id: string;
+    idChapter: string;
     title: string;
     price: number;
     chapterNumber: number;
@@ -57,12 +57,41 @@ const cartSlice = createSlice({
             );
             state.cartList = arr;
         },
+        removeBookCart: (state: CartList, action) => {
+            let { id, index } = action.payload;
+            state.cartList = state.cartList.splice(
+                state.cartList.findIndex(arrow => arrow._id === id),
+                index,
+            );
+        },
         removeChapter: (state: CartList, action) => {
-            let { id, index, keyChapter } = action.payload;
+            let arr = state.cartList.filter(item => item.chapter[].idChapter === action.payload);
+            state.cartList = arr;
 
-            let arr = state.cartList[index];
-            delete arr.chapter[keyChapter];
-            state.cartList[index] = arr;
+            // let { id, index, keyChapter } = action.payload;
+
+            // let arr = state.cartList[index];
+            // delete arr.chapter[keyChapter];
+            // state.cartList[index] = arr;
+        },
+        removeBookPayment: (state: CartList, action) => {
+            const data = action.payload;
+            let newCart: CartState[] = [];
+
+            state.cartList.forEach(item => {
+                let flag = false;
+                for (const _id of data) {
+                    if (item._id === _id) {
+                        flag = true;
+                        return;
+                    }
+                }
+                if (!flag) {
+                    newCart.push(item);
+                }
+            });
+
+            state.cartList = newCart;
         },
     },
 });
@@ -70,7 +99,9 @@ export const {
     saveCartReducer,
     saveChapterReducer,
     saveStatusCartReducer,
-    removeItem,
+    removeItem: removeItem,
     removeChapter,
+    removeBookCart,
+    removeBookPayment,
 } = cartSlice.actions;
 export const CartReducer = cartSlice.reducer;

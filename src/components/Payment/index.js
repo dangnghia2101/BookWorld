@@ -14,13 +14,20 @@ import {
 } from 'react-native';
 import { useTheme } from 'themeNew';
 import { useAppSelector } from '@hooks';
-import { useCreatePaymentMutation } from '@redux/servicesNew';
+import {
+    useCreatePaymentChapterMutation,
+    useCreatePaymentMutation,
+} from '@redux/servicesNew';
 import { useNavigation } from '@react-navigation/native';
 import { routes } from '@navigation/routes';
 import { theme } from '@theme';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import { changeLoading } from '@redux/reducerNew';
 import { useAppDispatch } from 'hooks';
+import {
+    removeBookCart,
+    removeBookPayment,
+} from '@redux/reducerNew/cartReducer';
 
 const PaymentScreen = ({ price }) => {
     const ModalPoup = ({ visible, children }) => {
@@ -46,14 +53,21 @@ const PaymentScreen = ({ price }) => {
     };
 
     const [visibleCart, setVisibleCart] = useState(false);
+
+    const [visibleCartErr, setVisibleCartErr] = useState(false);
     const navigation = useNavigation();
 
     const { confirmPayment } = useStripe();
 
     const [createPayment] = useCreatePaymentMutation();
 
+    const [createPaymentChapter] = useCreatePaymentChapterMutation();
+
     const themeStore = useAppSelector(state => state.root.themeApp.theme);
 
+    const bookStore = useAppSelector(state => state.root.cart.cartList);
+
+    const myInfo = useAppSelector(state => state.root.auth);
     const { colors } = useTheme(themeStore);
     const dispatch = useAppDispatch();
 
@@ -62,6 +76,42 @@ const PaymentScreen = ({ price }) => {
         email: 'NameEmail@gmail.com',
         phone: '097888888',
         name: 'Nguyen Van A',
+    };
+
+    // console.log('>>>>>>>>>>>> bookStore', bookStore);
+    const paymentChapter = async () => {
+        let pay = {
+            idChapter: [],
+        };
+        let idProducts = [];
+
+        {
+            bookStore.map(item => {
+                if (item.status === true) {
+                    idProducts.push(item._id);
+                    let arrIdChapter = [];
+                    for (var key of Object.keys(item.chapter)) {
+                        arrIdChapter.push(item.chapter[key].idChapter);
+                    }
+
+                    pay.idChapter.push({
+                        idBook: item._id,
+                        idChapter: arrIdChapter,
+                    });
+                }
+            });
+        }
+        const params = {
+            body: pay,
+            token: myInfo.token,
+        };
+
+        const response = await createPaymentChapter(params);
+        dispatch(removeBookPayment(idProducts));
+
+        if (response.data) {
+            console.log('response: ');
+        }
     };
 
     const initPayment = async () => {
@@ -88,7 +138,10 @@ const PaymentScreen = ({ price }) => {
 
             if (error) {
                 console.log('Payment failued ', error);
+                dispatch(changeLoading('HIDE'));
+                setVisibleCartErr(true);
             } else {
+                paymentChapter();
                 console.log('Payment success ', paymentIntent);
                 dispatch(changeLoading('HIDE'));
                 setVisibleCart(true);
@@ -133,7 +186,7 @@ const PaymentScreen = ({ price }) => {
                             shadowOpacity: 0.25,
                             shadowRadius: 12,
 
-                            elevation: 5,
+                            elevation: 3,
                         }}>
                         <Text
                             color={theme.colors.gray}
@@ -229,6 +282,35 @@ const PaymentScreen = ({ price }) => {
                     <Text style={styles.textOTP} center>
                         Thanh toán thành công
                     </Text>
+                </Block>
+            </ModalPoup>
+
+            <ModalPoup visible={visibleCartErr}>
+                <Block style={styles.clone}>
+                    <Fontisto
+                        name={'close-a'}
+                        size={12}
+                        color={'black'}
+                        onPress={() => {
+                            setVisibleCartErr(false);
+                        }}
+                    />
+                </Block>
+                <Block alignCenter={'center'}>
+                    <Block>
+                        <Image
+                            source={require('../../assets/icons/faile.png')}
+                            style={{ width: 70, height: 70 }}
+                        />
+                    </Block>
+                    <Text style={styles.textOTP} center>
+                        Thanh toán không thành công
+                    </Text>
+                    <TouchableOpacity style={{marginTop: 10}}  center onPress={() => {
+                            setVisibleCartErr(false);
+                        }}>
+                        <Text size={14}>Kiểm tra lại thông tin</Text>
+                    </TouchableOpacity>
                 </Block>
             </ModalPoup>
         </Block>

@@ -19,5 +19,3 @@ const TabSceneReadingStatus = ({ route }) => {
 };
 
 export default TabSceneReadingStatus;
-
-const styles = StyleSheet.create({});
