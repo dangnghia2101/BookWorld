@@ -140,7 +140,7 @@ const Cart = ({ t }) => {
                             {priceBook()
                                 .toFixed(0)
                                 .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')}{' '}
-                            đ
+                                ₫
                         </Text>
                     </Block>
                     <TouchableOpacity
@@ -221,17 +221,16 @@ const Cart = ({ t }) => {
                             style={styles.buttomAddCart}
                             onPress={() => {
                                 console.log(
-                                    '>>>>>>>>>>>> item._id',
                                     item._id,
                                     index,
                                 );
-                                // dispatch(removeItem({_id : item._id })),
-                                dispatch(
-                                    removeBookCart({
-                                        _id: item._id,
-                                        index: index,
-                                    }),
-                                ),
+                                dispatch(removeItem({_id : item._id })),
+                                // dispatch(
+                                //     removeBookCart({
+                                //         _id: item._id,
+                                //         index: index,
+                                //     }),
+                                // ),
                                     { setVisibleCart: setVisibleCart(false) };
                             }}>
                             <Text style={styles.textButtomLogin} height={55}>
@@ -250,31 +249,15 @@ const Cart = ({ t }) => {
                     onPress={() => {
                         {
                             cartItem.SL !== 1
-                                ? (console.log(
-                                      '................... Xóa chương',
-                                  ),
-                                  dispatch(
+                                ? dispatch(
                                       removeChapter({
-                                          element: item,
-                                          index: cartItem.index,
-                                          keyChapter:
-                                              cartItem?.chapter[item]
-                                                  ?.chapterNumber,
+                                          _id: cartItem._id,
+                                          index: index,
                                       }),
-                                  ),
-                                  setCartItem(
-                                      data.filter(
-                                          (item, index) =>
-                                              index != item.chapterNumber,
-                                      ),
-                                  ))
-                                : (console.log(
-                                      '................... Xoasaaa Sách',
-                                      cartItem._id,
-                                  ),
-                                  dispatch(
-                                      removeBookCart({ _id: cartItem._id }),
-                                  ));
+                                  )
+                                : dispatch(
+                                      removeItem({ _id: cartItem._id }),
+                                  );
                         }
                     }}>
                     <Entypo
@@ -303,7 +286,7 @@ const Cart = ({ t }) => {
             <Block
                 justifyCenter
                 alignCenter
-                backgroundColor={theme.colors.white}
+                // backgroundColor={theme.colors.white}
                 height={50}
                 row>
                 <Text
@@ -314,17 +297,7 @@ const Cart = ({ t }) => {
                 </Text>
             </Block>
             <Block height={'80%'}>
-                {bookStore == [] ? (
-                    <Block alignCenter>
-                        <Text
-                            color={theme.colors.textInBox}
-                            center
-                            marginTop={260}
-                            size={16}>
-                            Giỏ hàng trống
-                        </Text>
-                    </Block>
-                ) : (
+                {bookStore ? (
                     <FlatList
                         data={bookStore}
                         renderItem={renderItem}
@@ -332,6 +305,17 @@ const Cart = ({ t }) => {
                         showsVerticalScrollIndicator={false}
                         style={styles.FlatList}
                     />
+                ) : (
+                    
+                    <Block alignCenter>
+                        <Text
+                            color={theme.colors.black}
+                            center
+                            marginTop={260}
+                            size={16}>
+                            Giỏ hàng trống
+                        </Text>
+                    </Block>
                 )}
             </Block>
             <Block
@@ -349,17 +333,16 @@ const Cart = ({ t }) => {
                     </Text>
                     <Text
                         fontType="bold1"
-                        color={theme.colors.grey1}
+                        color={theme.colors.primary}
                         size={22}
                         marginTop={5}>
-                        ₫
                         {allPrice
                             ? allPrice &&
                               allPrice
                                   .toFixed(0)
                                   .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')
                             : 0}{' '}
-                        đ
+                            ₫
                     </Text>
                 </Block>
                 <TouchableOpacity
@@ -405,7 +388,7 @@ const Cart = ({ t }) => {
                                             /(\d)(?=(\d{3})+(?!\d))/g,
                                             '$1.',
                                         )}{' '}
-                                đ
+                                        ₫
                             </Text>
                         </Block>
                         <TouchableOpacity onPress={() => {}}>

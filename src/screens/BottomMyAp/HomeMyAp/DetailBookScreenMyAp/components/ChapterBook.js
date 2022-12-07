@@ -47,6 +47,16 @@ const ChapterBook = ({
         }
     };
 
+    const addAllCart =_item => {
+        const data ={
+            _id: infoBook._id,
+            name: infoBook.name,
+            isPrice: infoBook.isPrice,
+            image: infoBook.image,
+            chapter: { [_item.chapterNumber]: _item },
+            status: false,
+        }
+    }
     const addCart = _item => {
         const data = {
             _id: infoBook._id,

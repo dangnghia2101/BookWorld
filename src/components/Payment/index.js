@@ -53,6 +53,8 @@ const PaymentScreen = ({ price }) => {
     };
 
     const [visibleCart, setVisibleCart] = useState(false);
+
+    const [visibleCartErr, setVisibleCartErr] = useState(false);
     const navigation = useNavigation();
 
     const { confirmPayment } = useStripe();
@@ -137,6 +139,7 @@ const PaymentScreen = ({ price }) => {
             if (error) {
                 console.log('Payment failued ', error);
                 dispatch(changeLoading('HIDE'));
+                setVisibleCartErr(true);
             } else {
                 paymentChapter();
                 console.log('Payment success ', paymentIntent);
@@ -279,6 +282,35 @@ const PaymentScreen = ({ price }) => {
                     <Text style={styles.textOTP} center>
                         Thanh toán thành công
                     </Text>
+                </Block>
+            </ModalPoup>
+
+            <ModalPoup visible={visibleCartErr}>
+                <Block style={styles.clone}>
+                    <Fontisto
+                        name={'close-a'}
+                        size={12}
+                        color={'black'}
+                        onPress={() => {
+                            setVisibleCartErr(false);
+                        }}
+                    />
+                </Block>
+                <Block alignCenter={'center'}>
+                    <Block>
+                        <Image
+                            source={require('../../assets/icons/faile.png')}
+                            style={{ width: 70, height: 70 }}
+                        />
+                    </Block>
+                    <Text style={styles.textOTP} center>
+                        Thanh toán không thành công
+                    </Text>
+                    <TouchableOpacity style={{marginTop: 10}}  center onPress={() => {
+                            setVisibleCartErr(false);
+                        }}>
+                        <Text size={14}>Kiểm tra lại thông tin</Text>
+                    </TouchableOpacity>
                 </Block>
             </ModalPoup>
         </Block>
