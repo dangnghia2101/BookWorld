@@ -88,13 +88,18 @@ const ChatScreenMyApp = ({ t }) => {
                         style={styles.imageGroup}
                     />
                     <Block marginLeft={10} flex>
-                        <Text color={colors.textInBox} size={14} fontType="bold">
+                        <Text
+                            color={colors.textInBox}
+                            size={14}
+                            fontType="bold">
                             {item.name}
                         </Text>
                         <Text color={colors.textInBox}>{item.description}</Text>
                     </Block>
                     <Block>
-                        <Text color={colors.textInBox} size={10}>12:40</Text>
+                        <Text color={colors.textInBox} size={10}>
+                            12:40
+                        </Text>
                     </Block>
                 </Block>
             </Pressable>
@@ -140,7 +145,11 @@ const ChatScreenMyApp = ({ t }) => {
                 paddingHorizontal={10}
                 alignCenter
                 flex>
-                <Text color={colors.textInBox} marginVertical={10} size={16} fontType="bold">
+                <Text
+                    color={colors.textInBox}
+                    marginVertical={10}
+                    size={16}
+                    fontType="bold">
                     {t('createNewGroup')}
                 </Text>
                 <Block
@@ -166,7 +175,11 @@ const ChatScreenMyApp = ({ t }) => {
                     </Block>
 
                     <Block width="90%" paddingVertical={10}>
-                        <Text color={colors.textInBox} marginBottom={-20} size={16} fontType="bold">
+                        <Text
+                            color={colors.textInBox}
+                            marginBottom={-20}
+                            size={16}
+                            fontType="bold">
                             {t('groupName')}
                         </Text>
 
@@ -178,7 +191,11 @@ const ChatScreenMyApp = ({ t }) => {
                         />
                     </Block>
                     <Block width="90%">
-                        <Text color={colors.textInBox} marginBottom={-20} size={16} fontType="bold">
+                        <Text
+                            color={colors.textInBox}
+                            marginBottom={-20}
+                            size={16}
+                            fontType="bold">
                             {t('addMember')}
                         </Text>
 
@@ -228,7 +245,10 @@ const ChatScreenMyApp = ({ t }) => {
                                         source={{ uri: item.image }}
                                         style={styles.imagePeople}
                                     />
-                                    <Text color={colors.textInBox} flex marginLeft={10}>
+                                    <Text
+                                        color={colors.textInBox}
+                                        flex
+                                        marginLeft={10}>
                                         {item.name}
                                     </Text>
 
@@ -300,53 +320,50 @@ const ChatScreenMyApp = ({ t }) => {
     }, [dataGroups]);
 
     return (
-        <Container style={styles.root} statusColor={colors.white}>
-            <Block
-                flex
-                paddingHorizontal={20}
-                backgroundColor={colors.background}>
-                <Block row alignCenter>
-                    <Text flex size={28} fontType="bold" color={colors.primary}>
-                        Explore
-                    </Text>
-                    <TouchableOpacity
-                        onPress={() => {
-                            bottomSheetRef.current.snapToIndex(0);
-                            setSearchText('');
-                            setPeopleSearch([]);
-                        }}>
-                        <Block
-                            height={30}
-                            width={30}
-                            borderColor={colors.textInBox}
-                            borderWidth={2}
-                            radius={6}
-                            justifyCenter
-                            alignCenter>
-                            <Icon
-                                component="Ionicons"
-                                name="md-add"
-                                color={colors.textInBox}
-                                size={25}
-                            />
-                        </Block>
-                    </TouchableOpacity>
-                </Block>
-
-                <Block marginBottom={15}>
-                    <TextInput
-                        value={searchPhrase}
-                        onChangeText={setSearchPhrase}
-                        placeholder="Search by name..."
-                        iconLeft={searchIcon}
-                        style={styles.containerSearch}
-                    />
-                </Block>
-
-                {renderGroup()}
-                {bottomSheetInfo()}
+        // <Container style={styles.root} statusColor={colors.white}>
+        <Block flex paddingHorizontal={20} backgroundColor={colors.background}>
+            <Block row alignCenter>
+                <Text flex size={28} fontType="bold" color={colors.primary}>
+                    Explore
+                </Text>
+                <TouchableOpacity
+                    onPress={() => {
+                        bottomSheetRef.current.snapToIndex(0);
+                        setSearchText('');
+                        setPeopleSearch([]);
+                    }}>
+                    <Block
+                        height={30}
+                        width={30}
+                        borderColor={colors.textInBox}
+                        borderWidth={2}
+                        radius={6}
+                        justifyCenter
+                        alignCenter>
+                        <Icon
+                            component="Ionicons"
+                            name="md-add"
+                            color={colors.textInBox}
+                            size={25}
+                        />
+                    </Block>
+                </TouchableOpacity>
             </Block>
-        </Container>
+
+            <Block marginBottom={15}>
+                <TextInput
+                    value={searchPhrase}
+                    onChangeText={setSearchPhrase}
+                    placeholder="Search by name..."
+                    iconLeft={searchIcon}
+                    style={styles.containerSearch}
+                />
+            </Block>
+
+            {renderGroup()}
+            {bottomSheetInfo()}
+        </Block>
+        // </Container>
     );
 };
 

@@ -148,7 +148,7 @@ const Register = () => {
                 setConfirmOTP={setConfirmOTP}
                 setCodeOTP={setCodeOTP}
                 codeOTP={codeOTP}
-                phone = {phone}
+                phone={phone}
             />
 
             <TouchableOpacity
