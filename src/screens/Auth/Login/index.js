@@ -1,10 +1,11 @@
 import { icons } from '@assets';
-import { Block, ModalBox, Text } from '@components';
+import { Block, ModalBox, Text, TextInput } from '@components';
 import { routes } from '@navigation/routes';
 import auth from '@react-native-firebase/auth';
 import messaging from '@react-native-firebase/messaging';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { useNavigation } from '@react-navigation/native';
+import { PHONE_REG_EXP } from '@utils/constants';
 import { changeLoading } from '@redux/reducerNew';
 import { useLoginMutation } from '@redux/servicesNew';
 import { useAppDispatch, useAppSelector } from 'hooks';
@@ -14,7 +15,6 @@ import {
     Modal,
     Pressable,
     StyleSheet,
-    TextInput,
     TouchableOpacity,
 } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -48,16 +48,42 @@ const Login = ({ t }) => {
     const [visible2, setVisible2] = useState(false);
     const [visible1, setVisible1] = useState(false);
     const [visible, setVisible] = useState(false);
-    const [hide, setHide] = useState(true);
+    const [hide, setHide] = useState(false);
     const navigation = useNavigation();
     const [login, { isLoading: isUpdating }] = useLoginMutation();
     const dispatch = useAppDispatch();
     const [visibleModal, setVisibleModal] = useState(false);
-    const HidePassword = () => {
-        if (hide === true) {
-            setHide(false);
+    const [phoneUser, setPhoneUser] = useState('');
+    const [password, setPassword] = useState('');
+    // const [auth, setAuth] = useState('signin');
+
+    const handleErrorPhone = useMemo(() => {
+        if (phoneUser.match(PHONE_REG_EXP) || phoneUser.length == 0) {
+            return [false, ''];
         } else {
+            return [true, 'Format phone invalid'];
+        }
+    }, [phoneUser]);
+
+    const handleErrorNewPassword = useMemo(() => {
+        if (password.length > 5 || password.length == 0) {
+            return [false, ''];
+        } else {
+            return [true, 'New password at least 6 character'];
+        }
+    }, [password]);
+
+    const LoginPhone = () => {
+        // if (auth == 'signin') {
+        // dispatch(login({ phoneUser, password }));
+        // }
+    };
+
+    const HidePassword = () => {
+        if (hide === false) {
             setHide(true);
+        } else {
+            setHide(false);
         }
     };
 
@@ -97,7 +123,7 @@ const Login = ({ t }) => {
         return await messaging().getToken();
     }
 
-    const _signIn = async () => {
+    const _signIngoogle = async () => {
         await GoogleSignin.signOut();
         const currentUser = await GoogleSignin.getCurrentUser();
 
@@ -148,6 +174,8 @@ const Login = ({ t }) => {
                 {t('loginToUseApp')}{' '}
             </Text>
             <TextInput
+                value={phoneUser}
+                onChangeText={text => setPhoneUser(text)}
                 keyboardType="numeric"
                 placeholder={t('phone')}
                 style={styles.textInput}
@@ -180,6 +208,7 @@ const Login = ({ t }) => {
                     />
                 )}
             </Block>
+
             <Text
                 bold
                 size={15}
@@ -194,7 +223,7 @@ const Login = ({ t }) => {
             </Pressable>
             <Block marginTop={20}>
                 <TouchableOpacity
-                    onPress={_signIn}
+                    onPress={_signIngoogle}
                     style={styles.loginGoogle}
                     marginHorizontal={10}>
                     <Image
@@ -452,12 +481,12 @@ const styles = StyleSheet.create({
         shadowColor: '#000',
         shadowOffset: {
             width: 0,
-            height: 3,
+            height: 1,
         },
-        shadowOpacity: 1,
-        shadowRadius: 6,
+        shadowOpacity: 0.22,
+        shadowRadius: 2.22,
 
-        elevation: 7,
+        elevation: 3,
     },
     textRemember: {
         lineHeight: 23,
@@ -472,18 +501,16 @@ const styles = StyleSheet.create({
         height: 59,
         fontWeight: '600',
         backgroundColor: '#F3F3F3',
-        marginTop: 16,
         fontSize: 16,
         shadowColor: '#000',
         shadowOffset: {
             width: 0,
-            height: 3,
+            height: 1,
         },
-        paddingLeft: 18,
-        shadowOpacity: 1,
-        shadowRadius: 6,
+        shadowOpacity: 0.22,
+        shadowRadius: 2.22,
 
-        elevation: 7,
+        elevation: 3,
     },
     textInput: {
         borderRadius: 10,
@@ -497,13 +524,12 @@ const styles = StyleSheet.create({
         shadowColor: '#000',
         shadowOffset: {
             width: 0,
-            height: 3,
+            height: 1,
         },
-        paddingLeft: 18,
-        shadowOpacity: 1,
-        shadowRadius: 6,
+        shadowOpacity: 0.22,
+        shadowRadius: 2.22,
 
-        elevation: 7,
+        elevation: 3,
     },
     textWelcomLogin: {
         lineHeight: 45,

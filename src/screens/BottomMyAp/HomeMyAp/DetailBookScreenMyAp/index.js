@@ -74,11 +74,35 @@ const DetailBookScreenMyAp = ({ route }) => {
     }
 
   }
+
+  useEffect(() => {
+    dispatch(changeTimeReducer(time));
+  }, [time]);
+
+  // useEffect(() => {
+  //     if (progressInDay && target) {
+  //         const time = useCountdown(1, 15);
+  //         console.log('===> time ', time);
+  //     }
+  // }, [target]);
+
+  useEffect(() => {
+    async function fetchAPI() {
+      if (item._id) {
+        const params = {
+          id: item._id,
+          token: myInfo.token,
+        };
+        const { data } = await getAllChapterBook(params);
+        setListChapters(data);
+      }
+    }
+    fetchAPI();
+  }, [getAllChapterBook, item._id, myInfo._id]);
+
   const favoriteIcon = () => {
     return (
-      <TouchableOpacity
-        onPress={handleSaveFavoriteBook}
-      >
+      <TouchableOpacity onPress={handleSaveFavoriteBook}>
         <Block justifyCenter width={50} paddingVertical={2}>
           <IconView
             component={'AntDesign'}
@@ -91,11 +115,12 @@ const DetailBookScreenMyAp = ({ route }) => {
     );
   };
 
-
   return (
-    <Block >
+    <Block>
       <HeaderWithButton isBackHeader rightIcon={favoriteIcon()} />
-      <ScrollView style={{ height: '100%' }} showsVerticalScrollIndicator={false}>
+      <ScrollView
+        style={{ height: '100%' }}
+        showsVerticalScrollIndicator={false}>
         <Block
           flex
           paddingHorizontal={20}
@@ -110,7 +135,6 @@ const DetailBookScreenMyAp = ({ route }) => {
             setIsRead={setIsRead}
             navigation={navigation}
           />
-
         </Block>
       </ScrollView>
     </Block>

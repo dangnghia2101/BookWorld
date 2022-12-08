@@ -25,7 +25,7 @@ const Register = () => {
     const { colors } = useTheme(themeStore);
 
     const handleErrorPhone = useMemo(() => {
-        if (phone.match(PHONE_REG_EXP)) {
+        if (phone.match(PHONE_REG_EXP) || phone.length == 0) {
             return [false, ''];
         } else {
             return [true, 'Format phone invalid'];
@@ -33,7 +33,7 @@ const Register = () => {
     }, [phone]);
 
     const handleErrorNewPassword = useMemo(() => {
-        if (newPassword.length > 5) {
+        if (newPassword.length > 5 || newPassword.length == 0) {
             return [false, ''];
         } else {
             return [true, 'New password at least 6 character'];
@@ -101,7 +101,12 @@ const Register = () => {
                 {' '}
                 Xin Chào Bạn Mới{' '}
             </Text>
-            <Text paddingHorizontal={45} size={13} lineHeight={20} center>
+            <Text
+                paddingHorizontal={45}
+                marginVertical={40}
+                size={13}
+                lineHeight={20}
+                center>
                 {' '}
                 Vui lòng đăng ký tài khoản để sử dụng ứng dụng Lưu ý nhập đầy đủ
                 thông tin ở bên dưới{' '}
@@ -111,6 +116,7 @@ const Register = () => {
                 onChangeText={setPhone}
                 value={phone}
                 label={'Phone number'}
+                placeholder={'Số điện thoại'}
                 keyboardType="phone-pad"
                 errorText={handleErrorPhone[1]}
                 isError={handleErrorPhone[0]}
@@ -120,6 +126,7 @@ const Register = () => {
                 onChangeText={setNewPassword}
                 value={newPassword}
                 label={'New Password'}
+                placeholder={'Mật khẩu'}
                 isSecure={true}
                 errorText={handleErrorNewPassword[1]}
                 isError={handleErrorNewPassword[0]}
@@ -129,6 +136,7 @@ const Register = () => {
                 onChangeText={setConfirmPassword}
                 value={confirmPassword}
                 label={'Confirm Passord'}
+                placeholder={'Nhập lại mật khẩu'}
                 isSecure={true}
                 errorText={handleErrorComfirmPassword[1]}
                 isError={handleErrorComfirmPassword[0]}
@@ -141,14 +149,25 @@ const Register = () => {
                 setConfirmOTP={setConfirmOTP}
                 setCodeOTP={setCodeOTP}
                 codeOTP={codeOTP}
+                phone = {phone}
             />
 
             <TouchableOpacity
                 onPress={signInWithPhoneNumber}
+                disabled={handleSendLogin}
                 style={styles({ isDisable: handleSendLogin }).buttomLogin}
-                height={59}
-                disabled={handleSendLogin}>
-                <Text style={styles.textButtomLogin}>Đăng ký</Text>
+                height={59}>
+                <Text
+                    style={{
+                        fontSize: 16,
+                        lineHeight: 50,
+                        alignItems: 'center',
+                        fontWeight: '700',
+                        fontFamily: 'Poppins',
+                        color: '#FFFFFF',
+                    }}>
+                    Đăng ký
+                </Text>
             </TouchableOpacity>
         </Block>
     );
@@ -218,13 +237,15 @@ const styles = ({ isDisable }) =>
             backgroundColor: isDisable ? '#818181' : '#DD4455',
             height: 50,
             shadowColor: '#000',
+            shadowColor: '#000',
             shadowOffset: {
                 width: 0,
-                height: 3,
+                height: 1,
             },
-            shadowOpacity: 1,
-            shadowRadius: 6,
-            elevation: 7,
+            shadowOpacity: 0.22,
+            shadowRadius: 2.22,
+
+            elevation: 3,
         },
         textInput2: {
             borderRadius: 15,
@@ -237,13 +258,12 @@ const styles = ({ isDisable }) =>
             shadowColor: '#000',
             shadowOffset: {
                 width: 0,
-                height: 3,
+                height: 1,
             },
-            paddingLeft: 18,
-            shadowOpacity: 1,
-            shadowRadius: 6,
+            shadowOpacity: 0.22,
+            shadowRadius: 2.22,
 
-            elevation: 7,
+            elevation: 3,
         },
         textInput: {
             borderRadius: 15,

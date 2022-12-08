@@ -8,6 +8,7 @@ const ModalConfirmOtp = ({
     setShowModal,
     setCodeOTP,
     codeOTP,
+    phone
 }) => {
     useEffect(() => {
         setShowModal(showModal);
@@ -25,7 +26,7 @@ const ModalConfirmOtp = ({
                     Mã OTP đã được gửi về số điện thoại của bạn
                 </Text>
                 <Text marginTop={18} style={styles.textPhone}>
-                    (099999xxxx)
+                    {phone}
                 </Text>
 
                 <TextInput onChangeText={setCodeOTP} value={codeOTP} />
