@@ -86,6 +86,10 @@ export default {
   loginToUseApp:'Login to use app',
   buyToSeeBook:'Buy to be able to see the book',
   addToCart:'Add to cart',
+  askPay:'Clicking "Checkout" means you agree comply with the terms of Bookword',
+  totalPrice:'Total price',
+  discount:'Discount',
+  pay:'Pay',
   categories: {
     TT: 'Illusion',
     HD: 'Venturos',

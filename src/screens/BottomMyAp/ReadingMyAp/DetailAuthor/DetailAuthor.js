@@ -21,6 +21,7 @@ const WIDTH_ITEM_INVIEW = widthItemEventIncoming - 20;
 
 const DetailAuthor = ({ route, t }) => {
   let item = route.params.item;
+  console.log("itemmmmmmmmmmmmmmm", item);
   const themeStore = useAppSelector(state => state.root.themeApp.theme);
   const themeNew = useTheme(themeStore);
 
@@ -57,10 +58,9 @@ const DetailAuthor = ({ route, t }) => {
           </Block>
           <Block marginTop={18}>
             <Text fontType='bold1' color={themeNew.colors.textInBox} style={styles.textIntro}>{t('contactInfo')}</Text>
-            <Text fontType='medium1' color={themeNew.colors.textInBox} style={styles.IntroduceAuthor}>Facebook: facebook..co m</Text>
-            <Text fontType='medium1' color={themeNew.colors.textInBox} style={styles.IntroduceAuthor}>Youtube: youtube.com </Text>
-            <Text fontType='medium1' color={themeNew.colors.textInBox} style={styles.IntroduceAuthor}>Instagram: instagram</Text>
-            <Text fontType='medium1' color={themeNew.colors.textInBox} style={styles.IntroduceAuthor}>Number phone: 0977777777</Text>
+            <Text fontType='medium1' color={themeNew.colors.textInBox} style={styles.IntroduceAuthor}>Facebook: {item.aboutAuthor.faceBook}</Text>
+            <Text fontType='medium1' color={themeNew.colors.textInBox} style={styles.IntroduceAuthor}>Youtube: {item.aboutAuthor.youtube} </Text>
+            <Text fontType='medium1' color={themeNew.colors.textInBox} style={styles.IntroduceAuthor}>Instagram: {item.aboutAuthor.instagram}</Text>
           </Block>
           <Block marginTop={42}>
             <Text fontType='bold1' color={themeNew.colors.textInBox} style={styles.textBook}>{t('bookOfAuthor')}</Text>

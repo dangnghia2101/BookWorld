@@ -30,7 +30,7 @@ const ItemAuthor = ({ item, t }) => {
         >
           <Block width="50%" height="100%">
             <Text fontType='bold1' color={theme.colors.textInBox} style={styles.textName}>{t('textNameAuthor')}</Text>
-            <Text fontType='regular1' color={theme.colors.textInBox} style={styles.nameAuthor}>{item.name}</Text>
+            <Text fontType='bold1' color={theme.colors.textInBox} style={styles.nameAuthor} numberOfLines={1}>{item.name}</Text>
             <Text fontType='bold1' color={theme.colors.textInBox} style={styles.textRate}>{t('textRating')}</Text>
             <Block row marginLeft={22} marginTop={5}>
               <Icon
@@ -75,7 +75,7 @@ const ItemAuthor = ({ item, t }) => {
           justifyCenter
           alignCenter
           padding={7}
-          backgroundColor={theme.colors.grey16}
+          backgroundColor={theme.colors.background}
         >
           <Block
             backgroundColor={theme.colors.white}
@@ -85,7 +85,7 @@ const ItemAuthor = ({ item, t }) => {
             alignCenter
             padding={7}
             borderWidth={3}
-            borderColor={theme.colors.black}>
+            borderColor={theme.colors.grey9}>
             <Image style={styles.avatar} source={{ uri: item.avatar }} />
           </Block>
         </Block>
@@ -137,6 +137,7 @@ const useStyle = makeStyles()(({ normalize, colors }) => ({
     lineHeight: 15,
   },
   nameAuthor: {
+    width: '55%',
     marginTop: '5%',
     marginLeft: '12%',
     fontWeight: '600',

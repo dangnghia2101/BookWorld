@@ -2,7 +2,7 @@ export const colors = {
   dark: {
     basic: 'rgb(151, 153, 169)',
     default: 'rgb(244,245,249)',
-    background: '#05222C',
+    background: '#262626',
     disableddisableddisabled: '#8FA2B7',
     secondary: '#15313D',
     black_transparent: 'rgba(0,0,0,0.4)',
@@ -40,7 +40,7 @@ export const colors = {
     backgroundModal: '#232f34',
     transparent: '#00000000',
     backgroundErrorText: '#FFF8F8',
-    text: '#262626',
+    text: '#555555',
     textDark: '#FFFFFF',
     backgroundDark: '#FFFFFF',
     backgroundDark2: '#555555',

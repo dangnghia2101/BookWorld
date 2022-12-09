@@ -315,7 +315,7 @@ const Cart = ({ t }) => {
                     </Block>
                 )}
             </Block>
-            <Block bottom={7}>
+            <Block bottom={4}>
                 <Block
                     row
                     width={'100%'}
@@ -360,50 +360,6 @@ const Cart = ({ t }) => {
                         />
                     </TouchableOpacity>
 
-                </Block>
-                <Block
-                    row
-                    width={'100%'}
-                    paddingHorizontal={5}
-                    paddingVertical={5}
-                    backgroundColor={theme.colors.white}
-                    style={styles.ContainerCheckOut}
-                    borderBottomWidth={10}
-                    borderColor={theme.colors.grey14}>
-                    <Block marginLeft={10}>
-                        <Text color={theme.colors.textInBox} size={14}>
-                            {t('toTal')}
-                        </Text>
-                        <Text
-                            fontType="bold1"
-                            color={theme.colors.primary}
-                            size={22}
-                            marginTop={5}>
-                            {allPrice
-                                ? allPrice &&
-                                allPrice
-                                    .toFixed(0)
-                                    .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')
-                                : 0}{' '}
-                            ₫
-                        </Text>
-                    </Block>
-                    <TouchableOpacity
-                        disabled={allPrice === 0}
-                        onPress={() =>
-                            navigation.navigate(routes.DETAIL_CART, {
-                                allPrice: allPrice,
-                            })
-                        }
-                        style={styles.BottomCheckOut(allPrice)}>
-                        <Text fontType="bold1" color={theme.colors.white} size={16}>
-                            {t('buy')}
-                        </Text>
-                        <Image
-                            marginTop={5}
-                            source={require('../../../../assets/icons/nextCheckOut.png')}
-                        />
-                    </TouchableOpacity>
                 </Block>
             </Block>
             <BottomSheet

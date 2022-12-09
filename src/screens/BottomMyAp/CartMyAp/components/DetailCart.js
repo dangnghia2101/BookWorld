@@ -8,21 +8,23 @@ import {
 } from 'react-native';
 import React, { useState } from 'react';
 import { Block, Text, HeaderWithButton } from '@components';
-import { useAppSelector } from '@hooks';
+import { useAppDispatch, useAppSelector } from 'hooks';
 import { useNavigation } from '@react-navigation/native';
 import { routes } from '@navigation/routes';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { theme } from '@theme';
-
-const DetailCart = ({ route }) => {
+import { useTheme } from 'themeNew';
+import { withNamespaces } from 'react-i18next';
+const DetailCart = ({ route, t }) => {
     const navigation = useNavigation();
     const bookStore = useAppSelector(state => state.root.cart.cartList);
-
+    const themeStore = useAppSelector(state => state.root.themeApp.theme);
+    const themeNew = useTheme(themeStore);
     let price = route.params.allPrice;
     let allPrice = price - price * 0.1;
     return (
-        <Block flex backgroundColor={'white'}>
-            <HeaderWithButton isBackHeader title={'Thanh toán'} />
+        <Block flex backgroundColor={themeNew.colors.background}>
+            <HeaderWithButton isBackHeader title={t('pay')} />
             <ScrollView style={styles.scroll}>
                 {bookStore.map(item => {
                     let sum = 0;
@@ -47,16 +49,17 @@ const DetailCart = ({ route }) => {
                                 <Block marginLeft={15} column>
                                     <Block row>
                                         <Text
+                                            fontType='bold1'
                                             style={styles.textName}
                                             numberOfLines={2}>
                                             {item.name}
                                         </Text>
                                     </Block>
                                     <Text style={styles.quantity}>
-                                        Số lượng chương:{' '}
+                                        {t('numberOfEpisodes')}:{' '}
                                         {Object.keys(item.chapter).length}
                                     </Text>
-                                    <Text style={styles.textPrice}>
+                                    <Text fontType='medium1' style={styles.textPrice}>
                                         {priceBook()
                                             .toFixed(0)
                                             .replace(
@@ -77,23 +80,22 @@ const DetailCart = ({ route }) => {
                         width={'100%'}
                         height={45}
                         paddingHorizontal={10}
-                        backgroundColor={'white'}
+                        backgroundColor={themeNew.colors.background}
                         marginTop={10}>
                         <Image
                             marginTop={10}
                             source={require('../../../../assets/icons/note.png')}
                         />
-                        <Text marginLeft={10} lineHeight={20}>
-                            Nhấn “ Thanh toán “ đồng nghĩa với việc bạn đồng ý
-                            tuân theo điều khoản của Bookword
+                        <Text fontType='medium1' color={themeNew.colors.textInBox} marginLeft={10} lineHeight={20}>
+                            {t('askPay')}
                         </Text>
                     </Block>
                 </Block>
-                <Block radius={10}  backgroundColor={'#F0F2F0'} marginHorizontal={20}>
+                <Block radius={10} backgroundColor={'#F0F2F0'} marginHorizontal={20}>
                     <Block marginBottom={20} />
                     <Block row style={styles.AllPriceBook}>
-                        <Text size={15}>Tổng giá sách</Text>
-                        <Text style={styles.textPrice}>
+                        <Text fontType='regular1' size={15}>{t('totalPrice')}</Text>
+                        <Text fontType='regular1' style={styles.textPrice}>
                             {price
                                 .toFixed(0)
                                 .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')}{' '}
@@ -101,26 +103,28 @@ const DetailCart = ({ route }) => {
                         </Text>
                     </Block>
                     <Block row style={styles.AllPriceBook}>
-                        <Text size={15}>Giảm giá</Text>
-                        <Text style={styles.textPrice}>
+                        <Text fontType='regular1' size={15}>{t('discount')}</Text>
+                        <Text fontType='regular1' style={styles.textPrice}>
                             {(price * 0.1)
                                 .toFixed(0)
                                 .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')}{' '}
                             đ
                         </Text>
                     </Block>
-                    <Block style={styles.scratch} />
+                    <Block backgroundColor={themeNew.colors.grey10} style={styles.scratch} />
                     <Block row style={styles.AllPriceBook} paddingRight={25}>
                         <Text
+                            fontType='bold1'
                             size={15}
                             style={styles.textName}
                             color={theme.colors.lightRed}>
-                            Tổng
+                            {t('toTal')}
                         </Text>
                         <Text
+                            fontType='bold1'
                             style={styles.textPrice}
                             color={theme.colors.lightRed}
-                            >
+                        >
                             {(price - price * 0.1)
                                 .toFixed(0)
                                 .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')}{' '}
@@ -137,14 +141,14 @@ const DetailCart = ({ route }) => {
                             allPrice: allPrice,
                         })
                     }>
-                    <Text style={styles.textBottom}>Thanh toán</Text>
+                    <Text fontType='bold1' style={styles.textBottom}>{t('pay')}</Text>
                 </TouchableOpacity>
             </Block>
         </Block>
     );
 };
 
-export default DetailCart;
+export default withNamespaces()(DetailCart);
 
 const styles = StyleSheet.create({
     backgroundImage: {
@@ -157,8 +161,7 @@ const styles = StyleSheet.create({
     },
     scratch: {
         width: '80%',
-        height: 0.5,
-        backgroundColor: 'gray',
+        height: 1,
         marginLeft: '10%',
         marginBottom: 20,
     },
@@ -168,7 +171,6 @@ const styles = StyleSheet.create({
     textPrice: {
         marginTop: 5,
         fontSize: 18,
-        fontWeight: '700',
     },
     image: {
         width: 80,
@@ -197,23 +199,19 @@ const styles = StyleSheet.create({
     textName: {
         width: '85%',
         fontSize: 20,
-        fontWeight: '700',
     },
     Pay: {
         alignItems: 'center',
         paddingRight: 5,
-        backgroundColor: 'white',
         height: 61,
         justifyContent: 'center',
     },
     scroll: {
         height: '66.7%',
-        backgroundColor: 'white',
     },
     textBottom: {
         color: 'white',
         fontSize: 18,
-        fontWeight: '700',
     },
     Bottom: {
         height: 50,
