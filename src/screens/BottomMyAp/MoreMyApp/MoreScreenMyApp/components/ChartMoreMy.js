@@ -1,28 +1,32 @@
-import { StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
-import React, { useEffect, useState } from 'react';
-import { Block, Text, Button } from '@components';
+import { Block, Text } from '@components';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Dimensions, TouchableOpacity } from 'react-native';
 
 // import Plot from 'react-plotly.js';
 // import Plot from 'react-plotly.js';
 const screenWidth = Dimensions.get('window').width;
 
-import { makeStyles, useTheme } from 'themeNew';
+import { useAppSelector } from '@hooks';
 import { withNamespaces } from 'react-i18next';
-import { useAppSelector, useAppDispatch } from '@hooks';
+import { makeStyles, useTheme } from 'themeNew';
 
 import {
     useGetReadTimeBookQuery,
     useLazyGetReadTimeBookQuery,
 } from '@redux/servicesNew';
+import { MONTHS } from '@utils/constants';
+import { VictoryBar, VictoryChart } from 'victory-native';
+
+const thisYear = new Date().getFullYear();
+const thisMonth = MONTHS[new Date().getMonth() + 1];
 
 const ChartMoreMy = props => {
     const [data, setData] = useState([]);
-    const [getReadTimeBook] = useLazyGetReadTimeBookQuery();
-    //thuc hien dau goi do getReadTimeBook(id);
     const myInfo = useAppSelector(state => state.root.auth);
+    // const dataReadTime = useLazyGetReadTimeBookQuery(myInfo._id);
+    //thuc hien dau goi do getReadTimeBook(id);
     const { data: dataReadTime } = useGetReadTimeBookQuery(myInfo._id);
     console.log('Data read time ', dataReadTime);
-    console.log('Data myInfo ', myInfo.token);
     //chay 1 lan
 
     const { t } = props;
@@ -30,90 +34,91 @@ const ChartMoreMy = props => {
     const themeNew = useTheme(themeStore);
     const styles = useStyle(props, themeStore);
 
-    useEffect(async () => {
-        // const dataChart = await getReadTimeBook(actions);
-        // setData(dataChart.data)
-        console.log('datasever >>');
-        // if(data?.data[0]){
-        //   const dataChart = await getReadTimeBook(actions);
-        //   setData(dataChart.data)
-        // console.log(">>", setData(data?.data[0][2022]));
-        // //useState
-        // }
+    // useEffect(() => {
+    //     getReadTimeBook(myInfo._id);
+    // }, []);
 
-        // const getDataChart = async () => {
-        //   const data2 = await getReadTimeBook(actions);
-        //   console.log("datasever >>", data2);
-        // }
-        // getDataChart();
-    }, []);
+    useEffect(() => {
+        if (dataReadTime) {
+            handleDataMonth();
+        }
+    }, [dataReadTime]);
 
-    //  const data2 = getReadTimeBook(actions);
+    const handleDataYear = useCallback(() => {
+        try {
+            if (dataReadTime) {
+                let handleData = [];
 
-    // const data = [
-    //   {
-    //     month: 'January',
-    //     time: 500,
-    //   },
-    //   {
-    //     month: 'February',
-    //     time: 400,
-    //   },
-    //   {
-    //     month: 'March',
-    //     time: 450,
-    //   },
-    //   {
-    //     month: 'April',
-    //     time: 480,
-    //   },
-    //   {
-    //     month: 'May',
-    //     time: 500,
-    //   },
-    //   {
-    //     month: 'June',
-    //     time: 500,
-    //   },
-    //   {
-    //     month: 'July',
-    //     time: 500,
-    //   },
-    //   {
-    //     month: 'August',
-    //     time: 500,
-    //   },
-    //   {
-    //     month: 'Setember',
-    //     time: 500,
-    //   },
-    //   {
-    //     month: 'October',
-    //     time: 200,
-    //   },
-    //   {
-    //     month: 'November',
-    //     time: 500,
-    //   },
-    //   {
-    //     month: 'December',
-    //     time: 500,
-    //   },
-    // ];
+                for (const year in dataReadTime) {
+                    let sum = 0;
+                    for (const month in dataReadTime[year]) {
+                        for (const day in dataReadTime[year][month]) {
+                            sum += dataReadTime[year][month][day];
+                        }
+                    }
+                    handleData.push({
+                        x: year,
+                        y: (sum / 1000 / 60).toFixed(0),
+                    });
+                }
 
-    const sample = [
-        { cate: 'A', values: [20, 31, 24, 60], types: ['1', '2', '3', '4'] },
-        { cate: 'B', values: [20, 2, 1, 60], types: ['1', '2', '3', '4'] },
-        { cate: 'C', values: [1, 31, 24, 60], types: ['1', '2', '3', '4'] },
-    ];
-
-    function handleClick(e) {
-        sample.forEach(each => {
-            if (each.cate === e.target.id) {
-                setData({ values: each.values, types: each.types });
+                setData(handleData);
             }
-        });
-    }
+        } catch (e) {
+            console.log('[Error handleDataMonth] ', e);
+        }
+    }, [dataReadTime]);
+
+    console.log('month in array  ', data);
+
+    const handleDataMonth = useCallback(() => {
+        try {
+            if (dataReadTime) {
+                let handleData = [];
+
+                for (const month in dataReadTime[thisYear]) {
+                    let sum = 0;
+
+                    for (const day in dataReadTime[thisYear][month]) {
+                        sum += dataReadTime[thisYear][month][day];
+                    }
+                    console.log('SUM NE ', sum, month);
+                    handleData.push({
+                        x: month,
+                        y: (sum / 1000 / 60).toFixed(0),
+                    });
+                }
+
+                setData(handleData);
+            }
+        } catch (e) {
+            console.log('[Error handleDataMonth] ', e);
+        }
+    }, [dataReadTime]);
+
+    const handleDataDate = useCallback(() => {
+        console.log('handleDataDate');
+        try {
+            if (dataReadTime) {
+                let handleData = [];
+
+                if (dataReadTime[thisYear][thisMonth]) {
+                    for (const day in dataReadTime[thisYear][thisMonth]) {
+                        handleData.push({
+                            x: day,
+                            y:
+                                dataReadTime[thisYear][thisMonth][day] /
+                                1000 /
+                                60,
+                        });
+                    }
+                    setData(handleData);
+                }
+            }
+        } catch (e) {
+            console.log('Error handle data date ', e);
+        }
+    }, [dataReadTime]);
 
     return (
         <Block marginVertical={20} column justifyCenter>
@@ -124,48 +129,40 @@ const ChartMoreMy = props => {
                 marginHorizontal={15}>
                 <TouchableOpacity
                     style={[styles.itemChartContainer, styles.shadowColor]}
-                    onPress={handleClick}
+                    onPress={handleDataDate}
                     id="A">
                     <Text fontType={'medium1'} color={themeNew.colors.textDark}>{t('day')}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={[styles.itemChartContainer, styles.shadowColor]}
-                    onPress={handleClick}
+                    onPress={handleDataMonth}
                     id="B">
                     <Text fontType={'medium1'} color={themeNew.colors.textDark}>{t('month')}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={[styles.itemChartContainer, styles.shadowColor]}
-                    onPress={handleClick}
+                    onPress={handleDataYear}
                     id="C">
                     <Text fontType={'medium1'} color={themeNew.colors.textDark}>{t('year')}</Text>
                 </TouchableOpacity>
             </Block>
 
-            {/* <VictoryChart theme={VictoryTheme.material}>
-        <VictoryBar
-          style={{data: {fill: '#0D7EF9', width: 15}}}
-          animate={{
-            duration: 3000,
-            onLoad: {
-              duration: 3000,
-            },
-          }}
-          // data={data2}
-          // x={data2.month}
-          // y={data2.time}
-        />
-      </VictoryChart> */}
-            {/* <Plot
-                data={[
-                    {
-                        type: 'bar',
-                        x: [1, 2, 3],
-                        y: [24, 15, 30],
-                    },
-                ]}
-                layout={{ width: 800, height: 500, title: 'Thời gian đọc' }}
-            /> */}
+            {data.length > 0 ? (
+                <VictoryChart>
+                    <VictoryBar
+                        style={{ data: { fill: '#0D7EF9', width: 15 } }}
+                        animate={{
+                            duration: 3000,
+                            onLoad: {
+                                duration: 3000,
+                            },
+                        }}
+                        x={'x'}
+                        y={'y'}
+                        data={data}
+                    />
+                </VictoryChart>
+            ) : null}
         </Block>
     );
 };
