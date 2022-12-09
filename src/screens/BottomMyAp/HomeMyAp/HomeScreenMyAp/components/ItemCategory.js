@@ -38,7 +38,8 @@ const ItemCategory = ({ item }) => {
                     marginTop={5}
                     numberOfLines={2}
                     color={colors.textInBox}
-                    flexGrow>
+                    flexGrow
+                    fontType='regular1'>
                     {item?.item?.name}
                 </Text>
             </Block>

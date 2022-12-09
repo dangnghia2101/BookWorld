@@ -133,7 +133,7 @@ const HomeScreenMyAp = ({ t }) => {
     const renderListBookFree = useCallback(() => {
         return (
             <Block>
-                <HeaderListBook title={t('freeBook')} action={() => {}} />
+                <HeaderListBook title={t('freeBook')} action={() => { }} />
                 <Animated.FlatList
                     data={allBooks}
                     keyExtractor={item => Math.random() + item._id}
@@ -189,7 +189,7 @@ const HomeScreenMyAp = ({ t }) => {
             <Pressable
                 onPress={() => navigation.navigate(routes.SEARCH)}
                 style={styles.searchStyle}>
-                <Text color={theme.colors.grey4} size={14}>
+                <Text fontType='regular1' color={theme.colors.grey4} size={14}>
                     {t('searchHere')}
                 </Text>
                 <Icon

@@ -15,7 +15,6 @@ async function getToken() {
 
 const Register = () => {
     const themeStore = useAppSelector(state => state.root.themeApp.theme);
-
     const [loginPhone] = useLoginPhoneMutation();
     const [phone, setPhone] = useState('');
     const [newPassword, setNewPassword] = useState('');
@@ -121,6 +120,7 @@ const Register = () => {
                 keyboardType="phone-pad"
                 errorText={handleErrorPhone[1]}
                 isError={handleErrorPhone[0]}
+                colorNotErr={colors.textInBox}
             />
             <TextInput
                 onChangeText={setNewPassword}
@@ -130,6 +130,7 @@ const Register = () => {
                 isSecure={true}
                 errorText={handleErrorNewPassword[1]}
                 isError={handleErrorNewPassword[0]}
+                color={colors.textInBox}
             />
             <TextInput
                 onChangeText={setConfirmPassword}

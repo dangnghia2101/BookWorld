@@ -32,22 +32,22 @@ const IntroduceText = ({ item, t }) => {
       <Text
         marginTop={20}
         color={theme.colors.textInBox}
-        fontType={'bold'}
+        fontType={'bold1'}
         size={20}>
         {t('introduceText')}
       </Text>
-      <Text color={theme.colors.textInBox} size={15}>
+      <Text fontType={'regular1'} color={theme.colors.textInBox} size={15}>
         {item?.item?.introduction}
       </Text>
       {/* Tổng quan đánh giá */}
       <Text
         marginTop={10}
-        fontType={'bold'}
+        fontType={'bold1'}
         color={theme.colors.textInBox}
         size={20}>
         {t('overview')}
       </Text>
-      <Text color={theme.colors.textInBox} size={15}>
+      <Text fontType={'regular1'} color={theme.colors.textInBox} size={15}>
         J.D. Salinger was an American writer, best known for his 1951 novel The
         Catcher in the Rye. Before its publi cation, Salinger published several
         short stories in Story magazine

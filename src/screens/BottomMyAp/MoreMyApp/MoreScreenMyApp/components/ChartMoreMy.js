@@ -126,19 +126,19 @@ const ChartMoreMy = props => {
                     style={[styles.itemChartContainer, styles.shadowColor]}
                     onPress={handleClick}
                     id="A">
-                    <Text color={themeNew.colors.textDark}>{t('day')}</Text>
+                    <Text fontType={'medium1'} color={themeNew.colors.textDark}>{t('day')}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={[styles.itemChartContainer, styles.shadowColor]}
                     onPress={handleClick}
                     id="B">
-                    <Text color={themeNew.colors.textDark}>{t('month')}</Text>
+                    <Text fontType={'medium1'} color={themeNew.colors.textDark}>{t('month')}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={[styles.itemChartContainer, styles.shadowColor]}
                     onPress={handleClick}
                     id="C">
-                    <Text color={themeNew.colors.textDark}>{t('year')}</Text>
+                    <Text fontType={'medium1'} color={themeNew.colors.textDark}>{t('year')}</Text>
                 </TouchableOpacity>
             </Block>
 

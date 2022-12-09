@@ -27,7 +27,7 @@ const ReadingScreenMyAp = ({ t }) => {
                 <Pressable
                     onPress={() => navigation.navigate(routes.SEARCH)}
                     style={styles.searchStyle}>
-                    <Text color={theme.colors.grey4} size={14}>
+                    <Text fontType='regular1' color={theme.colors.grey4} size={14}>
                         {t('searchHere')}
                     </Text>
                     <Icon

@@ -51,7 +51,7 @@ const ItemEditMoreMy = props => {
                         </Block>
                         <Block column absolute marginLeft={60}>
                             <Text
-                                fontType={'bold'}
+                                fontType={'medium1'}
                                 color={themeNew.colors.textDark}
                                 size={16}>
                                 {t('purchaseHistory')}
@@ -102,7 +102,7 @@ const ItemEditMoreMy = props => {
                         </Block>
                         <Block column absolute marginLeft={60}>
                             <Text
-                                fontType={'bold'}
+                                fontType={'medium1'}
                                 color={themeNew.colors.textDark}
                                 size={16}>
                                 {t('editProfile')}
@@ -141,7 +141,7 @@ const ItemEditMoreMy = props => {
                         </Block>
                         <Block column absolute marginLeft={60}>
                             <Text
-                                fontType={'bold'}
+                                fontType={'medium1'}
                                 color={themeNew.colors.textDark}
                                 size={16}>
                                 {t('privacy')}
@@ -181,12 +181,12 @@ const ItemEditMoreMy = props => {
 
                         <Block column absolute marginLeft={60}>
                             <Text
-                                fontType={'bold'}
+                                fontType={'medium1'}
                                 color={themeNew.colors.textDark}
                                 size={16}>
                                 {t('notification')}
                             </Text>
-                            <Text color={themeNew.colors.textDark} size={12}>
+                            <Text fontType={'regular1'} color={themeNew.colors.textDark} size={12}>
                                 {t('notificationSettings')}
                             </Text>
                         </Block>
@@ -222,12 +222,12 @@ const ItemEditMoreMy = props => {
                         </Block>
                         <Block column absolute marginLeft={60}>
                             <Text
-                                fontType={'bold'}
+                                fontType={'medium1'}
                                 color={themeNew.colors.textDark}
                                 size={16}>
                                 {t('darkMode')}
                             </Text>
-                            <Text color={themeNew.colors.textDark} size={12}>
+                            <Text fontType={'regular1'} color={themeNew.colors.textDark} size={12}>
                                 {t('changeScreenMode')}
                             </Text>
                         </Block>
@@ -265,7 +265,7 @@ const ItemEditMoreMy = props => {
                         </Block>
                         <Block column absolute marginLeft={60}>
                             <Text
-                                fontType={'bold'}
+                                fontType={'medium1'}
                                 color={themeNew.colors.textDark}
                                 size={16}>
                                 {t('language')}

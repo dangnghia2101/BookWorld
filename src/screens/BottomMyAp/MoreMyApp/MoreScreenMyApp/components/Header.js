@@ -25,7 +25,7 @@ const Header = props => {
                 <Text
                     size={22}
                     color={themeNew.colors.textDark}
-                    fontType={'bold'}>
+                    fontType={'bold1'}>
                     {t('profile')}
                 </Text>
             </View>

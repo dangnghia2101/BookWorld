@@ -64,14 +64,15 @@ const cartSlice = createSlice({
                 index,
             );
         },
-        removeChapter: (state: CartList, action) => {
-            // let arr = state.cartList.filter(item => item.chapter[].idChapter === action.payload);
-            // state.cartList = arr;
+        // removeChapter: (state: CartList, action) => {
+        //     let arr = state.cartList.filter(item => item.chapter[].idChapter === action.payload);
+        //     state.cartList = arr;
+
             // let { id, index, keyChapter } = action.payload;
             // let arr = state.cartList[index];
             // delete arr.chapter[keyChapter];
             // state.cartList[index] = arr;
-        },
+        // },
         removeBookPayment: (state: CartList, action) => {
             const data = action.payload;
             let newCart: CartState[] = [];

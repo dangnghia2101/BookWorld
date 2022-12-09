@@ -52,7 +52,7 @@ const HeaderWithButton = props => {
                     <Text
                         color={theme.colors.textInBox}
                         size={18}
-                        fontType={'bold'}>
+                        fontType={'bold1'}>
                         {title}
                     </Text>
                 </Block>
@@ -91,7 +91,7 @@ const HeaderWithButton = props => {
                         flex
                         size={20}
                         color={theme.colors.textInBox}
-                        fontType="bold">
+                        fontType="bold1">
                         {title}
                     </Text>
                     {children}
