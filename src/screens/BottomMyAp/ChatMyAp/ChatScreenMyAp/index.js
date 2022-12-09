@@ -88,13 +88,18 @@ const ChatScreenMyApp = ({ t }) => {
                         style={styles.imageGroup}
                     />
                     <Block marginLeft={10} flex>
-                        <Text color={colors.textInBox} size={14} fontType="bold">
+                        <Text
+                            color={colors.textInBox}
+                            size={14}
+                            fontType="bold">
                             {item.name}
                         </Text>
                         <Text color={colors.textInBox}>{item.description}</Text>
                     </Block>
                     <Block>
-                        <Text color={colors.textInBox} size={10}>12:40</Text>
+                        <Text color={colors.textInBox} size={10}>
+                            12:40
+                        </Text>
                     </Block>
                 </Block>
             </Pressable>
@@ -228,7 +233,10 @@ const ChatScreenMyApp = ({ t }) => {
                                         source={{ uri: item.image }}
                                         style={styles.imagePeople}
                                     />
-                                    <Text color={colors.textInBox} flex marginLeft={10}>
+                                    <Text
+                                        color={colors.textInBox}
+                                        flex
+                                        marginLeft={10}>
                                         {item.name}
                                     </Text>
 
@@ -343,10 +351,20 @@ const ChatScreenMyApp = ({ t }) => {
                     />
                 </Block>
 
+                <Block marginBottom={15}>
+                    <TextInput
+                        value={searchPhrase}
+                        onChangeText={setSearchPhrase}
+                        placeholder="Search by name..."
+                        iconLeft={searchIcon}
+                        style={styles.containerSearch}
+                    />
+                </Block>
+
                 {renderGroup()}
                 {bottomSheetInfo()}
             </Block>
-        </Container>
+        // </Container>
     );
 };
 

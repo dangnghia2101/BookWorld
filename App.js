@@ -1,6 +1,7 @@
 import { useFCM } from '@hooks';
 import React, { useEffect } from 'react';
 import RootStack from './src/navigation/RootStack';
+import { RootNavigationNew } from './src/navigation/RootNavigationNew';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Provider } from 'react-redux';
 import { Loading } from '@components';
@@ -19,7 +20,7 @@ const App = () => {
             .catch(e => console.log('error get token firebase -----> ', e));
     }, [fcm]);
 
-    return <RootStack />;
+    return <RootNavigationNew />;
 };
 
 const AppWrapper = () => {

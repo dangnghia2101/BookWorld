@@ -80,7 +80,9 @@ const HeaderHome = props => {
 
             <Block marginRight={15}>
                 <Button
-                    onPress={() => navigation.navigate(routes.NOTIFICATION_SCREEN)}>
+                    onPress={() =>
+                        navigation.navigate(routes.NOTIFICATION_SCREEN)
+                    }>
                     <IconView
                         component={'MaterialCommunityIcons'}
                         name={'bell-outline'}

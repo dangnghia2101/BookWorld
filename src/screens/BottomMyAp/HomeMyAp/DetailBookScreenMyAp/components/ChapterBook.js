@@ -55,8 +55,8 @@ const ChapterBook = ({
             image: infoBook.image,
             chapter: { [_item.chapterNumber]: _item },
             status: false,
-        }
-    }
+        };
+    };
     const addCart = _item => {
         const data = {
             _id: infoBook._id,
@@ -184,10 +184,13 @@ const ChapterBook = ({
                     <TouchableOpacity
                         onPress={() => {
                             if (item.isPay === true) {
-                                if (!isRead) {
+                                if (isRead) {
                                     navigation.navigate(
                                         routes.PLAY_BOOK_MY_AP,
-                                        { idChapter: item.idChapter },
+                                        {
+                                            idChapter: item.idChapter,
+                                            nameBook: nameBook,
+                                        },
                                     );
                                 } else {
                                     navigation.navigate(routes.LISTEN_BOOK, {

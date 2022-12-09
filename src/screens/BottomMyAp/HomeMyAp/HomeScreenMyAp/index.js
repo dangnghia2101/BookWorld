@@ -203,7 +203,8 @@ const HomeScreenMyAp = ({ t }) => {
     };
 
     return (
-        <Container statusColor={theme.colors.grey16} edges={['left', 'right']}>
+        // <Container statusColor={theme.colors.grey16} edges={['left', 'right']}>
+        <Block>
             <HeaderHome
                 name={myInfo?.name}
                 image={myInfo?.image}
@@ -229,7 +230,8 @@ const HomeScreenMyAp = ({ t }) => {
                     <Image source={images.banner} style={styles.banner} />
                 </Block>
             </ScrollView>
-        </Container>
+        </Block>
+        // </Container>
     );
 };
 
