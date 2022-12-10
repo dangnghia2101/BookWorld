@@ -57,21 +57,21 @@ const Login = ({ t }) => {
     const [password, setPassword] = useState('');
     // const [auth, setAuth] = useState('signin');
 
-    const handleErrorPhone = useMemo(() => {
-        if (phoneUser.match(PHONE_REG_EXP) || phoneUser.length == 0) {
-            return [false, ''];
-        } else {
-            return [true, 'Format phone invalid'];
-        }
-    }, [phoneUser]);
+    // const handleErrorPhone = useMemo(() => {
+    //     if (phoneUser.match(PHONE_REG_EXP) || phoneUser.length == 0) {
+    //         return [false, ''];
+    //     } else {
+    //         return [true, 'Format phone invalid'];
+    //     }
+    // }, [phoneUser]);
 
-    const handleErrorNewPassword = useMemo(() => {
-        if (password.length > 5 || password.length == 0) {
-            return [false, ''];
-        } else {
-            return [true, 'New password at least 6 character'];
-        }
-    }, [password]);
+    // const handleErrorNewPassword = useMemo(() => {
+    //     if (password.length > 5 || password.length == 0) {
+    //         return [false, ''];
+    //     } else {
+    //         return [true, 'New password at least 6 character'];
+    //     }
+    // }, [password]);
 
     const LoginPhone = () => {
         // if (auth == 'signin') {
