@@ -9,7 +9,7 @@ import { useAppSelector } from 'hooks';
 import { makeStyles, useTheme } from 'themeNew';
 import { withNamespaces } from 'react-i18next';
 
-const MoreMyApp = props => {
+const EditMoreMyApp = props => {
     const { t } = props;
     const myInfo = useAppSelector(state => state.root.auth);
     const themeStore = useAppSelector(state => state.root.themeApp.theme);
@@ -31,4 +31,4 @@ const MoreMyApp = props => {
     );
 };
 
-export default withNamespaces()(MoreMyApp);
+export default withNamespaces()(EditMoreMyApp);

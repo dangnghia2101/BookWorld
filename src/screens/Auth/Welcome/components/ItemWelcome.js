@@ -1,6 +1,6 @@
-import {StyleSheet, Image, useWindowDimensions} from 'react-native';
+import { StyleSheet, Image, useWindowDimensions } from 'react-native';
 import React from 'react';
-import {Block, Text} from '@components';
+import { Block, Text } from '@components';
 
 // const {width, height} = Dimensions.get('window');
 
@@ -12,15 +12,15 @@ const ItemWelcome = ({item}) => {
     <Block styles={styles.cardView} height={height / 2.3}>
       <Image
         style={styles.image}
-        width={'100%'}
+        width={width}
         height={height / 2}
         source={image}
       />
       <Block marginTop={width / 5} width={width} paddingHorizontal={20}>
-        <Text size={20} style={styles.textTitle} center>
+        <Text fontType='bold1' size={20} style={styles.textTitle} center>
           {item.title}
         </Text>
-        <Text style={styles.textDescription} size={15} center>
+        <Text fontType='medium1' style={styles.textDescription} size={15} center>
           {item.description}
         </Text>
       </Block>
@@ -52,7 +52,6 @@ const styles = StyleSheet.create({
   textTitle: {
     color: '#19191B',
     lineHeight: 30,
-    fontWeight: 'bold',
   },
   text: {
     position: 'absolute',

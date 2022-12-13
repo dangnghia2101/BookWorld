@@ -172,7 +172,7 @@ const ChapterBook = ({
                                     ? themeNew.colors.text
                                     : themeNew.colors.grey10
                             }
-                            fontType={'bold'}
+                            fontType={'bold1'}
                             size={12}>
                             {t('bookToRead')}
                         </Text>
@@ -194,7 +194,7 @@ const ChapterBook = ({
                                     ? themeNew.colors.text
                                     : themeNew.colors.grey10
                             }
-                            fontType={'bold'}
+                            fontType={'bold1'}
                             size={12}>
                             {t('bookToListen')}
                         </Text>
@@ -205,7 +205,7 @@ const ChapterBook = ({
                 <Text
                     marginTop={5}
                     color={themeNew.colors.textInBox}
-                    fontType={'bold'}
+                    fontType={'bold1'}
                     size={20}>
                     {t('chapTer')}
                 </Text>
@@ -226,7 +226,8 @@ const ChapterBook = ({
                         setChapItem(bookNotPay);
                         setVisible1(true);
                     }}>
-                    <Text color='white'>Mua hết</Text>
+                    <Text fontType={'bold1'} color='white'>
+                    {t('buy all')}</Text>
                 </TouchableOpacity>
             </Block>
 
@@ -239,10 +240,13 @@ const ChapterBook = ({
                     <TouchableOpacity
                         onPress={() => {
                             if (item.isPay === true) {
-                                if (!isRead) {
+                                if (isRead) {
                                     navigation.navigate(
                                         routes.PLAY_BOOK_MY_AP,
-                                        { idChapter: item.idChapter },
+                                        {
+                                            idChapter: item.idChapter,
+                                            nameBook: nameBook,
+                                        },
                                     );
                                 } else {
                                     navigation.navigate(routes.LISTEN_BOOK, {
@@ -296,7 +300,8 @@ const ChapterBook = ({
                         </Block>
                         <Block alignCenter={'center'}>
                             <Text style={styles.textOTP} center>
-                                Mua cả cuốn sách
+                            {t('buyTheWholeBook')}
+                            
                             </Text>
                             <TouchableOpacity
                                 style={styles.buttomAddCart}
@@ -304,7 +309,7 @@ const ChapterBook = ({
                                 <Text
                                     style={styles.textButtomLogin}
                                     height={55}>
-                                    Thêm vào giỏ hàng
+                                    {t('addToCart')}
                                 </Text>
                             </TouchableOpacity>
                         </Block>
@@ -325,24 +330,22 @@ const ChapterBook = ({
                                 }}
                             />
                         </Block>
-                        <Block alignCenter={'center'}>
-                            <Text style={styles.textOTP} center>
-                                Mua để có thể xem sách
-                            </Text>
-                            <Text size={18} center>
-                                Chương {chapItem?.chapterNumber}
-                            </Text>
-                            <TouchableOpacity
-                                style={styles.buttomAddCart}
-                                onPress={() => addCart(chapItem)}>
-                                <Text
-                                    style={styles.textButtomLogin}
-                                    height={55}>
-                                    Thêm vào giỏ hàng
-                                </Text>
-                            </TouchableOpacity>
-                        </Block>
                     </Block>
+                </Block>
+                <Block alignCenter={'center'}>
+                    <Text style={styles.textOTP} center>
+                        {t('buyToSeeBook')}
+                    </Text>
+                    <Text size={18} center>
+                        {t('chapTer')} {chapItem?.chapterNumber}
+                    </Text>
+                    <TouchableOpacity
+                        style={styles.buttomAddCart}
+                        onPress={() => addCart(chapItem)}>
+                        <Text style={styles.textButtomLogin} height={55}>
+                            {t('addToCart')}
+                        </Text>
+                    </TouchableOpacity>
                 </Block>
             </Modal>
         </Block>
@@ -350,6 +353,10 @@ const ChapterBook = ({
 };
 
 const useStyle = makeStyles()(({ normalize, colors }) => ({
+    modal: {
+        height: '50%',
+        backgroundColor: colors.blue
+    },
     textButtomLogin: {
         fontSize: 16,
         fontWeight: '700',
@@ -376,14 +383,12 @@ const useStyle = makeStyles()(({ normalize, colors }) => ({
     },
     modalContainer: {
         width: '75%',
-        backgroundColor: 'rgba(253,253,253,10)',
         paddingHorizontal: 20,
         paddingVertical: 20,
         borderRadius: 20,
         borderColor: 'black',
     },
     modalBackGround: {
-        backgroundColor: 'rgba(0,0,0,0.3)',
         justifyContent: 'center',
         alignContent: 'center',
         alignItems: 'center',

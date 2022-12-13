@@ -25,7 +25,7 @@ const TabTopicSearch = ({ search, setSearch }) => {
                         color={
                             focused ? theme.colors.primary : theme.colors.grey10
                         }
-                        fontType="bold">
+                        fontType="bold1">
                         {route.title}
                     </Text>
                 </Block>

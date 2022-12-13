@@ -31,8 +31,8 @@ const ItemNoti = ({ item }) => {
                     <Image style={styles.avatar} source={{ uri: item.book.image }} />
                 </Block>
                 <Block width={270}>
-                    <Text color={themeNew.colors.textInBox} style={styles.content} lineBreakMode='2'>{item.content}</Text>
-                    <Text color={themeNew.colors.textInBox} style={styles.time}>{formatDay(new Date(item.createdAt))}</Text>
+                    <Text fontType='bold1' color={themeNew.colors.textInBox} style={styles.content} lineBreakMode='2'>{item.content}</Text>
+                    <Text fontType='regular1' color={themeNew.colors.textInBox} style={styles.time}>{formatDay(new Date(item.createdAt))}</Text>
                 </Block>
             </Block>
         </TouchableOpacity>
@@ -44,12 +44,10 @@ export default ItemNoti;
 const styles = StyleSheet.create({
     time: {
         fontSize: 12,
-        fontWeight: '400',
         marginLeft: 12,
     },
     content: {
         fontSize: 14,
-        fontWeight: '700',
         marginBottom: 10,
         marginLeft: 12,
     },

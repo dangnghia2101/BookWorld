@@ -90,7 +90,6 @@ const cartSlice = createSlice({
             // state.cartList = arr;
 
             // let { id, index, keyChapter } = action.payload;
-
             // let arr = state.cartList[index];
             // delete arr.chapter[keyChapter];
             // state.cartList[index] = arr;

@@ -14,7 +14,25 @@ const ItemAuthor = ({ item, t }) => {
   const themeStore = useAppSelector(state => state.root.themeApp.theme);
   const theme = useTheme(themeStore);
   const styles = useStyle(themeStore);
-
+  let star = [];
+  const allBooks = useAppSelector(state => state.root.book.bookList);
+  const _renderStar = () => {
+    for (let i = 0; i <= allBooks.length; i++) {
+      let num = Math.floor(Math.random() * 3) + 3;
+      // let star = [];
+      for (let j = 1; j <= num; j++) {
+        star.push(
+          <Icon
+            component={'AntDesign'}
+            name="star"
+            color={theme.colors.yellow}
+            size={20}
+          />,
+        );
+      }
+      return star;
+    }
+  };
   return (
     <TouchableOpacity
       onPress={() => navigation.navigate(routes.DETAIL_AUTHOR_MY_AP, { bookmark: true, item })}>
@@ -28,74 +46,46 @@ const ItemAuthor = ({ item, t }) => {
           row
           top={50}
         >
-
           <Block width="50%" height="100%">
-            <Text color={theme.colors.textInBox} style={styles.textName}>{t('textNameAuthor')}</Text>
-            <Text color={theme.colors.textInBox} style={styles.nameAuthor}>{item.name}</Text>
-            <Text color={theme.colors.textInBox} style={styles.textRate}>{t('textRating')}</Text>
+            <Text fontType='bold1' color={theme.colors.textInBox} style={styles.textName}>{t('textNameAuthor')}</Text>
+            <Text fontType='bold1' color={theme.colors.textInBox} style={styles.nameAuthor} numberOfLines={1}>{item.name}</Text>
+            <Text fontType='bold1' color={theme.colors.textInBox} style={styles.textRate}>{t('textRating')}</Text>
             <Block row marginLeft={22} marginTop={5}>
-              <Icon
-                component={'AntDesign'}
-                name="star"
-                color={theme.colors.yellow}
-                size={16}
-              />
-              <Icon
-                component={'AntDesign'}
-                name="star"
-                color={theme.colors.yellow}
-                size={16}
-              />
-              <Icon
-                component={'AntDesign'}
-                name="star"
-                color={theme.colors.yellow}
-                size={16}
-              />
-              <Icon
-                component={'AntDesign'}
-                name="star"
-                color={theme.colors.yellow}
-                size={16}
-              />
-              <Text color={theme.colors.textInBox} style={styles.totalRate}>4.0</Text>
+              {_renderStar()}
+              <Text fontType='bold1' color={theme.colors.textInBox} style={styles.totalRate}>{star.length}.0</Text>
             </Block>
           </Block>
-
           <Block width="50%" height="100%" alignCenter>
-            <Text color={theme.colors.textInBox} numberOfLines={2} style={styles.textQuantity}>
+            <Text fontType='bold1' color={theme.colors.textInBox} numberOfLines={2} style={styles.textQuantity}>
               {t('texQuantity')}
             </Text>
-            <Text color={theme.colors.textInBox} style={styles.totalRead}>23</Text>
-            <Text color={theme.colors.textInBox} style={styles.textName}>{t('textToltalRead')}</Text>
-            <Text color={theme.colors.textInBox} style={styles.totalRead}>23</Text>
+            <Text fontType='medium1' color={theme.colors.textInBox} style={styles.totalRead}>23</Text>
+            <Text fontType='bold1' color={theme.colors.textInBox} style={styles.textName}>{t('textToltalRead')}</Text>
+            <Text fontType='medium1' color={theme.colors.textInBox} style={styles.totalRead}>23</Text>
           </Block>
         </Block>
         <Block
-          backgroundColor={theme.colors.white}
-          width={110}
-          height={110}
-          radius={50}
           justifyCenter
           alignCenter
           padding={7}
-          borderWidth={4}
-          borderColor={theme.colors.grey16}
+          radius={100}
+          width="26%"
+          height="44%"
+          backgroundColor={theme.colors.background}
         >
           <Block
-            // backgroundColor={theme.colors.white}
-            width={100}
-            height={100}
+            backgroundColor={theme.colors.white}
             radius={50}
+            width="100%"
+            height="100%"
             justifyCenter
             alignCenter
             padding={7}
-            borderWidth={4}
-            borderColor={theme.colors.black}>
+            borderWidth={3}
+            borderColor={theme.colors.grey9}>
             <Image style={styles.avatar} source={{ uri: item.avatar }} />
           </Block>
         </Block>
-
       </Block>
     </TouchableOpacity>
   );
@@ -109,7 +99,6 @@ const useStyle = makeStyles()(({ normalize, colors }) => ({
     marginTop: 3,
     marginLeft: '15%',
     lineHeight: 21,
-    fontWeight: '900',
   },
   textQuantity: {
     fontWeight: '500',
@@ -130,10 +119,11 @@ const useStyle = makeStyles()(({ normalize, colors }) => ({
     marginTop: '10%',
     marginLeft: '12%',
     fontWeight: '500',
-    fontSize: 12,
+    fontSize: 14,
     lineHeight: 15,
   },
   nameAuthor: {
+    width: '55%',
     marginTop: '5%',
     marginLeft: '12%',
     fontWeight: '600',
@@ -148,9 +138,9 @@ const useStyle = makeStyles()(({ normalize, colors }) => ({
     lineHeight: 15,
   },
   avatar: {
-    width: 86,
-    height: 86,
-    borderRadius: 40,
+    width: 67,
+    height: 67,
+    borderRadius: 50,
     margin: 7,
   },
   Container: {

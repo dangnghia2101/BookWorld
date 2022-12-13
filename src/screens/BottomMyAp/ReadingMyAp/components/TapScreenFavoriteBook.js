@@ -4,7 +4,8 @@ import { useAppSelector } from '@hooks'
 import { NoData, Block } from '@components'
 import { useGetFavoriteBookQuery } from '@redux/servicesNew'
 import ItemFavoriteBook from './ItemFavoriteBook'
-const TapScreenFavoriteBook = ({ route }) => {
+import { withNamespaces } from 'react-i18next'
+const TapScreenFavoriteBook = ({ route, t }) => {
     // const favoriteBook = useAppSelector(state => state.root.favoriteBook);
     const myInfo = useAppSelector(state => state.root.auth);
     const { data } = useGetFavoriteBookQuery(myInfo._id);
@@ -17,8 +18,8 @@ const TapScreenFavoriteBook = ({ route }) => {
             ))}
         </ScrollView>
     ) : (
-        <NoData title={'Chưa có sách yêu thích'}></NoData>
+        <NoData title={t('noBook')}></NoData>
     );
 }
 
-export default TapScreenFavoriteBook
+export default withNamespaces()(TapScreenFavoriteBook)

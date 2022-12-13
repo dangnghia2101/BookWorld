@@ -12,32 +12,28 @@ const ItemMoreMy = ({ props, t }) => {
     return (
         <Block
             marginTop={10}
-            marginHorizontal={20}
-            flex
             row
             justifyContent={'space-around'}>
-            <Block
-                marginRight={20}
-                style={[styles.dataContainer, styles.shadowColor]}>
-                <Text center color={themeNew.colors.textDark}>
+            <Block style={[styles.dataContainer, styles.shadowColor]}>
+                <Text fontType={'medium1'} center color={themeNew.colors.textDark}>
                     {t('totalReadingTime')}
                 </Text>
                 <Text size={40} center color={themeNew.colors.textDark}>
                     1280
                 </Text>
-                <Text center color={themeNew.colors.textDark}>
+                <Text fontType={'medium1'} center color={themeNew.colors.textDark}>
                     {t('minute')}
                 </Text>
             </Block>
             <Block style={[styles.dataContainer, styles.shadowColor]}>
-                <Text center color={themeNew.colors.textDark}>
+                <Text fontType={'medium1'} center color={themeNew.colors.textDark}>
                     {t('numberOfBooksRead')}
 
                 </Text>
                 <Text size={40} center color={themeNew.colors.textDark}>
                     23
                 </Text>
-                <Text center color={themeNew.colors.textDark}>
+                <Text fontType={'medium1'} center color={themeNew.colors.textDark}>
                     {t('book')}
                 </Text>
             </Block>
@@ -51,13 +47,13 @@ const useStyle = makeStyles()(({ colors }) => ({
     dataContainer: {
         backgroundColor: colors.backgroundDark2,
         borderRadius: 20,
+        width: '42%',
         height: 150,
         flexDirection: 'column',
         justifyContent: 'space-around',
-        flex: 1,
     },
     shadowColor: {
-        shadowColor: colors.grey12,
+        shadowColor: colors.textDark,
         shadowOffset: {
             width: 0,
             height: 2,

@@ -28,8 +28,8 @@ import {
     removeBookCart,
     removeBookPayment,
 } from '@redux/reducerNew/cartReducer';
-
-const PaymentScreen = ({ price }) => {
+import { withNamespaces } from 'react-i18next';
+const PaymentScreen = ({ price, t }) => {
     const ModalPoup = ({ visible, children }) => {
         const [showModal, setShowModal] = React.useState(visible);
         useEffect(() => {
@@ -158,15 +158,16 @@ const PaymentScreen = ({ price }) => {
     };
 
     return (
-        <Block relative>
-            <HeaderWithButton isBackHeader title={'Thanh toán'} />
+        <Block backgroundColor={colors.background} relative>
+            <HeaderWithButton isBackHeader title={t('pay')} />
             <ScrollView bounces={false}>
                 <Block alignCenter>
                     <Text
                         marginTop={30}
                         marginBottom={20}
                         size={16}
-                        color={theme.colors.gray}>
+                        fontType='medium1'
+                        color={colors.textInBox}>
                         Tổng tiền phải thanh toán của bạn
                     </Text>
                     <Block
@@ -174,7 +175,8 @@ const PaymentScreen = ({ price }) => {
                         width={'90%'}
                         height={130}
                         marginBottom={20}
-                        radius={15}
+                        radius={20}
+                        backgroundColor={colors.textInBox}
                         style={{
                             justifyContent: 'center',
                             alignItems: 'center',
@@ -189,7 +191,7 @@ const PaymentScreen = ({ price }) => {
                             elevation: 2.5,
                         }}>
                         <Text
-                            color={theme.colors.gray}
+                            color={colors.text}
                             size={35}
                             fontType={'bold'}>
                             {price
@@ -346,4 +348,4 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
 });
-export default PaymentScreen;
+export default withNamespaces()(PaymentScreen);

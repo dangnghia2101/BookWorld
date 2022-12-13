@@ -53,11 +53,12 @@ const Welcome = () => {
                         onPress={() =>
                             navigation.navigate(routes.LOGIN_SCREEN)
                         }>
-                        <Text style={styles.textDangNhap}>Đăng nhập</Text>
+                        <Text fontType='bold1' style={styles.textDangNhap}>Đăng nhập</Text>
                     </Pressable>
                     <Pressable style={styles.buttomDangKy}>
                         <Text
                             style={styles.textDangKy}
+                            fontType='bold1'
                             onPress={() =>
                                 navigation.navigate(routes.REGISTER_SCREEN)
                             }>
@@ -83,13 +84,11 @@ const styles = StyleSheet.create({
         color: 'black',
         fontSize: 18,
         lineHeight: 28,
-        fontWeight: 'bold',
     },
     textDangNhap: {
         color: 'white',
         fontSize: 18,
         lineHeight: 28,
-        fontWeight: 'bold',
     },
     buttomDangKy: {
         alignItems: 'center',

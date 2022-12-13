@@ -20,12 +20,12 @@ const Header = props => {
     const inset = useSafeAreaInsets();
 
     return (
-        <Block justifyCenter paddingVertical={5} marginTop={inset.top}>
+        <Block justifyCenter paddingVertical={10} marginTop={inset.top}>
             <View style={styles.titleContainer}>
                 <Text
-                    size={22}
+                    size={20}
                     color={themeNew.colors.textDark}
-                    fontType={'bold'}>
+                    fontType={'bold1'}>
                     {t('profile')}
                 </Text>
             </View>
@@ -37,7 +37,7 @@ const Header = props => {
                 <IconView
                     component={'Ionicons'}
                     name={'settings-sharp'}
-                    size={25}
+                    size={24}
                     color={themeNew.colors.textDark}
                 />
             </TouchableOpacity>
@@ -58,15 +58,10 @@ const useStyle = makeStyles()(({ colors }) => ({
         backgroundColor: '#FFFFFF50',
         opacity: 1,
         borderRadius: 40,
-        width: 40,
-        height: 40,
+        width: 35,
+        height: 35,
         justifyContent: 'center',
         alignItems: 'center',
         right: 20,
-    },
-    imageBackground: {
-        position: 'absolute',
-        width: 1000,
-        height: 200,
     },
 }));

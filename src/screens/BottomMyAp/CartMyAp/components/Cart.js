@@ -126,16 +126,16 @@ const Cart = ({ t }) => {
                         resizeMode="cover"
                     />
                     <Block marginHorizontal={20} marginTop={5} width={'55%'}>
-                        <Text numberOfLines={1} size={20} fontType={'bold'}>
+                        <Text numberOfLines={1} size={20} fontType={'bold1'}>
                             {item.name}
                         </Text>
                         <Text
                             color="#9D9D9D"
                             size={14}
                             numberOfLines={1}
-                            marginTop={5}>
-                            {t('numberOfEpisodes')}:{' '}
-                            {Object.keys(item.chapter).length}
+                            marginTop={5}
+                            fontType={'medium1'}>
+                            {t('numberOfEpisodes')}: {Object.keys(item.chapter).length}
                         </Text>
                         <Text
                             color="#9D9D9D"
@@ -144,7 +144,7 @@ const Cart = ({ t }) => {
                             marginTop={5}>
                             {item.introduction}
                         </Text>
-                        <Text style={styles.TextPrice}>
+                        <Text fontType={'medium1'} style={styles.TextPrice}>
                             {priceBook()
                                 .toFixed(0)
                                 .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')}{' '}
@@ -216,7 +216,7 @@ const Cart = ({ t }) => {
                         />
                     </Block>
                     <Block alignCenter={'center'}>
-                        <Text style={styles.textOTP} center>
+                        <Text fontType={'medium1'} style={styles.textOTP} center>
                             {t('askRemove')}
                         </Text>
                         <Block>
@@ -228,10 +228,10 @@ const Cart = ({ t }) => {
                         <TouchableOpacity
                             style={styles.buttomAddCart}
                             onPress={() => {
-                                dispatch(removeItem({item: item._id})),
+                                dispatch(removeItem({_id: item._id})),
                                     { setVisibleCart: setVisibleCart(false) };
                             }}>
-                            <Text style={styles.textButtomLogin} height={55}>
+                            <Text fontType={'bold1'} style={styles.textButtomLogin} height={55}>
                                 {t('delete')}
                             </Text>
                         </TouchableOpacity>
@@ -285,10 +285,7 @@ const Cart = ({ t }) => {
                 // backgroundColor={theme.colors.white}
                 height={50}
                 row>
-                <Text
-                    color={theme.colors.textInBox}
-                    size={20}
-                    style={styles.textTitle}>
+                <Text fontType='bold1' color={theme.colors.textInBox} size={20} style={styles.textTitle}>
                     {t('yourCart')}
                 </Text>
             </Block>
@@ -313,49 +310,52 @@ const Cart = ({ t }) => {
                     </Block>
                 )}
             </Block>
-            <Block
-                row
-                width={'100%'}
-                paddingHorizontal={5}
-                paddingVertical={5}
-                backgroundColor={theme.colors.white}
-                style={styles.ContainerCheckOut}
-                borderBottomWidth={10}
-                borderColor={theme.colors.grey14}>
-                <Block marginLeft={10}>
-                    <Text color={theme.colors.textInBox} size={14}>
-                        {t('toTal')}
-                    </Text>
-                    <Text
-                        fontType="bold1"
-                        color={theme.colors.primary}
-                        size={22}
-                        marginTop={5}>
-                        {allPrice
-                            ? allPrice &&
-                              allPrice
-                                  .toFixed(0)
-                                  .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')
-                            : 0}{' '}
-                        ₫
-                    </Text>
+            <Block bottom={4}>
+                <Block
+                    row
+                    width={'100%'}
+                    paddingHorizontal={5}
+                    paddingVertical={5}
+                    backgroundColor={theme.colors.background}
+                    style={styles.ContainerCheckOut}
+                    marginTop={10}>
+                    <Block marginLeft={10}>
+                        <Text fontType={'medium1'} color={theme.colors.textInBox} size={16} style={styles.TextCart}>
+                            {t('toTal')}
+                        </Text>
+                        <Text
+                            fontType={'bold1'}
+                            color="#D45555"
+                            size={20}
+                            style={styles.TextCart}
+                            marginTop={5}>
+                            {allPrice
+                                ? allPrice &&
+                                allPrice
+                                    .toFixed(0)
+                                    .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')
+                                : 0}{' '}
+                            đ
+                        </Text>
+                    </Block>
+                    <TouchableOpacity
+                        disabled={allPrice === 0}
+                        onPress={() =>
+                            navigation.navigate(routes.DETAIL_CART, {
+                                allPrice: allPrice,
+                            })
+                        }
+                        style={styles.BottomCheckOut(allPrice)}>
+                        <Text fontType={'blod1'} marginRight={10} color="#ffffff" size={18}>
+                            {t('buy')}
+                        </Text>
+                        <Image
+                            marginTop={5}
+                            source={require('../../../../assets/icons/nextCheckOut.png')}
+                        />
+                    </TouchableOpacity>
+
                 </Block>
-                <TouchableOpacity
-                    disabled={allPrice === 0}
-                    onPress={() =>
-                        navigation.navigate(routes.DETAIL_CART, {
-                            allPrice: allPrice,
-                        })
-                    }
-                    style={styles.BottomCheckOut(allPrice)}>
-                    <Text fontType="bold1" color={theme.colors.white} size={16}>
-                        {t('buy')}
-                    </Text>
-                    <Image
-                        marginTop={5}
-                        source={require('../../../../assets/icons/nextCheckOut.png')}
-                    />
-                </TouchableOpacity>
             </Block>
             <BottomSheet
                 index={-1}
@@ -372,7 +372,7 @@ const Cart = ({ t }) => {
                             />
                         </Block>
                         <Block width={'53%'} marginTop={10}>
-                            <Text size={20} style={styles.Name}>
+                            <Text fontType={'bold1'} size={20} style={styles.Name}>
                                 {cartItem?.name}
                             </Text>
                             <Text
@@ -382,7 +382,7 @@ const Cart = ({ t }) => {
                                 marginTop={5}>
                                 {cartItem.introduction}
                             </Text>
-                            <Text style={styles.Price}>
+                            <Text fontType={'medium1'} style={styles.Price}>
                                 {cartItem?.priceBook &&
                                     cartItem?.priceBook
                                         .toFixed(0)
@@ -393,7 +393,7 @@ const Cart = ({ t }) => {
                                 ₫
                             </Text>
                         </Block>
-                        <TouchableOpacity onPress={() => {}}>
+                        <TouchableOpacity onPress={() => { }}>
                             <Fontisto
                                 name={'close-a'}
                                 size={20}
@@ -456,7 +456,6 @@ const styles = StyleSheet.create({
     },
     textButtomLogin: {
         fontSize: 18,
-        fontWeight: '700',
         color: 'white',
     },
     clone: {
@@ -465,7 +464,6 @@ const styles = StyleSheet.create({
     },
     textOTP: {
         marginTop: 20,
-        fontWeight: '700',
         fontSize: 16,
         marginBottom: 20,
     },
@@ -488,9 +486,6 @@ const styles = StyleSheet.create({
         position: 'absolute',
         marginLeft: 85,
         borderRadius: 10,
-    },
-    textTitle: {
-        fontWeight: '700',
     },
     textBottom: {
         color: 'white',
@@ -542,13 +537,11 @@ const styles = StyleSheet.create({
         elevation: 2,
     },
     Name: {
-        fontWeight: '700',
         lineHeight: 30,
     },
     Price: {
         marginTop: 10,
         fontSize: 20,
-        fontWeight: 'bold',
         color: '#D45555',
     },
     Container1: {
@@ -592,7 +585,6 @@ const styles = StyleSheet.create({
         marginTop: 5,
         color: '#D45555',
         fontSize: 20,
-        fontWeight: '700',
     },
     BottomCheckOut: item => ({
         marginRight: 15,

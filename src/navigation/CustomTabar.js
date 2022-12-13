@@ -29,15 +29,15 @@ const CustomTabBar = ({ state, descriptors, navigation }) => {
             paddingVertical={10}
             paddingBottom={inset.bottom}
             flexDirection="row"
-            backgroundColor={colors.text}>
+            backgroundColor={colors.background}>
             {state.routes.map((route, index) => {
                 const { options } = descriptors[route.key];
                 const label =
                     options.tabBarLabel !== undefined
                         ? options.tabBarLabel
                         : options.title !== undefined
-                        ? options.title
-                        : route.name;
+                            ? options.title
+                            : route.name;
                 const isFocused = state.index === index;
                 if (isFocused) {
                     scaleOut();

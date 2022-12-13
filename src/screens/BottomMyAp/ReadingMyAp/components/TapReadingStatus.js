@@ -124,7 +124,7 @@ const TapReadingStatus = () => {
     ({ route, focused, color }) => {
       return (
         <Block>
-          <Text color={focused ? themeNew.colors.primary : themeNew.colors.grey9}
+          <Text fontType='medium1' color={focused ? themeNew.colors.primary : themeNew.colors.grey9}
             size={15}>
             {route.title}
           </Text>

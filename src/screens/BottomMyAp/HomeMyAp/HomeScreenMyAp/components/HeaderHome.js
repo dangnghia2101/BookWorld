@@ -12,7 +12,7 @@ import {
     NativeModules,
     Platform,
     StatusBar,
-    Text as Text1,
+    // Text as Text1,
 } from 'react-native';
 import { makeStyles, useTheme } from 'themeNew';
 
@@ -60,6 +60,7 @@ const HeaderHome = props => {
                     <Text
                         marginLeft={10}
                         size={12}
+                        fontType='medium1'
                         marginHorizontal={5}
                         color={themeNew.colors.grey8}>
                         Welcom to BookWorld!
@@ -70,7 +71,7 @@ const HeaderHome = props => {
                         size={18}
                         marginHorizontal={5}
                         color={themeNew.colors.textInBox}
-                        fontType="bold1"
+                        fontType='regular1'
                         numberOfLines={1}>
                         {name}
                     </Text>
@@ -79,7 +80,9 @@ const HeaderHome = props => {
 
             <Block marginRight={15}>
                 <Button
-                    onPress={() => navigation.navigate(routes.NOTIFICATION_SCREEN)}>
+                    onPress={() =>
+                        navigation.navigate(routes.NOTIFICATION_SCREEN)
+                    }>
                     <IconView
                         component={'MaterialCommunityIcons'}
                         name={'bell-outline'}

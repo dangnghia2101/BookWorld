@@ -125,7 +125,7 @@ const ScreenUpdateProfile = ({ t }) => {
                     width={150}
                     marginTop={30}
                     marginBottom={50}
-                    marginLeft={135}
+                    style={styles.container}
                     relative>
                     <Block
                         relative
@@ -137,13 +137,13 @@ const ScreenUpdateProfile = ({ t }) => {
                         alignCenter
                         padding={7}>
                         <Block
-                            backgroundColor={theme.colors.white}
+                            backgroundColor={theme.colors.grey16}
                             width={155}
                             height={155}
                             radius={100}
                             justifyCenter
                             alignCenter
-                            borderColor={theme.colors.gray2}
+                            borderColor={theme.colors.grey10}
                             borderWidth={1.5}
                             padding={7}>
                             <Image
@@ -177,19 +177,21 @@ const ScreenUpdateProfile = ({ t }) => {
                 </Block>
                 <Block width={'100%'} paddingHorizontal={30}>
                     <Block width={'100%'} marginTop={20}>
-                        <Text color={theme.colors.textInBox} style={styles.textFullname}>{t('fullName')}</Text>
+                        <Text fontType='mideum1' color={theme.colors.textInBox} style={styles.textFullname}>{t('fullName')}</Text>
                         <TextInput
                             onChangeText={setName}
                             value={name}
+                            color={theme.colors.textInBox}
                             placeholder={myInfo.name}
                             placeholderTextColor={theme.colors.textInBox}
                             style={styles.textInput}
                         />
                     </Block>
                     <Block width={'100%'} marginTop={20}>
-                        <Text color={theme.colors.textInBox} style={styles.textFullname}>{t('birthDay')}</Text>
+                        <Text fontType='mideum1' color={theme.colors.textInBox} style={styles.textFullname}>{t('birthDay')}</Text>
                         <TextInput
                             placeholder={'dd/mm/yyyy'}
+                            color={theme.colors.textInBox}
                             placeholderTextColor={theme.colors.textInBox}
                             style={styles.textInput}
                         />
@@ -197,7 +199,7 @@ const ScreenUpdateProfile = ({ t }) => {
                     <TouchableOpacity
                         onPress={handleUploadPhoto}
                         style={styles.TouchableOpacity}>
-                        <Text style={styles.textSave} height={55}>
+                        <Text fontType='bold1' style={styles.textSave} height={55}>
                             {t('save')}
                         </Text>
                     </TouchableOpacity>
@@ -266,13 +268,11 @@ const useStyle = makeStyles()(({ normalize, colors }) => ({
     },
     textFullname: {
         fontSize: 17,
-        fontWeight: '500',
         marginLeft: 10,
     },
     textButtomLogin: {
         fontSize: 16,
         alignItems: 'center',
-        fontWeight: '700',
         color: theme.colors.gray5,
         marginLeft: '10%'
     },
@@ -286,7 +286,6 @@ const useStyle = makeStyles()(({ normalize, colors }) => ({
     },
     textSave: {
         fontSize: 20,
-        fontWeight: '700',
         color: 'white',
     },
     TouchableOpacity: {
@@ -299,12 +298,11 @@ const useStyle = makeStyles()(({ normalize, colors }) => ({
         alignItems: 'center',
     },
     textInput: {
-        fontSize: 18,
         fontWeight: '500',
+        fontSize: 16,
         marginLeft: 10,
         borderBottomWidth: 1,
         borderBottomColor: theme.colors.gray2,
-        color: colors.text
     },
     avatar: {
         width: 135,
@@ -312,4 +310,7 @@ const useStyle = makeStyles()(({ normalize, colors }) => ({
         borderRadius: 100,
         margin: 7,
     },
+    container: {
+        marginLeft: '33%'
+    }
 }));

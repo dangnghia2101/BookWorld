@@ -29,11 +29,11 @@ const BodyEditMoreMy = props => {
                 />
                 <Text
                     size={20}
-                    fontType={'bold'}
+                    fontType={'bold1'}
                     color={themeNew.colors.textDark}>
                     {name}
                 </Text>
-                <Text fontSize={13} color={themeNew.colors.textDark}>
+                <Text fontType='regular1' fontSize={13} color={themeNew.colors.textDark}>
                     {email}
                 </Text>
                 <Block row marginVertical={15}>
@@ -90,7 +90,7 @@ const useStyle = makeStyles()(({ colors }) => ({
         marginBottom: 10,
     },
     shadowColor: {
-        shadowColor: colors.grey12,
+        shadowColor: colors.textDark,
         shadowOffset: {
             width: 0,
             height: 2,

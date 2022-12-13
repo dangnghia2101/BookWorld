@@ -94,7 +94,7 @@ const HomeScreenMyAp = ({ t }) => {
                             height={WIDTH_ITEM_INVIEW}
                             justifyCenter
                             alignCenter>
-                            <Text>Chưa có sach</Text>
+                            <Text>{t('noBook')}</Text>
                         </Block>
                     }
                 />
@@ -133,7 +133,7 @@ const HomeScreenMyAp = ({ t }) => {
     const renderListBookFree = useCallback(() => {
         return (
             <Block>
-                <HeaderListBook title={t('freeBook')} action={() => {}} />
+                <HeaderListBook title={t('freeBook')} action={() => { }} />
                 <Animated.FlatList
                     data={allBooks}
                     keyExtractor={item => Math.random() + item._id}
@@ -189,7 +189,7 @@ const HomeScreenMyAp = ({ t }) => {
             <Pressable
                 onPress={() => navigation.navigate(routes.SEARCH)}
                 style={styles.searchStyle}>
-                <Text color={theme.colors.grey4} size={14}>
+                <Text fontType='regular1' color={theme.colors.grey4} size={14}>
                     {t('searchHere')}
                 </Text>
                 <Icon
@@ -203,7 +203,8 @@ const HomeScreenMyAp = ({ t }) => {
     };
 
     return (
-        <Container statusColor={theme.colors.grey16} edges={['left', 'right']}>
+        // <Container statusColor={theme.colors.grey16} edges={['left', 'right']}>
+        <Block>
             <HeaderHome
                 name={myInfo?.name}
                 image={myInfo?.image}
@@ -229,7 +230,8 @@ const HomeScreenMyAp = ({ t }) => {
                     <Image source={images.banner} style={styles.banner} />
                 </Block>
             </ScrollView>
-        </Container>
+        </Block>
+        // </Container>
     );
 };
 

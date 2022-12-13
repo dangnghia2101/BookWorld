@@ -11,9 +11,9 @@ import { useNavigation } from '@react-navigation/native';
 import { PHONE_REG_EXP } from '@utils/constants';
 import { changeLoading } from '@redux/reducerNew';
 import { useLoginMutation } from '@redux/servicesNew';
-import { useAppDispatch } from 'hooks';
+import { useAppDispatch, useAppSelector } from 'hooks';
+import React, { useEffect, useState } from 'react';
 import { useLoginPhoneNumberMutation } from '@redux/servicesNew';
-import React, { useEffect, useState, useMemo } from 'react';
 import {
     Image,
     Modal,
@@ -22,7 +22,8 @@ import {
     TouchableOpacity,
 } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-
+import { useTheme } from 'themeNew';
+import { withNamespaces } from 'react-i18next';
 const ModalPoup = ({ visible, children }) => {
     const [showModal, setShowModal] = React.useState(visible);
     useEffect(() => {
@@ -45,7 +46,9 @@ const ModalPoup = ({ visible, children }) => {
     );
 };
 
-const Login = () => {
+const Login = ({ t }) => {
+    const themeStore = useAppSelector(state => state.root.themeApp.theme);
+    const theme = useTheme(themeStore);
     const [visible2, setVisible2] = useState(false);
     const [visible1, setVisible1] = useState(false);
     const [visible, setVisible] = useState(false);
@@ -60,21 +63,21 @@ const Login = () => {
     const [password, setPassword] = useState('');
     // const [auth, setAuth] = useState('signin');
 
-    const handleErrorPhone = useMemo(() => {
-        if (phoneUser.match(PHONE_REG_EXP) || phoneUser.length == 0) {
-            return [false, ''];
-        } else {
-            return [true, 'Format phone invalid'];
-        }
-    }, [phoneUser]);
+    // const handleErrorPhone = useMemo(() => {
+    //     if (phoneUser.match(PHONE_REG_EXP) || phoneUser.length == 0) {
+    //         return [false, ''];
+    //     } else {
+    //         return [true, 'Format phone invalid'];
+    //     }
+    // }, [phoneUser]);
 
-    const handleErrorNewPassword = useMemo(() => {
-        if (password.length > 5 || password.length == 0) {
-            return [false, ''];
-        } else {
-            return [true, 'New password at least 6 character'];
-        }
-    }, [password]);
+    // const handleErrorNewPassword = useMemo(() => {
+    //     if (password.length > 5 || password.length == 0) {
+    //         return [false, ''];
+    //     } else {
+    //         return [true, 'New password at least 6 character'];
+    //     }
+    // }, [password]);
 
     const LoginPhone = () => {
         // if (auth == 'signin') {
@@ -206,39 +209,23 @@ const Login = () => {
         // }
     };
     return (
-        <Block
-            flex
-            alignCenter
-            paddingTop={56}
-            backgroundColor={'white'}
-            paddingHorizontal={15}>
-            <Text
-                marginTop={20}
-                h1
-                bold
-                size={30}
-                style={styles.textWelcomLogin}>
+        <Block flex alignCenter paddingTop={56} backgroundColor={'white'}>
+            <Text fontType='bold' h1 bold size={30} style={styles.textWelcomLogin}>
                 {' '}
-                Chào Mừng Trở Lại{' '}
+                {t('welcomeBack')}{' '}
             </Text>
-            <Text
-                marginTop={10}
-                marginBottom={30}
-                paddingHorizontal={61}
-                size={13}
-                lineHeight={20}
-                center>
+            <Text fontType='medium1' paddingHorizontal={61} size={13} lineHeight={20} center>
                 {' '}
-                Bạn phải đăng nhập để sử dụng ứng dụng Chúng tôi có hỗ trợ đăng
-                nhập bằng số điện thoại hoặc gmail{' '}
+                {t('loginToUseApp')}{' '}
             </Text>
             <TextInput
                 value={phoneUser}
                 onChangeText={text => setPhoneUser(text)}
                 keyboardType="numeric"
-                placeholder={'Số điện thoại'}
-                errorText={handleErrorPhone[1]}
-                isError={handleErrorPhone[0]}
+                placeholder={t('phone')}
+                style={styles.textInput}
+                color={theme.colors.grey4}
+                placeholderTextColor={theme.colors.grey10}
             />
             <TextInput
                 value={password}
@@ -255,6 +242,7 @@ const Login = () => {
                         name={'eye-outline'}
                         size={25}
                         style={styles.hide}
+                        color={theme.colors.grey11}
                         onPress={() => HidePassword()}
                     />
                 ) : (
@@ -270,14 +258,15 @@ const Login = () => {
                 bold
                 size={15}
                 style={styles.textRemember}
+                fontType='medium1'
                 onPress={() => status(0)}>
                 {' '}
-                Quên mật khẩu ?{' '}
+                {t('forGot')}{' '}
             </Text>
             <TouchableOpacity
                 style={styles.buttomLogin}
                 onPress={() => _handleLoginPhone()}>
-                <Text style={styles.textButtomLogin}>Đăng nhập</Text>
+                <Text fontType='bold1' style={styles.textButtomLogin}> {t('login')}</Text>
             </TouchableOpacity>
             <Block marginTop={20}>
                 <TouchableOpacity
@@ -288,20 +277,21 @@ const Login = () => {
                         style={styles.icon}
                         source={require('../../../assets/images/GG.png')}
                     />
-                    <Text style={styles.textLoginGmail}>
-                        Log in with Google
+                    <Text fontType='medium1' style={styles.textLoginGmail}>
+                        {t('logWithGoogle')}
                     </Text>
                 </TouchableOpacity>
             </Block>
-            <Block marginTop={50}>
-                <Text>
-                    Bạn chưa có tài khoản? {'  '}
+            <Block marginTop={100}>
+                <Text fontType='medium1'>
+                    {t('doNotHaveAnAccount')} {'  '}
                     <Text
+                        fontType='bold1'
                         style={styles.textRegister}
                         onPress={() =>
                             navigation.navigate(routes.REGISTER_SCREEN)
                         }>
-                        Đăng ký
+                        {t('register')}
                     </Text>
                 </Text>
             </Block>
@@ -399,17 +389,13 @@ const Login = () => {
     );
 };
 
-export default Login;
+export default withNamespaces()(Login);
 
 const styles = StyleSheet.create({
     hide: {
         position: 'absolute',
-        marginTop: 30,
-        marginLeft: '75%',
-    },
-    inputPassword: {
-        flexDirection: 'row',
-        position: 'relative',
+        left: '90%',
+        top: '50%'
     },
     textInputOTP1: {
         width: 50,
@@ -448,7 +434,6 @@ const styles = StyleSheet.create({
     },
     textOTP: {
         fontSize: 18,
-        fontWeight: '700',
     },
     modalContainer: {
         width: '100%',
@@ -469,13 +454,11 @@ const styles = StyleSheet.create({
     textRegister: {
         fontSize: 14,
         color: 'blue',
-        fontWeight: '600',
     },
     textLoginGmail: {
         marginLeft: '15%',
         fontSize: 15,
         color: '#2D2626',
-        fontWeight: '600',
     },
     loginGoogle: {
         width: 230,
@@ -528,7 +511,6 @@ const styles = StyleSheet.create({
         fontSize: 18,
         lineHeight: 50,
         alignItems: 'center',
-        fontWeight: '700',
         color: '#FFFFFF',
     },
     buttomLogin: {
@@ -552,18 +534,14 @@ const styles = StyleSheet.create({
     textRemember: {
         lineHeight: 23,
         color: '#2D2626',
-        fontWeight: '700',
-        marginTop: 10,
+        marginTop: 22,
         marginLeft: '57%',
     },
     textInput2: {
         borderRadius: 10,
-        width: '88%',
-        color: '#000',
-        height: 59,
+        fontSize: 16,
         fontWeight: '600',
         backgroundColor: '#F3F3F3',
-        fontSize: 16,
         shadowColor: '#000',
         shadowOffset: {
             width: 0,
@@ -571,17 +549,16 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.22,
         shadowRadius: 2.22,
-
         elevation: 3,
     },
     textInput: {
         borderRadius: 10,
         width: '88%',
-        color: '#000',
         fontSize: 16,
         height: 59,
         fontWeight: '600',
         backgroundColor: '#F3F3F3',
+        // color: 'black',
         marginTop: 32,
         shadowColor: '#000',
         shadowOffset: {
@@ -594,14 +571,11 @@ const styles = StyleSheet.create({
         elevation: 3,
     },
     textWelcomLogin: {
-        fontFamily: 'Poppins',
-        fontWeight: 'bold',
         lineHeight: 45,
         color: '#464444',
     },
     textDescribe: {
         marginTop: 12,
-        fontWeight: '500',
     },
     iconLogin: {
         marginTop: 32,

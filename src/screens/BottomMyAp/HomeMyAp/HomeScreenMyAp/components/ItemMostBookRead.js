@@ -82,6 +82,7 @@ const ItemMostBookRead = ({ item, index, scrollX, size, t }) => {
                     marginBottom={10}
                     numberOfLines={1}
                     size={11}
+                    fontType='medium1'
                     color={theme.colors.textInBox}>
                     {item.isPrice} {t('view')}
                 </Text>
