@@ -24,6 +24,7 @@ const ChapterBook = ({
     // navigation,
 }) => {
     const [visible, setVisible] = useState(false);
+    const [visible1, setVisible1] = useState(false);
     const [chapItem, setChapItem] = useState();
     const themeStore = useAppSelector(state => state.root.themeApp.theme);
     const themeNew = useTheme(themeStore);
@@ -32,6 +33,7 @@ const ChapterBook = ({
     const bookStore = useAppSelector(state => state.root.cart.cartList);
     const dispatch = useAppDispatch();
     const [showModal, setShowModal] = React.useState(visible);
+    const [showModal1, setShowModal1] = React.useState(visible1);
     const theme = useTheme(themeStore);
     const styles = useStyle(themeStore);
 
@@ -46,23 +48,26 @@ const ChapterBook = ({
             setShowModal(false);
         }
     };
+    useEffect(() => {
+        toggleModal1();
+    }, [visible1]);
 
-    const addAllCart =_item => {
-        const data ={
-            _id: infoBook._id,
-            name: infoBook.name,
-            isPrice: infoBook.isPrice,
-            image: infoBook.image,
-            chapter: { [_item.chapterNumber]: _item },
-            status: false,
+    const toggleModal1 = () => {
+        if (visible1) {
+            setShowModal1(true);
+        } else {
+            setShowModal1(false);
         }
-    }
-    const addCart = _item => {
+    };
+
+    let bookNotPay = [];
+    const addAllCart = _item => {
         const data = {
             _id: infoBook._id,
             name: infoBook.name,
             isPrice: infoBook.isPrice,
             image: infoBook.image,
+            introduction: infoBook.introduction,
             chapter: { [_item.chapterNumber]: _item },
             status: false,
         };
@@ -77,7 +82,35 @@ const ChapterBook = ({
         if (co === 0) {
             dispatch(saveCartReducer(data));
         } else {
-            addChapter(_item);
+            _item.map(item => {
+                addChapter(item);
+            });
+        }
+        setVisible1(false);
+    };
+    const addCart = _item => {
+        console.log('>>>>>_item ', chapItem);
+        const data = {
+            _id: infoBook._id,
+            name: infoBook.name,
+            isPrice: infoBook.isPrice,
+            image: infoBook.image,
+            introduction: infoBook.introduction,
+            chapter: { [_item.chapterNumber]: _item },
+            status: false,
+        };
+
+        let co = 0;
+        bookStore.map(item => {
+            if (item._id === infoBook._id) {
+                co = 1;
+                return;
+            }
+        });
+        if (co === 0) {
+            dispatch(saveCartReducer(data));
+        } else {
+                addChapter(_item);
         }
         setVisible(false);
     };
@@ -168,13 +201,35 @@ const ChapterBook = ({
                     </Block>
                 </Button>
             </Block>
-            <Text
-                marginTop={5}
-                color={themeNew.colors.textInBox}
-                fontType={'bold'}
-                size={20}>
-                {t('chapTer')}
-            </Text>
+            <Block row marginVertical={5}>
+                <Text
+                    marginTop={5}
+                    color={themeNew.colors.textInBox}
+                    fontType={'bold'}
+                    size={20}>
+                    {t('chapTer')}
+                </Text>
+                <TouchableOpacity
+                    style={{
+                        backgroundColor: themeNew.colors.primary,
+                        justifyContent: 'center',
+                        paddingHorizontal: 10,
+                        marginLeft: '55%',
+                        borderRadius: 5
+                    }}
+                    onPress={() => {
+                        data?.map(item => {
+                            if (item.isPay === false) {
+                                bookNotPay.push(item);
+                            }
+                        });
+                        setChapItem(bookNotPay);
+                        setVisible1(true);
+                    }}>
+                    <Text color='white'>Mua hết</Text>
+                </TouchableOpacity>
+            </Block>
+
             <Block
                 row
                 width={'100%'}
@@ -225,6 +280,37 @@ const ChapterBook = ({
                     </TouchableOpacity>
                 ))}
             </Block>
+
+            <Modal transparent visible={showModal1}>
+                <Block flex={1} style={styles.modalBackGround}>
+                    <Block style={styles.modalContainer}>
+                        <Block style={styles.clone}>
+                            <Fontisto
+                                name={'close-a'}
+                                size={12}
+                                color={'black'}
+                                onPress={() => {
+                                    setVisible1(false);
+                                }}
+                            />
+                        </Block>
+                        <Block alignCenter={'center'}>
+                            <Text style={styles.textOTP} center>
+                                Mua cả cuốn sách
+                            </Text>
+                            <TouchableOpacity
+                                style={styles.buttomAddCart}
+                                onPress={() => addAllCart(chapItem)}>
+                                <Text
+                                    style={styles.textButtomLogin}
+                                    height={55}>
+                                    Thêm vào giỏ hàng
+                                </Text>
+                            </TouchableOpacity>
+                        </Block>
+                    </Block>
+                </Block>
+            </Modal>
 
             <Modal transparent visible={showModal}>
                 <Block flex={1} style={styles.modalBackGround}>

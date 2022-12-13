@@ -3,12 +3,16 @@ import { Block, ModalBox, Text, TextInput } from '@components';
 import { routes } from '@navigation/routes';
 import auth from '@react-native-firebase/auth';
 import messaging from '@react-native-firebase/messaging';
-import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import {
+    GoogleSignin,
+    statusCodes,
+} from '@react-native-google-signin/google-signin';
 import { useNavigation } from '@react-navigation/native';
 import { PHONE_REG_EXP } from '@utils/constants';
 import { changeLoading } from '@redux/reducerNew';
 import { useLoginMutation } from '@redux/servicesNew';
 import { useAppDispatch } from 'hooks';
+import { useLoginPhoneNumberMutation } from '@redux/servicesNew';
 import React, { useEffect, useState, useMemo } from 'react';
 import {
     Image,
@@ -48,6 +52,8 @@ const Login = () => {
     const [hide, setHide] = useState(false);
     const navigation = useNavigation();
     const [login, { isLoading: isUpdating }] = useLoginMutation();
+    const [loginPhone, { isLoading: isUpDating }] =
+        useLoginPhoneNumberMutation();
     const dispatch = useAppDispatch();
     const [visibleModal, setVisibleModal] = useState(false);
     const [phoneUser, setPhoneUser] = useState('');
@@ -77,10 +83,10 @@ const Login = () => {
     };
 
     const HidePassword = () => {
-        if (hide === false) {
-            setHide(true);
-        } else {
+        if (hide === true) {
             setHide(false);
+        } else {
+            setHide(true);
         }
     };
 
@@ -107,6 +113,11 @@ const Login = () => {
                 break;
         }
     };
+
+    // useEffect(() => {
+    //     dispatch(changeLoading(isUpDating ? 'SHOW' : 'HIDE'));
+    // }, [dispatch, isUpDating]);
+
     useEffect(() => {
         dispatch(changeLoading(isUpdating ? 'SHOW' : 'HIDE'));
     }, [dispatch, isUpdating]);
@@ -160,6 +171,40 @@ const Login = () => {
         }
     };
 
+    // const _singInPhoneNumber = async () => {
+    //     try {
+    //         const fcmToken = await getToken();
+    //         _handleLoginPhone(phoneUser, password, fcmToken);
+    //         console.log(
+    //             '===========> Đăng nhập thành công',
+    //             phoneUser,
+    //             password,
+    //             fcmToken,
+    //         );
+    //     } catch (error) {
+    //         console.log('=========> id error login', error);
+
+    //         // await API.post('logs/write', {message: error});
+    //     }
+    // };
+
+    const _handleLoginPhone = async () => {
+        const body = {
+            passwordUser: password,
+            phoneUser: phoneUser,
+            token_fcm: await getToken(),
+        };
+        console.log('===========> body', body);
+        const dataLogin = await loginPhone(body);
+        if (dataLogin.error === false) {
+            console.log('===========> Đăng nhập thành công', body);
+        } else {
+            console.log('===========> Đăng nhập ko thành công', body);
+        }
+        // if (dataLogin?.error?.data?.error) {
+        //     setVisibleModal(true);
+        // }
+    };
     return (
         <Block
             flex
@@ -204,24 +249,23 @@ const Login = () => {
                 errorText={handleErrorNewPassword[1]}
                 isError={handleErrorNewPassword[0]}
             />
-            <Block style={styles.inputPassword}>
-                {hide === false ? (
-                    <MaterialCommunityIcons
-                        name={'eye-off-outline'}
-                        size={25}
-                        style={styles.hide}
-                        onPress={() => HidePassword()}
-                    />
-                ) : (
+            {/* <Block style={styles.inputPassword}>
+                {hide ? (
                     <MaterialCommunityIcons
                         name={'eye-outline'}
                         size={25}
                         style={styles.hide}
                         onPress={() => HidePassword()}
                     />
+                ) : (
+                    <MaterialCommunityIcons
+                        name={'eye-off-outline'}
+                        size={25}
+                        style={styles.hide}
+                        onPress={() => HidePassword()}
+                    />
                 )}
-            </Block>
-
+            </Block> */}
             <Text
                 bold
                 size={15}
@@ -230,12 +274,14 @@ const Login = () => {
                 {' '}
                 Quên mật khẩu ?{' '}
             </Text>
-            <Pressable style={styles.buttomLogin} onPress={() => LoginPhone()}>
+            <TouchableOpacity
+                style={styles.buttomLogin}
+                onPress={() => _handleLoginPhone()}>
                 <Text style={styles.textButtomLogin}>Đăng nhập</Text>
-            </Pressable>
+            </TouchableOpacity>
             <Block marginTop={20}>
                 <TouchableOpacity
-                    onPress={_signIngoogle}
+                    onPress={() => _signIngoogle()}
                     style={styles.loginGoogle}
                     marginHorizontal={10}>
                     <Image
@@ -479,7 +525,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#DD4455',
     },
     textButtomLogin: {
-        fontSize: 22,
+        fontSize: 18,
         lineHeight: 50,
         alignItems: 'center',
         fontWeight: '700',

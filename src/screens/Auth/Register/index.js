@@ -51,9 +51,9 @@ const Register = () => {
 
     const handleSendLogin = useMemo(() => {
         if (
-            !handleErrorPhone[0] &&
-            !handleErrorNewPassword[0] &&
-            !handleErrorComfirmPassword[0]
+            !handleErrorPhone[1] &&
+            !handleErrorNewPassword[1] &&
+            !handleErrorComfirmPassword[1]
         ) {
             return false;
         } else {

@@ -1,10 +1,13 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction, createEntityAdapter } from '@reduxjs/toolkit';
+import { keys } from 'lodash';
 
+const cartAdapter = createEntityAdapter()
 export type CartState = {
     _id: string;
     name: string;
     isPrice: number;
     image: string;
+    introduction: string;
     chapter?: {
         [key: number]: ChapterState;
     };
@@ -51,11 +54,23 @@ const cartSlice = createSlice({
                 action.payload.data.chapterNumber || 0
             ] = action.payload.data;
         },
+        // deleteChap:()=> {
+        //     cartAdapter.removeOne
+        // } ,
         removeItem: (state, action) => {
-            let arr = state.cartList.filter(
-                arrow => arrow._id === action.payload,
+            console.log(">>>>>>>>>> action", action.payload);
+            const arr = state.cartList.filter(
+                // arrow => arrow._id !== action.payload,
+                
+                item =>{
+                    return item._id === action.payload
+                }
             );
-            state.cartList = arr;
+            return { 
+                ... state,
+                cartList: arr
+            }
+            
         },
         removeBookCart: (state: CartList, action) => {
             let { id, index } = action.payload;
@@ -64,9 +79,15 @@ const cartSlice = createSlice({
                 index,
             );
         },
-        removeChapter: (state: CartList, action) => {
-            let arr = state.cartList.filter(item => item.chapter[].idChapter === action.payload);
-            state.cartList = arr;
+        removeChapter: (state, action) => {
+
+            state.cartList = state.cartList.splice(
+                state.cartList.findIndex(arrow => arrow.chapter === action.payload._id), 1
+            )
+
+            // let { keyChapter } = action.payload;
+            // let arr = state.cartList.filter(item => item.chapter === action.payload);
+            // state.cartList = arr;
 
             // let { id, index, keyChapter } = action.payload;
 

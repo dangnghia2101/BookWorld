@@ -32,6 +32,29 @@ export const userApi = createApi({
             },
             invalidatesTags: ['Post'],
         }),
+        loginPhoneNumber: builder.mutation({
+            query: body => ({
+                url: '/accounts/loginNumberPhone',
+                method: 'POST',
+                body: body,
+                headers: {
+                    'Content-type': 'application/json; charset=UTF-8',
+                },
+            }),
+            async onQueryStarted(id, { dispatch, queryFulfilled }) {
+                try {
+                    const { data } = await queryFulfilled;
+                    const saveData = {
+                        ...data?.data?.account,
+                        token: data?.data?.token,
+                    };
+                    dispatch(loginReducer(saveData));
+                } catch (err) {
+                    console.log('error api login... ', err);
+                }
+            },
+            invalidatesTags: ['Post'],
+        }),
         loginPhone: builder.mutation({
             query: body => ({
                 url: '/accounts/registerNumberPhone',
@@ -63,5 +86,5 @@ export const userApi = createApi({
     }),
 });
 
-export const { useLoginMutation, useGetLoginQuery, useLoginPhoneMutation } =
+export const { useLoginMutation, useGetLoginQuery, useLoginPhoneMutation, useLoginPhoneNumberMutation } =
     userApi;
