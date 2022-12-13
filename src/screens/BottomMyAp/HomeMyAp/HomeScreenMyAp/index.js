@@ -68,7 +68,7 @@ const HomeScreenMyAp = ({ t }) => {
 
     const renderListMostRead = useCallback(() => {
         return (
-            <Block height={height * 0.6} >
+            <Block height={height * 0.6}>
                 <Animated.FlatList
                     data={allBooks}
                     keyExtractor={item => Math.random() + item._id}
@@ -133,7 +133,7 @@ const HomeScreenMyAp = ({ t }) => {
     const renderListBookFree = useCallback(() => {
         return (
             <Block>
-                <HeaderListBook title={t('freeBook')} action={() => { }} />
+                <HeaderListBook title={t('freeBook')} action={() => {}} />
                 <Animated.FlatList
                     data={allBooks}
                     keyExtractor={item => Math.random() + item._id}
@@ -218,7 +218,7 @@ const HomeScreenMyAp = ({ t }) => {
                     position: 'relative',
                     backgroundColor: theme.colors.background,
                 }}>
-                <Block >
+                <Block>
                     {renderSearch()}
                     <HeaderListBook title={t('mostViewedBooks')} />
                     {/* {Backdrop()} */}
