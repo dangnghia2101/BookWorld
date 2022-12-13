@@ -1,5 +1,5 @@
 import { Block, Text, Button } from '@components';
-import React from 'react';
+import React, { useState } from 'react';
 import { Image, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from '@components/Icon';
@@ -16,8 +16,39 @@ const ItemCateBook = ({ item, t }) => {
     const navigation = useNavigation();
     const themeStore = useAppSelector(state => state.root.themeApp.theme);
     const theme = useTheme(themeStore);
-
     const styles = useStyles(themeStore);
+    let star = [];
+    const allBooks = useAppSelector(state => state.root.book.bookList);
+    const _renderStar = () => {
+        for (let i = 0; i <= allBooks.length; i++) {
+            let num = Math.floor(Math.random() * 3) + 3;
+            // let star = [];
+            for (let j = 1; j <= num; j++) {
+                star.push(
+                    <Icon
+                        component={'AntDesign'}
+                        name="star"
+                        color={theme.colors.yellow}
+                        size={20}
+                    />,
+                );
+            }
+            return star;
+        }
+    };
+
+    const _renderView = () => {
+        for (let i = 0; i <= allBooks.length; i++) {
+            let num = Math.floor(Math.random() * 9999) + 100;
+            return num;
+        }
+    };
+    const _renderDownload = () => {
+        for (let i = 0; i <= allBooks.length; i++) {
+            let num = Math.floor(Math.random() * 999) + 100;
+            return num;
+        }
+    };
 
     return (
         <Block
@@ -38,7 +69,7 @@ const ItemCateBook = ({ item, t }) => {
                 <Block marginHorizontal={10} flex>
                     <Text
                         size={18}
-                        fontType="bold"
+                        fontType="bold1"
                         numberOfLines={2}
                         color={theme.colors.textInBox}>
                         {item.name}
@@ -58,8 +89,9 @@ const ItemCateBook = ({ item, t }) => {
                             marginLeft={5}
                             marginRight={20}
                             size={14}
+                            fontType='regular1'
                             color={theme.colors.textInBox}>
-                            234
+                            {_renderDownload()}
                         </Text>
 
                         <Icon
@@ -72,38 +104,15 @@ const ItemCateBook = ({ item, t }) => {
                             marginLeft={5}
                             marginRight={20}
                             size={14}
+                            fontType='regular1'
                             color={theme.colors.textInBox}>
-                            999k
+                            {_renderView()} view
                         </Text>
                     </Block>
 
                     <Block row marginTop={5} alignCenter>
-                        <Icon
-                            component={'AntDesign'}
-                            name="star"
-                            color={theme.colors.yellow}
-                            size={16}
-                        />
-                        <Icon
-                            component={'AntDesign'}
-                            name="star"
-                            color={theme.colors.yellow}
-                            size={16}
-                        />
-
-                        <Icon
-                            component={'AntDesign'}
-                            name="star"
-                            color={theme.colors.yellow}
-                            size={16}
-                        />
-                        <Icon
-                            component={'AntDesign'}
-                            name="star"
-                            color={theme.colors.yellow}
-                            size={16}
-                        />
-                        <Text marginLeft={5}>4.0</Text>
+                        {_renderStar()}
+                        <Text color={theme.colors.textInBox} marginLeft={5}>{star.length}.0</Text>
                     </Block>
 
                     <Block row marginTop={10} alignCenter>

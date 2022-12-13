@@ -40,7 +40,7 @@ const ImageBook = ({ item }) => {
       </Text>
       {/* Star */}
       <Block row marginTop={5}>
-        {_renderStar(4)}
+        {_renderStar(5)}
         <Text marginLeft={5}>4.0</Text>
       </Block>
     </Block>

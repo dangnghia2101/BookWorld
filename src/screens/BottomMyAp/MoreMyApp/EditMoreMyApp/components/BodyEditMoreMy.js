@@ -90,7 +90,7 @@ const useStyle = makeStyles()(({ colors }) => ({
         marginBottom: 10,
     },
     shadowColor: {
-        shadowColor: colors.grey12,
+        shadowColor: colors.textDark,
         shadowOffset: {
             width: 0,
             height: 2,

@@ -15,27 +15,26 @@ import TabSceneReadingStatus from '../components/TabSceneReadingStatus';
 import { useAppSelector } from '@hooks';
 import { makeStyles, useTheme } from 'themeNew';
 import { withNamespaces } from 'react-i18next';
-
+import BookOfAuthor from '../components/BookOfAuthor';
 const widthItemEventIncoming = width - width / 3;
 const WIDTH_ITEM_INVIEW = widthItemEventIncoming - 20;
 
 const DetailAuthor = ({ route, t }) => {
   let item = route.params.item;
-  console.log("itemmmmmmmmmmmmmmm", item);
   const themeStore = useAppSelector(state => state.root.themeApp.theme);
   const themeNew = useTheme(themeStore);
 
   return (
-    <Block backgroundColor={themeNew.colors.background} flex>
-      <ScrollView>
+    <ScrollView showsVerticalScrollIndicator={false}>
+      <Block backgroundColor={themeNew.colors.background} flex>
         <TopBar isBackHeader />
-        <Block width="100%" height="15%">
+        <Block relative width="100%" height="40%">
           <Block
             width="100%"
             height={'50%'}
             backgroundColor={theme.colors.darkPurple}>
           </Block>
-          <Block width={'75%'} height={'60%'} absolute top={65} left={70} >
+          <Block width={'70%'} height={'60%'} absolute top={50} left={90} >
             <Image
               style={styles.imgAuthor}
               source={{ uri: item.avatar }}
@@ -43,7 +42,8 @@ const DetailAuthor = ({ route, t }) => {
           </Block>
           <Text fontType='bold1' color={themeNew.colors.textInBox} style={styles.nameAuthor}>{item.name}</Text>
         </Block>
-        <Block width="100%" paddingHorizontal={24}>
+
+        <Block paddingHorizontal={24}>
           <Block>
             <Text fontType='bold1' color={themeNew.colors.textInBox} style={styles.textIntro}>{t('aboutAuthor')}</Text>
             <Text fontType='medium1' color={themeNew.colors.textInBox} style={styles.IntroduceAuthor} numberOfLines={2}>
@@ -62,27 +62,16 @@ const DetailAuthor = ({ route, t }) => {
             <Text fontType='medium1' color={themeNew.colors.textInBox} style={styles.IntroduceAuthor}>Youtube: {item.aboutAuthor.youtube} </Text>
             <Text fontType='medium1' color={themeNew.colors.textInBox} style={styles.IntroduceAuthor}>Instagram: {item.aboutAuthor.instagram}</Text>
           </Block>
-          <Block marginTop={42}>
-            <Text fontType='bold1' color={themeNew.colors.textInBox} style={styles.textBook}>{t('bookOfAuthor')}</Text>
-            {/* <FlatList
-              data={data}
-              keyExtractor={item => item._id}
-              renderItem={item => <ItemCateBook item={item.item} />}
-              ListEmptyComponent={
-                <Block
-                  width={width}
-                  height={WIDTH_ITEM_INVIEW}
-                  justifyCenter
-                  alignCenter>
-                  <Text>Chưa có sach</Text>
-                </Block>
-              } /> */}
-            {/* <BookOfauthor /> */}
-            <TabSceneReadingStatus />
-          </Block>
         </Block>
-      </ScrollView>
-    </Block>
+
+      </Block>
+
+      <Block marginTop={400} bottom={20}>
+        <Text marginHorizontal={20} fontType='bold1' color={themeNew.colors.textInBox} style={styles.textBook}>{t('bookOfAuthor')}</Text>
+        <BookOfAuthor />
+        {/* <TabSceneReadingStatus /> */}
+      </Block>
+    </ScrollView>
   );
 };
 
@@ -103,7 +92,6 @@ const styles = StyleSheet.create({
     lineHeight: 21,
     fontWeight: '400',
     fontSize: 14,
-    color: '#9D9D9D',
     marginTop: 6,
   },
   textIntro: {

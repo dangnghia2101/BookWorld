@@ -9,6 +9,7 @@ import IconView from '@components/Icon';
 import { makeStyles, useTheme } from 'themeNew';
 import { useAppSelector, useAppDispatch } from '@hooks';
 import { withNamespaces } from 'react-i18next';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const HeaderEditMoreMy = props => {
     const navigation = useNavigation();
@@ -17,13 +18,10 @@ const HeaderEditMoreMy = props => {
     const themeStore = useAppSelector(state => state.root.themeApp.theme);
     const themeNew = useTheme(themeStore);
     const styles = useStyle(props, themeStore);
+    const inset = useSafeAreaInsets();
 
     return (
-        <Block height={200}>
-            {/* <Image
-            style={styles.imageBackground}
-            source={require('../../../../../assets/images/rank.png')}
-          /> */}
+        <Block justifyCenter paddingVertical={10} marginTop={inset.top}>
             <Block row style={styles.container}>
                 <TouchableOpacity
                     style={styles.editContainer}
@@ -38,7 +36,7 @@ const HeaderEditMoreMy = props => {
                 <View style={styles.titleContainer}>
                     <Text
                         size={22}
-                        fontType={'bold'}
+                        fontType={'bold1'}
                         color={themeNew.colors.textDark}>
                         {t('profile')}
                     </Text>
@@ -67,10 +65,5 @@ const useStyle = makeStyles()(({ colors }) => ({
         alignItems: 'center',
         paddingLeft: 20,
         paddingTop: 35,
-    },
-    imageBackground: {
-        position: 'absolute',
-        width: 1000,
-        height: 200,
     },
 }));

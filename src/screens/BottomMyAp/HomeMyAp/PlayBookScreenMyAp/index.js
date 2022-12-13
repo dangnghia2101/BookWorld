@@ -164,7 +164,7 @@ const PlayBookScreenMyAp = ({ route }) => {
     }, [dataGet, initailStyle]);
 
     return (
-        <Block backgroundColor={theme.colors.text} style={{ flex: 1 }}>
+        <Block backgroundColor={theme.colors.background} style={{ flex: 1 }}>
             <HeaderWithButton
                 handleBack={endReadBook}
                 title={dataGet?.title}
@@ -248,11 +248,34 @@ const PlayBookScreenMyAp = ({ route }) => {
                             Giảm kích cỡ chữ
                         </Text>
                     </Button>
-
                     <Button
                         row
                         style={[styles.rowModal]}
-                        // onPress={changBottomSheet}
+                        onPress={() => setSize(size + 2)}>
+                        <IconView
+                            component={'AntDesign'}
+                            name={'plus'}
+                            size={22}
+                            color={
+                                !themeBack
+                                    ? theme.colors.white
+                                    : theme.colors.dark2
+                            }
+                        />
+                        <Text
+                            style={styles.textRowModal}
+                            color={
+                                !themeBack
+                                    ? theme.colors.white
+                                    : theme.colors.dark2
+                            }>
+                            Tăng kích cỡ chữ
+                        </Text>
+                    </Button>
+                    <Button
+                        row
+                        style={[styles.rowModal]}
+                        onPress={() => bottomSheetCommetnRef.current?.snapToIndex(0)}
                     >
                         <IconView
                             component={'EvilIcons'}

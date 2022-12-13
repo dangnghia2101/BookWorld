@@ -103,7 +103,7 @@ const DetailBookScreenMyAp = ({ route }) => {
   const favoriteIcon = () => {
     return (
       <TouchableOpacity onPress={handleSaveFavoriteBook}>
-        <Block justifyCenter width={50} paddingVertical={2}>
+        <Block style={styles.iconFavorite} justifyCenter width={50} paddingVertical={2}>
           <IconView
             component={'AntDesign'}
             name={'hearto'}
@@ -145,6 +145,9 @@ const styles = StyleSheet.create({
   animation: {
     width: 100,
     height: 100,
+  },
+  iconFavorite: {
+    marginLeft: '100%'
   },
 });
 
