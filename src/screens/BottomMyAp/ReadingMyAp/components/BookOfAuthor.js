@@ -1,24 +1,25 @@
-import { View, Text, ScrollView } from 'react-native'
+import { ScrollView } from 'react-native'
 import React from 'react'
 import { useAppSelector } from '@hooks'
-import { NoData, Block } from '@components'
+import { NoData, Block, Text } from '@components'
 import { useGetBookOfAuthorQuery } from '@redux/servicesNew'
 import ItemCateBook from '@screens/BottomMyAp/HomeMyAp/HomeScreenMyAp/components/ItemCateBook'
-const BookOfauthor = () => {
+import { withNamespaces } from 'react-i18next'
+const BookOfAuthor = ({ t }) => {
     // const favoriteBook = useAppSelector(state => state.root.favoriteBook);
     const myInfo = useAppSelector(state => state.root.auth);
     const { data } = useGetBookOfAuthorQuery(myInfo._id);
-    console.log("favoriteeeeeeeeeeee", data);
+    console.log("BookOFAUTHORrrrrrrrrrr", data);
 
-    return data?.length > 0 ? (
+    return data?.data?.length > 0 ? (
         <Block>
-            {data.map((item, index) => (
+            {data?.data.map((item, index) => (
                 <ItemCateBook key={index} item={item} />
             ))}
         </Block>
     ) : (
-        <NoData title={'Chưa có sách yêu thích'}></NoData>
+        <Text title={t('noBook')}></Text>
     );
 }
 
-export default BookOfauthor
+export default withNamespaces()(BookOfAuthor);
