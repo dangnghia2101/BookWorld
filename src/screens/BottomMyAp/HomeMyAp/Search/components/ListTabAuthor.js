@@ -1,89 +1,82 @@
 import { Block, Icon, Text } from '@components';
-import { useAppDispatch, useAppSelector } from '@hooks';
+import { useAppDispatch, useAppSelector, useDebounce } from '@hooks';
+import { routes } from '@navigation/routes';
 import { useNavigation } from '@react-navigation/core';
+import { deleteSearch } from '@redux/reducerNew';
 import React, { useEffect, useState } from 'react';
+import { withNamespaces } from 'react-i18next';
 import {
     FlatList,
-    View,
-    Pressable,
     Image,
+    Pressable,
+    ScrollView,
     TouchableOpacity,
+    View,
 } from 'react-native';
 import { makeStyles, useTheme } from 'themeNew';
-import { routes } from '@navigation/routes';
-import { withNamespaces } from 'react-i18next';
-import { routes } from '@navigation/routes';
-import { deleteSearch } from '@redux/reducerNew';
 
-const ListTabBook = ({ search, setSearch, t }) => {
+const ListTabAuthor = ({ search, setSearch, t }) => {
     const themeStore = useAppSelector(state => state.root.themeApp.theme);
-    const allBooks = useAppSelector(state => state.root.book.bookList);
-    const authors = useAppSelector(state => state.root.author.authors);
-    const historySearch = useAppSelector(state => state.root.search.searchList)
+    const allAuthors = useAppSelector(state => state.root.author.authors);
+    const historySearch = useAppSelector(state => state.root.search.searchList);
     const { colors } = useTheme(themeStore);
     const styles = useStyle(themeStore);
     const [listSearch, setListSearch] = useState([]);
     const navigation = useNavigation();
     const dispatch = useAppDispatch();
 
+    const searchDebounce = useDebounce(search, 400);
 
     useEffect(() => {
-        if (search) {
+        if (searchDebounce) {
             setListSearch(
-                allBooks
-                    .filter(item => item.name.search(search) !== -1)
+                allAuthors
+                    .filter(item => item.name.search(searchDebounce) !== -1)
                     .slice(0, 3),
             );
         } else {
             setListSearch([]);
         }
-    }, [search]);
+    }, [searchDebounce]);
 
-    // useEffect(() => {
-    //     if (search) {
-    //         setListSearch(
-    //             authors
-    //                 .filter(item => item.name.search(search) !== -1)
-    //                 .slice(0, 3),
-    //         );
-    //     } else {
-    //         setListSearch([]);
-    //     }
-    // }, [search]);
-
-    const ItemHistory = ({ title, index }) => (
-        <Pressable onPress={() => setSearch(title)} style={styles.itemHistory}>
-            <Icon
-                component="MaterialIcons"
-                name="history"
-                size={25}
-                color={colors.grey10}
-            />
-            <Text style={styles.titleItemHistory}>{title}</Text>
-            <TouchableOpacity onPress={() => dispatch(deleteSearch(index))}>
+    const ItemHistory = ({ title, index }) => {
+        return (
+            <Pressable
+                onPress={() => setSearch(title)}
+                style={styles.itemHistory}>
                 <Icon
                     component="MaterialIcons"
-                    name="clear"
+                    name="history"
                     size={25}
                     color={colors.grey10}
                 />
-            </TouchableOpacity>
-        </Pressable>
-    );
+                <Text style={styles.titleItemHistory}>{title}</Text>
+                <TouchableOpacity onPress={() => dispatch(deleteSearch(index))}>
+                    <Icon
+                        component="MaterialIcons"
+                        name="clear"
+                        size={25}
+                        color={colors.grey10}
+                    />
+                </TouchableOpacity>
+            </Pressable>
+        );
+    };
 
-    const ItemBook = item => {
-        let num = Math.floor(Math.random() * 3) + 3;
+    const ItemAuthor = item => {
         return (
             <Block height={70} row alignCenter marginHorizontal={20}>
-                <Image source={{ uri: item.image }} style={styles.imageStyle} />
-                <Block flexGrow={1} marginLeft={10} paddingTop={10}>
-                    <Text fontType="bold">{item.name}</Text>
-                    <Text flexGrow={1}>{item.introduction}</Text>
+                <Image
+                    source={{ uri: item?.avatar }}
+                    style={styles.imageStyle}
+                />
+                <Block flexShrink={1} marginLeft={10} paddingTop={10}>
+                    <Text fontType="bold">{item?.name}</Text>
+                    <Text numberOfLines={2}>{item?.aboutAuthor?.details}</Text>
                 </Block>
                 <Pressable
                     onPress={() =>
-                        navigation.navigate(routes.DETAIL_BOOK_MY_AP, {
-                            bookmark: true,
+                        navigation.navigate(routes.DETAIL_AUTHOR_MY_AP, {
                             item,
                         })
                     }>
@@ -92,17 +85,12 @@ const ListTabBook = ({ search, setSearch, t }) => {
                         radius={5}
                         paddingHorizontal={10}
                         paddingVertical={5}>
-                        <Text onPress={() => navigation.navigate(routes.DETAIL_BOOK_MY_AP, {
-                            bookmark: true,
-                            item,
-                            star: num
-                        })} color={colors.text}>Read</Text>
+                        <Text color={colors.text}>Detail</Text>
                     </Block>
                 </Pressable>
             </Block>
         );
     };
-
 
     const SectionHeader = title => (
         <View style={styles.containerSection}>
@@ -113,8 +101,9 @@ const ListTabBook = ({ search, setSearch, t }) => {
     );
 
     return (
-        <Block paddingTop={15}>
-            {listSearch && listSearch?.slice(0, 3).map(item => ItemBook(item))}
+        <ScrollView style={{ paddingVertical: 30 }}>
+            {listSearch &&
+                listSearch?.slice(0, 3).map(item => ItemAuthor(item))}
 
             {listSearch.length > 0 && (
                 <Text
@@ -122,7 +111,7 @@ const ListTabBook = ({ search, setSearch, t }) => {
                     fontType="bold"
                     marginLeft={20}
                     marginBottom={10}>
-                    View all {allBooks.length - 4} books
+                    View all {allAuthors.length - 4} books
                 </Text>
             )}
             <FlatList
@@ -133,11 +122,11 @@ const ListTabBook = ({ search, setSearch, t }) => {
                     <ItemHistory title={item.value} index={index} />
                 )}
             />
-        </Block>
+        </ScrollView>
     );
 };
 
-export default withNamespaces()(ListTabBook);
+export default withNamespaces()(ListTabAuthor);
 
 const useStyle = makeStyles()(({ colors }) => ({
     itemHistory: {

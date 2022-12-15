@@ -9,6 +9,8 @@ import {
     AuthorReducer,
     ReadingReducer,
     FavoriteBookReducer,
+    RankReducer,
+    SearchReducer,
 } from '@redux/reducerNew';
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import {
@@ -33,6 +35,7 @@ import {
     editProfileAPI,
     bookOfAuthAPI,
     chatAPI,
+    rankAPI,
 } from '@redux/servicesNew';
 import { setupListeners } from '@reduxjs/toolkit/query';
 import { userPhoneApi } from '@redux/servicesNew/userPhoneAPI';
@@ -47,6 +50,8 @@ const rootReducer = combineReducers({
     author: AuthorReducer,
     reading: ReadingReducer,
     favoriteBook: FavoriteBookReducer,
+    rank: RankReducer,
+    search: SearchReducer,
     // ...other reducers here
 });
 
@@ -56,7 +61,7 @@ const persistConfig = {
     key: 'roott',
     storage: AsyncStorage,
     timeout: 30000,
-    whitelist: ['setting', 'themeApp', 'auth', 'cart', 'reading'],
+    whitelist: ['setting', 'themeApp', 'auth', 'cart', 'reading', 'search'],
     stateReconciler: autoMergeLevel2,
 };
 
@@ -74,6 +79,8 @@ export const store = configureStore({
         [profileAPI.reducerPath]: profileAPI.reducer,
         [editProfileAPI.reducerPath]: editProfileAPI.reducer,
         [bookOfAuthAPI.reducerPath]: bookOfAuthAPI.reducer,
+        [chatAPI.reducerPath]: chatAPI.reducer,
+        [rankAPI.reducerPath]: rankAPI.reducer,
         [chatAPI.reducerPath]: chatAPI.reducer,
     },
     middleware: getDefaultMiddleware =>
@@ -98,7 +105,8 @@ export const store = configureStore({
             .concat(editProfileAPI.middleware)
             .concat(bookOfAuthAPI.middleware)
             .concat(profileAPI.middleware)
-            .concat(chatAPI.middleware),
+            .concat(chatAPI.middleware)
+            .concat(rankAPI.middleware),
 });
 
 export const persistor = persistStore(store);

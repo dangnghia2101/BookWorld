@@ -294,6 +294,7 @@ const useStyle = makeStyles()(({ normalize, colors }) => ({
         backgroundColor: theme.colors.creamRed,
         borderRadius: 50,
         marginTop: '40%',
+        marginBottom: '10%',
         justifyContent: 'center',
         alignItems: 'center',
     },
