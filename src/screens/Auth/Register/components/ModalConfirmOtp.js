@@ -8,7 +8,7 @@ const ModalConfirmOtp = ({
     setShowModal,
     setCodeOTP,
     codeOTP,
-    phone
+    phone,
 }) => {
     useEffect(() => {
         setShowModal(showModal);
@@ -17,24 +17,72 @@ const ModalConfirmOtp = ({
     return (
         <ModalBox transparent={true} isVisible={showModal}>
             <Block
-                style={styles.modalBackGround}
+                style={{
+                    backgroundColor: 'white',
+                    justifyContent: 'center',
+                    alignContent: 'center',
+                    alignItems: 'center',
+                }}
                 backgroundColor="white"
                 marginHorizontal={20}
                 borderRadius={15}
                 padding={20}>
-                <Text style={styles.textOTP} center>
+                <Text
+                    style={{
+                        fontSize: 15,
+                        lineHeight: 23,
+                        color: '#575555',
+                        fontStyle: 'normal',
+                    }}
+                    center>
                     Mã OTP đã được gửi về số điện thoại của bạn
                 </Text>
-                <Text marginTop={18} style={styles.textPhone}>
+                <Text
+                    marginTop={18}
+                    style={{
+                        fontWeight: 'bold',
+                        fontSize: 15,
+                        lineHeight: 23,
+                        color: '#000000',
+                    }}>
                     {phone}
                 </Text>
 
-                <TextInput onChangeText={setCodeOTP} value={codeOTP} />
-
+                <TextInput
+                        value={codeOTP}
+                        onChangeText={setCodeOTP}
+                        keyboardType="numeric"
+                        placeholder={'OTP'}
+                        inputStyle={{paddingHorizontal: '40%',}}
+                    />
                 <TouchableOpacity
-                    style={styles.buttomLogin}
+                    style={{
+                        width: '100%',
+                        marginTop: 43,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        borderRadius: 15,
+                        backgroundColor: 'red',
+                        height: 50,
+                        shadowColor: '#000',
+                        shadowOffset: {
+                            width: 0,
+                            height: 3,
+                        },
+                        shadowOpacity: 1,
+                        shadowRadius: 6,
+                        elevation: 7,
+                    }}
                     onPress={confirmCode}>
-                    <Text style={styles.textButtomLogin} height={55}>
+                    <Text
+                        style={{
+                            fontSize: 16,
+                            lineHeight: 50,
+                            alignItems: 'center',
+                            fontWeight: '700',
+                            color: '#FFFFFF',
+                        }}
+                        height={55}>
                         Đồng ý
                     </Text>
                 </TouchableOpacity>

@@ -4,16 +4,17 @@ import { Block, Text } from '@components';
 
 // const {width, height} = Dimensions.get('window');
 
-const ItemWelcome = ({ item }) => {
-  const { width } = useWindowDimensions();
-  const { height } = useWindowDimensions();
+const ItemWelcome = ({item}) => {
+  const {width} = useWindowDimensions();
+  const {height} = useWindowDimensions();
+  const image = item.url;
   return (
     <Block styles={styles.cardView} height={height / 2.3}>
       <Image
         style={styles.image}
         width={width}
-        height={height / 2.3}
-        source={{ uri: item.url }}
+        height={height / 2}
+        source={image}
       />
       <Block marginTop={width / 5} width={width} paddingHorizontal={20}>
         <Text fontType='bold1' size={20} style={styles.textTitle} center>
@@ -40,7 +41,7 @@ const styles = StyleSheet.create({
   },
   image: {
     marginHorizontal: 5,
-    borderRadius: 20,
+    borderRadius: 0,
   },
   textDescription: {
     color: '#9D9D9D',

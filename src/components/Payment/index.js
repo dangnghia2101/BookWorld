@@ -176,22 +176,22 @@ const PaymentScreen = ({ price, t }) => {
                         height={130}
                         marginBottom={20}
                         radius={20}
-                        backgroundColor={colors.textInBox}
+                        backgroundColor={colors.white}
                         style={{
                             justifyContent: 'center',
                             alignItems: 'center',
-                            shadowColor: theme.colors.gray2,
+                            shadowColor: theme.colors.black,
                             shadowOffset: {
                                 width: 0,
-                                height: 2,
+                                height: 7,
                             },
-                            shadowOpacity: 0.25,
-                            shadowRadius: 12,
+                            shadowOpacity: 1,
+                            shadowRadius: 3,
 
-                            elevation: 3,
+                            elevation: 2.5,
                         }}>
                         <Text
-                            color={colors.text}
+                            color={colors.grey4}
                             size={35}
                             fontType={'bold'}>
                             {price
@@ -308,9 +308,12 @@ const PaymentScreen = ({ price, t }) => {
                     <Text style={styles.textOTP} center>
                         Thanh toán không thành công
                     </Text>
-                    <TouchableOpacity style={{ marginTop: 10 }} center onPress={() => {
-                        setVisibleCartErr(false);
-                    }}>
+                    <TouchableOpacity
+                        style={{ marginTop: 10 }}
+                        center
+                        onPress={() => {
+                            setVisibleCartErr(false);
+                        }}>
                         <Text size={14}>Kiểm tra lại thông tin</Text>
                     </TouchableOpacity>
                 </Block>

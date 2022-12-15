@@ -136,6 +136,13 @@ const Cart = ({ t }) => {
                             fontType={'medium1'}>
                             {t('numberOfEpisodes')}: {Object.keys(item.chapter).length}
                         </Text>
+                        <Text
+                            color="#9D9D9D"
+                            size={14}
+                            numberOfLines={1}
+                            marginTop={5}>
+                            {item.introduction}
+                        </Text>
                         <Text fontType={'medium1'} style={styles.TextPrice}>
                             {priceBook()
                                 .toFixed(0)
@@ -200,7 +207,7 @@ const Cart = ({ t }) => {
                     <Block style={styles.clone}>
                         <Fontisto
                             name={'close-a'}
-                            size={18}
+                            size={14}
                             color={'black'}
                             onPress={() => {
                                 setVisibleCart(false);
@@ -214,23 +221,13 @@ const Cart = ({ t }) => {
                         <Block>
                             <Image
                                 source={require('../../../../assets/icons/faile.png')}
-                                style={{ width: 80, height: 80 }}
+                                style={{ width: 60, height: 60 }}
                             />
                         </Block>
                         <TouchableOpacity
                             style={styles.buttomAddCart}
                             onPress={() => {
-                                console.log(
-                                    item._id,
-                                    index,
-                                );
-                                dispatch(removeItem({ _id: item._id })),
-                                    // dispatch(
-                                    //     removeBookCart({
-                                    //         _id: item._id,
-                                    //         index: index,
-                                    //     }),
-                                    // ),
+                                dispatch(removeItem({_id: item._id})),
                                     { setVisibleCart: setVisibleCart(false) };
                             }}>
                             <Text fontType={'bold1'} style={styles.textButtomLogin} height={55}>
@@ -250,14 +247,11 @@ const Cart = ({ t }) => {
                         {
                             cartItem.SL !== 1
                                 ? dispatch(
-                                    removeChapter({
-                                        _id: cartItem._id,
-                                        index: index,
-                                    }),
-                                )
-                                : dispatch(
-                                    removeItem({ _id: cartItem._id }),
-                                );
+                                      removeChapter({
+                                          item: cartItem?.chapter[item],
+                                      }),
+                                  )
+                                : dispatch(removeItem({ _id: item._id }));
                         }
                     }}>
                     <Entypo
@@ -303,7 +297,6 @@ const Cart = ({ t }) => {
                         style={styles.FlatList}
                     />
                 ) : (
-
                     <Block alignCenter>
                         <Text
                             color={theme.colors.black}
@@ -321,7 +314,7 @@ const Cart = ({ t }) => {
                     width={'100%'}
                     paddingHorizontal={5}
                     paddingVertical={5}
-                    backgroundColor={theme.colors.background}
+                    backgroundColor={theme.colors.white}
                     style={styles.ContainerCheckOut}
                     marginTop={10}>
                     <Block marginLeft={10}>
@@ -376,9 +369,16 @@ const Cart = ({ t }) => {
                                 source={{ uri: cartItem?.image }}
                             />
                         </Block>
-                        <Block width={'53%'} marginTop={25}>
+                        <Block width={'53%'} marginTop={10}>
                             <Text fontType={'bold1'} size={20} style={styles.Name}>
                                 {cartItem?.name}
+                            </Text>
+                            <Text
+                                color="#9D9D9D"
+                                size={14}
+                                numberOfLines={1}
+                                marginTop={5}>
+                                {cartItem.introduction}
                             </Text>
                             <Text fontType={'medium1'} style={styles.Price}>
                                 {cartItem?.priceBook &&
@@ -401,11 +401,12 @@ const Cart = ({ t }) => {
                         </TouchableOpacity>
                     </Block>
                     <Block
-                        marginTop={10}
+                        marginTop={20}
                         width={'100%'}
                         height={1}
-                        backgroundColor={'#979797'}
-                        borderWidth={0.1}
+                        backgroundColor={'#bdc3c7'}
+                        borderWidth={0.2}
+                        borderColor={'#bdc3c7'}
                     />
                     <Text
                         marginVertical={10}
@@ -414,16 +415,18 @@ const Cart = ({ t }) => {
                         size={20}>
                         {t('chapTer')}
                     </Text>
-                    <Block paddingLeft={10}>
-                        <FlatList
-                            style={styles.FlatList1}
-                            data={data}
-                            renderItem={renderChapterItem}
-                            keyExtractor={item => Math.random()}
-                            showsVerticalScrollIndicator={false}
-                            numColumns={numColumns}
-                        />
-                    </Block>
+                    <ScrollView>
+                        <Block bottom={10} paddingLeft={10} paddingBottom={10}>
+                            <FlatList
+                                style={styles.FlatList1}
+                                data={data}
+                                renderItem={renderChapterItem}
+                                keyExtractor={item => Math.random()}
+                                showsVerticalScrollIndicator={false}
+                                numColumns={numColumns}
+                            />
+                        </Block>
+                    </ScrollView>
                 </Block>
             </BottomSheet>
         </Block>
@@ -477,8 +480,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     hide: {
+        backgroundColor: 'white',
         position: 'absolute',
         marginLeft: 85,
+        borderRadius: 10,
     },
     textBottom: {
         color: 'white',
@@ -508,8 +513,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     FlatList1: {
-        height: 100,
-        paddingBottom: 10,
+        height: '100%',
+        paddingBottom: 100,
     },
     ItemCart1: {
         width: '27%',
@@ -544,9 +549,9 @@ const styles = StyleSheet.create({
     image1: {
         width: 100,
         height: 125,
-        borderRadius: 10,
-        borderWidth: 0.5,
-        borderColor: 'black',
+        borderRadius: 5,
+        borderWidth: 0.2,
+        borderColor: 'gray',
     },
     CheckBox1: {
         width: 27,
@@ -607,7 +612,9 @@ const styles = StyleSheet.create({
         width: 90,
         height: 120,
     },
-    FlatList: {},
+    FlatList: {
+        backgroundColor: theme.colors.background
+    },
     ContainerCheckOut: {
         alignItems: 'center',
         justifyContent: 'space-between',
@@ -618,7 +625,7 @@ const styles = StyleSheet.create({
         marginVertical: 10,
         width: '95%',
         height: 140,
-        backgroundColor: 'white',
+        backgroundColor: theme.colors.white,
         borderRadius: 10,
         shadowColor: theme.colors.gray2,
         shadowOffset: {

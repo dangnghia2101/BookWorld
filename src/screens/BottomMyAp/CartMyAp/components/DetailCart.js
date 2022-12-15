@@ -184,7 +184,7 @@ const styles = StyleSheet.create({
         marginVertical: 10,
         width: '89%',
         height: 130,
-        backgroundColor: 'white',
+        backgroundColor: theme.colors.background,
         borderRadius: 10,
         shadowColor: theme.colors.gray2,
         shadowOffset: {

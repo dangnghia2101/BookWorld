@@ -5,6 +5,7 @@ import {
     FlatList,
     Animated,
     Pressable,
+    ScrollView,
 } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import ItemWelcome from './components/ItemWelcome';
@@ -76,24 +77,24 @@ export default Welcome;
 const styles = StyleSheet.create({
     dot: {
         position: 'absolute',
-        marginTop: width / 0.94,
+        marginTop: width / 0.87,
         marginLeft: '35%',
     },
     textDangKy: {
         color: 'black',
-        fontSize: 22,
+        fontSize: 18,
         lineHeight: 28,
     },
     textDangNhap: {
         color: 'white',
-        fontSize: 22,
+        fontSize: 18,
         lineHeight: 28,
     },
     buttomDangKy: {
         alignItems: 'center',
         justifyContent: 'center',
         width: '40%',
-        height: 65,
+        height: 55,
         backgroundColor: '#F3F3F3',
         borderTopRightRadius: 15,
         borderBottomRightRadius: 15,
@@ -115,7 +116,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#D45555',
         width: '48%',
         marginBottom: '20%',
-        height: 65,
+        height: 55,
         alignItems: 'center',
         justifyContent: 'center',
         borderTopLeftRadius: 15,
