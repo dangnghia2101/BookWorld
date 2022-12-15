@@ -9,7 +9,7 @@ import {
 } from '@redux/servicesNew';
 import { height, width } from '@utils/responsive';
 import { useAppSelector } from 'hooks';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { withNamespaces } from 'react-i18next';
 import { Animated, Image, LogBox, Platform, ScrollView } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -37,6 +37,7 @@ const HomeScreenMyAp = ({ t }) => {
     const authors = useAppSelector(state => state.root.author.authors);
 
     const [isCollapsible, setIsCollapsible] = useState(true);
+    const [bookFree, setBookFree] = useState([]);
 
     const scrollX = React.useRef(new Animated.Value(0)).current;
 
@@ -49,6 +50,12 @@ const HomeScreenMyAp = ({ t }) => {
     const theme = useTheme(themeStore);
     const styles = useStyle(themeStore);
     const inset = useSafeAreaInsets();
+
+    useEffect(() => {
+        if (allBooks) {
+            setBookFree(allBooks.filter(item => item?.isPrice <= 0));
+        }
+    }, []);
 
     //Cập nhật mỗi lần thay đổi TabView
 
@@ -134,8 +141,9 @@ const HomeScreenMyAp = ({ t }) => {
         return (
             <Block>
                 <HeaderListBook title={t('freeBook')} action={() => { navigation.navigate(routes.SEE_MORE) }} />
+
                 <Animated.FlatList
-                    data={allBooks}
+                    data={bookFree}
                     keyExtractor={item => Math.random() + item._id}
                     renderItem={item => <ItemBookFree item={item.item} />}
                     bounces={false}
@@ -155,11 +163,11 @@ const HomeScreenMyAp = ({ t }) => {
                 />
             </Block>
         );
-    }, [_renderItemMostBookRead, allBooks, scrollX]);
+    }, [_renderItemMostBookRead, bookFree, scrollX]);
 
     const renderListTopAuthor = useCallback(() => {
         return (
-            <Block>
+            <Block marginTop={15}>
                 <HeaderListBook title={t('topAuthor')} />
                 <Animated.FlatList
                     data={authors}
@@ -189,7 +197,7 @@ const HomeScreenMyAp = ({ t }) => {
             <Pressable
                 onPress={() => navigation.navigate(routes.SEARCH)}
                 style={styles.searchStyle}>
-                <Text fontType='regular1' color={theme.colors.grey4} size={14}>
+                <Text fontType="regular1" color={theme.colors.grey4} size={14}>
                     {t('searchHere')}
                 </Text>
                 <Icon
@@ -204,7 +212,7 @@ const HomeScreenMyAp = ({ t }) => {
 
     return (
         // <Container statusColor={theme.colors.grey16} edges={['left', 'right']}>
-        <Block>
+        <Block flex>
             <HeaderHome
                 name={myInfo?.name}
                 image={myInfo?.image}
@@ -216,10 +224,9 @@ const HomeScreenMyAp = ({ t }) => {
                 showsVerticalScrollIndicator={false}
                 nestedScrollEnabled={true}
                 style={{
-                    position: 'relative',
                     backgroundColor: theme.colors.background,
                 }}>
-                <Block>
+                <Block flex>
                     {renderSearch()}
                     <HeaderListBook title={t('mostViewedBooks')} />
                     {/* {Backdrop()} */}
