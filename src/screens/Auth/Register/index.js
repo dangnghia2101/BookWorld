@@ -41,18 +41,31 @@ const Register = () => {
     }, [newPassword]);
 
     const handleErrorComfirmPassword = useMemo(() => {
-        if (newPassword === confirmPassword) {
+        if (newPassword === confirmPassword || confirmPassword.length == 0) {
             return [false, ''];
         } else {
             return [true, 'Confirm password nat match New Password'];
         }
     }, [confirmPassword, newPassword]);
 
+    const handleErrorNo = useMemo(() => {
+        if (
+            newPassword.length == 0 &&
+            confirmPassword.length == 0 &&
+            phone.length == 0
+        ) {
+            return [true, ''];
+        } else {
+            return [false, ''];
+        }
+    }, [confirmPassword, newPassword, phone]);
+
     const handleSendLogin = useMemo(() => {
         if (
             !handleErrorPhone[1] &&
             !handleErrorNewPassword[1] &&
-            !handleErrorComfirmPassword[1]
+            !handleErrorComfirmPassword[1] &&
+            !handleErrorNo[0]
         ) {
             return false;
         } else {
@@ -94,7 +107,7 @@ const Register = () => {
         <Block
             flex
             alignCenter
-            paddingTop={56}
+            paddingTop={30}
             backgroundColor={'white'}
             paddingHorizontal={20}>
             <Text h1 bold size={30} style={styles.textWelcomLogin}>
@@ -113,14 +126,14 @@ const Register = () => {
             </Text>
 
             <TextInput
-                onChangeText={setPhone}
                 value={phone}
-                label={'Phone number'}
+                onChangeText={setPhone}
+                keyboardType="numeric"
+                label={'Phone Number'}
                 placeholder={'Số điện thoại'}
-                keyboardType="phone-pad"
+                color={colors.textInBox}
                 errorText={handleErrorPhone[1]}
                 isError={handleErrorPhone[0]}
-                colorNotErr={colors.textInBox}
             />
             <TextInput
                 onChangeText={setNewPassword}

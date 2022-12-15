@@ -12,7 +12,7 @@ import { PHONE_REG_EXP } from '@utils/constants';
 import { changeLoading } from '@redux/reducerNew';
 import { useLoginMutation } from '@redux/servicesNew';
 import { useAppDispatch, useAppSelector } from 'hooks';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { useLoginPhoneNumberMutation } from '@redux/servicesNew';
 import {
     Image,
@@ -60,24 +60,41 @@ const Login = ({ t }) => {
     const dispatch = useAppDispatch();
     const [visibleModal, setVisibleModal] = useState(false);
     const [phoneUser, setPhoneUser] = useState('');
+    const [OTP, setOTP] = useState('');
     const [password, setPassword] = useState('');
-    // const [auth, setAuth] = useState('signin');
+    const [auth, setAuth] = useState('signin');
+    const [visibleNotifi, setVisibleNotifi] = useState(false);
+    const [confirmPassword, setConfirmPassword] = useState('');
 
-    // const handleErrorPhone = useMemo(() => {
-    //     if (phoneUser.match(PHONE_REG_EXP) || phoneUser.length == 0) {
-    //         return [false, ''];
-    //     } else {
-    //         return [true, 'Format phone invalid'];
-    //     }
-    // }, [phoneUser]);
+    const handleErrorPhone = useMemo(() => {
+        if (phoneUser.match(PHONE_REG_EXP) || phoneUser.length == 0) {
+            return [false, ''];
+        } else {
+            return [true, 'Format phone invalid'];
+        }
+    }, [phoneUser]);
+    const handleErrorComfirmPassword = useMemo(() => {
+        if (password === confirmPassword || confirmPassword.length == 0) {
+            return [false, ''];
+        } else {
+            return [true, 'Confirm password nat match New Password'];
+        }
+    }, [confirmPassword, password]);
+    const handleErrorOTP = useMemo(() => {
+        if (OTP.length > 5 || OTP.length == 0) {
+            return [false, ''];
+        } else {
+            return [true, 'OPT at least 6 character'];
+        }
+    }, [OTP]);
 
-    // const handleErrorNewPassword = useMemo(() => {
-    //     if (password.length > 5 || password.length == 0) {
-    //         return [false, ''];
-    //     } else {
-    //         return [true, 'New password at least 6 character'];
-    //     }
-    // }, [password]);
+    const handleErrorNewPassword = useMemo(() => {
+        if (password.length > 5 || password.length == 0) {
+            return [false, ''];
+        } else {
+            return [true, 'New password at least 6 character'];
+        }
+    }, [password]);
 
     const LoginPhone = () => {
         // if (auth == 'signin') {
@@ -117,9 +134,9 @@ const Login = ({ t }) => {
         }
     };
 
-    // useEffect(() => {
-    //     dispatch(changeLoading(isUpDating ? 'SHOW' : 'HIDE'));
-    // }, [dispatch, isUpDating]);
+    useEffect(() => {
+        dispatch(changeLoading(isUpDating ? 'SHOW' : 'HIDE'));
+    }, [dispatch, isUpDating]);
 
     useEffect(() => {
         dispatch(changeLoading(isUpdating ? 'SHOW' : 'HIDE'));
@@ -197,24 +214,43 @@ const Login = ({ t }) => {
             phoneUser: phoneUser,
             token_fcm: await getToken(),
         };
-        console.log('===========> body', body);
         const dataLogin = await loginPhone(body);
-        if (dataLogin.error === false) {
-            console.log('===========> Đăng nhập thành công', body);
-        } else {
+        console.log('===========> datalogin', dataLogin);
+        if (dataLogin.data.data === 'Số điện thoại này chưa đăng ký') {
+            setVisibleNotifi(true);
             console.log('===========> Đăng nhập ko thành công', body);
+        } else if (dataLogin.data.message === 'Mật khẩu không đúng') {
+            setVisibleNotifi(true);
+            console.log('===========> Đăng nhập ko thành công', body);
+        } else {
+            console.log('===========> Đăng nhập thành công', body);
         }
         // if (dataLogin?.error?.data?.error) {
         //     setVisibleModal(true);
         // }
     };
     return (
-        <Block flex alignCenter paddingTop={56} backgroundColor={'white'}>
-            <Text fontType='bold' h1 bold size={30} style={styles.textWelcomLogin}>
+        <Block
+            paddingHorizontal={20}
+            flex
+            alignCenter
+            paddingTop={30}
+            backgroundColor={'white'}>
+            <Text
+                fontType="bold"
+                h1
+                bold
+                size={30}
+                style={styles.textWelcomLogin}>
                 {' '}
                 {t('welcomeBack')}{' '}
             </Text>
-            <Text fontType='medium1' paddingHorizontal={61} size={13} lineHeight={20} center>
+            <Text
+                fontType="medium1"
+                paddingHorizontal={61}
+                size={13}
+                lineHeight={20}
+                center>
                 {' '}
                 {t('loginToUseApp')}{' '}
             </Text>
@@ -222,43 +258,28 @@ const Login = ({ t }) => {
                 value={phoneUser}
                 onChangeText={text => setPhoneUser(text)}
                 keyboardType="numeric"
+                label={'Phone Number'}
                 placeholder={t('phone')}
-                style={styles.textInput}
                 color={theme.colors.grey4}
                 placeholderTextColor={theme.colors.grey10}
+                errorText={handleErrorPhone[1]}
+                isError={handleErrorPhone[0]}
             />
             <TextInput
                 value={password}
                 onChangeText={text => setPassword(text)}
                 secureTextEntry={hide}
+                label={'Password'}
                 placeholder={'Mật khẩu'}
                 isSecure={true}
                 errorText={handleErrorNewPassword[1]}
                 isError={handleErrorNewPassword[0]}
             />
-            {/* <Block style={styles.inputPassword}>
-                {hide ? (
-                    <MaterialCommunityIcons
-                        name={'eye-outline'}
-                        size={25}
-                        style={styles.hide}
-                        color={theme.colors.grey11}
-                        onPress={() => HidePassword()}
-                    />
-                ) : (
-                    <MaterialCommunityIcons
-                        name={'eye-off-outline'}
-                        size={25}
-                        style={styles.hide}
-                        onPress={() => HidePassword()}
-                    />
-                )}
-            </Block> */}
             <Text
                 bold
                 size={15}
                 style={styles.textRemember}
-                fontType='medium1'
+                fontType="medium1"
                 onPress={() => status(0)}>
                 {' '}
                 {t('forGot')}{' '}
@@ -266,7 +287,10 @@ const Login = ({ t }) => {
             <TouchableOpacity
                 style={styles.buttomLogin}
                 onPress={() => _handleLoginPhone()}>
-                <Text fontType='bold1' style={styles.textButtomLogin}> {t('login')}</Text>
+                <Text fontType="bold1" style={styles.textButtomLogin}>
+                    {' '}
+                    {t('login')}
+                </Text>
             </TouchableOpacity>
             <Block marginTop={20}>
                 <TouchableOpacity
@@ -277,16 +301,16 @@ const Login = ({ t }) => {
                         style={styles.icon}
                         source={require('../../../assets/images/GG.png')}
                     />
-                    <Text fontType='medium1' style={styles.textLoginGmail}>
+                    <Text fontType="medium1" style={styles.textLoginGmail}>
                         {t('logWithGoogle')}
                     </Text>
                 </TouchableOpacity>
             </Block>
             <Block marginTop={100}>
-                <Text fontType='medium1'>
+                <Text fontType="medium1">
                     {t('doNotHaveAnAccount')} {'  '}
                     <Text
-                        fontType='bold1'
+                        fontType="bold1"
                         style={styles.textRegister}
                         onPress={() =>
                             navigation.navigate(routes.REGISTER_SCREEN)
@@ -319,17 +343,26 @@ const Login = ({ t }) => {
                         Đặt lại mật khẩu mới cho tài khoản của bạn để có thể
                         đăng nhập.
                     </Text>
-                    <Block style={styles.textPhoneContainer}>
-                        <TextInput
-                            style={styles.textInputOTP}
-                            placeholder={'Mật khẩu'}
-                        />
-                        <TextInput
-                            marginTop={20}
-                            style={styles.textInputOTP}
-                            placeholder={'Nhập lại mật khẩu'}
-                        />
-                    </Block>
+
+                    <TextInput
+                        value={password}
+                        onChangeText={text => setPassword(text)}
+                        secureTextEntry={hide}
+                        label={'Passord'}
+                        placeholder={'Mật khẩu'}
+                        isSecure={true}
+                        errorText={handleErrorNewPassword[1]}
+                        isError={handleErrorNewPassword[0]}
+                    />
+                    <TextInput
+                        onChangeText={setConfirmPassword}
+                        value={confirmPassword}
+                        label={'Confirm Passord'}
+                        placeholder={'Nhập lại mật khẩu'}
+                        isSecure={true}
+                        errorText={handleErrorComfirmPassword[1]}
+                        isError={handleErrorComfirmPassword[0]}
+                    />
                     <Pressable
                         style={styles.buttomLogin}
                         onPress={() => ForgotPassword()}>
@@ -347,12 +380,17 @@ const Login = ({ t }) => {
                     <Text marginTop={18} center style={styles.textPhone}>
                         Nhập mã OTP được gửi đến số điện thoại của bạn
                     </Text>
-                    <Block style={styles.textOPTContainer}>
-                        <TextInput style={styles.textInputOTP1} />
-                        <TextInput style={styles.textInputOTP1} />
-                        <TextInput style={styles.textInputOTP1} />
-                        <TextInput style={styles.textInputOTP1} />
-                    </Block>
+                    <TextInput
+                        value={OTP}
+                        onChangeText={text => setOTP(text)}
+                        keyboardType="numeric"
+                        placeholder={t('OTP')}
+                        inputStyle={styles.textInput1}
+                        color={theme.colors.grey4}
+                        placeholderTextColor={theme.colors.grey10}
+                        errorText={handleErrorOTP[1]}
+                        isError={handleErrorOTP[0]}
+                    />
                     <Pressable
                         style={styles.buttomLogin}
                         onPress={() => status(2)}>
@@ -369,13 +407,17 @@ const Login = ({ t }) => {
                         Nhập số điện thoại của bạn cho quy trình xác minh. Chúng
                         tôi sẽ gửi mã 4 chữ số cho bạn.
                     </Text>
-                    <Block style={styles.textPhoneContainer}>
-                        <TextInput
-                            keyboardType="numeric"
-                            placeholder={'Số điện thoại'}
-                            style={styles.textInputOTP}
-                        />
-                    </Block>
+                    <TextInput
+                        value={phoneUser}
+                        onChangeText={text => setPhoneUser(text)}
+                        keyboardType="numeric"
+                        label={'Số điện thoại'}
+                        placeholder={t('phone')}
+                        color={theme.colors.grey4}
+                        placeholderTextColor={theme.colors.grey10}
+                        errorText={handleErrorPhone[1]}
+                        isError={handleErrorPhone[0]}
+                    />
                     <Pressable
                         style={styles.buttomLogin}
                         onPress={() => status(1)}>
@@ -385,6 +427,27 @@ const Login = ({ t }) => {
                     </Pressable>
                 </Block>
             </ModalPoup>
+            <ModalPoup visible={visibleNotifi}>
+                <Block alignCenter={'center'} justifyCenter={'center'}>
+                    <Text style={styles.textOTP} center>
+                        Đăng nhập thất bại
+                    </Text>
+                    <Block>
+                        <Image
+                            source={require('../../../assets/icons/faile.png')}
+                            style={{ width: 70, height: 70 }}
+                        />
+                    </Block>
+                    <TouchableOpacity
+                        style={{ marginTop: 20 }}
+                        center
+                        onPress={() => {
+                            setVisibleNotifi(false);
+                        }}>
+                        <Text size={14}>Kiểm tra lại thông tin</Text>
+                    </TouchableOpacity>
+                </Block>
+            </ModalPoup>
         </Block>
     );
 };
@@ -392,10 +455,16 @@ const Login = ({ t }) => {
 export default withNamespaces()(Login);
 
 const styles = StyleSheet.create({
+    textInput1: {
+        justifyContent: 'center',
+        alignContent: 'center',
+        alignItems: 'center',
+        paddingHorizontal: '40%',
+    },
     hide: {
         position: 'absolute',
         left: '90%',
-        top: '50%'
+        top: '50%',
     },
     textInputOTP1: {
         width: 50,
@@ -433,6 +502,8 @@ const styles = StyleSheet.create({
         lineHeight: 25,
     },
     textOTP: {
+        marginBottom: 30,
+        fontWeight: '700',
         fontSize: 18,
     },
     modalContainer: {
@@ -440,16 +511,14 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(253,253,253,10)',
         paddingHorizontal: 20,
         paddingVertical: 30,
-        borderTopLeftRadius: 30,
-        borderTopRightRadius: 30,
-        borderWidth: 0.5,
-        borderColor: 'black',
+        borderRadius: 30,
     },
     modalBackGround: {
-        backgroundColor: 'rgba(253,253,253,0.5)',
-        justifyContent: 'flex-end',
+        backgroundColor: 'rgba(0,0,0,0.5)',
+        justifyContent: 'center',
         alignContent: 'center',
         alignItems: 'center',
+        paddingHorizontal: 20,
     },
     textRegister: {
         fontSize: 14,

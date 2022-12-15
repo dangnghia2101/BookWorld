@@ -1,1 +1,1 @@
-export const MAIN_API = 'http://www.bookworlddashboard.shop:5555/api';
+export const MAIN_API = 'http://www.bookworlddashboard.shop/api';

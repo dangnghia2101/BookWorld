@@ -54,45 +54,23 @@ const cartSlice = createSlice({
                 action.payload.data.chapterNumber || 0
             ] = action.payload.data;
         },
-        // deleteChap:()=> {
-        //     cartAdapter.removeOne
-        // } ,
         removeItem: (state, action) => {
-            console.log(">>>>>>>>>> action", action.payload);
-            const arr = state.cartList.filter(
-                // arrow => arrow._id !== action.payload,
-                
-                item =>{
-                    return item._id === action.payload
-                }
+            let cart = state.cartList;
+            let arr =
+            cart.filter(
+                item => item._id !== action.payload._id
             );
-            return { 
-                ... state,
-                cartList: arr
-            }
+            state.cartList = arr;
             
-        },
-        removeBookCart: (state: CartList, action) => {
-            let { id, index } = action.payload;
-            state.cartList = state.cartList.splice(
-                state.cartList.findIndex(arrow => arrow._id === id),
-                index,
-            );
         },
         removeChapter: (state, action) => {
 
-            state.cartList = state.cartList.splice(
-                state.cartList.findIndex(arrow => arrow.chapter === action.payload._id), 1
-            )
-
-            // let { keyChapter } = action.payload;
-            // let arr = state.cartList.filter(item => item.chapter === action.payload);
-            // state.cartList = arr;
-
-            // let { id, index, keyChapter } = action.payload;
-            // let arr = state.cartList[index];
-            // delete arr.chapter[keyChapter];
-            // state.cartList[index] = arr;
+            console.log(">>>>>>>>>> action.payload", action.payload);
+            console.log(">>>>>>>>>> state.cartList", state.cartList);
+            let chap = state.cartList
+            let arr = chap.filter(item =>
+                item != action.payload);
+            state.cartList = arr;
         },
         removeBookPayment: (state: CartList, action) => {
             const data = action.payload;
@@ -121,7 +99,6 @@ export const {
     saveStatusCartReducer,
     removeItem: removeItem,
     removeChapter,
-    removeBookCart,
     removeBookPayment,
 } = cartSlice.actions;
 export const CartReducer = cartSlice.reducer;

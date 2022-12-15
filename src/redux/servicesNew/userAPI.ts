@@ -46,12 +46,19 @@ export const userApi = createApi({
             }),
             async onQueryStarted(id, { dispatch, queryFulfilled }) {
                 try {
-                    const { data } = await queryFulfilled;
-                    const saveData = {
-                        ...data?.data?.account,
-                        token: data?.data?.token,
-                    };
-                    dispatch(loginReducer(saveData));
+                    const  {data}  = await queryFulfilled;
+                    if(data.data === "Số điện thoại này chưa đăng ký"){
+                        console.log(">>>>>>>> Số điện thoại này chưa đăng ký")
+                    }else if(data.message === "Mật khẩu không đúng"){
+                        console.log(">>>>>>>> Mật khẩu không đúng")
+                    }else{
+                        console.log(">>>>>>>> Đăng nhập thành công")
+                        const saveData = {
+                            ...data?.data?.account,
+                            token: data?.data?.token,
+                        };
+                        dispatch(loginReducer(saveData));
+                    }
                 } catch (err) {
                     console.log('error api login... ', err);
                 }

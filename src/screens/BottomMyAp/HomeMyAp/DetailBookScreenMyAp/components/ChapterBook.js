@@ -62,13 +62,17 @@ const ChapterBook = ({
 
     let bookNotPay = [];
     const addAllCart = _item => {
+        let objChapter = {}
+        _item.forEach(element => {
+            objChapter[element.chapterNumber] = element
+        });
         const data = {
             _id: infoBook._id,
             name: infoBook.name,
             isPrice: infoBook.isPrice,
             image: infoBook.image,
             introduction: infoBook.introduction,
-            chapter: { [_item.chapterNumber]: _item },
+            chapter: objChapter,
             status: false,
         };
 
@@ -89,7 +93,6 @@ const ChapterBook = ({
         setVisible1(false);
     };
     const addCart = _item => {
-        console.log('>>>>>_item ', chapItem);
         const data = {
             _id: infoBook._id,
             name: infoBook.name,
@@ -110,7 +113,7 @@ const ChapterBook = ({
         if (co === 0) {
             dispatch(saveCartReducer(data));
         } else {
-                addChapter(_item);
+            addChapter(_item);
         }
         setVisible(false);
     };
@@ -215,7 +218,7 @@ const ChapterBook = ({
                         justifyContent: 'center',
                         paddingHorizontal: 10,
                         marginLeft: '55%',
-                        borderRadius: 5
+                        borderRadius: 5,
                     }}
                     onPress={() => {
                         data?.map(item => {
@@ -226,8 +229,9 @@ const ChapterBook = ({
                         setChapItem(bookNotPay);
                         setVisible1(true);
                     }}>
-                    <Text fontType={'bold1'} color='white'>
-                    {t('buy all')}</Text>
+                    <Text fontType={'bold'} color="white">
+                        {t('buy')}
+                    </Text>
                 </TouchableOpacity>
             </Block>
 
@@ -300,8 +304,7 @@ const ChapterBook = ({
                         </Block>
                         <Block alignCenter={'center'}>
                             <Text style={styles.textOTP} center>
-                            {t('buyTheWholeBook')}
-                            
+                                Mua cả quyển sách
                             </Text>
                             <TouchableOpacity
                                 style={styles.buttomAddCart}
@@ -330,22 +333,25 @@ const ChapterBook = ({
                                 }}
                             />
                         </Block>
+
+                        <Block alignCenter={'center'}>
+                            <Text style={styles.textOTP} center>
+                                {t('buyToSeeBook')}
+                            </Text>
+                            <Text size={18} center>
+                                {t('chapTer')} {chapItem?.chapterNumber}
+                            </Text>
+                            <TouchableOpacity
+                                style={styles.buttomAddCart}
+                                onPress={() => addCart(chapItem)}>
+                                <Text
+                                    style={styles.textButtomLogin}
+                                    height={55}>
+                                    {t('addToCart')}
+                                </Text>
+                            </TouchableOpacity>
+                        </Block>
                     </Block>
-                </Block>
-                <Block alignCenter={'center'}>
-                    <Text style={styles.textOTP} center>
-                        {t('buyToSeeBook')}
-                    </Text>
-                    <Text size={18} center>
-                        {t('chapTer')} {chapItem?.chapterNumber}
-                    </Text>
-                    <TouchableOpacity
-                        style={styles.buttomAddCart}
-                        onPress={() => addCart(chapItem)}>
-                        <Text style={styles.textButtomLogin} height={55}>
-                            {t('addToCart')}
-                        </Text>
-                    </TouchableOpacity>
                 </Block>
             </Modal>
         </Block>
@@ -355,7 +361,7 @@ const ChapterBook = ({
 const useStyle = makeStyles()(({ normalize, colors }) => ({
     modal: {
         height: '50%',
-        backgroundColor: colors.blue
+        backgroundColor: colors.blue,
     },
     textButtomLogin: {
         fontSize: 16,
@@ -383,12 +389,14 @@ const useStyle = makeStyles()(({ normalize, colors }) => ({
     },
     modalContainer: {
         width: '75%',
+        backgroundColor: 'rgba(253,253,253,10)',
         paddingHorizontal: 20,
-        paddingVertical: 20,
-        borderRadius: 20,
+        paddingVertical: 30,
+        borderRadius: 30,
         borderColor: 'black',
     },
     modalBackGround: {
+        backgroundColor: 'rgba(0,0,0,0.2)',
         justifyContent: 'center',
         alignContent: 'center',
         alignItems: 'center',

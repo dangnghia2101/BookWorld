@@ -91,7 +91,6 @@ const Cart = ({ t }) => {
         ),
         [],
     );
-    console.log(">>>>>> bookStore", bookStore._id)
     const numColumns = 3;
     const renderItem = ({ item, index }) => {
         let sum = 0;
@@ -249,11 +248,10 @@ const Cart = ({ t }) => {
                             cartItem.SL !== 1
                                 ? dispatch(
                                       removeChapter({
-                                          _id: cartItem._id,
-                                          index: index,
+                                          item: cartItem?.chapter[item],
                                       }),
                                   )
-                                : dispatch(removeItem({ _id: cartItem._id }));
+                                : dispatch(removeItem({ _id: item._id }));
                         }
                     }}>
                     <Entypo
@@ -277,7 +275,7 @@ const Cart = ({ t }) => {
     return (
         <Block
             paddingTop={inset.top}
-            backgroundColor={theme.colors.white}
+            backgroundColor={theme.colors.background}
             flex>
             <Block
                 justifyCenter
@@ -316,7 +314,7 @@ const Cart = ({ t }) => {
                     width={'100%'}
                     paddingHorizontal={5}
                     paddingVertical={5}
-                    backgroundColor={theme.colors.background}
+                    backgroundColor={theme.colors.white}
                     style={styles.ContainerCheckOut}
                     marginTop={10}>
                     <Block marginLeft={10}>
@@ -615,7 +613,7 @@ const styles = StyleSheet.create({
         height: 120,
     },
     FlatList: {
-        backgroundColor: theme.colors.white
+        backgroundColor: theme.colors.background
     },
     ContainerCheckOut: {
         alignItems: 'center',
@@ -627,7 +625,7 @@ const styles = StyleSheet.create({
         marginVertical: 10,
         width: '95%',
         height: 140,
-        backgroundColor: 'white',
+        backgroundColor: theme.colors.white,
         borderRadius: 10,
         shadowColor: theme.colors.gray2,
         shadowOffset: {

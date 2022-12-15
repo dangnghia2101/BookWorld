@@ -176,7 +176,7 @@ const PaymentScreen = ({ price, t }) => {
                         height={130}
                         marginBottom={20}
                         radius={20}
-                        backgroundColor={colors.textInBox}
+                        backgroundColor={colors.white}
                         style={{
                             justifyContent: 'center',
                             alignItems: 'center',
@@ -191,7 +191,7 @@ const PaymentScreen = ({ price, t }) => {
                             elevation: 2.5,
                         }}>
                         <Text
-                            color={colors.text}
+                            color={colors.grey4}
                             size={35}
                             fontType={'bold'}>
                             {price
