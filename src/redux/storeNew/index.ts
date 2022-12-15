@@ -10,6 +10,7 @@ import {
     ReadingReducer,
     FavoriteBookReducer,
     RankReducer,
+    SearchReducer,
 } from '@redux/reducerNew';
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import {
@@ -50,6 +51,7 @@ const rootReducer = combineReducers({
     reading: ReadingReducer,
     favoriteBook: FavoriteBookReducer,
     rank: RankReducer,
+    search: SearchReducer,
     // ...other reducers here
 });
 
@@ -59,7 +61,7 @@ const persistConfig = {
     key: 'roott',
     storage: AsyncStorage,
     timeout: 30000,
-    whitelist: ['setting', 'themeApp', 'auth', 'cart', 'reading'],
+    whitelist: ['setting', 'themeApp', 'auth', 'cart', 'reading', 'search'],
     stateReconciler: autoMergeLevel2,
 };
 
@@ -79,6 +81,7 @@ export const store = configureStore({
         [bookOfAuthAPI.reducerPath]: bookOfAuthAPI.reducer,
         [chatAPI.reducerPath]: chatAPI.reducer,
         [rankAPI.reducerPath]: rankAPI.reducer,
+        [chatAPI.reducerPath]: chatAPI.reducer,
     },
     middleware: getDefaultMiddleware =>
         getDefaultMiddleware({

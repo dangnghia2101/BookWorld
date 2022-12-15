@@ -39,7 +39,131 @@ const BodyPurchaseHistory = props => {
           marginVertical={10}>
           {t('myPurchase')}
         </Text>
-  
+        <Block>
+          <TouchableOpacity style={[styles.itemPurchase, styles.shadowColor]}>
+            <Block row marginHorizontal={15} marginVertical={15}>
+              <Image
+                style={styles.image}
+                source={require('../../../../../assets/images/Vector.png')}
+              />
+              <Block column marginLeft={10}>
+                <Text
+                  size={18}
+                  fontType="bold1"
+                  numberOfLines={2}
+                  color={themeNew.colors.textDark}>
+                  Đắc nhân tâm
+                </Text>
+                <Text fontType={'regular1'} size={14} color={themeNew.colors.textDark}>
+                  Dale Carnegie
+                </Text>
+                <Text fontType={'regular1'} size={14} color={themeNew.colors.textDark}>
+                  Chương 1,2
+                </Text>
+              </Block>
+            </Block>
+            <Block borderBottomWidth={0.4}
+              backgroundColor={themeNew.colors.grey8}>
+            </Block>
+            <Block row marginHorizontal={15} marginVertical={15} alignSelf={'baseline'}>
+              <Block width={'40%'}>
+                <Text fontType='medium1' size={12} color={themeNew.colors.grey8}>
+                  2 {t('product')}
+                </Text>
+              </Block>
+              <Block row width={'60%'} alignItems={'flex-end'}>
+                <Image
+                  style={styles.icon_logo}
+                  source={require('../../../../../assets/images/logo_icon.png')}
+                />
+                <Text fontType='medium1' size={14} color={themeNew.colors.grey8}>
+                  {t('intoMoney')}:
+                </Text>
+                <Text fontType='medium1' size={14} color={themeNew.colors.grey8}>
+                  15.000 VNĐ
+                </Text>
+              </Block>
+
+            </Block>
+
+            <Block borderBottomWidth={0.4}
+              backgroundColor={themeNew.colors.grey8}>
+            </Block>
+            <Block alignItems={'flex-end'} right={10}>
+              <TouchableOpacity style={[styles.btnCmt, styles.shadowColor]}>
+                <Text fontType='medium1' size={14} color={themeNew.colors.white}>{t('rate')}</Text>
+              </TouchableOpacity>
+            </Block>
+
+          </TouchableOpacity>
+        </Block>
+      </Block>
+      <Block>
+        <Text
+          fontType={'bold1'}
+          color={themeNew.colors.textDark}
+          size={16}
+          marginVertical={10}>
+          {t('myPurchase')}
+        </Text>
+        <Block>
+          <TouchableOpacity style={[styles.itemPurchase, styles.shadowColor]}>
+            <Block row marginHorizontal={15} marginVertical={15}>
+              <Image
+                style={styles.image}
+                source={require('../../../../../assets/images/Vector.png')}
+              />
+              <Block column marginLeft={10}>
+                <Text
+                  size={18}
+                  fontType="bold1"
+                  numberOfLines={2}
+                  color={themeNew.colors.textDark}>
+                  Nhà giả kim
+                </Text>
+                <Text fontType={'regular1'} size={14} color={themeNew.colors.textDark}>
+                  Paulo Coelho
+                </Text>
+                <Text fontType={'regular1'} size={14} color={themeNew.colors.textDark}>
+                  Chương 1
+                </Text>
+              </Block>
+            </Block>
+            <Block borderBottomWidth={0.4}
+              backgroundColor={themeNew.colors.grey8}>
+            </Block>
+            <Block row marginHorizontal={15} marginVertical={15} alignSelf={'baseline'}>
+              <Block width={'40%'}>
+                <Text fontType='medium1' size={12} color={themeNew.colors.grey8}>
+                  1 {t('product')}
+                </Text>
+              </Block>
+              <Block row width={'60%'} alignItems={'flex-end'}>
+                <Image
+                  style={styles.icon_logo}
+                  source={require('../../../../../assets/images/logo_icon.png')}
+                />
+                <Text fontType='medium1' size={14} color={themeNew.colors.grey8}>
+                  {t('intoMoney')}:
+                </Text>
+                <Text fontType='medium1' size={14} color={themeNew.colors.grey8}>
+                  10.000 VNĐ
+                </Text>
+              </Block>
+
+            </Block>
+
+            <Block borderBottomWidth={0.4}
+              backgroundColor={themeNew.colors.grey8}>
+            </Block>
+            <Block alignItems={'flex-end'} right={10}>
+              <TouchableOpacity style={[styles.btnCmt, styles.shadowColor]}>
+                <Text fontType='medium1' size={14} color={themeNew.colors.white}>{t('rate')}</Text>
+              </TouchableOpacity>
+            </Block>
+
+          </TouchableOpacity>
+        </Block>
       </Block>
     </Block>
   );

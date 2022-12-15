@@ -8,3 +8,4 @@ export * from './cartReducer';
 export * from './authorReducer';
 export * from './readingReducer';
 export * from './rankReducer';
+export * from './searchReducer';

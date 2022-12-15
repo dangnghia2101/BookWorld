@@ -89,6 +89,9 @@ export default {
   askPay:'Clicking "Checkout" means you agree comply with the terms of Bookword',
   totalPrice:'Total price',
   discount:'Discount',
+  shareIntBooks:'Share interesting book',
+  waitingList:'Waiting list',
+  noBook:'No books',
   pay:'Pay',
   categories: {
     TT: 'Illusion',

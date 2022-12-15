@@ -229,9 +229,9 @@ const ChapterBook = ({
                 ))}
             </Block>
 
-            <Modal transparent visible={showModal}>
-                <Block flex={1} style={styles.modalBackGround}>
-                    <Block style={styles.modalContainer}>
+            <Modal style={styles.modal} visible={showModal}>
+                <Block flex={1} backgroundColor={themeNew.colors.background} style={styles.modalBackGround}>
+                    <Block backgroundColor={themeNew.colors.white} style={styles.modalContainer}>
                         <Block style={styles.clone}>
                             <Fontisto
                                 name={'close-a'}
@@ -265,6 +265,10 @@ const ChapterBook = ({
 };
 
 const useStyle = makeStyles()(({ normalize, colors }) => ({
+    modal: {
+        height: '50%',
+        backgroundColor: colors.blue
+    },
     textButtomLogin: {
         fontSize: 16,
         fontWeight: '700',
@@ -291,14 +295,12 @@ const useStyle = makeStyles()(({ normalize, colors }) => ({
     },
     modalContainer: {
         width: '75%',
-        backgroundColor: 'rgba(253,253,253,10)',
         paddingHorizontal: 20,
         paddingVertical: 20,
         borderRadius: 20,
         borderColor: 'black',
     },
     modalBackGround: {
-        backgroundColor: 'rgba(0,0,0,0.3)',
         justifyContent: 'center',
         alignContent: 'center',
         alignItems: 'center',
