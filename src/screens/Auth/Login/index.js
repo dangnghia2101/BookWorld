@@ -57,21 +57,21 @@ const Login = ({ t }) => {
     const [password, setPassword] = useState('');
     // const [auth, setAuth] = useState('signin');
 
-    const handleErrorPhone = useMemo(() => {
-        if (phoneUser.match(PHONE_REG_EXP) || phoneUser.length == 0) {
-            return [false, ''];
-        } else {
-            return [true, 'Format phone invalid'];
-        }
-    }, [phoneUser]);
+    // const handleErrorPhone = useMemo(() => {
+    //     if (phoneUser.match(PHONE_REG_EXP) || phoneUser.length == 0) {
+    //         return [false, ''];
+    //     } else {
+    //         return [true, 'Format phone invalid'];
+    //     }
+    // }, [phoneUser]);
 
-    const handleErrorNewPassword = useMemo(() => {
-        if (password.length > 5 || password.length == 0) {
-            return [false, ''];
-        } else {
-            return [true, 'New password at least 6 character'];
-        }
-    }, [password]);
+    // const handleErrorNewPassword = useMemo(() => {
+    //     if (password.length > 5 || password.length == 0) {
+    //         return [false, ''];
+    //     } else {
+    //         return [true, 'New password at least 6 character'];
+    //     }
+    // }, [password]);
 
     const LoginPhone = () => {
         // if (auth == 'signin') {
@@ -182,10 +182,11 @@ const Login = ({ t }) => {
                 color={theme.colors.grey4}
                 placeholderTextColor={theme.colors.grey10}
             />
-            <Block style={styles.inputPassword}>
+            <Block paddingHorizontal={20} width="100%">
                 <TextInput
                     secureTextEntry={hide}
                     placeholder={t('pass')}
+                    width="100%"
                     style={styles.textInput2}
                     color={theme.colors.grey4}
                     placeholderTextColor={theme.colors.grey10}
@@ -347,12 +348,8 @@ export default withNamespaces()(Login);
 const styles = StyleSheet.create({
     hide: {
         position: 'absolute',
-        marginTop: 30,
-        marginLeft: '75%',
-    },
-    inputPassword: {
-        flexDirection: 'row',
-        position: 'relative',
+        left: '90%',
+        top: '50%'
     },
     textInputOTP1: {
         width: 50,
@@ -496,12 +493,9 @@ const styles = StyleSheet.create({
     },
     textInput2: {
         borderRadius: 10,
-        width: '88%',
-        color: '#000',
-        height: 59,
+        fontSize: 16,
         fontWeight: '600',
         backgroundColor: '#F3F3F3',
-        fontSize: 16,
         shadowColor: '#000',
         shadowOffset: {
             width: 0,
@@ -509,7 +503,6 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.22,
         shadowRadius: 2.22,
-
         elevation: 3,
     },
     textInput: {

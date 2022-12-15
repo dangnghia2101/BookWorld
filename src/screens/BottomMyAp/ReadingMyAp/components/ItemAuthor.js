@@ -14,7 +14,25 @@ const ItemAuthor = ({ item, t }) => {
   const themeStore = useAppSelector(state => state.root.themeApp.theme);
   const theme = useTheme(themeStore);
   const styles = useStyle(themeStore);
-
+  let star = [];
+  const allBooks = useAppSelector(state => state.root.book.bookList);
+  const _renderStar = () => {
+    for (let i = 0; i <= allBooks.length; i++) {
+      let num = Math.floor(Math.random() * 3) + 3;
+      // let star = [];
+      for (let j = 1; j <= num; j++) {
+        star.push(
+          <Icon
+            component={'AntDesign'}
+            name="star"
+            color={theme.colors.yellow}
+            size={20}
+          />,
+        );
+      }
+      return star;
+    }
+  };
   return (
     <TouchableOpacity
       onPress={() => navigation.navigate(routes.DETAIL_AUTHOR_MY_AP, { bookmark: true, item })}>
@@ -33,34 +51,10 @@ const ItemAuthor = ({ item, t }) => {
             <Text fontType='bold1' color={theme.colors.textInBox} style={styles.nameAuthor} numberOfLines={1}>{item.name}</Text>
             <Text fontType='bold1' color={theme.colors.textInBox} style={styles.textRate}>{t('textRating')}</Text>
             <Block row marginLeft={22} marginTop={5}>
-              <Icon
-                component={'AntDesign'}
-                name="star"
-                color={theme.colors.yellow}
-                size={16}
-              />
-              <Icon
-                component={'AntDesign'}
-                name="star"
-                color={theme.colors.yellow}
-                size={16}
-              />
-              <Icon
-                component={'AntDesign'}
-                name="star"
-                color={theme.colors.yellow}
-                size={16}
-              />
-              <Icon
-                component={'AntDesign'}
-                name="star"
-                color={theme.colors.yellow}
-                size={16}
-              />
-              <Text fontType='bold1' color={theme.colors.textInBox} style={styles.totalRate}>4.0</Text>
+              {_renderStar()}
+              <Text fontType='bold1' color={theme.colors.textInBox} style={styles.totalRate}>{star.length}.0</Text>
             </Block>
           </Block>
-
           <Block width="50%" height="100%" alignCenter>
             <Text fontType='bold1' color={theme.colors.textInBox} numberOfLines={2} style={styles.textQuantity}>
               {t('texQuantity')}
@@ -71,16 +65,19 @@ const ItemAuthor = ({ item, t }) => {
           </Block>
         </Block>
         <Block
-          style={styles.blockAvt}
           justifyCenter
           alignCenter
           padding={7}
+          radius={100}
+          width="26%"
+          height="44%"
           backgroundColor={theme.colors.background}
         >
           <Block
             backgroundColor={theme.colors.white}
-            style={styles.blockAvt2}
-            width={100}
+            radius={50}
+            width="100%"
+            height="100%"
             justifyCenter
             alignCenter
             padding={7}
@@ -89,7 +86,6 @@ const ItemAuthor = ({ item, t }) => {
             <Image style={styles.avatar} source={{ uri: item.avatar }} />
           </Block>
         </Block>
-
       </Block>
     </TouchableOpacity>
   );
@@ -98,16 +94,6 @@ const ItemAuthor = ({ item, t }) => {
 export default withNamespaces()(ItemAuthor);
 
 const useStyle = makeStyles()(({ normalize, colors }) => ({
-  blockAvt2: {
-    width: '100%',
-    height: '100%',
-    borderRadius: 60
-  },
-  blockAvt: {
-    width: '27%',
-    height: '55%',
-    borderRadius: 60
-  },
   totalRead: {
     fontSize: 16,
     marginTop: 3,
@@ -152,8 +138,8 @@ const useStyle = makeStyles()(({ normalize, colors }) => ({
     lineHeight: 15,
   },
   avatar: {
-    width: 83,
-    height: 83,
+    width: 67,
+    height: 67,
     borderRadius: 50,
     margin: 7,
   },

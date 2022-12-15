@@ -351,20 +351,10 @@ const ChatScreenMyApp = ({ t }) => {
                     />
                 </Block>
 
-                <Block marginBottom={15}>
-                    <TextInput
-                        value={searchPhrase}
-                        onChangeText={setSearchPhrase}
-                        placeholder="Search by name..."
-                        iconLeft={searchIcon}
-                        style={styles.containerSearch}
-                    />
-                </Block>
-
                 {renderGroup()}
                 {bottomSheetInfo()}
             </Block>
-        // </Container>
+        </Container>
     );
 };
 

@@ -8,8 +8,8 @@ import * as Progress from 'react-native-progress';
 import Icon from '@components/Icon';
 import { usePostCommentMutation, useGetAllCommentQuery, useLazyGetAllCommentQuery } from '@redux/servicesNew';
 import { useAppSelector } from '@hooks';
-
-
+import { makeStyles, useTheme } from 'themeNew';
+import { withNamespaces } from 'react-i18next';
 const _renderStar = num => {
   let star = [];
   for (let i = 0; i < num; i++) {
@@ -28,11 +28,13 @@ const _renderStar = num => {
 const EvaluateBook = ({ idChapter }) => {
   const [evaluate, setEvaluate] = useState(0);
   const [comment, setComment] = useState('');
-
   const [postComment] = usePostCommentMutation();
   const [getAllComment, status, error] = useLazyGetAllCommentQuery();
   const [listComment, setListComment] = useState([]);
-
+  const themeStore = useAppSelector(state => state.root.themeApp.theme);
+  const themeNew = useTheme(themeStore);
+  const styles = useStyles(themeStore);
+  console.log("listComment----------------------", listComment);
   useEffect(() => {
     const getDataComment = async () => {
       const dataComment = await getAllComment(idChapter);
@@ -48,34 +50,39 @@ const EvaluateBook = ({ idChapter }) => {
 
 
   const handleSubmitComment = async () => {
-    if (evaluate > 0 && comment.length != 0) {
-      const body = { idChapter: idChapter, content: comment, idUser: myInfo._id, userName: myInfo.name, evaluate: evaluate };
-      await postComment(body);
-      ToastAndroid.show("Đăng bình luận thành công!", ToastAndroid.SHORT);
-      setEvaluate(0);
-      setComment('');
-      // listComment = getAllComment(idChapter);
-      const dataComment = await getAllComment(idChapter);
-      setListComment(dataComment?.data?.data?.reverse());
-    } else {
-      if (evaluate <= 0) {
-        ToastAndroid.show("Bạn chưa đánh giá!", ToastAndroid.SHORT);
+    try {
+      if (evaluate > 0 && comment.length != 0) {
+        const body = { idChapter: idChapter, content: comment, idUser: myInfo._id, userName: myInfo.name, evaluate: evaluate };
+        await postComment(body);
+        ToastAndroid.show("Đăng bình luận thành công!", ToastAndroid.SHORT);
+        setEvaluate(0);
+        setComment('');
+        // listComment = getAllComment(idChapter);
+        const dataComment = await getAllComment(idChapter);
+        setListComment(dataComment?.data?.data?.reverse());
       } else {
-        ToastAndroid.show("Bạn chưa viết bình luận!", ToastAndroid.SHORT);
+        if (evaluate <= 0) {
+          ToastAndroid.show("Bạn chưa đánh giá!", ToastAndroid.SHORT);
+        } else {
+          ToastAndroid.show("Bạn chưa viết bình luận!", ToastAndroid.SHORT);
+        }
       }
+    } catch (error) {
+      ToastAndroid.show("Bình luận không thành công!", ToastAndroid.SHORT);
+
     }
   }
 
   return (
-    <Block marginHorizontal={10} marginTop={40}>
-      <Text center marginTop={30} color={theme.colors.black} size={18}>
+    <Block backgroundColor={themeNew.colors.background} marginHorizontal={10} marginTop={40}>
+      <Text center marginTop={30} color={themeNew.colors.textInBox} size={18}>
         Xếp hạng đánh giá
       </Text>
       <Text
         center
         marginTop={20}
         fontType={'bold'}
-        color={theme.colors.black}
+        color={themeNew.colors.textInBox}
         size={50}>
         4.3
       </Text>
@@ -83,12 +90,12 @@ const EvaluateBook = ({ idChapter }) => {
       <Block row alignCenter justifyCenter width={'100%'}>
         {_renderStar(4)}
       </Block>
-      <Text center marginTop={10} color={theme.black}>
+      <Text color={themeNew.colors.textInBox} center marginTop={10} >
         1000
       </Text>
       {/* Danh gia progress */}
       <Block row marginLeft={40} alignCenter marginTop={20}>
-        <Text color={theme.colors.lightGray} size={14}>
+        <Text color={themeNew.colors.textInBox} size={14}>
           5
         </Text>
         <Block marginLeft={10}>
@@ -99,13 +106,13 @@ const EvaluateBook = ({ idChapter }) => {
             width={Dimensions.get('window').width - 200}
           />
         </Block>
-        <Text marginLeft={10} color={theme.colors.lightGray} size={14}>
+        <Text color={themeNew.colors.textInBox} marginLeft={10} size={14}>
           75%
         </Text>
       </Block>
 
       <Block row marginLeft={40} alignCenter marginTop={10}>
-        <Text color={theme.colors.lightGray} size={14}>
+        <Text ccolor={themeNew.colors.textInBox} size={14}>
           4
         </Text>
         <Block marginLeft={10}>
@@ -116,12 +123,12 @@ const EvaluateBook = ({ idChapter }) => {
             width={Dimensions.get('window').width - 200}
           />
         </Block>
-        <Text marginLeft={10} color={theme.colors.lightGray} size={14}>
+        <Text marginLeft={10} color={themeNew.colors.textInBox} size={14}>
           4%
         </Text>
       </Block>
       <Block row marginLeft={40} alignCenter marginTop={10}>
-        <Text color={theme.colors.lightGray} size={14}>
+        <Text color={themeNew.colors.textInBox} size={14}>
           3
         </Text>
         <Block marginLeft={10}>
@@ -132,12 +139,12 @@ const EvaluateBook = ({ idChapter }) => {
             width={Dimensions.get('window').width - 200}
           />
         </Block>
-        <Text marginLeft={10} color={theme.colors.lightGray} size={14}>
+        <Text marginLeft={10} color={themeNew.colors.textInBox} size={14}>
           25%
         </Text>
       </Block>
       <Block row marginLeft={40} alignCenter marginTop={10}>
-        <Text color={theme.colors.lightGray} size={14}>
+        <Text color={themeNew.colors.textInBox} size={14}>
           2
         </Text>
         <Block marginLeft={10}>
@@ -148,12 +155,12 @@ const EvaluateBook = ({ idChapter }) => {
             width={Dimensions.get('window').width - 200}
           />
         </Block>
-        <Text marginLeft={10} color={theme.colors.lightGray} size={14}>
+        <Text color={themeNew.colors.textInBox} marginLeft={10} size={14}>
           15%
         </Text>
       </Block>
       <Block row marginLeft={40} alignCenter marginTop={10}>
-        <Text color={theme.colors.lightGray} size={14}>
+        <Text color={themeNew.colors.textInBox} size={14}>
           1
         </Text>
         <Block marginLeft={10}>
@@ -164,14 +171,14 @@ const EvaluateBook = ({ idChapter }) => {
             width={Dimensions.get('window').width - 200}
           />
         </Block>
-        <Text marginLeft={10} color={theme.colors.lightGray} size={14}>
+        <Text marginLeft={10} color={themeNew.colors.textInBox} size={14}>
           13%
         </Text>
       </Block>
-      <Text center color={theme.colors.black} size={18} marginTop={30}>
+      <Text center color={themeNew.colors.textInBox} size={18} marginTop={30}>
         Đánh giá sách
       </Text>
-      <Text center color={theme.colors.dark} size={14}>
+      <Text center color={themeNew.colors.textInBox} size={14}>
         Hãy cho người khác biết suy nghĩ của bạn
       </Text>
       {/* Star cua người đánh giá */}
@@ -213,6 +220,7 @@ const EvaluateBook = ({ idChapter }) => {
         onChangeText={setComment}
         placeholder="Nhập vào đây"
         style={styles.tip_comment}
+        placeholderTextColor={themeNew.colors.text}
         multiline={true}
         maxLength={400}
         textAlignVertical="top"
@@ -236,7 +244,7 @@ const EvaluateBook = ({ idChapter }) => {
   );
 };
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles()(({ colors }) => ({
   start: {
     height: 35,
     width: 35,
@@ -245,13 +253,14 @@ const styles = StyleSheet.create({
     marginLeft: 5,
   },
   tip_comment: {
-    backgroundColor: theme.colors.gray4,
+    backgroundColor: colors.text,
     borderRadius: 10,
     paddingHorizontal: 15,
     height: 160,
     fontSize: 16,
     paddingVertical: 15,
     marginTop: 20,
+    color: colors.black
   },
   btn_submit_comment: {
     backgroundColor: theme.colors.dark1,
@@ -260,6 +269,6 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     alignItems: 'center',
   },
-});
+}));
 
-export default EvaluateBook;
+export default withNamespaces()(EvaluateBook);

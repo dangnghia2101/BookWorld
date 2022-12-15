@@ -2,8 +2,6 @@ import { Block, Text } from '@components';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Dimensions, TouchableOpacity } from 'react-native';
 
-// import Plot from 'react-plotly.js';
-// import Plot from 'react-plotly.js';
 const screenWidth = Dimensions.get('window').width;
 
 import { useAppSelector } from '@hooks';
@@ -125,8 +123,7 @@ const ChartMoreMy = props => {
             <Block
                 style={styles.dateContainer}
                 row
-                justifyContent={'space-around'}
-                marginHorizontal={15}>
+                justifyContent={'space-around'}>
                 <TouchableOpacity
                     style={[styles.itemChartContainer, styles.shadowColor]}
                     onPress={handleDataDate}
@@ -181,7 +178,7 @@ const useStyle = makeStyles()(({ colors }) => ({
         elevation: 2,
     },
     itemChartContainer: {
-        width: 118,
+        width: '25%',
         height: 32,
         backgroundColor: colors.backgroundDark2,
         borderRadius: 6,

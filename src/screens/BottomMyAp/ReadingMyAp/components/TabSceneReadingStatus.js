@@ -3,19 +3,18 @@ import React from 'react';
 import { Block, Text } from '@components';
 import ItemCateBook from '@screens/BottomMyAp/HomeMyAp/HomeScreenMyAp/components/ItemCateBook';
 import { useAppSelector } from 'hooks';
-
-const TabSceneReadingStatus = ({ route }) => {
+import { withNamespaces } from 'react-i18next';
+const TabSceneReadingStatus = ({ route, t }) => {
   const allBooks = useAppSelector(state => state.root.book.bookList);
-
-  return allBooks?.length > 0 ? (
+  return allBooks.length > 0 ? (
     <ScrollView>
       {allBooks.map((item, index) => (
         <ItemCateBook key={index} item={item} />
       ))}
     </ScrollView>
   ) : (
-    <Text> Khong co sach </Text>
+    <Text>{t('noBook')}</Text>
   );
 };
 
-export default TabSceneReadingStatus;
+export default withNamespaces()(TabSceneReadingStatus);

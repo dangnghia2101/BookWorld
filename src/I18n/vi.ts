@@ -89,7 +89,10 @@ export default {
   askPay:' Nhấn “ Thanh toán “ đồng nghĩa với việc bạn đồng ý tuân theo điều khoản của Bookword',
   totalPrice:'Tổn giá sách',
   discount:'Giảm giá',
+  shareIntBooks:'Chia sẻ cuốn sách thú vị',
+  waitingList:'Danh sách chờ',
   pay:'Thanh toán',
+  noBook:'Không có sách',
   categories: {
     TT: 'Ảo tưởng',
     HD: 'Hành động',

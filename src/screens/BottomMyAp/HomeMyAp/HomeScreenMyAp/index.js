@@ -101,7 +101,7 @@ const HomeScreenMyAp = ({ t }) => {
                             height={WIDTH_ITEM_INVIEW}
                             justifyCenter
                             alignCenter>
-                            <Text>Chưa có sach</Text>
+                            <Text>{t('noBook')}</Text>
                         </Block>
                     }
                 />

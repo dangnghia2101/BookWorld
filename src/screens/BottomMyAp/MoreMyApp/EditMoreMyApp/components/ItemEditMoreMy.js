@@ -295,7 +295,7 @@ const useStyle = makeStyles()(({ colors }) => ({
     btnItem: {
         width: '100%',
         height: 55,
-        marginVertical: 8,
+        marginVertical: 10,
         backgroundColor: colors.backgroundDark2,
         borderRadius: 10,
         justifyContent: 'center',

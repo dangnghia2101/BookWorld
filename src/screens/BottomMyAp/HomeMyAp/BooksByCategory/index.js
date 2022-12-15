@@ -6,8 +6,8 @@ import { StyleSheet } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useTheme } from 'themeNew';
 import ItemCateBook from '../HomeScreenMyAp/components/ItemCateBook';
-
-const BooksByCategory = ({ route }) => {
+import { withNamespaces } from 'react-i18next';
+const BooksByCategory = ({ route, t }) => {
   const { id, title } = route.params
   const themeStore = useAppSelector(state => state.root.themeApp.theme);
   const { colors } = useTheme(themeStore)
@@ -22,13 +22,13 @@ const BooksByCategory = ({ route }) => {
 
   const renderEmty = useCallback(() => (
     <Block flex justifyCenter alignCenter>
-      <Text>Không có sách</Text>
+      <Text color={colors.textInBox}>{t('noBook')}</Text>
     </Block>
   ))
 
   return (
-    <Block flex>
-      <HeaderWithButton title={title} isBackHeader backgroundColor={colors.grey16} />
+    <Block backgroundColor={colors.background} flex>
+      <HeaderWithButton title={title} isBackHeader />
       {data.length > 0 ? (<ScrollView>
         {data?.map((item, index) => (
           <ItemCateBook key={item._id} item={item} />
@@ -43,4 +43,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default BooksByCategory;
+export default withNamespaces()(BooksByCategory);

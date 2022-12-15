@@ -14,7 +14,7 @@ import {
     View,
 } from 'react-native';
 
-import { Block, Container, Icon, ModalBox, Text } from '@components';
+import { Block, Container, HeaderWithButton, Icon, ModalBox, Text } from '@components';
 import { useAppDispatch, useAppSelector } from '@hooks';
 import Slider from '@react-native-community/slider';
 import { changeLoading } from '@redux/reducerNew';
@@ -38,7 +38,7 @@ import BottomSheet, {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { icons, NotFoundIcon } from '@assets';
 import Share from 'react-native-share';
-import { color } from 'react-native-reanimated';
+import { withNamespaces } from 'react-i18next';
 
 const { width, height } = Dimensions.get('window');
 
@@ -88,7 +88,7 @@ const togglePlayBack = async playBackState => {
     }
 };
 
-export const ListenBook = ({ route }) => {
+const ListenBook = ({ route, t }) => {
     const { idChapter, nameBook } = route.params;
     const playBackState = usePlaybackState();
     const progress = useProgress();
@@ -240,8 +240,8 @@ export const ListenBook = ({ route }) => {
             <Block flex height={70} row alignCenter marginHorizontal={10}>
                 <Image source={{ uri: item.image }} style={style.imageStyle} />
                 <Block width="70%" marginLeft={10} paddingTop={10}>
-                    <Text fontType="bold">{item.name}</Text>
-                    <Text flexGrow={1}>{item.introduction}</Text>
+                    <Text color={colors.textInBox} fontType="bold">{item.name}</Text>
+                    <Text color={colors.textInBox} flexGrow={1}>{item.introduction}</Text>
                 </Block>
                 <Pressable style={{ flex: 1, alignItems: 'flex-end' }}>
                     <Icon
@@ -263,9 +263,9 @@ export const ListenBook = ({ route }) => {
                 snapPoints={snapPoints}
                 enablePanDownToClose={true}
                 backdropComponent={renderBackdrop}>
-                <Block backgroundColor={colors.white} alignCenter flex>
+                <Block backgroundColor={colors.background} alignCenter flex>
                     <Text marginVertical={10} size={16} fontType="bold">
-                        Danh sách chờ
+                        {t('waitingList')}
                     </Text>
                     <Block
                         height={1}
@@ -322,7 +322,7 @@ export const ListenBook = ({ route }) => {
                         fontType="bold1"
                         size={16}
                         marginBottom={15}>
-                        Chia sẻ cuốn sách thú vị
+                        {t('shareIntBooks')}
                     </Text>
                     {trackArtwork ? (
                         <Image
@@ -375,7 +375,8 @@ export const ListenBook = ({ route }) => {
     return (
         <Container style={style.container}>
             {/* music player section */}
-            <View style={style.mainContainer}>
+            <HeaderWithButton isBackHeader />
+            <Block backgroundColor={colors.background} style={style.mainContainer}>
                 {/* Image */}
 
                 <Animated.FlatList
@@ -412,10 +413,11 @@ export const ListenBook = ({ route }) => {
                 <Block alignCenter>
                     <Text
                         fontType="bold1"
+                        color={colors.textInBox}
                         style={[style.songContent, style.songTitle]}>
                         {nameBook}
                     </Text>
-                    <Text color={colors.grey6} size={14}>
+                    <Text color={colors.blue} size={14}>
                         {trackArtist}
                     </Text>
                 </Block>
@@ -437,12 +439,12 @@ export const ListenBook = ({ route }) => {
 
                     {/* Progress Durations */}
                     <View style={style.progressLevelDuraiton}>
-                        <Text style={style.progressLabelText}>
+                        <Text color={colors.textInBox}>
                             {new Date(progress.position * 1000)
                                 .toLocaleTimeString()
                                 .substring(3)}
                         </Text>
-                        <Text style={style.progressLabelText}>
+                        <Text color={colors.textInBox} >
                             {new Date(
                                 (progress.duration - progress.position) * 1000,
                             )
@@ -453,7 +455,7 @@ export const ListenBook = ({ route }) => {
                 </Block>
 
                 {/* music control */}
-                <View style={style.musicControlsContainer}>
+                <Block style={style.musicControlsContainer}>
                     <TouchableOpacity onPress={skipToPrevious}>
                         <Ionicons
                             name="play-skip-back-outline"
@@ -480,13 +482,13 @@ export const ListenBook = ({ route }) => {
                             color={colors.primary}
                         />
                     </TouchableOpacity>
-                </View>
-            </View>
+                </Block>
+            </Block>
 
             {/* bottom section */}
-            <View style={style.bottomSection}>
-                <View style={style.bottomIconContainer}>
-                    <TouchableOpacity onPress={() => {}}>
+            <Block backgroundColor={colors.background} style={style.bottomSection}>
+                <Block style={style.bottomIconContainer}>
+                    <TouchableOpacity onPress={() => { }}>
                         <Ionicons
                             name="heart-outline"
                             size={25}
@@ -518,18 +520,20 @@ export const ListenBook = ({ route }) => {
                             color="#888888"
                         />
                     </TouchableOpacity>
-                </View>
-            </View>
+                </Block>
+            </Block>
 
             {bottomSheetReadyRead()}
             {renderShare()}
         </Container>
     );
 };
+export default withNamespaces()(ListenBook);
+
 const useStyle = makeStyles()(({ normalize, colors }) => ({
     container: {
         flex: 1,
-        backgroundColor: colors.white,
+        backgroundColor: colors.background
     },
     mainContainer: {
         flex: 1,
@@ -537,9 +541,8 @@ const useStyle = makeStyles()(({ normalize, colors }) => ({
         justifyContent: 'center',
     },
     bottomSection: {
-        borderTopColor: colors.grey14,
+        borderTopColor: colors.grey12,
         borderWidth: normalize(1)('moderate'),
-        borderBottomColor: colors.grey14,
         width: width,
         alignItems: 'center',
         paddingVertical: 15,
@@ -581,7 +584,6 @@ const useStyle = makeStyles()(({ normalize, colors }) => ({
     },
     songContent: {
         textAlign: 'center',
-        color: colors.textDark,
     },
     songTitle: {
         fontSize: 18,
@@ -603,9 +605,6 @@ const useStyle = makeStyles()(({ normalize, colors }) => ({
         width: 340,
         flexDirection: 'row',
         justifyContent: 'space-between',
-    },
-    progressLabelText: {
-        color: colors.textDark,
     },
 
     musicControlsContainer: {
