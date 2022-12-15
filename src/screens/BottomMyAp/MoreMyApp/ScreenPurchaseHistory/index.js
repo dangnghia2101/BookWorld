@@ -16,7 +16,6 @@ const MoreMyApp = props => {
     <Block flex justifyCenter backgroundColor={themeNew.colors.background}>
       <HeaderWithButton isBackHeader title={t('purchaseHistory')} />
       <ScrollView showsVerticalScrollIndicator={false}>
-        <ChartPurchase />
         <BodyPurchaseHistory />
       </ScrollView>
     </Block>

@@ -9,6 +9,7 @@ import {
     AuthorReducer,
     ReadingReducer,
     FavoriteBookReducer,
+    RankReducer,
 } from '@redux/reducerNew';
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import {
@@ -33,6 +34,7 @@ import {
     editProfileAPI,
     bookOfAuthAPI,
     chatAPI,
+    rankAPI,
 } from '@redux/servicesNew';
 import { setupListeners } from '@reduxjs/toolkit/query';
 import { userPhoneApi } from '@redux/servicesNew/userPhoneAPI';
@@ -47,6 +49,7 @@ const rootReducer = combineReducers({
     author: AuthorReducer,
     reading: ReadingReducer,
     favoriteBook: FavoriteBookReducer,
+    rank: RankReducer,
     // ...other reducers here
 });
 
@@ -75,6 +78,7 @@ export const store = configureStore({
         [editProfileAPI.reducerPath]: editProfileAPI.reducer,
         [bookOfAuthAPI.reducerPath]: bookOfAuthAPI.reducer,
         [chatAPI.reducerPath]: chatAPI.reducer,
+        [rankAPI.reducerPath]: rankAPI.reducer,
     },
     middleware: getDefaultMiddleware =>
         getDefaultMiddleware({
@@ -98,7 +102,8 @@ export const store = configureStore({
             .concat(editProfileAPI.middleware)
             .concat(bookOfAuthAPI.middleware)
             .concat(profileAPI.middleware)
-            .concat(chatAPI.middleware),
+            .concat(chatAPI.middleware)
+            .concat(rankAPI.middleware),
 });
 
 export const persistor = persistStore(store);
