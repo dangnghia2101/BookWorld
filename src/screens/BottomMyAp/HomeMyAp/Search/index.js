@@ -6,7 +6,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { makeStyles, useTheme } from 'themeNew';
 import TabTopicSearch from './components/TabTopicSearch';
 import { withNamespaces } from 'react-i18next';
-const Search = ({ t }) => {
+const Search = ({ t, route }) => {
     const themeStore = useAppSelector(state => state.root.themeApp.theme);
     const { colors } = useTheme(themeStore);
     const inset = useSafeAreaInsets();

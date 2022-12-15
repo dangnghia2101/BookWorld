@@ -190,6 +190,7 @@ const ChapterBook = ({
                                         {
                                             idChapter: item.idChapter,
                                             nameBook: nameBook,
+                                            item,
                                         },
                                     );
                                 } else {

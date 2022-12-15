@@ -7,24 +7,26 @@ import { Dimensions, Image, StyleSheet } from 'react-native';
 import { useTheme } from 'themeNew';
 const widthPhone = Dimensions.get('window').width;
 
-const _renderStar = num => {
-  let star = [];
-  for (let i = 0; i < num; i++) {
-    star.push(
-      <Icon
-        component={'AntDesign'}
-        name="star"
-        color={theme.colors.yellow}
-        size={20}
-      />,
-    );
-  }
-  return star;
-};
 
-const ImageBook = ({ item }) => {
+
+const ImageBook = ({ item, route }) => {
   const themeStore = useAppSelector(state => state.root.themeApp.theme);
   const themeNew = useTheme(themeStore);
+  const _renderStar = () => {
+    let star = [];
+    for (let i = 0; i < item.star; i++) {
+      star.push(
+        <Icon
+          component={'AntDesign'}
+          name="star"
+          color={theme.colors.yellow}
+          size={20}
+        />,
+      );
+    }
+    return star;
+  };
+
   return (
     <Block alignCenter>
       <Image source={{ uri: item.item.image }} style={styles.image} />
@@ -40,8 +42,8 @@ const ImageBook = ({ item }) => {
       </Text>
       {/* Star */}
       <Block row marginTop={5}>
-        {_renderStar(5)}
-        <Text marginLeft={5}>4.0</Text>
+        {_renderStar()}
+        <Text marginLeft={5}>{item.star}.0</Text>
       </Block>
     </Block>
   );

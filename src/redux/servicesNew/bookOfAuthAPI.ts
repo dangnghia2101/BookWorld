@@ -75,7 +75,7 @@ export type BookOfAuthState = {
   
 export const {
     useGetBookOfAuthorQuery,
-    useGetBookReadedQuery,
+    useGetBookReadedQuery, 
     useGetFavoriteBookQuery,
     usePostSaveFavoriteBooksMutation
   } = bookOfAuthAPI;

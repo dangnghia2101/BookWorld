@@ -7,6 +7,7 @@ import { width, height } from '@utils/responsive';
 import { makeStyles, useTheme } from 'themeNew';
 import { useAppSelector } from '@hooks';
 import { withNamespaces } from 'react-i18next';
+import Icon from '@components/Icon';
 
 const PADDING_ITEM = 15;
 const ITEM_WITH = width * 0.6;
@@ -16,6 +17,33 @@ const ItemMostBookRead = ({ item, index, scrollX, size, t }) => {
     const themeStore = useAppSelector(state => state.root.themeApp.theme);
     const theme = useTheme(themeStore);
     const styles = useStyle(themeStore);
+    let star = [];
+
+    const allBooks = useAppSelector(state => state.root.book.bookList);
+    const _renderStar = () => {
+        for (let i = 0; i <= allBooks.length; i++) {
+            let num = Math.floor(Math.random() * 3) + 3;
+            // let star = [];
+            for (let j = 1; j <= num; j++) {
+                star.push(
+                    <Icon
+                        component={'AntDesign'}
+                        name="star"
+                        color={theme.colors.yellow}
+                        size={15}
+                    />,
+                );
+            }
+            return star;
+        }
+    };
+
+    const _renderView = () => {
+        for (let i = 0; i <= allBooks.length; i++) {
+            let num = Math.floor(Math.random() * 9999) + 100;
+            return num;
+        }
+    };
 
     const inputRange = [
         (index - 2) * ITEM_WITH,
@@ -33,6 +61,7 @@ const ItemMostBookRead = ({ item, index, scrollX, size, t }) => {
     if (index === 0 || index === size - 1) {
         return <View style={{ width: SPACER_ITEM_SIZE + 20 }} />;
     }
+
     return (
         <TouchableOpacity
             style={styles.container}
@@ -41,6 +70,7 @@ const ItemMostBookRead = ({ item, index, scrollX, size, t }) => {
                 navigation.navigate(routes.DETAIL_BOOK_MY_AP, {
                     bookmark: true,
                     item: item,
+                    star: star.length,
                 })
             }>
             <Animated.View
@@ -84,10 +114,13 @@ const ItemMostBookRead = ({ item, index, scrollX, size, t }) => {
                     size={11}
                     fontType='medium1'
                     color={theme.colors.textInBox}>
-                    {item.isPrice} {t('view')}
+                    {_renderView()} {t('view')}
                 </Text>
-
-                <Evaluate sizeIcon={15} colorIcon={theme.colors.yellow} />
+                <Block row alignCenter>
+                    {_renderStar()}
+                    <Text color={theme.colors.textInBox} marginLeft={5}>{star.length}.0</Text>
+                </Block>
+                {/* <Evaluate sizeIcon={15} colorIcon={theme.colors.yellow} /> */}
                 {/* </Block> */}
             </Animated.View>
         </TouchableOpacity>

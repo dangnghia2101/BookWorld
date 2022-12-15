@@ -9,7 +9,7 @@ const TapScreenFavoriteBook = ({ route, t }) => {
     // const favoriteBook = useAppSelector(state => state.root.favoriteBook);
     const myInfo = useAppSelector(state => state.root.auth);
     const { data } = useGetFavoriteBookQuery(myInfo._id);
-    console.log("favoriteeeeeeeeeeee", data?.data[0]?.favoriteBooks);
+    // console.log("favoriteeeeeeeeeeee", data?.data[0]?.favoriteBooks);
 
     return data ? (
         <ScrollView>

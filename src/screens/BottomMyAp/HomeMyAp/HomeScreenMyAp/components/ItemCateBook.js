@@ -110,12 +110,12 @@ const ItemCateBook = ({ item, t }) => {
                         </Text>
                     </Block>
 
-                    <Block row marginTop={5} alignCenter>
+                    <Block row alignCenter>
                         {_renderStar()}
                         <Text color={theme.colors.textInBox} marginLeft={5}>{star.length}.0</Text>
                     </Block>
 
-                    <Block row marginTop={10} alignCenter>
+                    <Block style={styles.container} row marginTop={10} alignCenter>
                         <Button
                             style={[
                                 styles.btnItemCate,
@@ -124,6 +124,7 @@ const ItemCateBook = ({ item, t }) => {
                             onPress={() =>
                                 navigation.navigate(routes.DETAIL_BOOK_MY_AP, {
                                     item,
+                                    star: star.length,
                                 })
                             }>
                             <Text size={12} fontType="bold" color="white">
@@ -135,6 +136,7 @@ const ItemCateBook = ({ item, t }) => {
                                 navigation.navigate(routes.DETAIL_BOOK_MY_AP, {
                                     item,
                                     _isRead: false,
+                                    star: star.length,
                                 })
                             }
                             style={[
@@ -158,6 +160,9 @@ const ItemCateBook = ({ item, t }) => {
 export default withNamespaces()(ItemCateBook);
 
 const useStyles = makeStyles()(({ colors }) => ({
+    container: {
+        marginTop: '16%'
+    },
     inputSection: {
         color: colors.white,
         height: 40,

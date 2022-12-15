@@ -32,7 +32,7 @@ const DetailBookScreenMyAp = ({ route }) => {
   const { progressInDay, target } = useAppSelector(
     state => state.root.reading,
   );
-
+  console.log("itemmmmmmmmmmmmmmmm========", item);
   const time = useCountDown(progressInDay, 100);
 
   useEffect(() => {
