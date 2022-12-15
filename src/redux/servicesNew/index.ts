@@ -8,3 +8,5 @@ export * from './profileAPI';
 export * from './editProflieAPI';
 export * from './chatAPI';
 export * from './bookOfAuthAPI';
+export * from './rankAPI';
+export * from './purchaseAPI';

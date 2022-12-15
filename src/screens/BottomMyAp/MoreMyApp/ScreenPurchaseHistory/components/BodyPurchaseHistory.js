@@ -1,5 +1,5 @@
 import { Block, Text } from '@components';
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import { StyleSheet, Pressable, TouchableOpacity, Image, View } from 'react-native';
 import IconView from '@components/Icon';
 import { routes } from '@navigation/routes';
@@ -7,14 +7,27 @@ import { useNavigation } from '@react-navigation/native';
 import { colors, makeStyles, useTheme } from 'themeNew';
 import { useAppSelector, useAppDispatch } from '@hooks';
 import { withNamespaces } from 'react-i18next';
+import { useLazyGetPurchaseHistoryCartQuery,useGetPurchaseHistoryCartQuery
+} from '@redux/servicesNew';
 
 const BodyPurchaseHistory = props => {
   const navigation = useNavigation();
   const { t } = props;
+  const [dataPurchase, setDataPurchase] = useState([]);
+  const [getPurchaseHistoryCart] = useLazyGetPurchaseHistoryCartQuery();
 
+  const myInfo = useAppSelector(state => state.root.auth);
   const themeStore = useAppSelector(state => state.root.themeApp.theme);
   const themeNew = useTheme(themeStore);
   const styles = useStyle(props, themeStore);
+
+  useEffect(() => {
+    const fetchGetPurchase = async () => {
+        let { data } = await getPurchaseHistoryCart(myInfo.token);
+        setDataPurchase(data);
+    };
+    fetchGetPurchase();
+}, []);
 
   return (
     <Block marginHorizontal={20} flex height={20000}>
