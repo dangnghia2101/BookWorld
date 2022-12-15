@@ -4,11 +4,8 @@ import { useAppDispatch, useAppSelector } from '@hooks';
 import { saveSearchReducer } from '@redux/reducerNew';
 import React, { useState } from 'react';
 import { withNamespaces } from 'react-i18next';
-import { ScrollView } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { makeStyles, useTheme } from 'themeNew';
 import TabTopicSearch from './components/TabTopicSearch';
-import { withNamespaces } from 'react-i18next';
 const Search = ({ t, route }) => {
     const themeStore = useAppSelector(state => state.root.themeApp.theme);
     const { colors } = useTheme(themeStore);
