@@ -1,15 +1,15 @@
 import { Block, Text } from '@components';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { theme } from '@theme';
 import { StyleSheet } from 'react-native';
 import { TabBar, TabView } from 'react-native-tab-view';
 import TabSceneReadingStatus from './TabSceneReadingStatus';
 import TapScenceAuthor from './TapScenceAuthor';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import actions from '@redux/actions';
 import { makeStyles, useTheme } from 'themeNew';
 import { useAppSelector } from '@hooks';
-import { strings } from 'I18n';
+import TapScreenFavoriteBook from './TapScreenFavoriteBook';
 
 
 const TapReadingStatus = () => {
@@ -103,7 +103,8 @@ const TapReadingStatus = () => {
     ],
     isLoading: false,
   };
-  const listAuthor = useSelector(state => state.getAllAuthor);
+  const myInfo = useAppSelector(state => state.root.auth);
+  console.log("myInfooooooooooooooooooooo", myInfo);
 
   const formatRouter = data => {
     return data?.map(item => {
@@ -118,18 +119,19 @@ const TapReadingStatus = () => {
       };
     });
   };
+
   const _renderLabel = useCallback(
     ({ route, focused, color }) => {
       return (
         <Block>
-          <Text color={focused ? themeNew.colors.primary : themeNew.colors.grey10}>
+          <Text fontType='medium1' color={focused ? themeNew.colors.primary : themeNew.colors.grey9}
+            size={15}>
             {route.title}
-            {/* {route.key !== 'Default' ? strings(`tabReadingnName.${route.code}`) : ''} */}
           </Text>
         </Block>
       );
     },
-    [themeNew.colors.grey10, themeNew.colors.primary],
+    // [themeNew.colors.grey10, themeNew.colors.primary],
   );
 
   useEffect(() => {
@@ -147,10 +149,10 @@ const TapReadingStatus = () => {
           <TabBar
             {...props}
             scrollEnabled={true}
-            // indicatorStyle={styles.indicator}
             renderLabel={_renderLabel}
             tabStyle={styles.tabStyle}
-            style={{ backgroundColor: themeNew.colors.text }}
+            indicatorStyle={styles.tabBarIndicatorStyle}
+            style={{ backgroundColor: themeNew.colors.background }}
           />
         )}
       </>
@@ -161,7 +163,7 @@ const TapReadingStatus = () => {
       case 'cate01':
         return index === 0 ? <TabSceneReadingStatus route={route} /> : null;
       case 'cate02':
-        return index === 1 ? <TapScenceAuthor /> : null;
+        return index === 1 ? <TapScreenFavoriteBook route={route} /> : null;
       case 'cate03':
         return index === 2 ? <TapScenceAuthor /> : null;
       default:
@@ -176,7 +178,6 @@ const TapReadingStatus = () => {
       renderTabBar={rednderTabBar}
       onIndexChange={setIndex}
       style={{ height: 500 }}
-      backgroundColor={theme.colors.red}
     />
   );
 };
@@ -184,5 +185,11 @@ const TapReadingStatus = () => {
 export default TapReadingStatus;
 
 const styles = StyleSheet.create({
-  tabStyle: { width: 'auto' },
+  tabBarIndicatorStyle: {
+    height: 2,
+    backgroundColor: theme.colors.creamRed
+  },
+  tabStyle: {
+    width: 'auto',
+  },
 });

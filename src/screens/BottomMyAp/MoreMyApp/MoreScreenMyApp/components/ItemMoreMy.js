@@ -1,54 +1,65 @@
-import {Block, Text} from '@components';
+import { Block, Text } from '@components';
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import { makeStyles, useTheme } from 'themeNew';
+import { withNamespaces } from 'react-i18next';
+import { useAppSelector, useAppDispatch } from '@hooks';
 
-const ItemMoreMy = () => {
-  return (
-    <Block
-      marginHorizontal={25}
-      marginTop={200}
-      row
-      justifyContent={'space-between'}>
-      <View style={styles.dataContainer}>
-        <Text center marginTop={10}>
-          Tổng thời gian đọc
-        </Text>
-        <View style={styles.textDataContainer}>
-          <Text style={styles.textData} center>
-            1280
-          </Text>
-        </View>
-        <Text center>phút</Text>
-      </View>
-      <View style={styles.dataContainer}>
-        <Text center marginTop={10}>
-          Số sách đã đọc
-        </Text>
-        <View style={styles.textDataContainer}>
-          <Text style={styles.textData} center>
-            23
-          </Text>
-        </View>
-      </View>
-    </Block>
-  );
+const ItemMoreMy = ({ props, t }) => {
+    const themeStore = useAppSelector(state => state.root.themeApp.theme);
+    const themeNew = useTheme(themeStore);
+    const styles = useStyle(props, themeStore);
+    return (
+        <Block
+            marginTop={10}
+            row
+            justifyContent={'space-around'}>
+            <Block style={[styles.dataContainer, styles.shadowColor]}>
+                <Text fontType={'medium1'} center color={themeNew.colors.textDark}>
+                    {t('totalReadingTime')}
+                </Text>
+                <Text size={40} center color={themeNew.colors.textDark}>
+                    1280
+                </Text>
+                <Text fontType={'medium1'} center color={themeNew.colors.textDark}>
+                    {t('minute')}
+                </Text>
+            </Block>
+            <Block style={[styles.dataContainer, styles.shadowColor]}>
+                <Text fontType={'medium1'} center color={themeNew.colors.textDark}>
+                    {t('numberOfBooksRead')}
+
+                </Text>
+                <Text size={40} center color={themeNew.colors.textDark}>
+                    23
+                </Text>
+                <Text fontType={'medium1'} center color={themeNew.colors.textDark}>
+                    {t('book')}
+                </Text>
+            </Block>
+        </Block>
+    );
 };
 
-export default ItemMoreMy;
+export default withNamespaces()(ItemMoreMy);
 
-const styles = StyleSheet.create({
-  dataContainer: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: 20,
-    width: 171,
-    height: 150,
-    flexDirection: 'column',
-  },
-  textDataContainer: {
-    height: 90,
-    justifyContent: 'center',
-  },
-  textData: {
-    fontSize: 40,
-  },
-});
+const useStyle = makeStyles()(({ colors }) => ({
+    dataContainer: {
+        backgroundColor: colors.backgroundDark2,
+        borderRadius: 20,
+        width: '42%',
+        height: 150,
+        flexDirection: 'column',
+        justifyContent: 'space-around',
+    },
+    shadowColor: {
+        shadowColor: colors.textDark,
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 1,
+        shadowRadius: 4.65,
+        elevation: 2,
+    },
+}));

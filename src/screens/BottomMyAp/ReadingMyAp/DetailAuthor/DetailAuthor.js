@@ -1,141 +1,109 @@
 import {
   StyleSheet,
-  Text,
   ScrollView,
   Image,
+  FlatList,
   TouchableOpacity,
 } from 'react-native';
 import React, { useState, useEffect } from 'react';
-import { Block } from '@components';
+import { Block, Text } from '@components';
+import TopBar from '../components/TopBar';
 import { theme } from '@theme';
 import { width } from '@utils/responsive';
-import ListBookOfAuthor from '../components/ListBookOfAuthor';
-import { useSelector, useDispatch } from 'react-redux';
-import actions from '@redux/actions';
-import { FlatList } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/core';
 import TabSceneReadingStatus from '../components/TabSceneReadingStatus';
+import { useAppSelector } from '@hooks';
+import { makeStyles, useTheme } from 'themeNew';
+import { withNamespaces } from 'react-i18next';
+import BookOfAuthor from '../components/BookOfAuthor';
 const widthItemEventIncoming = width - width / 3;
 const WIDTH_ITEM_INVIEW = widthItemEventIncoming - 20;
 
-const DetailAuthor = ({ route }) => {
-  const dispatch = useDispatch();
-  const navigation = useNavigation();
-  const listBookOfAuthor = useSelector(state => state.getAllBookAuthor);
-
-  useEffect(() => {
-    dispatch({ type: actions.GET_ALL_BOOK_AUTHOR });
-  }, []);
-
-  const _renderItemBookOfAuthor = ({ item }) => {
-    return <ListBookOfAuthor item={item} />;
-  };
+const DetailAuthor = ({ route, t }) => {
+  let item = route.params.item;
+  const themeStore = useAppSelector(state => state.root.themeApp.theme);
+  const themeNew = useTheme(themeStore);
 
   return (
-    <Block backgroundColor={theme.colors.white} flex>
-      <Block width="100%" height="60%">
-        <Block
-          width="100%"
-          height={371}
-          backgroundColor={theme.colors.darkPurple}>
-          <TouchableOpacity style={styles.iconBack}>
+    <ScrollView showsVerticalScrollIndicator={false}>
+      <Block backgroundColor={themeNew.colors.background} flex>
+        <TopBar isBackHeader />
+        <Block relative width="100%" height="40%">
+          <Block
+            width="100%"
+            height={'50%'}
+            backgroundColor={theme.colors.darkPurple}>
+          </Block>
+          <Block width={'70%'} height={'60%'} absolute top={50} left={90} >
             <Image
-              source={require('@assets/icons/iconback.png')}
-              onPress={() => navigation.goBack()}
+              style={styles.imgAuthor}
+              source={{ uri: item.avatar }}
             />
-          </TouchableOpacity>
+          </Block>
+          <Text fontType='bold1' color={themeNew.colors.textInBox} style={styles.nameAuthor}>{item.name}</Text>
         </Block>
-        <Block absolute top={158} left={91}>
-          <Image
-            style={styles.imgAuthor}
-            source={require('@assets/images/imgAuthor.png')}
-          />
-        </Block>
-        <Text style={styles.nameAuthor}>Johnny Dang</Text>
-      </Block>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <Block width="100%" paddingHorizontal={24}>
+
+        <Block paddingHorizontal={24}>
           <Block>
-            <Text style={styles.textIntro}>Giới thiệu về tác giả</Text>
-            <Text style={styles.IntroduceAuthor} numberOfLines={2}>
-              J.D. Salinger was an American writer, best known for his 1951
-              novel The Catcher in the Rye. Before its publi cation, Salinger
-              published several short stories in Story magazine xem thêm
+            <Text fontType='bold1' color={themeNew.colors.textInBox} style={styles.textIntro}>{t('aboutAuthor')}</Text>
+            <Text fontType='medium1' color={themeNew.colors.textInBox} style={styles.IntroduceAuthor} numberOfLines={2}>
+              {item.aboutAuthor.introduce}
             </Text>
           </Block>
           <Block marginTop={18}>
-            <Text style={styles.textIntro}>Tổng quan</Text>
-            <Text style={styles.IntroduceAuthor} numberOfLines={4}>
-              The Catcher in the Rye is a novel by J. D. Salinger, partially
-              published in serial form in 1945–1946 and as a novel in 1951. It
-              was originally intended for adu lts but is often read by
-              adolescents for its theme of angst, alienation and as a critique
-              xem thêm
+            <Text fontType='bold1' color={themeNew.colors.textInBox} style={styles.textIntro}>{t('overview')}</Text>
+            <Text fontType='medium1' color={themeNew.colors.textInBox} style={styles.IntroduceAuthor}>
+              {item.aboutAuthor.details}
             </Text>
           </Block>
           <Block marginTop={18}>
-            <Text style={styles.textIntro}>Thông tin liên hệ</Text>
-            <Text style={styles.IntroduceAuthor}>Facebook: facebook..com</Text>
-            <Text style={styles.IntroduceAuthor}>Youtube: youtube.com </Text>
-            <Text style={styles.IntroduceAuthor}>Instagram: instagram</Text>
-            <Text style={styles.IntroduceAuthor}>Number phone: 0977777777</Text>
-          </Block>
-          <Block marginTop={42}>
-            <Text style={styles.textBook}>Sách của tác giả</Text>
-            {/* <FlatList
-              data={listBookOfAuthor?.data}
-              keyExtractor={item => item._id}
-              renderItem={_renderItemBookOfAuthor}
-              ListEmptyComponent={
-                <Block
-                  width={width}
-                  height={WIDTH_ITEM_INVIEW}
-                  justifyCenter
-                  alignCenter>
-                  <Text>Chưa có sach</Text>
-                </Block>
-              } */}
-            <TabSceneReadingStatus route={route} />
+            <Text fontType='bold1' color={themeNew.colors.textInBox} style={styles.textIntro}>{t('contactInfo')}</Text>
+            <Text fontType='medium1' color={themeNew.colors.textInBox} style={styles.IntroduceAuthor}>Facebook: {item.aboutAuthor.faceBook}</Text>
+            <Text fontType='medium1' color={themeNew.colors.textInBox} style={styles.IntroduceAuthor}>Youtube: {item.aboutAuthor.youtube} </Text>
+            <Text fontType='medium1' color={themeNew.colors.textInBox} style={styles.IntroduceAuthor}>Instagram: {item.aboutAuthor.instagram}</Text>
           </Block>
         </Block>
-      </ScrollView>
-    </Block>
+
+      </Block>
+
+      <Block marginTop={400} bottom={20}>
+        <Text marginHorizontal={20} fontType='bold1' color={themeNew.colors.textInBox} style={styles.textBook}>{t('bookOfAuthor')}</Text>
+        <BookOfAuthor />
+        {/* <TabSceneReadingStatus /> */}
+      </Block>
+    </ScrollView>
   );
 };
 
-export default DetailAuthor;
+export default withNamespaces()(DetailAuthor);
 
 const styles = StyleSheet.create({
-  // listBookOfAuthor: {
-  //   height: 500,
-  // },
+
+  imgAuthor: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 5
+  },
   textBook: {
     lineHeight: 36,
-    fontWeight: '600',
     fontSize: 24,
-    color: '#19191B',
   },
   IntroduceAuthor: {
     lineHeight: 21,
     fontWeight: '400',
     fontSize: 14,
-    color: '#9D9D9D',
     marginTop: 6,
   },
   textIntro: {
-    fontWeight: '600',
     fontSize: 18,
     lineHeight: 27,
-    color: '#19191B',
   },
   nameAuthor: {
     position: 'absolute',
-    fontWeight: '700',
     fontSize: 24,
     lineHeight: 36,
-    left: '32.04%',
-    top: '90%',
-    color: 'black',
+    left: '32%',
+    top: '76%',
   },
   iconBack: {
     position: 'absolute',

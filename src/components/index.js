@@ -19,36 +19,45 @@ import Loading from './Loading';
 import Text from './Text';
 import TextInput from './TextInput';
 import HeaderNotiAndEvent from './HeaderNotiAndEvent';
+import HeaderWithButton from './HeaderWithButton';
 import Button from './Button';
 import NoData from './NoData';
 import AnimatedImage from './AnimatedImage';
 import Evaluate from './Evaluate';
+import PaymentScreen from './Payment';
+import { Container } from './Container';
+import { StatusBar } from './StatusBar';
 
 export {
-  HeaderNotiAndEvent,
-  Button,
-  Block,
-  Text,
-  NoData,
-  ModalCodePush,
-  TextInput,
-  Loading,
-  AnimatedImage,
-  Evaluate,
-  ModalBox,
-  //   RadioButton,
-  //   ModalBox,
-  //   FormContainer,
-  //   FormInput,
-  //   Button,
-  //   Header,
-  //   WebView,
-  //   Loading,
-  //   CheckBox,
-  //   Shimmer,
-  //   ScrollView,
-  //   Icon,
-  //   NetWork,
-  //   ListWrapper,
-  //   Image,
+    HeaderNotiAndEvent,
+    Button,
+    Block,
+    Text,
+    NoData,
+    ModalCodePush,
+    TextInput,
+    Loading,
+    AnimatedImage,
+    Evaluate,
+    ModalBox,
+    PaymentScreen,
+    HeaderWithButton,
+    Icon,
+    Container,
+    StatusBar,
+    //   RadioButton,
+    //   ModalBox,
+    //   FormContainer,
+    //   FormInput,
+    //   Button,
+    //   Header,
+    //   WebView,
+    //   Loading,
+    //   CheckBox,
+    //   Shimmer,
+    //   ScrollView,
+    //   Icon,
+    //   NetWork,
+    //   ListWrapper,
+    //   Image,
 };

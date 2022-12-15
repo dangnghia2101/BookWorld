@@ -1,86 +1,154 @@
+import { Block, HeaderWithButton, Icon } from '@components';
+import {
+  useAppDispatch,
+  useAppSelector,
+  useCountDown,
+  useDebounce,
+} from '@hooks';
+import { useNavigation } from '@react-navigation/core';
+import { changeTimeReducer } from '@redux/reducerNew';
+import { timereadAPI, useGetAllChapterBookMutation } from '@redux/servicesNew';
+import { theme } from '@theme';
+import { makeStyles, useTheme } from 'themeNew';
+import { CountUpTime } from '@utils/helper';
+import CricleProgress from 'common/CircleProgress';
 import React, { useEffect, useState } from 'react';
-import { Block } from '@components';
-import { ScrollView, FlatList } from 'react-native';
+import { ScrollView, StyleSheet, TouchableOpacity, ToastAndroid } from 'react-native';
+import ChapterBook from './components/ChapterBook';
 import ImageBook from './components/ImageBook';
 import IntroduceText from './components/IntroduceText';
-import ChapterBook from './components/ChapterBook';
-import { useDispatch, useSelector } from 'react-redux';
-import actions from '@redux/actions';
-import { theme } from '@theme';
-import Topbar from 'common/Topbar';
-
-// const detailBook = {
-//   name: 'Đầu sách',
-//   evaluateBook: 3.4,
-//   introduce: 'Gioi thieu sach',
-//   chapter: [
-//     {
-//       id: 1,
-//       name: 1,
-//       content: 'Noi dung chuong 1',
-//     },
-//     {
-//       id: 2,
-//       name: 2,
-//       content: 'Noi dung chuong 2',
-//     },
-//     {
-//       id: 3,
-//       name: 'Chuong 1',
-//       content: 'Noi dung chuong 1',
-//     },
-//     {
-//       id: 4,
-//       name: 'Chuong 2',
-//       content: 'Noi dung chuong 2',
-//     },
-//     {
-//       id: 5,
-//       name: 'Chuong 1',
-//       content: 'Noi dung chuong 1',
-//     },
-//     {
-//       id: 6,
-//       name: 'Chuong 2',
-//       content: 'Noi dung chuong 2',
-//     },
-//     {
-//       id: 7,
-//       name: 'Chuong 1',
-//       content: 'Noi dung chuong 1',
-//     },
-//     {
-//       id: 8,
-//       name: 'Chuong 2',
-//       content: 'Noi dung chuong 2',
-//     },
-//   ],
-// };
+import IconView from '@components/Icon';
+import { usePostSaveFavoriteBooksMutation } from '@redux/servicesNew';
 
 const DetailBookScreenMyAp = ({ route }) => {
-  const { bookmark, item } = route.params;
-  const dispatch = useDispatch();
-  const listChapters = useSelector(select => select.getAllChapterBookById);
+  const { bookmark, item, _isRead } = route.params;
+  const [listChapters, setListChapters] = useState([]);
+  const [isRead, setIsRead] = useState(_isRead || true);
+  const themeStore = useAppSelector(state => state.root.themeApp.theme);
+  const themeNew = useTheme(themeStore);
+  const navigation = useNavigation();
+  const dispatch = useAppDispatch();
+  const [saveFavoriteBook] = usePostSaveFavoriteBooksMutation()
+  const { progressInDay, target } = useAppSelector(
+    state => state.root.reading,
+  );
+
+  const time = useCountDown(progressInDay, 100);
 
   useEffect(() => {
-    dispatch({
-      type: actions.GET_ALL_CHAPTER_BY_ID,
-      categoryId: item._id,
-    });
-  }, [dispatch, item._id]);
+    dispatch(changeTimeReducer(time));
+  }, [time]);
+
+  // useEffect(() => {
+  //     if (progressInDay && target) {
+  //         const time = useCountdown(1, 15);
+  //         console.log('===> time ', time);
+  //     }
+  // }, [target]);
+
+  const myInfo = useAppSelector(state => state.root.auth);
+
+  const [getAllChapterBook] = useGetAllChapterBookMutation();
+
+  useEffect(() => {
+    async function fetchAPI() {
+      if (item._id) {
+        const params = {
+          id: item._id,
+          token: myInfo.token,
+        };
+        const { data } = await getAllChapterBook(params);
+        setListChapters(data);
+      }
+    }
+    fetchAPI();
+  }, [getAllChapterBook, item._id, myInfo._id]);
+
+  const handleSaveFavoriteBook = async () => {
+    try {
+      const body = { id: myInfo._id, idBook: item }
+      await saveFavoriteBook(body);
+      ToastAndroid.show("Đã thêm vào sách yêu thích", ToastAndroid.SHORT);
+    } catch (error) {
+      ToastAndroid.show(error, ToastAndroid.SHORT);
+    }
+
+  }
+
+  useEffect(() => {
+    dispatch(changeTimeReducer(time));
+  }, [time]);
+
+  // useEffect(() => {
+  //     if (progressInDay && target) {
+  //         const time = useCountdown(1, 15);
+  //         console.log('===> time ', time);
+  //     }
+  // }, [target]);
+
+  useEffect(() => {
+    async function fetchAPI() {
+      if (item._id) {
+        const params = {
+          id: item._id,
+          token: myInfo.token,
+        };
+        const { data } = await getAllChapterBook(params);
+        setListChapters(data);
+      }
+    }
+    fetchAPI();
+  }, [getAllChapterBook, item._id, myInfo._id]);
+
+  const favoriteIcon = () => {
+    return (
+      <TouchableOpacity onPress={handleSaveFavoriteBook}>
+        <Block style={styles.iconFavorite} justifyCenter width={50} paddingVertical={2}>
+          <IconView
+            component={'AntDesign'}
+            name={'hearto'}
+            size={25}
+            color={themeNew.colors.textInBox}
+          />
+        </Block>
+      </TouchableOpacity>
+    );
+  };
 
   return (
     <Block>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <Block flex paddingHorizontal={20} backgroundColor={theme.colors.white}>
-          <Topbar bookmark={bookmark} />
+      <HeaderWithButton isBackHeader rightIcon={favoriteIcon()} />
+      <ScrollView
+        style={{ height: '100%' }}
+        showsVerticalScrollIndicator={false}>
+        <Block
+          flex
+          paddingHorizontal={20}
+          backgroundColor={themeNew.colors.background}>
           <ImageBook item={route.params} />
           <IntroduceText item={route.params} />
-          <ChapterBook detailBook={listChapters?.data} />
+          <ChapterBook
+            infoBook={item}
+            detailBook={listChapters}
+            nameBook={route.params.item.name}
+            isRead={isRead}
+            setIsRead={setIsRead}
+            navigation={navigation}
+          />
         </Block>
       </ScrollView>
     </Block>
   );
 };
+
+const styles = StyleSheet.create({
+  animation: {
+    width: 100,
+    height: 100,
+  },
+  iconFavorite: {
+    marginLeft: '100%'
+  },
+});
 
 export default DetailBookScreenMyAp;

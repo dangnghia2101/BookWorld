@@ -1,65 +1,67 @@
-import {Block, Text} from '@components';
+import { Block, Text } from '@components';
 import React from 'react';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {theme} from '@theme';
+import { StyleSheet, TouchableOpacity, View, Image } from 'react-native';
 import IconView from '@components/Icon';
 
-import {routes} from '@navigation/routes';
-import {useNavigation} from '@react-navigation/native';
+import { routes } from '@navigation/routes';
+import { useNavigation } from '@react-navigation/native';
+import { makeStyles, useTheme } from 'themeNew';
+import { useAppSelector, useAppDispatch } from '@hooks';
+import { withNamespaces } from 'react-i18next';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-const {colors} = theme;
+const Header = props => {
+    const navigation = useNavigation();
+    const { t } = props;
 
-const Header = ({title, action, titleAction}) => {
-  const navigation = useNavigation();
+    const themeStore = useAppSelector(state => state.root.themeApp.theme);
+    const themeNew = useTheme(themeStore);
+    const styles = useStyle(props, themeStore);
+    const inset = useSafeAreaInsets();
 
-  return (
-    <Block height={200} backgroundColor={'#FF7D54'}>
-      <Block row style={[styles.container]}>
-        <View style={styles.titleContainer}>
-          <Text style={styles.titleSection}>{title}</Text>
-        </View>
-        <TouchableOpacity
-          style={styles.editContainer}
-          onPress={() => navigation.navigate(routes.SCREEN_EDIT_SETTINGS)}>
-          <IconView
-            component={'Ionicons'}
-            name={'settings-sharp'}
-            size={25}
-            color={'black'}
-          />
-        </TouchableOpacity>
-      </Block>
-    </Block>
-  );
+    return (
+        <Block justifyCenter paddingVertical={10} marginTop={inset.top}>
+            <View style={styles.titleContainer}>
+                <Text
+                    size={20}
+                    color={themeNew.colors.textDark}
+                    fontType={'bold1'}>
+                    {t('profile')}
+                </Text>
+            </View>
+            <TouchableOpacity
+                style={styles.editContainer}
+                onPress={() =>
+                    navigation.navigate(routes.SCREEN_EDIT_SETTINGS)
+                }>
+                <IconView
+                    component={'Ionicons'}
+                    name={'settings-sharp'}
+                    size={24}
+                    color={themeNew.colors.textDark}
+                />
+            </TouchableOpacity>
+        </Block>
+    );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    position: 'absolute',
-    left: 20,
-    top: 35,
-  },
-  titleContainer: {
-    width: '100%',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  titleSection: {
-    fontSize: 24,
-    color: colors.white,
-    fontWeight: 'bold',
-  },
-  editContainer: {
-    position: 'absolute',
-    backgroundColor: '#FFFFFF50',
-    opacity: 1,
-    borderRadius: 40,
-    width: 40,
-    height: 40,
-    justifyContent: 'center',
-    alignItems: 'center',
-    right: 40,
-  },
-});
+export default withNamespaces()(Header);
 
-export default Header;
+const useStyle = makeStyles()(({ colors }) => ({
+    titleContainer: {
+        width: '100%',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    editContainer: {
+        position: 'absolute',
+        backgroundColor: '#FFFFFF50',
+        opacity: 1,
+        borderRadius: 40,
+        width: 35,
+        height: 35,
+        justifyContent: 'center',
+        alignItems: 'center',
+        right: 20,
+    },
+}));

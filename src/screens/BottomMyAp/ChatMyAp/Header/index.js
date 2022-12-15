@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import {Block, Text} from '@components';
+import React, { useState, useEffect } from 'react';
+import { Block, Text } from '@components';
 import {
   Platform,
   NativeModules,
@@ -8,10 +8,13 @@ import {
   Image,
 } from 'react-native';
 import Search from 'common/Search';
-
-const Header = ({clicked, searchPhrase, setSearchPhrase, setClicked}) => {
+import { useAppSelector } from 'hooks';
+import { makeStyles, useTheme } from 'themeNew';
+const Header = ({ clicked, searchPhrase, setSearchPhrase, setClicked }) => {
   const [paddingTop, setPaddingTop] = useState(0);
-
+  const themeStore = useAppSelector(state => state.root.themeApp.theme);
+  const theme = useTheme(themeStore);
+  const styles = useStyle(themeStore);
   useEffect(() => {
     if (Platform.OS === 'ios') {
       NativeModules.StatusBarManager.getHeight(statusBarHeight => {
@@ -25,7 +28,7 @@ const Header = ({clicked, searchPhrase, setSearchPhrase, setClicked}) => {
   }, []);
 
   return (
-    <Block style={[styles.container, {paddingTop: paddingTop}]}>
+    <Block backgroundColor={theme.colors.background} style={[styles.container, { paddingTop: paddingTop }]}>
       <Search
         clicked={clicked}
         setClicked={setClicked}
@@ -43,13 +46,14 @@ const Header = ({clicked, searchPhrase, setSearchPhrase, setClicked}) => {
   );
 };
 
-const styles = StyleSheet.create({
+const useStyle = makeStyles()(({ normalize, colors }) => ({
   container: {
     marginVertical: 15,
     justifyContent: 'flex-start',
     alignItems: 'center',
     flexDirection: 'row',
     width: '90%',
+    backgroundColor: colors.background
   },
   searchBar__unclicked: {
     padding: 10,
@@ -70,6 +74,6 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     marginLeft: 10,
   },
-});
+}));
 
 export default Header;

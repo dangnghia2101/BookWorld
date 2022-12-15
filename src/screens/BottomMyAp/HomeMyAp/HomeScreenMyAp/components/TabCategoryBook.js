@@ -4,7 +4,7 @@ import { TabBar, TabView } from 'react-native-tab-view';
 import TabSceneCategoryBook from './TabSceneCategoryBook';
 import { useAppSelector } from 'hooks';
 import { useGetAllBookByCategoryQuery } from '@redux/servicesNew';
-import { makeStyles, useTheme } from 'themeNew';
+import { colors, makeStyles, useTheme } from 'themeNew';
 import { strings } from 'I18n';
 
 const TabCategoryBook = () => {
@@ -38,8 +38,8 @@ const TabCategoryBook = () => {
   const _renderLabel = useCallback(
     ({ route, focused, color }) => {
       return (
-        <Block>
-          <Text color={focused ? theme.colors.primary : theme.colors.grey10}>
+        <Block borderBottomColor="red">
+          <Text color={focused ? theme.colors.primary : theme.colors.grey10} fontType='bold'>
             {/* {route.title} */}
             {route.key !== 'Default' ? strings(`categories.${route.code}`) : ''}
           </Text>
@@ -61,10 +61,11 @@ const TabCategoryBook = () => {
               tabStyle={styles.tabStyle}
               pressColor={theme.colors.white}
               scrollEnabled={true}
-              labelStyle={{ color: 'red' }}
               style={{
                 backgroundColor: theme.colors.text,
+                shadowColor: theme.colors.text
               }}
+              inactiveColor='yellow'
             />
           )}
         </>
@@ -97,7 +98,15 @@ export default TabCategoryBook;
 
 const useStyle = makeStyles()(({ colors }) => ({
   indicatorStyle: {
-    backgroundColor: colors.dark,
+    backgroundColor: colors.primary,
+    height: 4,
+    borderRadius: 5,
+    bottom: -1.5,
+    zIndex: 10000
   },
-  tabStyle: { width: 'auto' },
+  tabStyle: {
+    width: 'auto',
+    // borderBottomColor: colors.grey12,
+    // borderBottomWidth: 1
+  },
 }));

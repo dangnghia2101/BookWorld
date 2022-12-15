@@ -1,10 +1,10 @@
-import { StyleSheet, Image, Dimensions } from 'react-native';
 import { Block, Text } from '@components';
-import React from 'react';
-import { theme } from '@theme';
 import Icon from '@components/Icon';
-import { makeStyles, useTheme } from 'themeNew';
 import { useAppSelector } from '@hooks';
+import { theme } from '@theme';
+import React from 'react';
+import { Dimensions, Image, StyleSheet } from 'react-native';
+import { useTheme } from 'themeNew';
 const widthPhone = Dimensions.get('window').width;
 
 const _renderStar = num => {
@@ -28,15 +28,19 @@ const ImageBook = ({ item }) => {
   return (
     <Block alignCenter>
       <Image source={{ uri: item.item.image }} style={styles.image} />
-      <Text fontType="bold" size={20} marginTop={10} color={themeNew.colors.textInBox}>
+      <Text
+        fontType="bold1"
+        size={20}
+        marginTop={10}
+        color={themeNew.colors.textInBox}>
         {item.item.name}
       </Text>
-      <Text fontType="regular" size={16} color={themeNew.colors.textInBox}>
+      <Text fontType="regular1" size={16} color={themeNew.colors.textInBox}>
         {item.item.name}
       </Text>
       {/* Star */}
       <Block row marginTop={5}>
-        {_renderStar(4)}
+        {_renderStar(5)}
         <Text marginLeft={5}>4.0</Text>
       </Block>
     </Block>

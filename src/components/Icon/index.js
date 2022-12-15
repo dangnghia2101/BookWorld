@@ -1,5 +1,5 @@
-import React, {memo} from 'react';
-import {NameIconComponents} from './config';
+import React, { memo } from 'react';
+import { NameIconComponents } from './config';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
@@ -15,7 +15,7 @@ import Octicons from 'react-native-vector-icons/Octicons';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import Zocial from 'react-native-vector-icons/Zocial';
 function IconView(props) {
-  const {name, component, color, size} = props;
+  const { name, component, color, size } = props;
 
   const showIcon = () => {
     let colorConfig = color ? color : 'black';
