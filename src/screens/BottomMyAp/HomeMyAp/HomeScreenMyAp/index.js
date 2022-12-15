@@ -140,7 +140,7 @@ const HomeScreenMyAp = ({ t }) => {
     const renderListBookFree = useCallback(() => {
         return (
             <Block>
-                <HeaderListBook title={t('freeBook')} action={() => {}} />
+                <HeaderListBook title={t('freeBook')} action={() => { navigation.navigate(routes.SEE_MORE) }} />
                 <Animated.FlatList
                     data={bookFree}
                     keyExtractor={item => Math.random() + item._id}

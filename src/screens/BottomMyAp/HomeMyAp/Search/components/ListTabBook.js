@@ -10,6 +10,7 @@ import {
     TouchableOpacity,
 } from 'react-native';
 import { makeStyles, useTheme } from 'themeNew';
+import { routes } from '@navigation/routes';
 import { withNamespaces } from 'react-i18next';
 import { routes } from '@navigation/routes';
 import { deleteSearch } from '@redux/reducerNew';
@@ -17,12 +18,15 @@ import { deleteSearch } from '@redux/reducerNew';
 const ListTabBook = ({ search, setSearch, t }) => {
     const themeStore = useAppSelector(state => state.root.themeApp.theme);
     const allBooks = useAppSelector(state => state.root.book.bookList);
+    const authors = useAppSelector(state => state.root.author.authors);
     const historySearch = useAppSelector(state => state.root.search.searchList);
+
     const { colors } = useTheme(themeStore);
     const styles = useStyle(themeStore);
     const [listSearch, setListSearch] = useState([]);
     const navigation = useNavigation();
     const dispatch = useAppDispatch();
+
 
     useEffect(() => {
         if (search) {
@@ -36,7 +40,19 @@ const ListTabBook = ({ search, setSearch, t }) => {
         }
     }, [search]);
 
-    const ItemHistory = ({ title, index }) => (
+    // useEffect(() => {
+    //     if (search) {
+    //         setListSearch(
+    //             authors
+    //                 .filter(item => item.name.search(search) !== -1)
+    //                 .slice(0, 3),
+    //         );
+    //     } else {
+    //         setListSearch([]);
+    //     }
+    // }, [search]);
+
+    const ItemHistory = ({ title }) => (
         <Pressable onPress={() => setSearch(title)} style={styles.itemHistory}>
             <Icon
                 component="MaterialIcons"
@@ -57,6 +73,7 @@ const ListTabBook = ({ search, setSearch, t }) => {
     );
 
     const ItemBook = item => {
+        let num = Math.floor(Math.random() * 3) + 3;
         return (
             <Block height={70} row alignCenter marginHorizontal={20}>
                 <Image source={{ uri: item.image }} style={styles.imageStyle} />
@@ -76,12 +93,17 @@ const ListTabBook = ({ search, setSearch, t }) => {
                         radius={5}
                         paddingHorizontal={10}
                         paddingVertical={5}>
-                        <Text color={colors.text}>Read</Text>
+                        <Text onPress={() => navigation.navigate(routes.DETAIL_BOOK_MY_AP, {
+                            bookmark: true,
+                            item,
+                            star: num
+                        })} color={colors.text}>Read</Text>
                     </Block>
                 </Pressable>
             </Block>
         );
     };
+
 
     const SectionHeader = title => (
         <View style={styles.containerSection}>

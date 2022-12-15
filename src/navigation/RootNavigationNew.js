@@ -26,6 +26,7 @@ import {
 import ListenBook from '@screens/BottomMyAp/HomeMyAp/ListenBook';
 import { DetailCart, PaymentMethods } from '@screens/BottomMyAp/CartMyAp';
 import { DetailGroupChatMyApp } from '@screens/BottomMyAp/ChatMyAp';
+import SeeMoreScreen from '@screens/BottomMyAp/HomeMyAp/HomeScreenMyAp/components/SeeMoreScreen';
 import {
     EditMoreMyApp,
     ScreenChangeLanguage,
@@ -196,6 +197,10 @@ export const RootNavigationNew = () => {
                     <Main.Screen
                         name={routes.DETAIL_AUTHOR_MY_AP}
                         component={DetailAuthor}
+                    />
+                    <Main.Screen
+                        name={routes.SEE_MORE}
+                        component={SeeMoreScreen}
                     />
                 </Main.Navigator>
             ) : (

@@ -24,7 +24,7 @@ import {
 } from '@redux/servicesNew';
 
 const PlayBookScreenMyAp = ({ route }) => {
-    const { idChapter } = route.params;
+    const { item, idChapter } = route.params;
     const webref = useRef(null);
     const [themeBack, setThemeBack] = useState(true); //True background white
     const [size, setSize] = useState(16);
@@ -163,6 +163,17 @@ const PlayBookScreenMyAp = ({ route }) => {
         );
     }, [dataGet, initailStyle]);
 
+    // const handleSaveFavoriteBook = async () => {
+    //     try {
+    //         const body = { id: myInfo._id, idBook: item }
+    //         await saveFavoriteBook(body);
+    //         ToastAndroid.show("Đã thêm vào sách yêu thích", ToastAndroid.SHORT);
+    //     } catch (error) {
+    //         ToastAndroid.show("ch them dc sach", ToastAndroid.SHORT);
+    //     }
+
+    // }
+
     return (
         <Block backgroundColor={theme.colors.background} style={{ flex: 1 }}>
             <HeaderWithButton
@@ -202,7 +213,7 @@ const PlayBookScreenMyAp = ({ route }) => {
                         borderBottomColor={theme.colors.grey14}
                         marginTop={15}
                     />
-                    <Button row style={[styles.rowModal]}>
+                    <Button onPress={handleSaveFavoriteBook} row style={[styles.rowModal]}>
                         <IconView
                             component={'MaterialIcons'}
                             name={true ? 'favorite' : 'favorite-border'}
