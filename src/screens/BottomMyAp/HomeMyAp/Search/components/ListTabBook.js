@@ -2,7 +2,6 @@ import { Block, Icon, Text } from '@components';
 import { useAppDispatch, useAppSelector } from '@hooks';
 import { useNavigation } from '@react-navigation/core';
 import React, { useEffect, useState } from 'react';
-
 import {
     FlatList,
     View,
