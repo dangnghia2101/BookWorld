@@ -19,7 +19,8 @@ const ListTabBook = ({ search, setSearch, t }) => {
     const themeStore = useAppSelector(state => state.root.themeApp.theme);
     const allBooks = useAppSelector(state => state.root.book.bookList);
     const authors = useAppSelector(state => state.root.author.authors);
-    const historySearch = useAppSelector(state => state.root.search.searchList)
+    const historySearch = useAppSelector(state => state.root.search.searchList);
+
     const { colors } = useTheme(themeStore);
     const styles = useStyle(themeStore);
     const [listSearch, setListSearch] = useState([]);
@@ -51,7 +52,7 @@ const ListTabBook = ({ search, setSearch, t }) => {
     //     }
     // }, [search]);
 
-    const ItemHistory = ({ title, index }) => (
+    const ItemHistory = ({ title }) => (
         <Pressable onPress={() => setSearch(title)} style={styles.itemHistory}>
             <Icon
                 component="MaterialIcons"
