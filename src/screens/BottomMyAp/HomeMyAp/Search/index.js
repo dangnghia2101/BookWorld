@@ -1,18 +1,20 @@
 import { Block, HeaderWithButton, TextInput } from '@components';
 import IconView from '@components/Icon';
-import { useAppSelector } from '@hooks';
+import { useAppDispatch, useAppSelector } from '@hooks';
+import { saveSearchReducer } from '@redux/reducerNew';
 import React, { useState } from 'react';
+import { withNamespaces } from 'react-i18next';
+import { ScrollView } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { makeStyles, useTheme } from 'themeNew';
 import TabTopicSearch from './components/TabTopicSearch';
-import { withNamespaces } from 'react-i18next';
 const Search = ({ t }) => {
     const themeStore = useAppSelector(state => state.root.themeApp.theme);
     const { colors } = useTheme(themeStore);
-    const inset = useSafeAreaInsets();
     const [search, setSearch] = useState('');
     const [focus, setFocus] = useState(false);
     const styles = useStyle(themeStore);
+    const dispatch = useAppDispatch();
 
     const renderIconLeft = () => (
         <Block marginRight={5}>
@@ -24,6 +26,15 @@ const Search = ({ t }) => {
             />
         </Block>
     );
+
+    const saveSearch = () => {
+        dispatch(
+            saveSearchReducer({
+                _id: Math.floor(Math.random() * 9999999),
+                value: search,
+            }),
+        );
+    };
 
     return (
         <Block backgroundColor={colors.background} flex>
@@ -37,6 +48,7 @@ const Search = ({ t }) => {
                 style={focus ? styles.styleSearchFocus : styles.styleSearch}
                 value={search}
                 onChangeText={setSearch}
+                onEndEditing={saveSearch}
             />
             <TabTopicSearch search={search} setSearch={setSearch} />
         </Block>
