@@ -312,8 +312,8 @@ const ChatScreenMyApp = ({ t }) => {
             <Block
                 flex
                 paddingHorizontal={20}
-                backgroundColor={colors.background}>
-                <Block row alignCenter>
+                backgroundColor={colors.white}>
+                <Block row alignCenter marginTop={10}>
                     <Text flex size={28} fontType="bold1" color={colors.primary}>
                         Explore
                     </Text>
@@ -367,6 +367,7 @@ const useStyle = makeStyles()(({ normalize, colors }) => ({
         borderRadius: normalize(15)('moderate'),
     },
     root: {
+        paddingTop: 10,
         backgroundColor: colors.white,
     },
     containerSearch: {
