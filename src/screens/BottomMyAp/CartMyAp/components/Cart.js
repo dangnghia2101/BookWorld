@@ -14,7 +14,7 @@ import React, {
     useEffect,
     useRef,
 } from 'react';
-import { Block, Text, HeaderWithButton, Button } from '@components';
+import { Block, Text, HeaderWithButton, Button, ModalBox } from '@components';
 // import { theme } from '@theme';
 import { useNavigation } from '@react-navigation/native';
 import { routes } from '@navigation/routes';
@@ -243,6 +243,7 @@ const Cart = ({ t }) => {
         return (
             <Block style={styles.ItemCart1}>
                 <TouchableOpacity
+                            style={styles.hide}
                     onPress={() => {
                         {
                             cartItem.SL !== 1
@@ -255,11 +256,10 @@ const Cart = ({ t }) => {
                         }
                     }}>
                     <Entypo
-                        name={'cross'}
-                        size={16}
-                        color={'black'}
-                        style={styles.hide}
-                    />
+                            name={'cross'}
+                            size={16}
+                            color={'black'}
+                        />
                 </TouchableOpacity>
                 <Block style={styles.chap} row marginVertical={10}>
                     <Text size={14}>
@@ -415,7 +415,6 @@ const Cart = ({ t }) => {
                         size={20}>
                         {t('chapTer')}
                     </Text>
-                    <ScrollView>
                         <Block bottom={10} paddingLeft={10} paddingBottom={10}>
                             <FlatList
                                 style={styles.FlatList1}
@@ -426,7 +425,6 @@ const Cart = ({ t }) => {
                                 numColumns={numColumns}
                             />
                         </Block>
-                    </ScrollView>
                 </Block>
             </BottomSheet>
         </Block>
@@ -480,10 +478,20 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     hide: {
-        backgroundColor: 'white',
+        backgroundColor: '#D7DDE8',
         position: 'absolute',
-        marginLeft: 85,
-        borderRadius: 10,
+        marginLeft: 88,
+        bottom: 33,
+        borderRadius: 20,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        
+        elevation: 5,
     },
     textBottom: {
         color: 'white',
@@ -521,8 +529,8 @@ const styles = StyleSheet.create({
         height: 45,
         justifyContent: 'center',
         backgroundColor: '#CDCDCD',
-        marginTop: 10,
         marginHorizontal: 10,
+        marginVertical: 5,
         shadowColor: '#000',
         borderRadius: 5,
         shadowOffset: {

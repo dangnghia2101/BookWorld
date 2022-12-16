@@ -15,7 +15,7 @@ const ModalConfirmOtp = ({
     }, [showModal]);
 
     return (
-        <ModalBox transparent={true} isVisible={showModal}>
+        <ModalBox onBackdropPress={() => setShowModal(!showModal)} transparent={true} isVisible={showModal}>
             <Block
                 style={{
                     backgroundColor: 'white',
