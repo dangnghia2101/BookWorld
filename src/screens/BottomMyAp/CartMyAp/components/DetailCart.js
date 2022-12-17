@@ -7,13 +7,13 @@ import {
     ScrollView,
 } from 'react-native';
 import React, { useState } from 'react';
-import { Block, Text, HeaderWithButton } from '@components';
+import { Block, Text, HeaderWithButton, Container } from '@components';
 import { useAppDispatch, useAppSelector } from 'hooks';
 import { useNavigation } from '@react-navigation/native';
 import { routes } from '@navigation/routes';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { theme } from '@theme';
-import { useTheme } from 'themeNew';
+import { colors, useTheme } from 'themeNew';
 import { withNamespaces } from 'react-i18next';
 const DetailCart = ({ route, t }) => {
     const navigation = useNavigation();
@@ -23,7 +23,10 @@ const DetailCart = ({ route, t }) => {
     let price = route.params.allPrice;
     let allPrice = price - price * 0.1;
     return (
-        <Block flex backgroundColor={themeNew.colors.background}>
+        <Container
+            statusColor={themeNew.colors.background}
+            edges={['left', 'right']}
+            style={{ backgroundColor: themeNew.colors.background, flex: 1 }}>
             <HeaderWithButton isBackHeader title={t('pay')} />
             <ScrollView style={styles.scroll}>
                 {bookStore.map(item => {
@@ -38,7 +41,7 @@ const DetailCart = ({ route, t }) => {
                         return (
                             <Block marginTop={10} row style={styles.Item}>
                                 <Block
-                                    backgroundColor={'#F2F2F2'}
+                                    backgroundColor={themeNew.colors.text}
                                     padding={7}
                                     style={styles.backgroundImage}>
                                     <Image
@@ -49,17 +52,23 @@ const DetailCart = ({ route, t }) => {
                                 <Block marginLeft={15} column>
                                     <Block row>
                                         <Text
-                                            fontType='bold1'
+                                            fontType="bold1"
                                             style={styles.textName}
-                                            numberOfLines={2}>
+                                            numberOfLines={2}
+                                            color={themeNew.colors.textInBox}>
                                             {item.name}
                                         </Text>
                                     </Block>
-                                    <Text style={styles.quantity}>
+                                    <Text
+                                        style={styles.quantity}
+                                        color={themeNew.colors.textInBox}>
                                         {t('numberOfEpisodes')}:{' '}
                                         {Object.keys(item.chapter).length}
                                     </Text>
-                                    <Text fontType='medium1' style={styles.textPrice}>
+                                    <Text
+                                        color={themeNew.colors.textInBox}
+                                        fontType="medium1"
+                                        style={styles.textPrice}>
                                         {priceBook()
                                             .toFixed(0)
                                             .replace(
@@ -86,16 +95,25 @@ const DetailCart = ({ route, t }) => {
                             marginTop={10}
                             source={require('../../../../assets/icons/note.png')}
                         />
-                        <Text fontType='medium1' color={themeNew.colors.textInBox} marginLeft={10} lineHeight={20}>
+                        <Text
+                            fontType="medium1"
+                            color={themeNew.colors.textInBox}
+                            marginLeft={10}
+                            lineHeight={20}>
                             {t('askPay')}
                         </Text>
                     </Block>
                 </Block>
-                <Block radius={10} backgroundColor={'#F0F2F0'} marginHorizontal={20}>
+                <Block
+                    radius={10}
+                    backgroundColor={themeNew.colors.text}
+                    marginHorizontal={20}>
                     <Block marginBottom={20} />
                     <Block row style={styles.AllPriceBook}>
-                        <Text fontType='regular1' size={15}>{t('totalPrice')}</Text>
-                        <Text fontType='regular1' style={styles.textPrice}>
+                        <Text fontType="regular1" size={15}>
+                            {t('totalPrice')}
+                        </Text>
+                        <Text fontType="regular1" style={styles.textPrice}>
                             {price
                                 .toFixed(0)
                                 .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')}{' '}
@@ -103,28 +121,32 @@ const DetailCart = ({ route, t }) => {
                         </Text>
                     </Block>
                     <Block row style={styles.AllPriceBook}>
-                        <Text fontType='regular1' size={15}>{t('discount')}</Text>
-                        <Text fontType='regular1' style={styles.textPrice}>
+                        <Text fontType="regular1" size={15}>
+                            {t('discount')}
+                        </Text>
+                        <Text fontType="regular1" style={styles.textPrice}>
                             {(price * 0.1)
                                 .toFixed(0)
                                 .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')}{' '}
                             đ
                         </Text>
                     </Block>
-                    <Block backgroundColor={themeNew.colors.grey10} style={styles.scratch} />
+                    <Block
+                        backgroundColor={themeNew.colors.grey10}
+                        style={styles.scratch}
+                    />
                     <Block row style={styles.AllPriceBook} paddingRight={25}>
                         <Text
-                            fontType='bold1'
+                            fontType="bold1"
                             size={15}
                             style={styles.textName}
                             color={theme.colors.lightRed}>
                             {t('toTal')}
                         </Text>
                         <Text
-                            fontType='bold1'
+                            fontType="bold1"
                             style={styles.textPrice}
-                            color={theme.colors.lightRed}
-                        >
+                            color={theme.colors.lightRed}>
                             {(price - price * 0.1)
                                 .toFixed(0)
                                 .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')}{' '}
@@ -141,10 +163,12 @@ const DetailCart = ({ route, t }) => {
                             allPrice: allPrice,
                         })
                     }>
-                    <Text fontType='bold1' style={styles.textBottom}>{t('pay')}</Text>
+                    <Text fontType="bold1" style={styles.textBottom}>
+                        {t('pay')}
+                    </Text>
                 </TouchableOpacity>
             </Block>
-        </Block>
+        </Container>
     );
 };
 
@@ -184,7 +208,7 @@ const styles = StyleSheet.create({
         marginVertical: 10,
         width: '89%',
         height: 130,
-        backgroundColor: theme.colors.background,
+        backgroundColor: theme.colors.text,
         borderRadius: 10,
         shadowColor: theme.colors.gray2,
         shadowOffset: {

@@ -1,5 +1,5 @@
 import { icons } from '@assets';
-import { Block, ModalBox, Text, TextInput } from '@components';
+import { Block, Container, ModalBox, Text, TextInput } from '@components';
 import { routes } from '@navigation/routes';
 import auth from '@react-native-firebase/auth';
 import messaging from '@react-native-firebase/messaging';
@@ -226,12 +226,9 @@ const Login = ({ t }) => {
         // }
     };
     return (
-        <Block
-            paddingHorizontal={20}
-            flex
-            alignCenter
-            paddingTop={30}
-            backgroundColor={'white'}>
+        <Container
+            style={{ backgroundColor: theme.colors.background, flex: 1 }}
+            statusColor={theme.colors.background}>
             <Text
                 fontType="bold"
                 h1
@@ -390,11 +387,11 @@ const Login = ({ t }) => {
                         <Text style={styles.textOTP} center>
                             Nhập mã OTP
                         </Text>
-                        <Text marginTop={18} center >
+                        <Text marginTop={18} center>
                             Nhập mã OTP được gửi đến số điện thoại
                         </Text>
-                        <Text marginTop={5} center style={styles.textPhone} >
-                           {phoneUser}
+                        <Text marginTop={5} center style={styles.textPhone}>
+                            {phoneUser}
                         </Text>
                         <TextInput
                             value={OTP}
@@ -483,7 +480,7 @@ const Login = ({ t }) => {
                     </Block>
                 </Block>
             </ModalBox>
-        </Block>
+        </Container>
     );
 };
 
@@ -535,7 +532,7 @@ const styles = StyleSheet.create({
     },
     textPhone: {
         lineHeight: 25,
-        fontWeight: '700'
+        fontWeight: '700',
     },
     textOTP: {
         marginBottom: 10,

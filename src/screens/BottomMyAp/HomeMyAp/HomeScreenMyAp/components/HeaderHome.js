@@ -60,7 +60,7 @@ const HeaderHome = props => {
                     <Text
                         marginLeft={10}
                         size={12}
-                        fontType='medium1'
+                        fontType="medium1"
                         marginHorizontal={5}
                         color={themeNew.colors.grey8}>
                         Welcom to BookWorld!
@@ -71,7 +71,7 @@ const HeaderHome = props => {
                         size={18}
                         marginHorizontal={5}
                         color={themeNew.colors.textInBox}
-                        fontType='regular1'
+                        fontType="regular1"
                         numberOfLines={1}>
                         {name}
                     </Text>

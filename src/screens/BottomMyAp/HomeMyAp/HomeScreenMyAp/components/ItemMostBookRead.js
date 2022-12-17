@@ -112,13 +112,15 @@ const ItemMostBookRead = ({ item, index, scrollX, size, t }) => {
                     marginBottom={10}
                     numberOfLines={1}
                     size={11}
-                    fontType='medium1'
+                    fontType="medium1"
                     color={theme.colors.textInBox}>
                     {_renderView()} {t('view')}
                 </Text>
                 <Block row alignCenter>
                     {_renderStar()}
-                    <Text color={theme.colors.textInBox} marginLeft={5}>{star.length}.0</Text>
+                    <Text color={theme.colors.textInBox} marginLeft={5}>
+                        {star.length}.0
+                    </Text>
                 </Block>
                 {/* <Evaluate sizeIcon={15} colorIcon={theme.colors.yellow} /> */}
                 {/* </Block> */}

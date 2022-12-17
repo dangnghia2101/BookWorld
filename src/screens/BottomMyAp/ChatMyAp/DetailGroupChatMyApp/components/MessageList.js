@@ -1,15 +1,19 @@
+import { useAppSelector } from '@hooks';
 import React, { useRef } from 'react';
 import { ScrollView } from 'react-native';
+import { useTheme } from 'themeNew';
 
 import Message from './Message';
 
 const MessagesList = ({ onSwipeToReply, messages }) => {
     const user = useRef(0);
     const scrollView = useRef();
+    const themeStore = useAppSelector(state => state.root.themeApp.theme);
+    const { colors } = useTheme(themeStore);
 
     return (
         <ScrollView
-            style={{ backgroundColor: 'white', flex: 1 }}
+            style={{ backgroundColor: colors.background, flex: 1 }}
             ref={ref => (scrollView.current = ref)}
             onContentChange={() => {
                 scrollView.current.scrollToEnd({ animated: true });

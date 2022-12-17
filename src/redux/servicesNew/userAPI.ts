@@ -11,7 +11,6 @@ export const userApi = createApi({
     endpoints: builder => ({
         login: builder.mutation({
             query: body => {
-                console.log('BODY ', body);
                 return {
                     url: '/auth/login',
                     method: 'POST',
@@ -46,10 +45,10 @@ export const userApi = createApi({
             }),
             async onQueryStarted(id, { dispatch, queryFulfilled }) {
                 try {
-                    const  {data}  = await queryFulfilled;
-                    if(data.data === "Số điện thoại này chưa đăng ký"){
-                    }else if(data.message === "Mật khẩu không đúng"){
-                    }else{
+                    const { data } = await queryFulfilled;
+                    if (data.data === 'Số điện thoại này chưa đăng ký') {
+                    } else if (data.message === 'Mật khẩu không đúng') {
+                    } else {
                         const saveData = {
                             ...data?.data?.account,
                             token: data?.data?.token,
@@ -93,5 +92,9 @@ export const userApi = createApi({
     }),
 });
 
-export const { useLoginMutation, useGetLoginQuery, useLoginPhoneMutation, useLoginPhoneNumberMutation } =
-    userApi;
+export const {
+    useLoginMutation,
+    useGetLoginQuery,
+    useLoginPhoneMutation,
+    useLoginPhoneNumberMutation,
+} = userApi;

@@ -160,7 +160,7 @@ const PaymentScreen = ({ price, t }) => {
     return (
         <Block backgroundColor={colors.background} relative>
             <HeaderWithButton isBackHeader title={t('pay')} />
-            <ScrollView bounces={false}>
+            <ScrollView bounces={false} showsVerticalScrollIndicator={false}>
                 <Block alignCenter>
                     <Text
                         marginTop={30}

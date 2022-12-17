@@ -50,7 +50,7 @@ const ListTabBook = ({ search, setSearch, t }) => {
     //     }
     // }, [search]);
 
-    const ItemHistory = ({ title }) => (
+    const ItemHistory = ({ title, index }) => (
         <Pressable onPress={() => setSearch(title)} style={styles.itemHistory}>
             <Icon
                 component="MaterialIcons"

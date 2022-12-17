@@ -1,4 +1,5 @@
 import { images } from '@assets';
+import EmptyIcon from '@assets/svgs/EmptyIcon';
 import { Block, Container, Icon, Text } from '@components';
 import { routes } from '@navigation/routes';
 import { useNavigation } from '@react-navigation/native';
@@ -11,7 +12,14 @@ import { height, width } from '@utils/responsive';
 import { useAppSelector } from 'hooks';
 import React, { useCallback, useEffect, useState } from 'react';
 import { withNamespaces } from 'react-i18next';
-import { Animated, Image, LogBox, Platform, ScrollView } from 'react-native';
+import {
+    Animated,
+    Image,
+    LogBox,
+    Platform,
+    ScrollView,
+    StatusBar,
+} from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
 import { colors, makeStyles, useTheme } from 'themeNew';
@@ -101,7 +109,7 @@ const HomeScreenMyAp = ({ t }) => {
                             height={WIDTH_ITEM_INVIEW}
                             justifyCenter
                             alignCenter>
-                            <Text>{t('noBook')}</Text>
+                            <EmptyIcon />
                         </Block>
                     }
                 />
@@ -129,7 +137,7 @@ const HomeScreenMyAp = ({ t }) => {
                             height={WIDTH_ITEM_INVIEW}
                             justifyCenter
                             alignCenter>
-                            <Text>Loading...</Text>
+                            <EmptyIcon />
                         </Block>
                     }
                 />
@@ -140,7 +148,12 @@ const HomeScreenMyAp = ({ t }) => {
     const renderListBookFree = useCallback(() => {
         return (
             <Block>
-                <HeaderListBook title={t('freeBook')} action={() => { navigation.navigate(routes.SEE_MORE) }} />
+                <HeaderListBook
+                    title={t('freeBook')}
+                    action={() => {
+                        navigation.navigate(routes.SEE_MORE);
+                    }}
+                />
                 <Animated.FlatList
                     data={bookFree}
                     keyExtractor={item => Math.random() + item._id}
@@ -152,11 +165,11 @@ const HomeScreenMyAp = ({ t }) => {
                     nestedScrollEnabled={true}
                     ListEmptyComponent={
                         <Block
+                            marginTop={20}
                             width={width}
-                            height={WIDTH_ITEM_INVIEW}
                             justifyCenter
                             alignCenter>
-                            <Text>Loading...</Text>
+                            <EmptyIcon width={120} height={100} />
                         </Block>
                     }
                 />
@@ -179,11 +192,11 @@ const HomeScreenMyAp = ({ t }) => {
                     nestedScrollEnabled={true}
                     ListEmptyComponent={
                         <Block
+                            marginTop={20}
                             width={width}
-                            height={WIDTH_ITEM_INVIEW}
                             justifyCenter
                             alignCenter>
-                            <Text>Loading...</Text>
+                            <EmptyIcon width={80} height={70} />
                         </Block>
                     }
                 />
@@ -195,23 +208,31 @@ const HomeScreenMyAp = ({ t }) => {
         return (
             <Pressable
                 onPress={() => navigation.navigate(routes.SEARCH)}
-                style={styles.searchStyle}>
-                <Text fontType="regular1" color={theme.colors.grey4} size={14}>
+                style={[
+                    styles.searchStyle,
+                    { backgroundColor: theme.colors.text },
+                ]}>
+                <Text
+                    fontType="regular1"
+                    color={theme.colors.textInBox}
+                    size={14}>
                     {t('searchHere')}
                 </Text>
                 <Icon
                     component="Ionicons"
                     name="ios-search-outline"
                     size={22}
-                    color={theme.colors.grey4}
+                    color={theme.colors.textInBox}
                 />
             </Pressable>
         );
     };
 
     return (
-        // <Container statusColor={theme.colors.grey16} edges={['left', 'right']}>
-        <Block flex>
+        <Container
+            statusColor={theme.colors.background}
+            edges={['left', 'right']}>
+            {/* <Block flex> */}
             <HeaderHome
                 name={myInfo?.name}
                 image={myInfo?.image}
@@ -236,8 +257,8 @@ const HomeScreenMyAp = ({ t }) => {
                     <Image source={images.banner} style={styles.banner} />
                 </Block>
             </ScrollView>
-        </Block>
-        // </Container>
+            {/* </Block> */}
+        </Container>
     );
 };
 
@@ -256,7 +277,6 @@ const useStyle = makeStyles()(({ normalize, colors }) => ({
     searchStyle: {
         marginHorizontal: normalize(10)('moderate'),
         paddingHorizontal: normalize(15)('moderate'),
-        backgroundColor: colors.white,
         borderRadius: normalize(15)('moderate'),
         height: normalize(50)('moderate'),
         justifyContent: 'space-between',
