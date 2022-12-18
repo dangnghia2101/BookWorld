@@ -36,6 +36,7 @@ import {
     bookOfAuthAPI,
     chatAPI,
     rankAPI,
+    commentAPI
 } from '@redux/servicesNew';
 import { setupListeners } from '@reduxjs/toolkit/query';
 import { userPhoneApi } from '@redux/servicesNew/userPhoneAPI';
@@ -82,6 +83,7 @@ export const store = configureStore({
         [chatAPI.reducerPath]: chatAPI.reducer,
         [rankAPI.reducerPath]: rankAPI.reducer,
         [chatAPI.reducerPath]: chatAPI.reducer,
+        [commentAPI.reducerPath]: commentAPI.reducer,
     },
     middleware: getDefaultMiddleware =>
         getDefaultMiddleware({
@@ -106,7 +108,8 @@ export const store = configureStore({
             .concat(bookOfAuthAPI.middleware)
             .concat(profileAPI.middleware)
             .concat(chatAPI.middleware)
-            .concat(rankAPI.middleware),
+            .concat(rankAPI.middleware)
+            .concat(commentAPI.middleware),
 });
 
 export const persistor = persistStore(store);

@@ -21,12 +21,16 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { WebView } from 'react-native-webview';
 import { useTheme } from 'themeNew';
 import EvaluateBook from '../DetailBookScreenMyAp/components/EvaluateBook';
+import { useGetFavoriteBookQuery } from '@redux/servicesNew'
 
-const PlayBookScreenMyAp = ({ route }) => {
-    const { item, idChapter } = route.params;
+import { withNamespaces } from 'react-i18next';
+const PlayBookScreenMyAp = ({ route, t }) => {
+    const { dataInfoBook, idChapter } = route.params;
+    const myInfo = useAppSelector(state => state.root.auth);
     const webref = useRef(null);
     const [themeBack, setThemeBack] = useState(true); //True background white
     const [size, setSize] = useState(16);
+    const [colorHeart, setColorHeart] = useState();
     const themeStore = useAppSelector(state => state.root.themeApp.theme);
     const theme = useTheme(themeStore);
     const inset = useSafeAreaInsets();
@@ -37,7 +41,8 @@ const PlayBookScreenMyAp = ({ route }) => {
     var snapTI = -1;
     const [createTimeRead, { isLoading, data, error }] =
         useCreateTimeReadMutation();
-    const myInfo = useAppSelector(state => state.root.auth);
+    const dataFavorite = useAppSelector(state => state.root.book.favoriteList);
+    console.log("dataFavoriteeeeeeeeeeeee", dataFavorite[0]?.favoriteBooks);
     const dataGet = useGetDetailChapterBookQuery({
         id: idChapter,
         token: myInfo.token,
@@ -152,15 +157,28 @@ const PlayBookScreenMyAp = ({ route }) => {
         );
     }, [dataGet, initailStyle]);
 
+    useEffect(() => {
+        let flg = false;
+        dataFavorite[0]?.favoriteBooks.map(itemFvr => {
+            console.log("itemFavoriteeeeeeeeeee----------", itemFvr);
+            if (itemFvr.idBook._id == dataInfoBook._id) {
+                flg = true;
+            }
+
+        })
+        setColorHeart(flg);
+    }, [])
     const handleSaveFavoriteBook = async () => {
         try {
-            const body = { id: myInfo._id, idBook: item };
+            setColorHeart(true)
+            const body = { id: myInfo._id, idBook: dataInfoBook._id, token: myInfo.token }
             await saveFavoriteBook(body);
-            ToastAndroid.show('Đã thêm vào sách yêu thích', ToastAndroid.SHORT);
+            ToastAndroid.show("Đã thêm vào sách yêu thích", ToastAndroid.SHORT);
         } catch (error) {
-            ToastAndroid.show('ch them dc sach', ToastAndroid.SHORT);
+            ToastAndroid.show("Chưa thêm vào sách yêu thích", ToastAndroid.SHORT);
         }
-    };
+
+    }
 
     return (
         <Container
@@ -193,32 +211,29 @@ const PlayBookScreenMyAp = ({ route }) => {
                         center
                         size={18}
                         fontType={'bold'}
-                        color={theme.colors.textInBox}>
-                        Cài đặt
+                        color={theme.colors.grey4}>
+                        {t('settings')}
                     </Text>
                     <Block
                         borderBottomWidth={1}
                         borderBottomColor={theme.colors.grey14}
                         marginTop={15}
                     />
-                    <Button
-                        onPress={handleSaveFavoriteBook}
-                        row
-                        style={[styles.rowModal]}>
+                    <Button onPress={handleSaveFavoriteBook} row style={[styles.rowModal]}>
                         <IconView
-                            component={'MaterialIcons'}
-                            name={true ? 'favorite' : 'favorite-border'}
+                            component={'AntDesign'}
+                            name={true ? 'heart' : 'hearto'}
                             size={20}
-                            color={
-                                themeBack
-                                    ? theme.colors.red
-                                    : theme.colors.white
-                            }
+                            color={colorHeart ? theme.colors.primary : theme.colors.textInBox}
                         />
                         <Text
                             style={styles.textRowModal}
-                            color={theme.colors.textInBox}>
-                            {true ? 'Lưu sách yêu thích ' : 'Đã lưu'}
+                            color={
+                                !themeBack
+                                    ? theme.colors.white
+                                    : theme.colors.dark2
+                            }>
+                            {colorHeart ? t('saved') : t('saveFavoriteBooks')}
                         </Text>
                     </Button>
 
@@ -234,8 +249,12 @@ const PlayBookScreenMyAp = ({ route }) => {
                         />
                         <Text
                             style={styles.textRowModal}
-                            color={theme.colors.textInBox}>
-                            Giảm kích cỡ chữ
+                            color={
+                                !themeBack
+                                    ? theme.colors.white
+                                    : theme.colors.dark2
+                            }>
+                            {t('increaseFontSize')}
                         </Text>
                     </Button>
                     <Button
@@ -250,8 +269,12 @@ const PlayBookScreenMyAp = ({ route }) => {
                         />
                         <Text
                             style={styles.textRowModal}
-                            color={theme.colors.textInBox}>
-                            Tăng kích cỡ chữ
+                            color={
+                                !themeBack
+                                    ? theme.colors.white
+                                    : theme.colors.dark2
+                            }>
+                            {t('reduceFontSize')}
                         </Text>
                     </Button>
                     <Button
@@ -266,21 +289,18 @@ const PlayBookScreenMyAp = ({ route }) => {
                             size={22}
                             color={theme.colors.textInBox}
                         />
-                        <Text
-                            style={styles.textRowModal}
-                            color={theme.colors.textInBox}>
-                            Bình luận
-                        </Text>
+                        <Text style={styles.textRowModal}>{t('comment')}</Text>
                     </Button>
                 </Block>
-            </BottomSheet>
+            </BottomSheet >
             <BottomSheet
                 index={-1}
                 ref={bottomSheetCommetnRef}
                 snapPoints={snapPoints2}
                 enablePanDownToClose={true}
                 backdropComponent={renderBackdrop}>
-                <BottomSheetScrollView>
+                <BottomSheetScrollView
+                    backgroundColor={theme.colors.background}>
                     <EvaluateBook idChapter={idChapter} />
                 </BottomSheetScrollView>
             </BottomSheet>
@@ -321,4 +341,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default PlayBookScreenMyAp;
+export default withNamespaces()(PlayBookScreenMyAp);

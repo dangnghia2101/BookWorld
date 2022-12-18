@@ -44,34 +44,37 @@ export const bookOfAuthAPI = createApi({
                 validateStatus: (response, result) =>
                     response.status === 200 && !result.isError, // Our tricky API always returns a 200, but sets an `isError` property when there is an error.
             }),
-            // async onQueryStarted(id, { dispatch, queryFulfilled }) {
-            //     try {
-            //         const { data } = await queryFulfilled;
-            //         dispatch(saveFavoriteBookReducer({ data: data.data })); // Save data in store, using reducer
-            //     } catch (err) {
-            //         // console.log('error api getAllBook... ', err);
-            //     }
-            // },
-        }),
-        getBookReaded: builder.query<BookOfAuthState[], string>({
-            query: id => ({
-                url: `accounts/${id}getReadingBooks`,
-                validateStatus: (response, result) =>
-                    response.status === 200 && !result.isError, // Our tricky API always returns a 200, but sets an `isError` property when there is an error.
-            }),
-        }),
-        postSaveFavoriteBooks: builder.mutation({
-            query: body => {
-                return {
-                    url: 'accounts/postFavoriteBooks',
-                    method: 'POST',
-                    body: body,
-                    headers: {
-                        'Content-type': 'application/json; charset=utf-8',
-                    },
-                };
+            async onQueryStarted(id, { dispatch, queryFulfilled }) {
+                try {
+                    const { data } = await queryFulfilled;
+                    console.log("++++++++++++++++++++++++++++++",data);
+                    
+                    dispatch(saveFavoriteBookReducer({ data: data.data })); // Save data in store, using reducer
+                } catch (err) {
+                    // console.log('error api getAllBook... ', err);
+                }
             },
         }),
+    getBookReaded: builder.query<BookOfAuthState[], string>({
+        query: (id) => ({
+            url: `accounts/${id}getReadingBooks`,
+            validateStatus: (response, result) =>
+                response.status === 200 && !result.isError, // Our tricky API always returns a 200, but sets an `isError` property when there is an error.
+        }),
+    }),
+    postSaveFavoriteBooks: builder.mutation({
+        query: body => {
+          return {
+            url: 'accounts/postFavoriteBooks',
+            method: 'POST',
+            body: body,
+            headers: {
+              'Content-type': 'application/json; charset=utf-8',
+               Authorization: `Bearer ${body.token}`
+            },
+        }
+    }}
+        ),
     }),
 });
 

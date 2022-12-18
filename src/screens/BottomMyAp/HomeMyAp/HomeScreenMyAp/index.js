@@ -59,6 +59,13 @@ const HomeScreenMyAp = ({ t }) => {
     const styles = useStyle(themeStore);
     const inset = useSafeAreaInsets();
 
+    let freeBook = [];
+    allBooks.map(item => {
+        if (item.isPrice === null || item.isPrice === 0) {
+            freeBook.push(item);
+        }
+    });
+
     useEffect(() => {
         if (allBooks) {
             setBookFree(allBooks.filter(item => item?.isPrice <= 0));
@@ -145,6 +152,7 @@ const HomeScreenMyAp = ({ t }) => {
         );
     }, [_renderItemMostBookRead, allCategories]);
 
+
     const renderListBookFree = useCallback(() => {
         return (
             <Block>
@@ -155,7 +163,7 @@ const HomeScreenMyAp = ({ t }) => {
                     }}
                 />
                 <Animated.FlatList
-                    data={bookFree}
+                    data={freeBook}
                     keyExtractor={item => Math.random() + item._id}
                     renderItem={item => <ItemBookFree item={item.item} />}
                     bounces={false}

@@ -25,12 +25,14 @@ export type BookList = {
   bookList: Array<BookState>;
   categoryList: Array<CategoryState>;
   tabList: Array<BookState>;
+  favoriteList: Array<BookState>;
 };
 
 const defaultBookState: BookList = {
   bookList: [],
   categoryList: [],
   tabList: [],
+  favoriteList: [],
 };
 
 const bookSlice = createSlice({
@@ -58,9 +60,16 @@ const bookSlice = createSlice({
       state.tabList = action.payload.data;
       return state;
     },
+    saveFavoriteBookReducer: (
+      state: BookList,
+      action: PayloadAction<{data: Array<BookState>}>,
+    ) => {
+      state.favoriteList = action.payload.data;
+      return state;
+    },
   },
 });
 
-export const {saveBookReducer, saveCategoryReducer, saveTabCategoryReducer} =
+export const {saveBookReducer, saveCategoryReducer, saveTabCategoryReducer,saveFavoriteBookReducer} =
   bookSlice.actions;
 export const BookReducer = bookSlice.reducer;

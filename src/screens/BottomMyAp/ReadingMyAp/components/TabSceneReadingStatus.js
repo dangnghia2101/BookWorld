@@ -1,6 +1,7 @@
 import { StyleSheet, ScrollView } from 'react-native';
 import React from 'react';
-import { Block, Text } from '@components';
+import EmptyIcon from '@assets/svgs/EmptyIcon';
+import { Block, Text, NoData } from '@components';
 import ItemCateBook from '@screens/BottomMyAp/HomeMyAp/HomeScreenMyAp/components/ItemCateBook';
 import { useAppSelector } from 'hooks';
 import { withNamespaces } from 'react-i18next';
@@ -13,7 +14,12 @@ const TabSceneReadingStatus = ({ route, t }) => {
       ))}
     </ScrollView>
   ) : (
-    <Text>{t('noBook')}</Text>
+    <Block
+      flex
+      justifyCenter
+      alignCenter>
+      <EmptyIcon />
+    </Block >
   );
 };
 
