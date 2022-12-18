@@ -1,3 +1,4 @@
+import { icons } from '@assets';
 import { Block, Button, Text } from '@components';
 import IconView from '@components/Icon';
 import { useAppDispatch, useAppSelector } from '@hooks';
@@ -5,6 +6,7 @@ import { routes } from '@navigation/routes';
 import { useNavigation } from '@react-navigation/native';
 import { changeLanguage, changeTheme } from '@redux/reducerNew';
 import { theme } from '@theme';
+import { isEmpty } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { withNamespaces } from 'react-i18next';
 import {
@@ -53,7 +55,7 @@ const HeaderHome = props => {
             paddingVertical={20}>
             <Block alignCenter row marginLeft={15} flex>
                 <Image
-                    source={{ uri: image }}
+                    source={!isEmpty(image) ? { uri: image } : icons.logo}
                     style={{ width: 40, height: 40, borderRadius: 100 }}
                 />
                 <Block flexGrow={1}>
@@ -71,9 +73,9 @@ const HeaderHome = props => {
                         size={18}
                         marginHorizontal={5}
                         color={themeNew.colors.textInBox}
-                        fontType="regular1"
+                        fontType="medium1"
                         numberOfLines={1}>
-                        {name}
+                        {isEmpty(name.trim()) ? 'Update name' : name}
                     </Text>
                 </Block>
             </Block>

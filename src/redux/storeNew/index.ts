@@ -8,7 +8,6 @@ import {
     CartReducer,
     AuthorReducer,
     ReadingReducer,
-    FavoriteBookReducer,
     RankReducer,
     SearchReducer,
 } from '@redux/reducerNew';
@@ -36,7 +35,7 @@ import {
     bookOfAuthAPI,
     chatAPI,
     rankAPI,
-    commentAPI
+    commentAPI,
 } from '@redux/servicesNew';
 import { setupListeners } from '@reduxjs/toolkit/query';
 import { userPhoneApi } from '@redux/servicesNew/userPhoneAPI';
@@ -50,7 +49,6 @@ const rootReducer = combineReducers({
     cart: CartReducer,
     author: AuthorReducer,
     reading: ReadingReducer,
-    favoriteBook: FavoriteBookReducer,
     rank: RankReducer,
     search: SearchReducer,
     // ...other reducers here

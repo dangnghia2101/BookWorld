@@ -13,6 +13,10 @@ export type AuthState = {
     bookmark: string;
     wallet: number;
     isLogin: boolean;
+    notification?: Array<Object>;
+    role?: number;
+    timeReadBook?: Array<Object>;
+    historyBookRead: Array<Object>;
 };
 
 const defaultAuthState: AuthState = {
@@ -28,6 +32,10 @@ const defaultAuthState: AuthState = {
     bookmark: '',
     wallet: 0,
     isLogin: false,
+    notification: [],
+    role: 3,
+    timeReadBook: [],
+    historyBookRead: [],
 };
 
 const authSlice = createSlice({

@@ -1,4 +1,4 @@
-import { loginReducer } from '@redux/reducerNew';
+import { changeLoading, loginReducer } from '@redux/reducerNew';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { Token } from '@stripe/stripe-react-native';
 
@@ -89,6 +89,25 @@ export const userApi = createApi({
             query: () => '/auth/login',
             providesTags: ['Post'],
         }),
+        getInforUser: builder.query<any, { token: string }>({
+            query: body => ({
+                url: `accounts/profile`,
+                headers: { Authorization: `Bearer ${body.token}` },
+            }),
+            transformResponse: (response: { data: any }) => response.data,
+            async onQueryStarted(id, { dispatch, queryFulfilled }) {
+                try {
+                    console.log('getInforUser api BEFORE');
+                    const { data } = await queryFulfilled;
+                    console.log('getInforUser api ', data);
+                    dispatch(loginReducer(data));
+                    // Save data in store, using reducer
+                } catch (err) {
+                    dispatch(changeLoading('HIDE'));
+                    console.log('error api getAllChapterBook... ', err);
+                }
+            },
+        }),
     }),
 });
 
@@ -97,4 +116,5 @@ export const {
     useGetLoginQuery,
     useLoginPhoneMutation,
     useLoginPhoneNumberMutation,
+    useLazyGetInforUserQuery,
 } = userApi;

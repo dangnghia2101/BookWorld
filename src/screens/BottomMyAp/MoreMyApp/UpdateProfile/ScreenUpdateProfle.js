@@ -10,15 +10,17 @@ import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import { PermissionsAndroid } from 'react-native';
 import React, { useState, useCallback, useMemo, useRef } from 'react';
 import { Block, Text, HeaderWithButton } from '@components';
-import { theme } from '@theme';
 import IconView from '@components/Icon';
 import { useAppSelector } from '@hooks';
 import BottomSheet, { BottomSheetBackdrop } from '@gorhom/bottom-sheet';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useEditProfileMutation } from '@redux/servicesNew/editProflieAPI';
-import { makeStyles, useTheme } from 'themeNew';
+import { colors, makeStyles, useTheme } from 'themeNew';
 import { withNamespaces } from 'react-i18next';
 import { useNavigation } from '@react-navigation/core';
+import { useLazyGetInforUserQuery } from '@redux/servicesNew';
+import { isEmpty } from 'lodash';
+import { icons } from '@assets';
 const createFormData = (photo, name) => {
     console.log('createFormDataaaaaaa', photo);
     const data = new FormData();
@@ -33,13 +35,14 @@ const ScreenUpdateProfile = ({ t }) => {
     const theme = useTheme(themeStore);
     const styles = useStyle(themeStore);
     const [imageUri, setImageUri] = useState({ uri: myInfo.image });
-    const [name, setName] = useState(myInfo.name);
+    const [name, setName] = useState(myInfo?.name.trim());
     const [editProfile] = useEditProfileMutation();
     const inset = useSafeAreaInsets();
     const snapPoints = useMemo(() => [130 + inset.bottom], [inset.bottom]);
     const bottomSheetRef = useRef(null);
     var snapTI = -1;
     const navigaion = useNavigation();
+    const [getInforUser] = useLazyGetInforUserQuery();
 
     const renderBackdrop = useCallback(
         props => (
@@ -118,8 +121,14 @@ const ScreenUpdateProfile = ({ t }) => {
         const aw = await editProfile(body);
 
         if (aw?.data?.data) {
+            await getInforUser({ token: myInfo.token });
             navigaion.goBack();
-            ToastAndroid.show('Update profile success');
+
+            ToastAndroid.show(
+                'Update profile success',
+                ToastAndroid.SHORT,
+                ToastAndroid.BOTTOM,
+            );
         }
     };
 
@@ -154,7 +163,11 @@ const ScreenUpdateProfile = ({ t }) => {
                             padding={7}>
                             <Image
                                 style={styles.avatar}
-                                source={{ uri: imageUri.uri }}
+                                source={
+                                    !isEmpty(imageUri?.uri)
+                                        ? { uri: imageUri.uri }
+                                        : icons.logo
+                                }
                             />
                             <Block
                                 absolute
@@ -174,17 +187,18 @@ const ScreenUpdateProfile = ({ t }) => {
                                         component={'MaterialIcons'}
                                         name={'add-a-photo'}
                                         size={25}
-                                        color={theme.colors.gray}
+                                        color={theme.colors.grey6}
                                     />
                                 </TouchableOpacity>
                             </Block>
                         </Block>
                     </Block>
                 </Block>
-                <Block width={'100%'} paddingHorizontal={30}>
+                <Block width={'100%'} paddingHorizontal={15}>
                     <Block width={'100%'} marginTop={20}>
                         <Text
-                            fontType="mideum1"
+                            size={14}
+                            fontType="medium1"
                             color={theme.colors.textInBox}
                             style={styles.textFullname}>
                             {t('fullName')}
@@ -193,14 +207,17 @@ const ScreenUpdateProfile = ({ t }) => {
                             onChangeText={setName}
                             value={name}
                             color={theme.colors.textInBox}
-                            placeholder={myInfo.name}
-                            placeholderTextColor={theme.colors.textInBox}
+                            placeholder={
+                                isEmpty(myInfo.name) ? 'Username' : 'Username'
+                            }
+                            placeholderTextColor={theme.colors.grey10}
                             style={styles.textInput}
                         />
                     </Block>
                     <Block width={'100%'} marginTop={20}>
                         <Text
-                            fontType="mideum1"
+                            size={14}
+                            fontType="medium1"
                             color={theme.colors.textInBox}
                             style={styles.textFullname}>
                             {t('birthDay')}
@@ -208,7 +225,7 @@ const ScreenUpdateProfile = ({ t }) => {
                         <TextInput
                             placeholder={'dd/mm/yyyy'}
                             color={theme.colors.textInBox}
-                            placeholderTextColor={theme.colors.textInBox}
+                            placeholderTextColor={theme.colors.grey10}
                             style={styles.textInput}
                         />
                     </Block>
@@ -231,30 +248,43 @@ const ScreenUpdateProfile = ({ t }) => {
                 backdropComponent={renderBackdrop}
                 snapPoints={snapPoints}
                 enablePanDownToClose={true}>
-                <Block width={'100%'} justifyCenter alignCenter height={'100%'}>
+                <Block
+                    width={'100%'}
+                    justifyCenter
+                    alignCenter
+                    height={'100%'}
+                    backgroundColor={theme.colors.background}>
                     <TouchableOpacity
                         style={styles.buttomLogin}
                         onPress={() => takePhoto()}>
-                        <IconView
-                            component={'Ionicons'}
-                            name={'camera-outline'}
-                            size={35}
-                            color={theme.colors.grey5}
-                        />
-                        <Text style={styles.textButtomLogin}>
+                        <Block width={35} alignCenter marginLeft={15}>
+                            <IconView
+                                component={'Ionicons'}
+                                name={'camera-outline'}
+                                size={25}
+                                color={theme.colors.textInBox}
+                            />
+                        </Block>
+                        <Text
+                            color={theme.colors.textInBox}
+                            style={styles.textButtomLogin}>
                             {t('takePhoto')}
                         </Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                         style={styles.buttomLogin}
                         onPress={() => chooseImageGallary()}>
-                        <IconView
-                            component={'FontAwesome'}
-                            name={'picture-o'}
-                            size={30}
-                            color={theme.colors.grey5}
-                        />
-                        <Text style={styles.textButtomLogin}>
+                        <Block width={35} alignCenter marginLeft={15}>
+                            <IconView
+                                component={'FontAwesome'}
+                                name={'picture-o'}
+                                size={20}
+                                color={theme.colors.textInBox}
+                            />
+                        </Block>
+                        <Text
+                            color={theme.colors.textInBox}
+                            style={styles.textButtomLogin}>
                             {t('choosePhoto')}
                         </Text>
                     </TouchableOpacity>
@@ -281,19 +311,17 @@ const useStyle = makeStyles()(({ normalize, colors }) => ({
     },
     bottomSheet: {
         borderWidth: 1,
-        borderColor: theme.colors.gray2,
+        borderColor: colors.grey6,
         borderTopLeftRadius: 10,
         borderTopRightRadius: 10,
     },
     textFullname: {
-        fontSize: 17,
-        marginLeft: 10,
+        marginLeft: 15,
     },
     textButtomLogin: {
         fontSize: 16,
         alignItems: 'center',
-        color: theme.colors.gray5,
-        marginLeft: '10%',
+        marginLeft: 10,
     },
     buttomLogin: {
         width: '100%',
@@ -310,7 +338,7 @@ const useStyle = makeStyles()(({ normalize, colors }) => ({
     TouchableOpacity: {
         width: '100%',
         height: 55,
-        backgroundColor: theme.colors.creamRed,
+        backgroundColor: colors.creamRed,
         borderRadius: 50,
         marginTop: '40%',
         marginBottom: '10%',
@@ -318,11 +346,11 @@ const useStyle = makeStyles()(({ normalize, colors }) => ({
         alignItems: 'center',
     },
     textInput: {
-        fontWeight: '500',
-        fontSize: 16,
+        fontWeight: '700',
+        fontSize: 18,
         marginLeft: 10,
         borderBottomWidth: 1,
-        borderBottomColor: theme.colors.gray2,
+        borderBottomColor: colors.grey6,
     },
     avatar: {
         width: 135,

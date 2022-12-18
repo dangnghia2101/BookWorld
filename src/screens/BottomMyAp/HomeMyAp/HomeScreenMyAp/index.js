@@ -7,6 +7,7 @@ import {
     useGetAllAuthorQuery,
     useGetAllBookQuery,
     useGetAllCategoryQuery,
+    useLazyGetInforUserQuery,
 } from '@redux/servicesNew';
 import { height, width } from '@utils/responsive';
 import { useAppSelector } from 'hooks';
@@ -46,6 +47,7 @@ const HomeScreenMyAp = ({ t }) => {
 
     const [isCollapsible, setIsCollapsible] = useState(true);
     const [bookFree, setBookFree] = useState([]);
+    const [getInforUser] = useLazyGetInforUserQuery();
 
     const scrollX = React.useRef(new Animated.Value(0)).current;
 
@@ -71,6 +73,14 @@ const HomeScreenMyAp = ({ t }) => {
             setBookFree(allBooks.filter(item => item?.isPrice <= 0));
         }
     }, []);
+
+    console.log('===> myInfo  ', myInfo.token);
+
+    // useEffect(() => {
+    //     if (myInfo) {
+    //         getInforUser({ token: myInfo.token });
+    //     }
+    // }, [myInfo]);
 
     //Cập nhật mỗi lần thay đổi TabView
 
@@ -151,7 +161,6 @@ const HomeScreenMyAp = ({ t }) => {
             </Block>
         );
     }, [_renderItemMostBookRead, allCategories]);
-
 
     const renderListBookFree = useCallback(() => {
         return (

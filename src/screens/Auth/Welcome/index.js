@@ -172,7 +172,6 @@ const styles = StyleSheet.create({
         position: 'relative',
         height: '100%',
         paddingTop: 40,
-        backgroundColor: 'white',
     },
     dotView: {
         flexDirection: 'row',

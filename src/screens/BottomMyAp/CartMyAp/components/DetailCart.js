@@ -39,7 +39,13 @@ const DetailCart = ({ route, t }) => {
                     };
                     if (item.status === true) {
                         return (
-                            <Block marginTop={10} row style={styles.Item}>
+                            <Block
+                                marginTop={10}
+                                row
+                                style={[
+                                    styles.Item,
+                                    { backgroundColor: themeNew.colors.text },
+                                ]}>
                                 <Block
                                     backgroundColor={themeNew.colors.text}
                                     padding={7}
@@ -208,7 +214,6 @@ const styles = StyleSheet.create({
         marginVertical: 10,
         width: '89%',
         height: 130,
-        backgroundColor: theme.colors.text,
         borderRadius: 10,
         shadowColor: theme.colors.gray2,
         shadowOffset: {

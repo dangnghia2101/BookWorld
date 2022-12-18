@@ -23,10 +23,12 @@ export const bookOfAuthAPI = createApi({
     }),
     endpoints: builder => ({
         getBookOfAuthor: builder.query<BookOfAuthState[], string>({
-            query: id => ({
-                url: `books/${id}/getAllBookAuthor`,
-                // Our tricky API always returns a 200, but sets an `isError` property when there is an error.
-            }),
+            query: id => {
+                console.log('getBookOfAuthor');
+                return {
+                    url: `books/${id}/getAllBookAuthor`,
+                };
+            },
             transformResponse: (response: any) => response,
             async onQueryStarted(id, { dispatch, queryFulfilled }) {
                 try {
@@ -47,39 +49,40 @@ export const bookOfAuthAPI = createApi({
             async onQueryStarted(id, { dispatch, queryFulfilled }) {
                 try {
                     const { data } = await queryFulfilled;
-                    console.log("++++++++++++++++++++++++++++++",data);
-                    
+                    console.log('++++++++++++++++++++++++++++++', data);
+
                     dispatch(saveFavoriteBookReducer({ data: data.data })); // Save data in store, using reducer
                 } catch (err) {
                     // console.log('error api getAllBook... ', err);
                 }
             },
         }),
-    getBookReaded: builder.query<BookOfAuthState[], string>({
-        query: (id) => ({
-            url: `accounts/${id}getReadingBooks`,
-            validateStatus: (response, result) =>
-                response.status === 200 && !result.isError, // Our tricky API always returns a 200, but sets an `isError` property when there is an error.
+        getBookReaded: builder.query<BookOfAuthState[], string>({
+            query: id => ({
+                url: `accounts/${id}getReadingBooks`,
+                validateStatus: (response, result) =>
+                    response.status === 200 && !result.isError, // Our tricky API always returns a 200, but sets an `isError` property when there is an error.
+            }),
         }),
-    }),
-    postSaveFavoriteBooks: builder.mutation({
-        query: body => {
-          return {
-            url: 'accounts/postFavoriteBooks',
-            method: 'POST',
-            body: body,
-            headers: {
-              'Content-type': 'application/json; charset=utf-8',
-               Authorization: `Bearer ${body.token}`
+        postSaveFavoriteBooks: builder.mutation({
+            query: body => {
+                return {
+                    url: 'accounts/postFavoriteBooks',
+                    method: 'POST',
+                    body: body,
+                    headers: {
+                        'Content-type': 'application/json; charset=utf-8',
+                        Authorization: `Bearer ${body.token}`,
+                    },
+                };
             },
-        }
-    }}
-        ),
+        }),
     }),
 });
 
 export const {
     useGetBookOfAuthorQuery,
+    useLazyGetBookOfAuthorQuery,
     useGetBookReadedQuery,
     useGetFavoriteBookQuery,
     usePostSaveFavoriteBooksMutation,

@@ -14,6 +14,7 @@ import {
 } from '@redux/servicesNew';
 import { MONTHS } from '@utils/constants';
 import { VictoryBar, VictoryChart } from 'victory-native';
+import EmptyIcon from '@assets/svgs/EmptyIcon';
 
 const thisYear = new Date().getFullYear();
 const thisMonth = MONTHS[new Date().getMonth() + 1];
@@ -24,9 +25,7 @@ const ChartMoreMy = props => {
     // const dataReadTime = useLazyGetReadTimeBookQuery(myInfo._id);
     //thuc hien dau goi do getReadTimeBook(id);
     const { data: dataReadTime } = useGetReadTimeBookQuery(myInfo._id);
-    console.log('Data read time ', dataReadTime);
     //chay 1 lan
-    console.log('token', myInfo.token);
 
     const { t } = props;
     const themeStore = useAppSelector(state => state.root.themeApp.theme);
@@ -152,7 +151,9 @@ const ChartMoreMy = props => {
             {data.length > 0 ? (
                 <VictoryChart>
                     <VictoryBar
-                        style={{ data: { fill: '#0D7EF9', width: 15 } }}
+                        style={{
+                            data: { fill: '#0D7EF9', width: 15 },
+                        }}
                         animate={{
                             duration: 3000,
                             onLoad: {
@@ -164,7 +165,9 @@ const ChartMoreMy = props => {
                         data={data}
                     />
                 </VictoryChart>
-            ) : null}
+            ) : (
+                <EmptyIcon />
+            )}
         </Block>
     );
 };

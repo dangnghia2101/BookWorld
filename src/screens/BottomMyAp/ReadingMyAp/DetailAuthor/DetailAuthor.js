@@ -1,14 +1,11 @@
 import { Block, Container, Text } from '@components';
 import { useAppSelector } from '@hooks';
-import { theme } from '@theme';
-import { width } from '@utils/responsive';
 import React from 'react';
 import { withNamespaces } from 'react-i18next';
 import { Image, ScrollView, StyleSheet } from 'react-native';
 import { useTheme } from 'themeNew';
 import BookOfAuthor from '../components/BookOfAuthor';
 import TopBar from '../components/TopBar';
-const widthItemEventIncoming = width - width / 3;
 
 const DetailAuthor = ({ route, t }) => {
     let item = route.params.item;
@@ -115,7 +112,7 @@ const DetailAuthor = ({ route, t }) => {
                         style={styles.textBook}>
                         {t('bookOfAuthor')}
                     </Text>
-                    <BookOfAuthor />
+                    <BookOfAuthor idAuthor={item?._id} />
                     {/* <TabSceneReadingStatus /> */}
                 </Block>
             </ScrollView>
@@ -150,7 +147,7 @@ const styles = StyleSheet.create({
         fontSize: 24,
         lineHeight: 36,
         left: '32%',
-        top: '76%',
+        top: '80%',
         width: 250,
     },
     iconBack: {
