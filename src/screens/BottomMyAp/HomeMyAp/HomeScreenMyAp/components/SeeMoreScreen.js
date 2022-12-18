@@ -15,18 +15,21 @@ const SeeMoreScreen = ({ t }) => {
     const allBooks = useAppSelector(state => state.root.book.bookList);
     const themeStore = useAppSelector(state => state.root.themeApp.theme);
     const themeNew = useTheme(themeStore);
+    let freeBook = [];
+    allBooks.map(item => {
+        if (item.isPrice === null || item.isPrice === 0) {
+            freeBook.push(item);
+        }
+    });
     return (
         <Block backgroundColor={themeNew.colors.background} flex >
             <HeaderWithButton isBackHeader title={t('freeBook')} />
             <Block style={styles.container}>
                 <Animated.FlatList
-                    data={allBooks}
+                    data={freeBook}
                     keyExtractor={item => item.toString()}
                     renderItem={item => <ItemCateBook item={item.item} />}
                     bounces={false}
-                    // horizontal
-                    // showsHorizontalScrollIndicator={false}
-                    // scrollEventThrottle={16}
                     nestedScrollEnabled={true}
                     ListEmptyComponent={
                         <Block
