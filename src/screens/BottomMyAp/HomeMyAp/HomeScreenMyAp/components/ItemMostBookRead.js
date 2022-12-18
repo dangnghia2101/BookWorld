@@ -40,7 +40,7 @@ const ItemMostBookRead = ({ item, index, scrollX, size, t }) => {
 
     const _renderView = () => {
         for (let i = 0; i <= allBooks.length; i++) {
-            let num = Math.floor(Math.random() * 9999) + 100;
+            let num = Math.floor(Math.random() * 100);
             return num;
         }
     };

@@ -26,7 +26,7 @@ const ChartMoreMy = props => {
     const { data: dataReadTime } = useGetReadTimeBookQuery(myInfo._id);
     console.log('Data read time ', dataReadTime);
     //chay 1 lan
-    console.log("token", myInfo.token);
+    console.log('token', myInfo.token);
 
     const { t } = props;
     const themeStore = useAppSelector(state => state.root.themeApp.theme);
@@ -67,8 +67,6 @@ const ChartMoreMy = props => {
             console.log('[Error handleDataMonth] ', e);
         }
     }, [dataReadTime]);
-
-    console.log('month in array  ', data);
 
     const handleDataMonth = useCallback(() => {
         try {
@@ -129,19 +127,25 @@ const ChartMoreMy = props => {
                     style={[styles.itemChartContainer, styles.shadowColor]}
                     onPress={handleDataDate}
                     id="A">
-                    <Text fontType={'medium1'} color={themeNew.colors.textDark}>{t('day')}</Text>
+                    <Text fontType={'medium1'} color={themeNew.colors.textDark}>
+                        {t('day')}
+                    </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={[styles.itemChartContainer, styles.shadowColor]}
                     onPress={handleDataMonth}
                     id="B">
-                    <Text fontType={'medium1'} color={themeNew.colors.textDark}>{t('month')}</Text>
+                    <Text fontType={'medium1'} color={themeNew.colors.textDark}>
+                        {t('month')}
+                    </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={[styles.itemChartContainer, styles.shadowColor]}
                     onPress={handleDataYear}
                     id="C">
-                    <Text fontType={'medium1'} color={themeNew.colors.textDark}>{t('year')}</Text>
+                    <Text fontType={'medium1'} color={themeNew.colors.textDark}>
+                        {t('year')}
+                    </Text>
                 </TouchableOpacity>
             </Block>
 

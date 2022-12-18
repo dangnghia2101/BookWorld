@@ -1,19 +1,18 @@
 import { icons } from '@assets';
 import { Block, Container, ModalBox, Text, TextInput } from '@components';
 import { routes } from '@navigation/routes';
-import auth from '@react-native-firebase/auth';
 import messaging from '@react-native-firebase/messaging';
-import {
-    GoogleSignin,
-    statusCodes,
-} from '@react-native-google-signin/google-signin';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { useNavigation } from '@react-navigation/native';
-import { PHONE_REG_EXP } from '@utils/constants';
 import { changeLoading } from '@redux/reducerNew';
-import { useLoginMutation } from '@redux/servicesNew';
+import {
+    useLoginMutation,
+    useLoginPhoneNumberMutation,
+} from '@redux/servicesNew';
+import { PHONE_REG_EXP } from '@utils/constants';
 import { useAppDispatch, useAppSelector } from 'hooks';
-import React, { useEffect, useState, useMemo } from 'react';
-import { useLoginPhoneNumberMutation } from '@redux/servicesNew';
+import React, { useEffect, useMemo, useState } from 'react';
+import { withNamespaces } from 'react-i18next';
 import {
     Image,
     Modal,
@@ -21,9 +20,8 @@ import {
     StyleSheet,
     TouchableOpacity,
 } from 'react-native';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { useTheme } from 'themeNew';
-import { withNamespaces } from 'react-i18next';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { colors, useTheme } from 'themeNew';
 const ModalPoup = ({ visible, children }) => {
     const [showModal, setShowModal] = React.useState(visible);
     useEffect(() => {
@@ -65,6 +63,7 @@ const Login = ({ t }) => {
     const [auth, setAuth] = useState('signin');
     const [visibleNotifi, setVisibleNotifi] = useState(false);
     const [confirmPassword, setConfirmPassword] = useState('');
+    const inset = useSafeAreaInsets();
 
     const handleErrorPhone = useMemo(() => {
         if (phoneUser.match(PHONE_REG_EXP) || phoneUser.length == 0) {
@@ -227,13 +226,19 @@ const Login = ({ t }) => {
     };
     return (
         <Container
-            style={{ backgroundColor: theme.colors.background, flex: 1 }}
+            style={{
+                backgroundColor: theme.colors.background,
+                flex: 1,
+                alignItems: 'center',
+                paddingHorizontal: 20,
+            }}
             statusColor={theme.colors.background}>
             <Text
                 fontType="bold"
                 h1
                 bold
                 size={30}
+                color={theme.colors.textInBox}
                 style={styles.textWelcomLogin}>
                 {' '}
                 {t('welcomeBack')}{' '}
@@ -272,6 +277,7 @@ const Login = ({ t }) => {
                 bold
                 size={15}
                 style={styles.textRemember}
+                color={theme.colors.textInBox}
                 fontType="medium1"
                 onPress={() => status(0)}>
                 {' '}
@@ -285,7 +291,7 @@ const Login = ({ t }) => {
                     {t('login')}
                 </Text>
             </TouchableOpacity>
-            <Block marginTop={20}>
+            <Block marginTop={10}>
                 <TouchableOpacity
                     onPress={() => _signIngoogle()}
                     style={styles.loginGoogle}
@@ -294,13 +300,16 @@ const Login = ({ t }) => {
                         style={styles.icon}
                         source={require('../../../assets/images/GG.png')}
                     />
-                    <Text fontType="medium1" style={styles.textLoginGmail}>
+                    <Text
+                        color={theme.colors.textInBox}
+                        fontType="medium1"
+                        style={styles.textLoginGmail}>
                         {t('logWithGoogle')}
                     </Text>
                 </TouchableOpacity>
             </Block>
-            <Block marginTop={100}>
-                <Text fontType="medium1">
+            <Block marginTop={100} bottom={inset.bottom + 20} absolute>
+                <Text fontType="medium1" color={theme.colors.textInBox}>
                     {t('doNotHaveAnAccount')} {'  '}
                     <Text
                         fontType="bold1"
@@ -454,13 +463,19 @@ const Login = ({ t }) => {
                 isVisible={visibleNotifi}
                 onBackdropPress={() => setVisibleNotifi(!visibleNotifi)}>
                 <Block
-                    backgroundColor={'white'}
+                    backgroundColor={theme.colors.background}
                     radius={15}
                     alignSelf={'center'}
                     justifyCenter={'center'}
-                    padding={20}>
+                    padding={20}
+                    borderColor={theme.colors.grayPastel}
+                    borderWidth={1}>
                     <Block alignCenter={'center'} justifyCenter={'center'}>
-                        <Text style={styles.textOTP} center>
+                        <Text
+                            style={styles.textOTP}
+                            center
+                            color={theme.colors.textInBox}
+                            fontType="medium">
                             Đăng nhập thất bại
                         </Text>
                         <Block>
@@ -475,7 +490,9 @@ const Login = ({ t }) => {
                             onPress={() => {
                                 setVisibleNotifi(false);
                             }}>
-                            <Text size={14}>Kiểm tra lại thông tin</Text>
+                            <Text size={14} color={theme.colors.textInBox}>
+                                Kiểm tra lại thông tin
+                            </Text>
                         </TouchableOpacity>
                     </Block>
                 </Block>
@@ -560,7 +577,6 @@ const styles = StyleSheet.create({
     textLoginGmail: {
         marginLeft: '15%',
         fontSize: 15,
-        color: '#2D2626',
     },
     loginGoogle: {
         width: 230,
@@ -616,8 +632,8 @@ const styles = StyleSheet.create({
         color: '#FFFFFF',
     },
     buttomLogin: {
-        width: '88%',
-        height: 59,
+        width: '100%',
+        height: 55,
         marginTop: 48,
         justifyContent: 'center',
         alignItems: 'center',
@@ -635,7 +651,6 @@ const styles = StyleSheet.create({
     },
     textRemember: {
         lineHeight: 23,
-        color: '#2D2626',
         marginTop: 22,
         marginLeft: '57%',
     },
@@ -674,7 +689,6 @@ const styles = StyleSheet.create({
     },
     textWelcomLogin: {
         lineHeight: 45,
-        color: '#464444',
     },
     textDescribe: {
         marginTop: 12,
@@ -689,5 +703,9 @@ const styles = StyleSheet.create({
         width: 50,
         height: 50,
         alignSelf: 'center',
+    },
+    icon: {
+        width: 20,
+        height: 20,
     },
 });
