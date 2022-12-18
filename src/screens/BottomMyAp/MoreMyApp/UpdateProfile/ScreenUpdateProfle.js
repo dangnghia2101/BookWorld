@@ -4,6 +4,7 @@ import {
     TextInput,
     ScrollView,
     TouchableOpacity,
+    ToastAndroid,
 } from 'react-native';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import { PermissionsAndroid } from 'react-native';
@@ -17,6 +18,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useEditProfileMutation } from '@redux/servicesNew/editProflieAPI';
 import { makeStyles, useTheme } from 'themeNew';
 import { withNamespaces } from 'react-i18next';
+import { useNavigation } from '@react-navigation/core';
 const createFormData = (photo, name) => {
     console.log('createFormDataaaaaaa', photo);
     const data = new FormData();
@@ -37,6 +39,7 @@ const ScreenUpdateProfile = ({ t }) => {
     const snapPoints = useMemo(() => [130 + inset.bottom], [inset.bottom]);
     const bottomSheetRef = useRef(null);
     var snapTI = -1;
+    const navigaion = useNavigation();
 
     const renderBackdrop = useCallback(
         props => (
@@ -67,12 +70,12 @@ const ScreenUpdateProfile = ({ t }) => {
             snapTI = 0;
             bottomSheetRef.current?.snapToIndex(snapTI);
         }
-    }
+    };
 
     const chooseImageGallary = async () => {
         // const result = await launchImageLibrary(options);
         // setImageUri(result.assets[0].uri);
-        bottomSheetRef.current?.snapToIndex(-1)
+        bottomSheetRef.current?.snapToIndex(-1);
         const result = await launchImageLibrary(options);
         setImageUri({
             uri: result.assets[0].uri,
@@ -104,7 +107,7 @@ const ScreenUpdateProfile = ({ t }) => {
                 bottomSheetRef.current?.snapToIndex(-1);
             }
         }
-        bottomSheetRef.current.snapToIndex(-1)
+        bottomSheetRef.current.snapToIndex(-1);
     };
 
     const handleUploadPhoto = async () => {
@@ -114,7 +117,10 @@ const ScreenUpdateProfile = ({ t }) => {
         };
         const aw = await editProfile(body);
 
-        console.log('handleUploadPhoto', aw);
+        if (aw?.data?.data) {
+            navigaion.goBack();
+            ToastAndroid.show('Update profile success');
+        }
     };
 
     return (
@@ -177,7 +183,12 @@ const ScreenUpdateProfile = ({ t }) => {
                 </Block>
                 <Block width={'100%'} paddingHorizontal={30}>
                     <Block width={'100%'} marginTop={20}>
-                        <Text fontType='mideum1' color={theme.colors.textInBox} style={styles.textFullname}>{t('fullName')}</Text>
+                        <Text
+                            fontType="mideum1"
+                            color={theme.colors.textInBox}
+                            style={styles.textFullname}>
+                            {t('fullName')}
+                        </Text>
                         <TextInput
                             onChangeText={setName}
                             value={name}
@@ -188,7 +199,12 @@ const ScreenUpdateProfile = ({ t }) => {
                         />
                     </Block>
                     <Block width={'100%'} marginTop={20}>
-                        <Text fontType='mideum1' color={theme.colors.textInBox} style={styles.textFullname}>{t('birthDay')}</Text>
+                        <Text
+                            fontType="mideum1"
+                            color={theme.colors.textInBox}
+                            style={styles.textFullname}>
+                            {t('birthDay')}
+                        </Text>
                         <TextInput
                             placeholder={'dd/mm/yyyy'}
                             color={theme.colors.textInBox}
@@ -199,7 +215,10 @@ const ScreenUpdateProfile = ({ t }) => {
                     <TouchableOpacity
                         onPress={handleUploadPhoto}
                         style={styles.TouchableOpacity}>
-                        <Text fontType='bold1' style={styles.textSave} height={55}>
+                        <Text
+                            fontType="bold1"
+                            style={styles.textSave}
+                            height={55}>
                             {t('save')}
                         </Text>
                     </TouchableOpacity>
@@ -212,11 +231,7 @@ const ScreenUpdateProfile = ({ t }) => {
                 backdropComponent={renderBackdrop}
                 snapPoints={snapPoints}
                 enablePanDownToClose={true}>
-                <Block
-                    width={'100%'}
-                    justifyCenter
-                    alignCenter
-                    height={'100%'}>
+                <Block width={'100%'} justifyCenter alignCenter height={'100%'}>
                     <TouchableOpacity
                         style={styles.buttomLogin}
                         onPress={() => takePhoto()}>
@@ -226,7 +241,9 @@ const ScreenUpdateProfile = ({ t }) => {
                             size={35}
                             color={theme.colors.grey5}
                         />
-                        <Text style={styles.textButtomLogin}>{t('takePhoto')}</Text>
+                        <Text style={styles.textButtomLogin}>
+                            {t('takePhoto')}
+                        </Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                         style={styles.buttomLogin}
@@ -237,11 +254,13 @@ const ScreenUpdateProfile = ({ t }) => {
                             size={30}
                             color={theme.colors.grey5}
                         />
-                        <Text style={styles.textButtomLogin}>{t('choosePhoto')}</Text>
+                        <Text style={styles.textButtomLogin}>
+                            {t('choosePhoto')}
+                        </Text>
                     </TouchableOpacity>
                 </Block>
-            </BottomSheet >
-        </Block >
+            </BottomSheet>
+        </Block>
     );
 };
 
@@ -252,13 +271,13 @@ const useStyle = makeStyles()(({ normalize, colors }) => ({
         width: 35,
         height: 35,
         justifyContent: 'center',
-        alignItems: "center",
+        alignItems: 'center',
         backgroundColor: colors.text,
-        borderRadius: 50
+        borderRadius: 50,
     },
     blockIcon: {
         top: '80%',
-        left: '75%'
+        left: '75%',
     },
     bottomSheet: {
         borderWidth: 1,
@@ -274,7 +293,7 @@ const useStyle = makeStyles()(({ normalize, colors }) => ({
         fontSize: 16,
         alignItems: 'center',
         color: theme.colors.gray5,
-        marginLeft: '10%'
+        marginLeft: '10%',
     },
     buttomLogin: {
         width: '100%',
@@ -312,6 +331,6 @@ const useStyle = makeStyles()(({ normalize, colors }) => ({
         margin: 7,
     },
     container: {
-        marginLeft: '33%'
-    }
+        marginLeft: '33%',
+    },
 }));
