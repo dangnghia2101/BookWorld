@@ -166,7 +166,9 @@ const ChartMoreMy = props => {
                     />
                 </VictoryChart>
             ) : (
-                <EmptyIcon />
+                <Block alignCenter justifyCenter>
+                    <EmptyIcon />
+                </Block>
             )}
         </Block>
     );
