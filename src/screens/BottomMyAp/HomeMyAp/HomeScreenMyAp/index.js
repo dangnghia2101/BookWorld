@@ -72,15 +72,8 @@ const HomeScreenMyAp = ({ t }) => {
         if (allBooks) {
             setBookFree(allBooks.filter(item => item?.isPrice <= 0));
         }
+        getInforUser({ token: myInfo.token });
     }, []);
-
-    console.log('===> myInfo  ', myInfo.token);
-
-    // useEffect(() => {
-    //     if (myInfo) {
-    //         getInforUser({ token: myInfo.token });
-    //     }
-    // }, [myInfo]);
 
     //Cập nhật mỗi lần thay đổi TabView
 

@@ -159,7 +159,6 @@ const PlayBookScreenMyAp = ({ route, t }) => {
     useEffect(() => {
         let flg = false;
         dataFavorite[0]?.favoriteBooks.map(itemFvr => {
-            console.log('itemFavoriteeeeeeeeeee----------', itemFvr);
             if (itemFvr.idBook._id == dataInfoBook._id) {
                 flg = true;
             }

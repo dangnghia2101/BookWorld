@@ -21,6 +21,7 @@ const thisMonth = MONTHS[new Date().getMonth() + 1];
 
 const ChartMoreMy = props => {
     const [data, setData] = useState([]);
+    const [index, setIndex] = useState(1);
     const myInfo = useAppSelector(state => state.root.auth);
     // const dataReadTime = useLazyGetReadTimeBookQuery(myInfo._id);
     //thuc hien dau goi do getReadTimeBook(id);
@@ -43,6 +44,7 @@ const ChartMoreMy = props => {
     }, [dataReadTime]);
 
     const handleDataYear = useCallback(() => {
+        setIndex(2);
         try {
             if (dataReadTime) {
                 let handleData = [];
@@ -56,7 +58,7 @@ const ChartMoreMy = props => {
                     }
                     handleData.push({
                         x: year,
-                        y: (sum / 1000 / 60).toFixed(0),
+                        y: (sum / 60 / 60).toFixed(0),
                     });
                 }
 
@@ -68,6 +70,7 @@ const ChartMoreMy = props => {
     }, [dataReadTime]);
 
     const handleDataMonth = useCallback(() => {
+        setIndex(1);
         try {
             if (dataReadTime) {
                 let handleData = [];
@@ -81,7 +84,7 @@ const ChartMoreMy = props => {
                     console.log('SUM NE ', sum, month);
                     handleData.push({
                         x: month,
-                        y: (sum / 1000 / 60).toFixed(0),
+                        y: (sum / 60 / 60).toFixed(0),
                     });
                 }
 
@@ -93,7 +96,8 @@ const ChartMoreMy = props => {
     }, [dataReadTime]);
 
     const handleDataDate = useCallback(() => {
-        console.log('handleDataDate');
+        setIndex(0);
+
         try {
             if (dataReadTime) {
                 let handleData = [];
@@ -102,10 +106,7 @@ const ChartMoreMy = props => {
                     for (const day in dataReadTime[thisYear][thisMonth]) {
                         handleData.push({
                             x: day,
-                            y:
-                                dataReadTime[thisYear][thisMonth][day] /
-                                1000 /
-                                60,
+                            y: dataReadTime[thisYear][thisMonth][day] / 60 / 60,
                         });
                     }
                     setData(handleData);
@@ -117,13 +118,22 @@ const ChartMoreMy = props => {
     }, [dataReadTime]);
 
     return (
-        <Block marginVertical={20} column justifyCenter>
+        <Block marginTop={50} column justifyCenter>
             <Block
                 style={styles.dateContainer}
                 row
                 justifyContent={'space-around'}>
                 <TouchableOpacity
-                    style={[styles.itemChartContainer, styles.shadowColor]}
+                    style={[
+                        styles.itemChartContainer,
+                        styles.shadowColor,
+                        index === 0
+                            ? { backgroundColor: themeNew.colors.green }
+                            : {
+                                  backgroundColor:
+                                      themeNew.colors.backgroundDark2,
+                              },
+                    ]}
                     onPress={handleDataDate}
                     id="A">
                     <Text fontType={'medium1'} color={themeNew.colors.textDark}>
@@ -131,7 +141,16 @@ const ChartMoreMy = props => {
                     </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                    style={[styles.itemChartContainer, styles.shadowColor]}
+                    style={[
+                        styles.itemChartContainer,
+                        styles.shadowColor,
+                        index === 1
+                            ? { backgroundColor: themeNew.colors.green }
+                            : {
+                                  backgroundColor:
+                                      themeNew.colors.backgroundDark2,
+                              },
+                    ]}
                     onPress={handleDataMonth}
                     id="B">
                     <Text fontType={'medium1'} color={themeNew.colors.textDark}>
@@ -139,7 +158,16 @@ const ChartMoreMy = props => {
                     </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                    style={[styles.itemChartContainer, styles.shadowColor]}
+                    style={[
+                        styles.itemChartContainer,
+                        styles.shadowColor,
+                        index === 2
+                            ? { backgroundColor: themeNew.colors.green }
+                            : {
+                                  backgroundColor:
+                                      themeNew.colors.backgroundDark2,
+                              },
+                    ]}
                     onPress={handleDataYear}
                     id="C">
                     <Text fontType={'medium1'} color={themeNew.colors.textDark}>
