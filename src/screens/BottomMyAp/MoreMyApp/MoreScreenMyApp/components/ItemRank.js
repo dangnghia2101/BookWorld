@@ -28,14 +28,23 @@ const ItemRank = ({ item, t, index}) => {
                     {item?.name}
                     </Text>
                     <Block marginVertical={10}>
-                    <Text fontType={'medium1'} color="#9A9B9B" size={10}>
-                        {t('totalReadingTime')}
-                        {item?.timeRead}
-                    </Text>
-                    <Text fontType={'medium1'} color="#9A9B9B" size={10}>
-                        {t('numberOfBooksRead')}
-                        {item?.historyBookRead}
-                    </Text>
+                      <Block row>
+                        <Text fontType={'medium1'} color="#9A9B9B" size={10}>
+                            {t('totalReadingTime')}: 
+                        </Text>
+                        <Text fontType={'medium1'} color="#9A9B9B" size={10} marginHorizontal={5}>
+                          {item?.timeRead}
+                        </Text>
+                      </Block>
+                      <Block row>
+                      <Text fontType={'medium1'} color="#9A9B9B" size={10}>
+                          {t('numberOfBooksRead')}:
+                      </Text>
+                        <Text fontType={'medium1'} color="#9A9B9B" size={10} marginHorizontal={5}>
+                          {item?.historyBookRead}
+                      </Text>
+                      </Block>
+                    
                     </Block>
                 </View>
                     <Block row justifyContent={'center'}>
@@ -68,7 +77,7 @@ const useStyles = makeStyles()(({ colors }) => ({
         borderRadius: 35,
       },
       item: {
-        width: '45%',
+        width: '50%',
         justifyContent: 'center',
         alignItems: 'flex-start',
       },
