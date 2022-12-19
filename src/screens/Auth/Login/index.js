@@ -12,9 +12,7 @@ import {
 import { PHONE_REG_EXP } from '@utils/constants';
 import { useAppDispatch, useAppSelector } from 'hooks';
 import React, { useEffect, useState, useMemo } from 'react';
-import { useLoginPhoneNumberMutation } from '@redux/servicesNew';
 import { useForgotPasswordMutation } from '@redux/servicesNew';
-import { withNamespaces } from 'react-i18next';
 import {
     Image,
     Modal,
@@ -22,7 +20,6 @@ import {
     StyleSheet,
     TouchableOpacity,
 } from 'react-native';
-import { useTheme } from 'themeNew';
 import { withNamespaces } from 'react-i18next';
 import Toast from 'react-native-simple-toast';
 
@@ -285,7 +282,7 @@ const Login = ({ t }) => {
                     </Text>
                 </TouchableOpacity>
             </Block>
-            <Block marginTop={100} bottom={inset.bottom + 20} absolute>
+            <Block bottom={inset.bottom - 150} >
                 <Text fontType="medium1" color={theme.colors.textInBox}>
                     {t('doNotHaveAnAccount')} {'  '}
                     <Text
