@@ -40,7 +40,7 @@ const ItemMostBookRead = ({ item, index, scrollX, size, t }) => {
 
     const _renderView = () => {
         for (let i = 0; i <= allBooks.length; i++) {
-            let num = Math.floor(Math.random() * 9999) + 100;
+            let num = Math.floor(Math.random() * 100);
             return num;
         }
     };
@@ -112,13 +112,15 @@ const ItemMostBookRead = ({ item, index, scrollX, size, t }) => {
                     marginBottom={10}
                     numberOfLines={1}
                     size={11}
-                    fontType='medium1'
+                    fontType="medium1"
                     color={theme.colors.textInBox}>
                     {_renderView()} {t('view')}
                 </Text>
                 <Block row alignCenter>
                     {_renderStar()}
-                    <Text color={theme.colors.textInBox} marginLeft={5}>{star.length}.0</Text>
+                    <Text color={theme.colors.textInBox} marginLeft={5}>
+                        {star.length}.0
+                    </Text>
                 </Block>
                 {/* <Evaluate sizeIcon={15} colorIcon={theme.colors.yellow} /> */}
                 {/* </Block> */}

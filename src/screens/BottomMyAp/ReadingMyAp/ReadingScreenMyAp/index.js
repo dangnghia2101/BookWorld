@@ -1,15 +1,14 @@
-import React from 'react';
-import { Pressable } from 'react-native';
-import { Block, Text, Icon } from '@components';
-import { theme } from '@theme';
+import { Block, Container, Icon, Text } from '@components';
+import { routes } from '@navigation/routes';
 import { useNavigation } from '@react-navigation/native';
 import { useAppSelector } from 'hooks';
-import { routes } from '@navigation/routes';
-import { makeStyles, useTheme } from 'themeNew';
+import React from 'react';
 import { withNamespaces } from 'react-i18next';
+import { Pressable } from 'react-native';
+import { makeStyles, useTheme } from 'themeNew';
 
-import TapReadingStatus from '../components/TapReadingStatus';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import TapReadingStatus from '../components/TapReadingStatus';
 
 const ReadingScreenMyAp = ({ t }) => {
     const navigation = useNavigation();
@@ -18,28 +17,33 @@ const ReadingScreenMyAp = ({ t }) => {
     const styles = useStyle(themeStore);
     const inset = useSafeAreaInsets();
     return (
-        <Block
-            marginTop={inset.top}
-            flex
-            paddingHorizontal={10}
-            backgroundColor={theme.colors.background}>
+        <Container
+            statusColor={theme.colors.background}
+            edges={['left', 'right']}
+            style={{ backgroundColor: theme.colors.background }}>
             <Block width={'100%'} height={'10%'} marginVertical={10}>
                 <Pressable
                     onPress={() => navigation.navigate(routes.SEARCH)}
-                    style={styles.searchStyle}>
-                    <Text fontType='regular1' color={theme.colors.grey4} size={14}>
+                    style={[
+                        styles.searchStyle,
+                        { backgroundColor: theme.colors.text },
+                    ]}>
+                    <Text
+                        fontType="regular1"
+                        color={theme.colors.textInBox}
+                        size={14}>
                         {t('searchHere')}
                     </Text>
                     <Icon
                         component="Ionicons"
                         name="ios-search-outline"
                         size={22}
-                        color={theme.colors.grey4}
+                        color={theme.colors.textInBox}
                     />
                 </Pressable>
             </Block>
             <TapReadingStatus />
-        </Block>
+        </Container>
     );
 };
 
@@ -47,7 +51,6 @@ const useStyle = makeStyles()(({ normalize, colors }) => ({
     searchStyle: {
         marginHorizontal: normalize(10)('moderate'),
         paddingHorizontal: normalize(15)('moderate'),
-        backgroundColor: colors.white,
         borderRadius: normalize(15)('moderate'),
         height: normalize(50)('moderate'),
         justifyContent: 'space-between',

@@ -49,6 +49,7 @@ const InputText = ({
                     component="Ionicons"
                     name={secureEye ? 'ios-eye-off-outline' : 'eye-outline'}
                     size={20}
+                    color={colors.textInBox}
                 />
             </Pressable>
         );

@@ -70,7 +70,9 @@ const HeaderWithButton = props => {
                     marginTop={insets.top}
                     justifyCenter
                     backgroundColor={
-                        backgroundColor ? backgroundColor : theme.colors.background
+                        backgroundColor
+                            ? backgroundColor
+                            : theme.colors.background
                     }>
                     {renderBackHeader()}
                 </Block>
@@ -90,7 +92,7 @@ const HeaderWithButton = props => {
                     <Text
                         flex
                         size={20}
-                        color={theme.colors.textInBox}
+                        color={theme.colors.redPastel}
                         fontType="bold1">
                         {title}
                     </Text>

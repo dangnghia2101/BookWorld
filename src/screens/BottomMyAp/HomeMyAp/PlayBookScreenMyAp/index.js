@@ -1,10 +1,14 @@
-import { Block, Button, HeaderWithButton, Text } from '@components';
+import { Block, Button, Container, HeaderWithButton, Text } from '@components';
 import IconView from '@components/Icon';
 import BottomSheet, {
     BottomSheetBackdrop,
     BottomSheetScrollView,
 } from '@gorhom/bottom-sheet';
 import { useAppSelector } from '@hooks';
+import {
+    useCreateTimeReadMutation,
+    useGetDetailChapterBookQuery,
+} from '@redux/servicesNew';
 import React, {
     useCallback,
     useEffect,
@@ -12,22 +16,21 @@ import React, {
     useRef,
     useState,
 } from 'react';
-import { StyleSheet, ScrollView } from 'react-native';
+import { Alert, BackHandler, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { WebView } from 'react-native-webview';
 import { useTheme } from 'themeNew';
 import EvaluateBook from '../DetailBookScreenMyAp/components/EvaluateBook';
-import { BackHandler, Alert } from 'react-native';
-import {
-    useCreateTimeReadMutation,
-    useGetDetailChapterBookQuery,
-} from '@redux/servicesNew';
+import { useGetFavoriteBookQuery } from '@redux/servicesNew'
 
-const PlayBookScreenMyAp = ({ route }) => {
-    const { item, idChapter } = route.params;
+import { withNamespaces } from 'react-i18next';
+const PlayBookScreenMyAp = ({ route, t }) => {
+    const { dataInfoBook, idChapter } = route.params;
+    const myInfo = useAppSelector(state => state.root.auth);
     const webref = useRef(null);
     const [themeBack, setThemeBack] = useState(true); //True background white
     const [size, setSize] = useState(16);
+    const [colorHeart, setColorHeart] = useState();
     const themeStore = useAppSelector(state => state.root.themeApp.theme);
     const theme = useTheme(themeStore);
     const inset = useSafeAreaInsets();
@@ -38,7 +41,8 @@ const PlayBookScreenMyAp = ({ route }) => {
     var snapTI = -1;
     const [createTimeRead, { isLoading, data, error }] =
         useCreateTimeReadMutation();
-    const myInfo = useAppSelector(state => state.root.auth);
+    const dataFavorite = useAppSelector(state => state.root.book.favoriteList);
+    console.log("dataFavoriteeeeeeeeeeeee", dataFavorite[0]?.favoriteBooks);
     const dataGet = useGetDetailChapterBookQuery({
         id: idChapter,
         token: myInfo.token,
@@ -58,7 +62,9 @@ const PlayBookScreenMyAp = ({ route }) => {
     );
 
     const renderRightIconHeader = () => (
-        <Button onPress={() => bottomSheetRef.current?.snapToIndex(0)}>
+        <Button
+            style={{ marginRight: -25 }}
+            onPress={() => bottomSheetRef.current?.snapToIndex(0)}>
             <IconView
                 component={'Entypo'}
                 name={'dots-three-vertical'}
@@ -79,16 +85,10 @@ const PlayBookScreenMyAp = ({ route }) => {
   });
 `;
 
-    const backgroundBlack = `
-  document.body.style.background = "${theme.colors.dark2}";
-  document.querySelectorAll("p, div, td").forEach(item => {
-    item.style.color = '${theme.colors.gray4}';
-  });`;
-
     const backgroundWhite = `
-  document.body.style.background = "${theme.colors.white}";
+  document.body.style.background = "${theme.colors.background}";
   document.querySelectorAll("p, div, td").forEach(item => {
-    item.style.color = '${theme.colors.dark2}';
+    item.style.color = '${theme.colors.textInBox}';
   });`;
 
     const changeSize = `
@@ -97,14 +97,12 @@ const PlayBookScreenMyAp = ({ route }) => {
   });`;
 
     useEffect(() => {
-        if (webref.current) {
-            if (themeBack === true) {
+        if (dataGet) {
+            setTimeout(() => {
                 webref.current.injectJavaScript(backgroundWhite);
-            } else {
-                webref.current.injectJavaScript(backgroundBlack);
-            }
+            }, 300);
         }
-    }, [backgroundBlack, backgroundWhite, themeBack, dataGet]);
+    }, [backgroundWhite, themeStore, dataGet]);
 
     useEffect(() => {
         if (webref.current) {
@@ -120,11 +118,7 @@ const PlayBookScreenMyAp = ({ route }) => {
             token: myInfo.token,
         };
 
-        console.log('end: ', timeEnd);
-        console.log('sum time read:', sumTimeReadBook);
-
         const respon = await createTimeRead(params);
-        console.log('respon: ', respon);
     };
 
     useEffect(() => {
@@ -163,28 +157,40 @@ const PlayBookScreenMyAp = ({ route }) => {
         );
     }, [dataGet, initailStyle]);
 
-    // const handleSaveFavoriteBook = async () => {
-    //     try {
-    //         const body = { id: myInfo._id, idBook: item }
-    //         await saveFavoriteBook(body);
-    //         ToastAndroid.show("Đã thêm vào sách yêu thích", ToastAndroid.SHORT);
-    //     } catch (error) {
-    //         ToastAndroid.show("ch them dc sach", ToastAndroid.SHORT);
-    //     }
+    useEffect(() => {
+        let flg = false;
+        dataFavorite[0]?.favoriteBooks.map(itemFvr => {
+            console.log("itemFavoriteeeeeeeeeee----------", itemFvr);
+            if (itemFvr.idBook._id == dataInfoBook._id) {
+                flg = true;
+            }
 
-    // }
+        })
+        setColorHeart(flg);
+    }, [])
+    const handleSaveFavoriteBook = async () => {
+        try {
+            setColorHeart(true)
+            const body = { id: myInfo._id, idBook: dataInfoBook._id, token: myInfo.token }
+            await saveFavoriteBook(body);
+            ToastAndroid.show("Đã thêm vào sách yêu thích", ToastAndroid.SHORT);
+        } catch (error) {
+            ToastAndroid.show("Chưa thêm vào sách yêu thích", ToastAndroid.SHORT);
+        }
+
+    }
 
     return (
-        <Block backgroundColor={theme.colors.background} style={{ flex: 1 }}>
+        <Container
+            statusColor={theme.colors.background}
+            edges={['left', 'right']}>
             <HeaderWithButton
                 handleBack={endReadBook}
                 title={dataGet?.title}
                 isBackHeader
                 rightIcon={renderRightIconHeader()}
             />
-
             {dataGet && renderHtml()}
-
             {/* {renderHtml()} */}
             <BottomSheet
                 index={-1}
@@ -193,20 +199,20 @@ const PlayBookScreenMyAp = ({ route }) => {
                 enablePanDownToClose={true}
                 backdropComponent={renderBackdrop}>
                 <Block
-                    backgroundColor={
-                        !themeBack ? theme.colors.black : theme.colors.white
-                    }
+                    flex
+                    backgroundColor={theme.colors.background}
                     borderWidth={!themeBack ? 1 : 0}
                     borderColor={
                         !themeBack ? theme.colors.white : theme.colors.red
                     }
                     paddingHorizontal={10}>
                     <Text
+                        marginTop={10}
                         center
                         size={18}
                         fontType={'bold'}
                         color={theme.colors.grey4}>
-                        Cài đặt
+                        {t('settings')}
                     </Text>
                     <Block
                         borderBottomWidth={1}
@@ -215,14 +221,10 @@ const PlayBookScreenMyAp = ({ route }) => {
                     />
                     <Button onPress={handleSaveFavoriteBook} row style={[styles.rowModal]}>
                         <IconView
-                            component={'MaterialIcons'}
-                            name={true ? 'favorite' : 'favorite-border'}
+                            component={'AntDesign'}
+                            name={true ? 'heart' : 'hearto'}
                             size={20}
-                            color={
-                                themeBack
-                                    ? theme.colors.red
-                                    : theme.colors.white
-                            }
+                            color={colorHeart ? theme.colors.primary : theme.colors.textInBox}
                         />
                         <Text
                             style={styles.textRowModal}
@@ -231,7 +233,7 @@ const PlayBookScreenMyAp = ({ route }) => {
                                     ? theme.colors.white
                                     : theme.colors.dark2
                             }>
-                            {true ? 'Lưu sách yêu thích ' : 'Đã lưu'}
+                            {colorHeart ? t('saved') : t('saveFavoriteBooks')}
                         </Text>
                     </Button>
 
@@ -243,11 +245,7 @@ const PlayBookScreenMyAp = ({ route }) => {
                             component={'AntDesign'}
                             name={'minus'}
                             size={22}
-                            color={
-                                !themeBack
-                                    ? theme.colors.white
-                                    : theme.colors.dark2
-                            }
+                            color={theme.colors.textInBox}
                         />
                         <Text
                             style={styles.textRowModal}
@@ -256,7 +254,7 @@ const PlayBookScreenMyAp = ({ route }) => {
                                     ? theme.colors.white
                                     : theme.colors.dark2
                             }>
-                            Giảm kích cỡ chữ
+                            {t('increaseFontSize')}
                         </Text>
                     </Button>
                     <Button
@@ -267,11 +265,7 @@ const PlayBookScreenMyAp = ({ route }) => {
                             component={'AntDesign'}
                             name={'plus'}
                             size={22}
-                            color={
-                                !themeBack
-                                    ? theme.colors.white
-                                    : theme.colors.dark2
-                            }
+                            color={theme.colors.textInBox}
                         />
                         <Text
                             style={styles.textRowModal}
@@ -280,39 +274,37 @@ const PlayBookScreenMyAp = ({ route }) => {
                                     ? theme.colors.white
                                     : theme.colors.dark2
                             }>
-                            Tăng kích cỡ chữ
+                            {t('reduceFontSize')}
                         </Text>
                     </Button>
                     <Button
                         row
                         style={[styles.rowModal]}
-                        onPress={() => bottomSheetCommetnRef.current?.snapToIndex(0)}
-                    >
+                        onPress={() =>
+                            bottomSheetCommetnRef.current?.snapToIndex(0)
+                        }>
                         <IconView
                             component={'EvilIcons'}
                             name={'comment'}
                             size={22}
-                            color={
-                                !themeBack
-                                    ? theme.colors.white
-                                    : theme.colors.dark2
-                            }
+                            color={theme.colors.textInBox}
                         />
-                        <Text style={styles.textRowModal}>Bình luận</Text>
+                        <Text style={styles.textRowModal}>{t('comment')}</Text>
                     </Button>
                 </Block>
-            </BottomSheet>
+            </BottomSheet >
             <BottomSheet
                 index={-1}
                 ref={bottomSheetCommetnRef}
                 snapPoints={snapPoints2}
                 enablePanDownToClose={true}
                 backdropComponent={renderBackdrop}>
-                <BottomSheetScrollView>
+                <BottomSheetScrollView
+                    backgroundColor={theme.colors.background}>
                     <EvaluateBook idChapter={idChapter} />
                 </BottomSheetScrollView>
             </BottomSheet>
-        </Block>
+        </Container>
     );
 };
 
@@ -349,4 +341,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default PlayBookScreenMyAp;
+export default withNamespaces()(PlayBookScreenMyAp);

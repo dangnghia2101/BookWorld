@@ -1,15 +1,20 @@
-import { Block, PaymentScreen } from '@components';
-import { useNavigation } from '@react-navigation/native';
+import { Container, PaymentScreen } from '@components';
+import { useAppSelector } from '@hooks';
 import React from 'react';
 import { StyleSheet } from 'react-native';
+import { useTheme } from 'themeNew';
 
 const PaymentMethods = ({ route }) => {
-    const navigation = useNavigation();
     let price = route.params.allPrice;
+    const themeStore = useAppSelector(state => state.root.themeApp.theme);
+    const { colors } = useTheme(themeStore);
     return (
-        <Block backgroundColor={'white'} height={'100%'}>
+        <Container
+            statusColor={colors.background}
+            edges={['left', 'right']}
+            style={{ backgroundColor: colors.background }}>
             <PaymentScreen price={price} />
-        </Block>
+        </Container>
     );
 };
 

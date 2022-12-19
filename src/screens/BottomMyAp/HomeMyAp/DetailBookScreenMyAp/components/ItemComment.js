@@ -22,7 +22,7 @@ const _renderStar = num => {
   return star;
 };
 
-const ItemComment = ({ item }) => {
+const ItemComment = ({ item, index }) => {
 
   return (
     <Block borderBottomWidth={1} paddingBottom={20} borderColor={theme.colors.gray2}>
@@ -40,6 +40,7 @@ const ItemComment = ({ item }) => {
             </Text>
             <Text size={12} color={colors.gray} marginLeft={10} marginTop={3} fontType="regular">
               {formatDay(new Date(item.time))}
+              {/* {item.time} */}
             </Text>
           </Block>
 

@@ -1,4 +1,4 @@
-import { loginReducer } from '@redux/reducerNew';
+import { changeLoading, loginReducer } from '@redux/reducerNew';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { Token } from '@stripe/stripe-react-native';
 
@@ -11,7 +11,6 @@ export const userApi = createApi({
     endpoints: builder => ({
         login: builder.mutation({
             query: body => {
-                console.log('BODY ', body);
                 return {
                     url: '/auth/login',
                     method: 'POST',
@@ -46,10 +45,10 @@ export const userApi = createApi({
             }),
             async onQueryStarted(id, { dispatch, queryFulfilled }) {
                 try {
-                    const  {data}  = await queryFulfilled;
-                    if(data.data === "Số điện thoại này chưa đăng ký"){
-                    }else if(data.message === "Mật khẩu không đúng"){
-                    }else{
+                    const { data } = await queryFulfilled;
+                    if (data.data === 'Số điện thoại này chưa đăng ký') {
+                    } else if (data.message === 'Mật khẩu không đúng') {
+                    } else {
                         const saveData = {
                             ...data?.data?.account,
                             token: data?.data?.token,
@@ -108,8 +107,28 @@ export const userApi = createApi({
             query: () => '/auth/login',
             providesTags: ['Post'],
         }),
+        getInforUser: builder.query<any, { token: string }>({
+            query: body => ({
+                url: `accounts/profile`,
+                headers: { Authorization: `Bearer ${body.token}` },
+            }),
+            transformResponse: (response: { data: any }) => response.data,
+            async onQueryStarted(id, { dispatch, queryFulfilled }) {
+                try {
+                    console.log('getInforUser api BEFORE');
+                    const { data } = await queryFulfilled;
+                    console.log('getInforUser api ', data);
+                    dispatch(loginReducer(data));
+                    // Save data in store, using reducer
+                } catch (err) {
+                    dispatch(changeLoading('HIDE'));
+                    console.log('error api getAllChapterBook... ', err);
+                }
+            },
+        }),
     }),
 });
 
-export const { useLoginMutation, useGetLoginQuery, useLoginPhoneMutation, useLoginPhoneNumberMutation, useForgotPasswordMutation } =
+export const { useLoginMutation, useGetLoginQuery, useLoginPhoneMutation, useLoginPhoneNumberMutation, useForgotPasswordMutation, 
+    useLazyGetInforUserQuery, } =
     userApi;

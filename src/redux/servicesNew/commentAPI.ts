@@ -22,10 +22,13 @@ type CommentState = {
           url: `books/${body}/getCommentChapter`,
         // Our tricky API always returns a 200, but sets an `isError` property when there is an error.
         }),
-        transformResponse: (response: any) => response,
+        // transformResponse: (response: any) => response,
         async onQueryStarted(id, {dispatch, queryFulfilled}) {
             try {
-              const {data} = await queryFulfilled;// Save data in store, using reducer
+             
+              const {data} = await queryFulfilled;
+              // console.log("data+++++++++++++++++++++++++++",data);
+              // Save data in store, using reducer
             } catch (err) {
               console.log('error api getAllComment... ', err);
             }

@@ -5,7 +5,7 @@ import messaging from '@react-native-firebase/messaging';
 import { useLoginPhoneMutation } from '@redux/servicesNew';
 import { PHONE_REG_EXP } from '@utils/constants';
 import React, { useMemo, useState, useEffect } from 'react';
-import { StyleSheet, TouchableOpacity,Image } from 'react-native';
+import { StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { useTheme } from 'themeNew';
 import ModalConfirmOtp from './components/ModalConfirmOtp';
 import { changeLoading } from '@redux/reducerNew';
@@ -94,11 +94,11 @@ const Register = () => {
             await callApiLogin();
             console.log('Register success.');
             setShowModal(false);
-            setVisible(true)
+            setVisible(true);
         } catch (error) {
             dispatch(changeLoading('HIDE'));
             // setShowModal(false);
-            setVisible1(true)
+            setVisible1(true);
             console.log('Invalid code.');
         }
     }
@@ -117,9 +117,14 @@ const Register = () => {
             flex
             alignCenter
             paddingTop={30}
-            backgroundColor={'white'}
+            backgroundColor={colors.background}
             paddingHorizontal={20}>
-            <Text h1 bold size={30} style={styles.textWelcomLogin}>
+            <Text
+                h1
+                fontType="bold1"
+                size={30}
+                style={styles.textWelcomLogin}
+                color={colors.textInBox}>
                 {' '}
                 Xin Chào Bạn Mới{' '}
             </Text>
@@ -128,7 +133,9 @@ const Register = () => {
                 marginVertical={40}
                 size={13}
                 lineHeight={20}
-                center>
+                fontType={'medium1'}
+                center
+                color={colors.textInBox}>
                 {' '}
                 Vui lòng đăng ký tài khoản để sử dụng ứng dụng Lưu ý nhập đầy đủ
                 thông tin ở bên dưới{' '}
@@ -167,46 +174,58 @@ const Register = () => {
                 isVisible={visible1}
                 onBackdropPress={() => setVisible1(!visible1)}>
                 <Block
-                    backgroundColor={'white'}
+                    backgroundColor={colors.background}
                     radius={15}
                     alignSelf={'center'}
                     justifyCenter={'center'}
                     padding={20}>
                     <Block alignCenter={'center'}>
-                        <Text style={{fontWeight: '700',
-                    marginVertical: 20}}>Đăng ký không thành công</Text>
-                    <Block>
-                        <Image
-                            source={require('../../../assets/icons/faile.png')}
-                            style={{ width: 55, height: 55 }}
-                        />
+                        <Text
+                            color={colors.textInBox}
+                            fontType="medium1"
+                            style={{ fontWeight: '700', marginVertical: 20 }}>
+                            Đăng ký không thành công
+                        </Text>
+                        <Block>
+                            <Image
+                                source={require('../../../assets/icons/faile.png')}
+                                style={{ width: 55, height: 55 }}
+                            />
+                        </Block>
+                        <Text
+                            color={colors.textInBox}
+                            fontType="medium1"
+                            marginTop={10}
+                            center>
+                            OTP không đúng
+                        </Text>
                     </Block>
-                    <Text marginTop={10} center>
-                        OTP không đúng
-                    </Text>
-                </Block>
                 </Block>
             </ModalBox>
             <ModalBox
                 isVisible={visible}
                 onBackdropPress={() => setVisible(!visible)}>
                 <Block
-                    backgroundColor={'white'}
+                    backgroundColor={colors.background}
                     radius={15}
                     alignSelf={'center'}
                     justifyCenter={'center'}
                     padding={20}>
                     <Block alignCenter={'center'}>
-                    <Block>
-                        <Image
-                            source={require('../../../assets/icons/success.png')}
-                            style={{ width: 70, height: 70 }}
-                        />
+                        <Block>
+                            <Image
+                                source={require('../../../assets/icons/success.png')}
+                                style={{ width: 70, height: 70 }}
+                            />
+                        </Block>
+                        <Text
+                            marginTop={10}
+                            center
+                            color={colors.textInBox}
+                            fontType="medium1">
+                            Đăng ký thành công
+                        </Text>
                     </Block>
-                    <Text marginTop={10} center>
-                        Đăng ký thành công
-                    </Text>
-                </Block>
                 </Block>
             </ModalBox>
             <ModalConfirmOtp
@@ -301,7 +320,7 @@ const styles = ({ isDisable }) =>
             justifyContent: 'center',
             alignItems: 'center',
             borderRadius: 15,
-            backgroundColor: isDisable ? '#818181' : 'red',
+            backgroundColor: isDisable ? '#818181' : '#E83625',
             height: 50,
             shadowColor: '#000',
             shadowColor: '#000',
@@ -345,7 +364,6 @@ const styles = ({ isDisable }) =>
         textWelcomLogin: {
             fontWeight: 'bold',
             lineHeight: 45,
-            color: '#464444',
         },
         textDescribe: {
             marginTop: 18,

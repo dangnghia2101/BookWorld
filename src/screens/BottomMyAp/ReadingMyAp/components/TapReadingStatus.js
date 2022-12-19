@@ -104,7 +104,7 @@ const TapReadingStatus = () => {
     isLoading: false,
   };
   const myInfo = useAppSelector(state => state.root.auth);
-  console.log("myInfooooooooooooooooooooo", myInfo._id);
+  console.log("myInfooooooooooooooooooooo", myInfo.token);
 
   const formatRouter = data => {
     return data?.map(item => {

@@ -19,11 +19,16 @@ import ImageBook from './components/ImageBook';
 import IntroduceText from './components/IntroduceText';
 import IconView from '@components/Icon';
 import { usePostSaveFavoriteBooksMutation } from '@redux/servicesNew';
+import { useGetFavoriteBookQuery } from '@redux/servicesNew'
 
 const DetailBookScreenMyAp = ({ route }) => {
   const { bookmark, item, _isRead } = route.params;
   const [listChapters, setListChapters] = useState([]);
   const [isRead, setIsRead] = useState(_isRead || true);
+  const [colorHeart, setColorHeart] = useState();
+  const myInfo = useAppSelector(state => state.root.auth);
+  const { data } = useGetFavoriteBookQuery(myInfo._id);
+
   const themeStore = useAppSelector(state => state.root.themeApp.theme);
   const themeNew = useTheme(themeStore);
   const navigation = useNavigation();
@@ -32,7 +37,6 @@ const DetailBookScreenMyAp = ({ route }) => {
   const { progressInDay, target } = useAppSelector(
     state => state.root.reading,
   );
-  console.log("itemmmmmmmmmmmmmmmm========", item);
   const time = useCountDown(progressInDay, 100);
 
   useEffect(() => {
@@ -46,7 +50,6 @@ const DetailBookScreenMyAp = ({ route }) => {
   //     }
   // }, [target]);
 
-  const myInfo = useAppSelector(state => state.root.auth);
 
   const [getAllChapterBook] = useGetAllChapterBookMutation();
 
@@ -66,11 +69,12 @@ const DetailBookScreenMyAp = ({ route }) => {
 
   const handleSaveFavoriteBook = async () => {
     try {
-      const body = { id: myInfo._id, idBook: item }
+      setColorHeart(true)
+      const body = { id: myInfo._id, idBook: item._id, token: myInfo.token }
       await saveFavoriteBook(body);
       ToastAndroid.show("Đã thêm vào sách yêu thích", ToastAndroid.SHORT);
     } catch (error) {
-      ToastAndroid.show(error, ToastAndroid.SHORT);
+      ToastAndroid.show("Lưu sách Không thành công", ToastAndroid.SHORT);
     }
 
   }
@@ -100,19 +104,30 @@ const DetailBookScreenMyAp = ({ route }) => {
     fetchAPI();
   }, [getAllChapterBook, item._id, myInfo._id]);
 
+  useEffect(() => {
+    let flg = false;
+    data?.data[0]?.favoriteBooks.map(itemFvr => {
+      if (itemFvr.idBook._id == item._id) {
+        flg = true;
+      }
+
+    })
+    setColorHeart(flg);
+  }, [])
+
   const favoriteIcon = () => {
     return (
       <TouchableOpacity onPress={handleSaveFavoriteBook}>
-        <Block style={styles.iconFavorite} justifyCenter width={50} paddingVertical={2}>
+        <Block style={styles.iconFavorite} justifyCenter width="100%" paddingVertical={2}>
           <IconView
             component={'AntDesign'}
-            name={'hearto'}
+            name={colorHeart ? 'heart' : 'hearto'}
             size={25}
-            color={themeNew.colors.textInBox}
+            color={colorHeart ? themeNew.colors.primary : themeNew.colors.textInBox}
           />
         </Block>
       </TouchableOpacity>
-    );
+    )
   };
 
   return (
@@ -147,7 +162,7 @@ const styles = StyleSheet.create({
     height: 100,
   },
   iconFavorite: {
-    marginLeft: '100%'
+    marginLeft: '50%'
   },
 });
 

@@ -117,7 +117,7 @@ const ChatScreenMyApp = ({ t }) => {
 
     const renderSpace = () => (
         <Block height={20} justifyCenter>
-            <Block height={2} backgroundColor={colors.grey16}></Block>
+            <Block height={2} backgroundColor={colors.text}></Block>
         </Block>
     );
 
@@ -145,7 +145,11 @@ const ChatScreenMyApp = ({ t }) => {
                 paddingHorizontal={10}
                 alignCenter
                 flex>
-                <Text fontType={'bold1'} color={colors.textInBox} marginVertical={10} size={16}>
+                <Text
+                    fontType={'bold1'}
+                    color={colors.textInBox}
+                    marginVertical={10}
+                    size={16}>
                     {t('createNewGroup')}
                 </Text>
                 <Block
@@ -171,7 +175,11 @@ const ChatScreenMyApp = ({ t }) => {
                     </Block>
 
                     <Block width="90%" paddingVertical={10}>
-                        <Text color={colors.textInBox} marginBottom={-20} size={16} fontType="bold1">
+                        <Text
+                            color={colors.textInBox}
+                            marginBottom={-20}
+                            size={16}
+                            fontType="bold1">
                             {t('groupName')}
                         </Text>
 
@@ -183,7 +191,11 @@ const ChatScreenMyApp = ({ t }) => {
                         />
                     </Block>
                     <Block width="90%">
-                        <Text color={colors.textInBox} marginBottom={-20} size={16} fontType="bold1">
+                        <Text
+                            color={colors.textInBox}
+                            marginBottom={-20}
+                            size={16}
+                            fontType="bold1">
                             {t('addMember')}
                         </Text>
 
@@ -288,7 +300,9 @@ const ChatScreenMyApp = ({ t }) => {
                         alignCenter
                         backgroundColor={colors.primary}
                         radius={10}>
-                        <Text fontType={'bold1'} color={colors.white}>{t('createGroup')}</Text>
+                        <Text fontType={'bold1'} color={colors.white}>
+                            {t('createGroup')}
+                        </Text>
                     </Block>
                 </TouchableOpacity>
             </Block>
@@ -308,13 +322,17 @@ const ChatScreenMyApp = ({ t }) => {
     }, [dataGroups]);
 
     return (
-        <Container style={styles.root} statusColor={colors.white}>
+        <Container style={styles.root} statusColor={colors.background}>
             <Block
                 flex
                 paddingHorizontal={20}
-                backgroundColor={colors.white}>
+                backgroundColor={colors.background}>
                 <Block row alignCenter marginTop={10}>
-                    <Text flex size={28} fontType="bold1" color={colors.primary}>
+                    <Text
+                        flex
+                        size={28}
+                        fontType="bold1"
+                        color={colors.primary}>
                         Explore
                     </Text>
                     <TouchableOpacity
@@ -367,7 +385,6 @@ const useStyle = makeStyles()(({ normalize, colors }) => ({
         borderRadius: normalize(15)('moderate'),
     },
     root: {
-        paddingTop: 10,
         backgroundColor: colors.white,
     },
     containerSearch: {
