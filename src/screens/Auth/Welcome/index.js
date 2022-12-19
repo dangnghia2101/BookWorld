@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
     },
     buttomDangNhap: {
-        backgroundColor: '#D45555',
+        backgroundColor: 'red',
         width: '48%',
         marginBottom: '20%',
         height: 55,

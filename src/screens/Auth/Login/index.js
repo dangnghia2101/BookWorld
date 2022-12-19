@@ -14,6 +14,7 @@ import { useLoginMutation } from '@redux/servicesNew';
 import { useAppDispatch, useAppSelector } from 'hooks';
 import React, { useEffect, useState, useMemo } from 'react';
 import { useLoginPhoneNumberMutation } from '@redux/servicesNew';
+import { useForgotPasswordMutation } from '@redux/servicesNew';
 import {
     Image,
     Modal,
@@ -21,30 +22,9 @@ import {
     StyleSheet,
     TouchableOpacity,
 } from 'react-native';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useTheme } from 'themeNew';
 import { withNamespaces } from 'react-i18next';
-const ModalPoup = ({ visible, children }) => {
-    const [showModal, setShowModal] = React.useState(visible);
-    useEffect(() => {
-        toggleModal();
-    }, [visible]);
-
-    const toggleModal = () => {
-        if (visible) {
-            setShowModal(true);
-        } else {
-            setShowModal(false);
-        }
-    };
-    return (
-        <Modal transparent visible={showModal}>
-            <Block flex={1} style={styles.modalBackGround}>
-                <Block style={styles.modalContainer}>{children}</Block>
-            </Block>
-        </Modal>
-    );
-};
+import Toast from 'react-native-simple-toast';
 
 const Login = ({ t }) => {
     const themeStore = useAppSelector(state => state.root.themeApp.theme);
@@ -57,14 +37,18 @@ const Login = ({ t }) => {
     const [login, { isLoading: isUpdating }] = useLoginMutation();
     const [loginPhone, { isLoading: isUpDating }] =
         useLoginPhoneNumberMutation();
+    const [forgotPass, { isLoading: isUpdate }] = useForgotPasswordMutation();
     const dispatch = useAppDispatch();
     const [visibleModal, setVisibleModal] = useState(false);
     const [phoneUser, setPhoneUser] = useState('');
-    const [OTP, setOTP] = useState('');
     const [password, setPassword] = useState('');
-    const [auth, setAuth] = useState('signin');
+    const [authh, setAuthh] = useState('signin');
     const [visibleNotifi, setVisibleNotifi] = useState(false);
     const [confirmPassword, setConfirmPassword] = useState('');
+    const [confirmOTP, setConfirmOTP] = useState(null);
+    const [codeOTP, setCodeOTP] = useState('');
+
+    const [error, setError] = useState('');
 
     const handleErrorPhone = useMemo(() => {
         if (phoneUser.match(PHONE_REG_EXP) || phoneUser.length == 0) {
@@ -81,12 +65,12 @@ const Login = ({ t }) => {
         }
     }, [confirmPassword, password]);
     const handleErrorOTP = useMemo(() => {
-        if (OTP.length > 5 || OTP.length == 0) {
+        if (codeOTP.length > 5 || codeOTP.length == 0) {
             return [false, ''];
         } else {
             return [true, 'OPT at least 6 character'];
         }
-    }, [OTP]);
+    }, [codeOTP]);
 
     const handleErrorNewPassword = useMemo(() => {
         if (password.length > 5 || password.length == 0) {
@@ -96,44 +80,6 @@ const Login = ({ t }) => {
         }
     }, [password]);
 
-    const LoginPhone = () => {
-        // if (auth == 'signin') {
-        // dispatch(login({ phoneUser, password }));
-        // }
-    };
-
-    const HidePassword = () => {
-        if (hide === true) {
-            setHide(false);
-        } else {
-            setHide(true);
-        }
-    };
-
-    const ForgotPassword = () => {
-        setVisible2(false);
-    };
-
-    const status = id => {
-        switch (id) {
-            case 0:
-                setVisible(true);
-                setVisible1(false);
-                setVisible2(false);
-                break;
-            case 1:
-                setVisible1(true);
-                setVisible(false);
-                setVisible2(false);
-                break;
-            case 2:
-                setVisible1(false);
-                setVisible(false);
-                setVisible2(true);
-                break;
-        }
-    };
-
     useEffect(() => {
         dispatch(changeLoading(isUpDating ? 'SHOW' : 'HIDE'));
     }, [dispatch, isUpDating]);
@@ -141,6 +87,10 @@ const Login = ({ t }) => {
     useEffect(() => {
         dispatch(changeLoading(isUpdating ? 'SHOW' : 'HIDE'));
     }, [dispatch, isUpdating]);
+
+    useEffect(() => {
+        dispatch(changeLoading(isUpdate ? 'SHOW' : 'HIDE'));
+    }, [dispatch, isUpdate]);
 
     GoogleSignin.configure({
         webClientId:
@@ -171,8 +121,8 @@ const Login = ({ t }) => {
             // Storage.setItem('tokenId', idToken);
 
             const googleCredential =
-                auth.GoogleAuthProvider.credential(idToken);
-            return auth().signInWithCredential(googleCredential);
+                authh.GoogleAuthProvider.credential(idToken);
+            return authh().signInWithCredential(googleCredential);
         } catch (error) {
             console.log('=========> id error login', error);
 
@@ -191,23 +141,6 @@ const Login = ({ t }) => {
         }
     };
 
-    // const _singInPhoneNumber = async () => {
-    //     try {
-    //         const fcmToken = await getToken();
-    //         _handleLoginPhone(phoneUser, password, fcmToken);
-    //         console.log(
-    //             '===========> Đăng nhập thành công',
-    //             phoneUser,
-    //             password,
-    //             fcmToken,
-    //         );
-    //     } catch (error) {
-    //         console.log('=========> id error login', error);
-
-    //         // await API.post('logs/write', {message: error});
-    //     }
-    // };
-
     const _handleLoginPhone = async () => {
         const body = {
             passwordUser: password,
@@ -216,14 +149,54 @@ const Login = ({ t }) => {
         };
         const dataLogin = await loginPhone(body);
         if (dataLogin.data.data === 'Số điện thoại này chưa đăng ký') {
+            setError('Số điện thoại này chưa đăng ký');
             setVisibleNotifi(true);
         } else if (dataLogin.data.message === 'Mật khẩu không đúng') {
+            setError('Mật khẩu không đúng');
             setVisibleNotifi(true);
         } else {
+            Toast.show('Đăng nhập thành công.', Toast.LONG);
         }
         // if (dataLogin?.error?.data?.error) {
         //     setVisibleModal(true);
         // }
+    };
+    const forgotPassword = async () => {
+        console.log('PHONE  +84 ' + phoneUser);
+        dispatch(changeLoading('SHOW'));
+        const confirmation = await auth().signInWithPhoneNumber(
+            '+84 ' + phoneUser,
+        );
+        setConfirmOTP(confirmation);
+        setVisible2(true);
+        setVisible(false);
+    };
+    //Confirm code OTP
+    async function confirmCode() {
+        try {
+            dispatch(changeLoading('HIDE'));
+            await confirmOTP.confirm(codeOTP);
+            await callApiFogotPass();
+            setVisible2(false);
+            setVisible1(false);
+        } catch (error) {
+            dispatch(changeLoading('HIDE'));
+            Toast.show('Mã OTP không chính xác', Toast.LONG);
+            console.log('Invalid code.', error);
+        }
+    }
+    const callApiFogotPass = async () => {
+        const body = {
+            phoneUser: phoneUser,
+            passwordUser: password,
+        };
+        const dataForgot = await forgotPass(body);
+        if (dataForgot.data.data === 'Đã reset thành công') {
+            Toast.show('Thay đổi mật khẩu thành công.', Toast.LONG);
+        } else {
+            Toast.show('Tài khoản không tồn tại.', Toast.LONG);
+            setPhoneUser(''), setPassword('');
+        }
     };
     return (
         <Block
@@ -276,7 +249,7 @@ const Login = ({ t }) => {
                 size={15}
                 style={styles.textRemember}
                 fontType="medium1"
-                onPress={() => status(0)}>
+                onPress={() => setVisible(true)}>
                 {' '}
                 {t('forGot')}{' '}
             </Text>
@@ -369,7 +342,9 @@ const Login = ({ t }) => {
                         />
                         <Pressable
                             style={styles.buttomLogin}
-                            onPress={() => ForgotPassword()}>
+                            onPress={() => {
+                                setVisible1(true), setVisible2(false);
+                            }}>
                             <Text style={styles.textButtomLogin} height={55}>
                                 Thay đổi mật khẩu
                             </Text>
@@ -390,15 +365,12 @@ const Login = ({ t }) => {
                         <Text style={styles.textOTP} center>
                             Nhập mã OTP
                         </Text>
-                        <Text marginTop={18} center >
-                            Nhập mã OTP được gửi đến số điện thoại
-                        </Text>
-                        <Text marginTop={5} center style={styles.textPhone} >
-                           {phoneUser}
+                        <Text marginTop={18} center>
+                            Xác nhận mã OTP để thay đổi mật khẩu
                         </Text>
                         <TextInput
-                            value={OTP}
-                            onChangeText={text => setOTP(text)}
+                            value={codeOTP}
+                            onChangeText={text => setCodeOTP(text)}
                             keyboardType="numeric"
                             placeholder={t('OTP')}
                             inputStyle={styles.textInput1}
@@ -409,9 +381,9 @@ const Login = ({ t }) => {
                         />
                         <Pressable
                             style={styles.buttomLogin}
-                            onPress={() => status(2)}>
+                            onPress={confirmCode}>
                             <Text style={styles.textButtomLogin} height={55}>
-                                Tiếp tục
+                                Đồng ý
                             </Text>
                         </Pressable>
                     </Block>
@@ -445,7 +417,7 @@ const Login = ({ t }) => {
                         />
                         <Pressable
                             style={styles.buttomLogin}
-                            onPress={() => status(1)}>
+                            onPress={forgotPassword}>
                             <Text style={styles.textButtomLogin} height={55}>
                                 Tiếp tục
                             </Text>
@@ -478,7 +450,7 @@ const Login = ({ t }) => {
                             onPress={() => {
                                 setVisibleNotifi(false);
                             }}>
-                            <Text size={14}>Kiểm tra lại thông tin</Text>
+                            <Text size={14}>{error}</Text>
                         </TouchableOpacity>
                     </Block>
                 </Block>
@@ -535,7 +507,7 @@ const styles = StyleSheet.create({
     },
     textPhone: {
         lineHeight: 25,
-        fontWeight: '700'
+        fontWeight: '700',
     },
     textOTP: {
         marginBottom: 10,
@@ -604,13 +576,13 @@ const styles = StyleSheet.create({
         position: 'absolute',
         width: 157,
         height: 10,
-        backgroundColor: '#DD4455',
+        backgroundColor: 'red',
     },
     gradients: {
         position: 'absolute',
         width: 157,
         height: 10,
-        backgroundColor: '#DD4455',
+        backgroundColor: 'red',
     },
     textButtomLogin: {
         fontSize: 18,
@@ -625,7 +597,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 10,
-        backgroundColor: '#DD4455',
+        backgroundColor: 'red',
         shadowColor: '#000',
         shadowOffset: {
             width: 0,
