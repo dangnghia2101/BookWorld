@@ -1,19 +1,18 @@
 import { icons } from '@assets';
-import { Block, ModalBox, Text, TextInput } from '@components';
+import { Block, Container, ModalBox, Text, TextInput } from '@components';
 import { routes } from '@navigation/routes';
-import auth from '@react-native-firebase/auth';
 import messaging from '@react-native-firebase/messaging';
-import {
-    GoogleSignin,
-    statusCodes,
-} from '@react-native-google-signin/google-signin';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { useNavigation } from '@react-navigation/native';
-import { PHONE_REG_EXP } from '@utils/constants';
 import { changeLoading } from '@redux/reducerNew';
-import { useLoginMutation } from '@redux/servicesNew';
+import {
+    useLoginMutation,
+    useLoginPhoneNumberMutation,
+} from '@redux/servicesNew';
+import { PHONE_REG_EXP } from '@utils/constants';
 import { useAppDispatch, useAppSelector } from 'hooks';
-import React, { useEffect, useState, useMemo } from 'react';
-import { useLoginPhoneNumberMutation } from '@redux/servicesNew';
+import React, { useEffect, useMemo, useState } from 'react';
+import { withNamespaces } from 'react-i18next';
 import {
     Image,
     Modal,
@@ -21,9 +20,8 @@ import {
     StyleSheet,
     TouchableOpacity,
 } from 'react-native';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { useTheme } from 'themeNew';
-import { withNamespaces } from 'react-i18next';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { colors, useTheme } from 'themeNew';
 const ModalPoup = ({ visible, children }) => {
     const [showModal, setShowModal] = React.useState(visible);
     useEffect(() => {
@@ -65,6 +63,7 @@ const Login = ({ t }) => {
     const [auth, setAuth] = useState('signin');
     const [visibleNotifi, setVisibleNotifi] = useState(false);
     const [confirmPassword, setConfirmPassword] = useState('');
+    const inset = useSafeAreaInsets();
 
     const handleErrorPhone = useMemo(() => {
         if (phoneUser.match(PHONE_REG_EXP) || phoneUser.length == 0) {
@@ -215,32 +214,31 @@ const Login = ({ t }) => {
             token_fcm: await getToken(),
         };
         const dataLogin = await loginPhone(body);
-        console.log('===========> datalogin', dataLogin);
         if (dataLogin.data.data === 'Số điện thoại này chưa đăng ký') {
             setVisibleNotifi(true);
-            console.log('===========> Đăng nhập ko thành công', body);
         } else if (dataLogin.data.message === 'Mật khẩu không đúng') {
             setVisibleNotifi(true);
-            console.log('===========> Đăng nhập ko thành công', body);
         } else {
-            console.log('===========> Đăng nhập thành công', body);
         }
         // if (dataLogin?.error?.data?.error) {
         //     setVisibleModal(true);
         // }
     };
     return (
-        <Block
-            paddingHorizontal={20}
-            flex
-            alignCenter
-            paddingTop={30}
-            backgroundColor={'white'}>
+        <Container
+            style={{
+                backgroundColor: theme.colors.background,
+                flex: 1,
+                alignItems: 'center',
+                paddingHorizontal: 20,
+            }}
+            statusColor={theme.colors.background}>
             <Text
                 fontType="bold"
                 h1
                 bold
                 size={30}
+                color={theme.colors.textInBox}
                 style={styles.textWelcomLogin}>
                 {' '}
                 {t('welcomeBack')}{' '}
@@ -279,6 +277,7 @@ const Login = ({ t }) => {
                 bold
                 size={15}
                 style={styles.textRemember}
+                color={theme.colors.textInBox}
                 fontType="medium1"
                 onPress={() => status(0)}>
                 {' '}
@@ -292,7 +291,7 @@ const Login = ({ t }) => {
                     {t('login')}
                 </Text>
             </TouchableOpacity>
-            <Block marginTop={20}>
+            <Block marginTop={10}>
                 <TouchableOpacity
                     onPress={() => _signIngoogle()}
                     style={styles.loginGoogle}
@@ -301,13 +300,16 @@ const Login = ({ t }) => {
                         style={styles.icon}
                         source={require('../../../assets/images/GG.png')}
                     />
-                    <Text fontType="medium1" style={styles.textLoginGmail}>
+                    <Text
+                        color={theme.colors.textInBox}
+                        fontType="medium1"
+                        style={styles.textLoginGmail}>
                         {t('logWithGoogle')}
                     </Text>
                 </TouchableOpacity>
             </Block>
-            <Block marginTop={100}>
-                <Text fontType="medium1">
+            <Block marginTop={100} bottom={inset.bottom + 20} absolute>
+                <Text fontType="medium1" color={theme.colors.textInBox}>
                     {t('doNotHaveAnAccount')} {'  '}
                     <Text
                         fontType="bold1"
@@ -334,121 +336,168 @@ const Login = ({ t }) => {
                     <Text>Server not work</Text>
                 </Block>
             </ModalBox>
-            <ModalPoup visible={visible2}>
-                <Block alignCenter={'center'}>
-                    <Text style={styles.textOTP} center>
-                        Đặt lại mật khẩu
-                    </Text>
-                    <Text marginTop={18} center style={styles.textPhone}>
-                        Đặt lại mật khẩu mới cho tài khoản của bạn để có thể
-                        đăng nhập.
-                    </Text>
+            <ModalBox
+                isVisible={visible2}
+                onBackdropPress={() => setVisible2(!visible2)}>
+                <Block
+                    backgroundColor={'white'}
+                    radius={15}
+                    alignSelf={'center'}
+                    justifyCenter={'center'}
+                    padding={20}>
+                    <Block alignCenter={'center'}>
+                        <Text style={styles.textOTP} center>
+                            Đặt lại mật khẩu
+                        </Text>
+                        <Text marginTop={18} center>
+                            Đặt lại mật khẩu mới cho tài khoản của bạn để có thể
+                            đăng nhập.
+                        </Text>
 
-                    <TextInput
-                        value={password}
-                        onChangeText={text => setPassword(text)}
-                        secureTextEntry={hide}
-                        label={'Passord'}
-                        placeholder={'Mật khẩu'}
-                        isSecure={true}
-                        errorText={handleErrorNewPassword[1]}
-                        isError={handleErrorNewPassword[0]}
-                    />
-                    <TextInput
-                        onChangeText={setConfirmPassword}
-                        value={confirmPassword}
-                        label={'Confirm Passord'}
-                        placeholder={'Nhập lại mật khẩu'}
-                        isSecure={true}
-                        errorText={handleErrorComfirmPassword[1]}
-                        isError={handleErrorComfirmPassword[0]}
-                    />
-                    <Pressable
-                        style={styles.buttomLogin}
-                        onPress={() => ForgotPassword()}>
-                        <Text style={styles.textButtomLogin} height={55}>
-                            Thay đổi mật khẩu
-                        </Text>
-                    </Pressable>
-                </Block>
-            </ModalPoup>
-            <ModalPoup visible={visible1}>
-                <Block alignCenter={'center'}>
-                    <Text style={styles.textOTP} center>
-                        Nhập mã OTP
-                    </Text>
-                    <Text marginTop={18} center style={styles.textPhone}>
-                        Nhập mã OTP được gửi đến số điện thoại của bạn
-                    </Text>
-                    <TextInput
-                        value={OTP}
-                        onChangeText={text => setOTP(text)}
-                        keyboardType="numeric"
-                        placeholder={t('OTP')}
-                        inputStyle={styles.textInput1}
-                        color={theme.colors.grey4}
-                        placeholderTextColor={theme.colors.grey10}
-                        errorText={handleErrorOTP[1]}
-                        isError={handleErrorOTP[0]}
-                    />
-                    <Pressable
-                        style={styles.buttomLogin}
-                        onPress={() => status(2)}>
-                        <Text style={styles.textButtomLogin} height={55}>
-                            Tiếp tục
-                        </Text>
-                    </Pressable>
-                </Block>
-            </ModalPoup>
-            <ModalPoup visible={visible}>
-                <Block alignCenter={'center'}>
-                    <Text style={styles.textOTP}>Forgot password</Text>
-                    <Text marginTop={18} center style={styles.textPhone}>
-                        Nhập số điện thoại của bạn cho quy trình xác minh. Chúng
-                        tôi sẽ gửi mã 4 chữ số cho bạn.
-                    </Text>
-                    <TextInput
-                        value={phoneUser}
-                        onChangeText={text => setPhoneUser(text)}
-                        keyboardType="numeric"
-                        label={'Số điện thoại'}
-                        placeholder={t('phone')}
-                        color={theme.colors.grey4}
-                        placeholderTextColor={theme.colors.grey10}
-                        errorText={handleErrorPhone[1]}
-                        isError={handleErrorPhone[0]}
-                    />
-                    <Pressable
-                        style={styles.buttomLogin}
-                        onPress={() => status(1)}>
-                        <Text style={styles.textButtomLogin} height={55}>
-                            Tiếp tục
-                        </Text>
-                    </Pressable>
-                </Block>
-            </ModalPoup>
-            <ModalPoup visible={visibleNotifi}>
-                <Block alignCenter={'center'} justifyCenter={'center'}>
-                    <Text style={styles.textOTP} center>
-                        Đăng nhập thất bại
-                    </Text>
-                    <Block>
-                        <Image
-                            source={require('../../../assets/icons/faile.png')}
-                            style={{ width: 70, height: 70 }}
+                        <TextInput
+                            value={password}
+                            onChangeText={text => setPassword(text)}
+                            secureTextEntry={hide}
+                            label={'Passord'}
+                            placeholder={'Mật khẩu'}
+                            isSecure={true}
+                            errorText={handleErrorNewPassword[1]}
+                            isError={handleErrorNewPassword[0]}
                         />
+                        <TextInput
+                            onChangeText={setConfirmPassword}
+                            value={confirmPassword}
+                            label={'Confirm Passord'}
+                            placeholder={'Nhập lại mật khẩu'}
+                            isSecure={true}
+                            errorText={handleErrorComfirmPassword[1]}
+                            isError={handleErrorComfirmPassword[0]}
+                        />
+                        <Pressable
+                            style={styles.buttomLogin}
+                            onPress={() => ForgotPassword()}>
+                            <Text style={styles.textButtomLogin} height={55}>
+                                Thay đổi mật khẩu
+                            </Text>
+                        </Pressable>
                     </Block>
-                    <TouchableOpacity
-                        style={{ marginTop: 20 }}
-                        center
-                        onPress={() => {
-                            setVisibleNotifi(false);
-                        }}>
-                        <Text size={14}>Kiểm tra lại thông tin</Text>
-                    </TouchableOpacity>
                 </Block>
-            </ModalPoup>
-        </Block>
+            </ModalBox>
+            <ModalBox
+                isVisible={visible1}
+                onBackdropPress={() => setVisible1(!visible1)}>
+                <Block
+                    backgroundColor={'white'}
+                    radius={15}
+                    alignSelf={'center'}
+                    justifyCenter={'center'}
+                    padding={20}>
+                    <Block alignCenter={'center'}>
+                        <Text style={styles.textOTP} center>
+                            Nhập mã OTP
+                        </Text>
+                        <Text marginTop={18} center>
+                            Nhập mã OTP được gửi đến số điện thoại
+                        </Text>
+                        <Text marginTop={5} center style={styles.textPhone}>
+                            {phoneUser}
+                        </Text>
+                        <TextInput
+                            value={OTP}
+                            onChangeText={text => setOTP(text)}
+                            keyboardType="numeric"
+                            placeholder={t('OTP')}
+                            inputStyle={styles.textInput1}
+                            color={theme.colors.grey4}
+                            placeholderTextColor={theme.colors.grey10}
+                            errorText={handleErrorOTP[1]}
+                            isError={handleErrorOTP[0]}
+                        />
+                        <Pressable
+                            style={styles.buttomLogin}
+                            onPress={() => status(2)}>
+                            <Text style={styles.textButtomLogin} height={55}>
+                                Tiếp tục
+                            </Text>
+                        </Pressable>
+                    </Block>
+                </Block>
+            </ModalBox>
+            <ModalBox
+                isVisible={visible}
+                onBackdropPress={() => setVisible(!visible)}>
+                <Block
+                    backgroundColor={'white'}
+                    radius={15}
+                    alignSelf={'center'}
+                    justifyCenter={'center'}
+                    padding={20}>
+                    <Block alignCenter={'center'}>
+                        <Text style={styles.textOTP}>Forgot password</Text>
+                        <Text marginTop={18} center>
+                            Nhập số điện thoại của bạn cho quy trình xác minh.
+                            Chúng tôi sẽ gửi mã 4 chữ số cho bạn.
+                        </Text>
+                        <TextInput
+                            value={phoneUser}
+                            onChangeText={text => setPhoneUser(text)}
+                            keyboardType="numeric"
+                            label={'Số điện thoại'}
+                            placeholder={t('phone')}
+                            color={theme.colors.grey4}
+                            placeholderTextColor={theme.colors.grey10}
+                            errorText={handleErrorPhone[1]}
+                            isError={handleErrorPhone[0]}
+                        />
+                        <Pressable
+                            style={styles.buttomLogin}
+                            onPress={() => status(1)}>
+                            <Text style={styles.textButtomLogin} height={55}>
+                                Tiếp tục
+                            </Text>
+                        </Pressable>
+                    </Block>
+                </Block>
+            </ModalBox>
+            <ModalBox
+                isVisible={visibleNotifi}
+                onBackdropPress={() => setVisibleNotifi(!visibleNotifi)}>
+                <Block
+                    backgroundColor={theme.colors.background}
+                    radius={15}
+                    alignSelf={'center'}
+                    justifyCenter={'center'}
+                    padding={20}
+                    borderColor={theme.colors.grayPastel}
+                    borderWidth={1}>
+                    <Block alignCenter={'center'} justifyCenter={'center'}>
+                        <Text
+                            style={styles.textOTP}
+                            center
+                            color={theme.colors.textInBox}
+                            fontType="medium">
+                            Đăng nhập thất bại
+                        </Text>
+                        <Block>
+                            <Image
+                                source={require('../../../assets/icons/faile.png')}
+                                style={{ width: 70, height: 70 }}
+                            />
+                        </Block>
+                        <TouchableOpacity
+                            style={{ marginTop: 20 }}
+                            center
+                            onPress={() => {
+                                setVisibleNotifi(false);
+                            }}>
+                            <Text size={14} color={theme.colors.textInBox}>
+                                Kiểm tra lại thông tin
+                            </Text>
+                        </TouchableOpacity>
+                    </Block>
+                </Block>
+            </ModalBox>
+        </Container>
     );
 };
 
@@ -500,9 +549,10 @@ const styles = StyleSheet.create({
     },
     textPhone: {
         lineHeight: 25,
+        fontWeight: '700',
     },
     textOTP: {
-        marginBottom: 30,
+        marginBottom: 10,
         fontWeight: '700',
         fontSize: 18,
     },
@@ -527,7 +577,6 @@ const styles = StyleSheet.create({
     textLoginGmail: {
         marginLeft: '15%',
         fontSize: 15,
-        color: '#2D2626',
     },
     loginGoogle: {
         width: 230,
@@ -583,8 +632,8 @@ const styles = StyleSheet.create({
         color: '#FFFFFF',
     },
     buttomLogin: {
-        width: '88%',
-        height: 59,
+        width: '100%',
+        height: 55,
         marginTop: 48,
         justifyContent: 'center',
         alignItems: 'center',
@@ -602,7 +651,6 @@ const styles = StyleSheet.create({
     },
     textRemember: {
         lineHeight: 23,
-        color: '#2D2626',
         marginTop: 22,
         marginLeft: '57%',
     },
@@ -641,7 +689,6 @@ const styles = StyleSheet.create({
     },
     textWelcomLogin: {
         lineHeight: 45,
-        color: '#464444',
     },
     textDescribe: {
         marginTop: 12,
@@ -656,5 +703,9 @@ const styles = StyleSheet.create({
         width: 50,
         height: 50,
         alignSelf: 'center',
+    },
+    icon: {
+        width: 20,
+        height: 20,
     },
 });

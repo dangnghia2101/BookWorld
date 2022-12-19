@@ -63,7 +63,12 @@ const ChatInput = ({
     });
 
     return (
-        <Animated.View style={[styles.container, heightAnimatedStyle]}>
+        <Animated.View
+            style={[
+                styles.container,
+                heightAnimatedStyle,
+                { backgroundColor: colors.background },
+            ]}>
             {reply ? (
                 <View style={styles.replyContainer}>
                     <TouchableOpacity
@@ -144,7 +149,6 @@ const ChatInput = ({
 const useStyle = makeStyles()(({ normalize, colors }) => ({
     container: {
         justifyContent: 'center',
-        backgroundColor: 'white',
     },
     replyContainer: {
         paddingHorizontal: 10,
@@ -173,7 +177,7 @@ const useStyle = makeStyles()(({ normalize, colors }) => ({
     },
     inputAndMicrophone: {
         flexDirection: 'row',
-        backgroundColor: colors.grey14,
+        backgroundColor: colors.text,
         flex: 3,
         marginRight: 10,
         borderRadius: 30,

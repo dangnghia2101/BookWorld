@@ -1,13 +1,14 @@
-import { Block, Text, TextInput } from '@components';
-import { useAppSelector } from '@hooks';
+import { Block, Text, TextInput, ModalBox } from '@components';
+import { useAppDispatch, useAppSelector } from 'hooks';
 import auth from '@react-native-firebase/auth';
 import messaging from '@react-native-firebase/messaging';
 import { useLoginPhoneMutation } from '@redux/servicesNew';
 import { PHONE_REG_EXP } from '@utils/constants';
-import React, { useMemo, useState } from 'react';
-import { StyleSheet, TouchableOpacity } from 'react-native';
+import React, { useMemo, useState, useEffect } from 'react';
+import { StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { useTheme } from 'themeNew';
 import ModalConfirmOtp from './components/ModalConfirmOtp';
+import { changeLoading } from '@redux/reducerNew';
 
 async function getToken() {
     return await messaging().getToken();
@@ -22,7 +23,10 @@ const Register = () => {
     const [confirmOTP, setConfirmOTP] = useState(null);
     const [codeOTP, setCodeOTP] = useState('');
     const [showModal, setShowModal] = React.useState(false);
+    const [visible, setVisible] = React.useState(false);
+    const [visible1, setVisible1] = React.useState(false);
     const { colors } = useTheme(themeStore);
+    const dispatch = useAppDispatch();
 
     const handleErrorPhone = useMemo(() => {
         if (phone.match(PHONE_REG_EXP) || phone.length == 0) {
@@ -76,6 +80,7 @@ const Register = () => {
     //Send OTP from Firebase
     const signInWithPhoneNumber = async () => {
         console.log('PHONE  +84 ' + phone);
+        dispatch(changeLoading('SHOW'));
         const confirmation = await auth().signInWithPhoneNumber('+84 ' + phone);
         setConfirmOTP(confirmation);
         setShowModal(true);
@@ -84,12 +89,16 @@ const Register = () => {
     //Confirm code OTP
     async function confirmCode() {
         try {
+            dispatch(changeLoading('HIDE'));
             await confirmOTP.confirm(codeOTP);
             await callApiLogin();
             console.log('Register success.');
             setShowModal(false);
+            setVisible(true);
         } catch (error) {
-            setShowModal(false);
+            dispatch(changeLoading('HIDE'));
+            // setShowModal(false);
+            setVisible1(true);
             console.log('Invalid code.');
         }
     }
@@ -108,9 +117,14 @@ const Register = () => {
             flex
             alignCenter
             paddingTop={30}
-            backgroundColor={'white'}
+            backgroundColor={colors.background}
             paddingHorizontal={20}>
-            <Text h1 bold size={30} style={styles.textWelcomLogin}>
+            <Text
+                h1
+                fontType="bold1"
+                size={30}
+                style={styles.textWelcomLogin}
+                color={colors.textInBox}>
                 {' '}
                 Xin Chào Bạn Mới{' '}
             </Text>
@@ -119,7 +133,9 @@ const Register = () => {
                 marginVertical={40}
                 size={13}
                 lineHeight={20}
-                center>
+                fontType={'medium1'}
+                center
+                color={colors.textInBox}>
                 {' '}
                 Vui lòng đăng ký tài khoản để sử dụng ứng dụng Lưu ý nhập đầy đủ
                 thông tin ở bên dưới{' '}
@@ -154,7 +170,64 @@ const Register = () => {
                 errorText={handleErrorComfirmPassword[1]}
                 isError={handleErrorComfirmPassword[0]}
             />
-
+            <ModalBox
+                isVisible={visible1}
+                onBackdropPress={() => setVisible1(!visible1)}>
+                <Block
+                    backgroundColor={colors.background}
+                    radius={15}
+                    alignSelf={'center'}
+                    justifyCenter={'center'}
+                    padding={20}>
+                    <Block alignCenter={'center'}>
+                        <Text
+                            color={colors.textInBox}
+                            fontType="medium1"
+                            style={{ fontWeight: '700', marginVertical: 20 }}>
+                            Đăng ký không thành công
+                        </Text>
+                        <Block>
+                            <Image
+                                source={require('../../../assets/icons/faile.png')}
+                                style={{ width: 55, height: 55 }}
+                            />
+                        </Block>
+                        <Text
+                            color={colors.textInBox}
+                            fontType="medium1"
+                            marginTop={10}
+                            center>
+                            OTP không đúng
+                        </Text>
+                    </Block>
+                </Block>
+            </ModalBox>
+            <ModalBox
+                isVisible={visible}
+                onBackdropPress={() => setVisible(!visible)}>
+                <Block
+                    backgroundColor={colors.background}
+                    radius={15}
+                    alignSelf={'center'}
+                    justifyCenter={'center'}
+                    padding={20}>
+                    <Block alignCenter={'center'}>
+                        <Block>
+                            <Image
+                                source={require('../../../assets/icons/success.png')}
+                                style={{ width: 70, height: 70 }}
+                            />
+                        </Block>
+                        <Text
+                            marginTop={10}
+                            center
+                            color={colors.textInBox}
+                            fontType="medium1">
+                            Đăng ký thành công
+                        </Text>
+                    </Block>
+                </Block>
+            </ModalBox>
             <ModalConfirmOtp
                 confirmCode={confirmCode}
                 setShowModal={setShowModal}
@@ -247,7 +320,7 @@ const styles = ({ isDisable }) =>
             justifyContent: 'center',
             alignItems: 'center',
             borderRadius: 15,
-            backgroundColor: isDisable ? '#818181' : '#DD4455',
+            backgroundColor: isDisable ? '#818181' : '#E83625',
             height: 50,
             shadowColor: '#000',
             shadowColor: '#000',
@@ -291,7 +364,6 @@ const styles = ({ isDisable }) =>
         textWelcomLogin: {
             fontWeight: 'bold',
             lineHeight: 45,
-            color: '#464444',
         },
         textDescribe: {
             marginTop: 18,

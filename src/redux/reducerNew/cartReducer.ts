@@ -1,7 +1,11 @@
-import { createSlice, PayloadAction, createEntityAdapter } from '@reduxjs/toolkit';
+import {
+    createSlice,
+    PayloadAction,
+    createEntityAdapter,
+} from '@reduxjs/toolkit';
 import { keys } from 'lodash';
 
-const cartAdapter = createEntityAdapter()
+const cartAdapter = createEntityAdapter();
 export type CartState = {
     _id: string;
     name: string;
@@ -56,21 +60,19 @@ const cartSlice = createSlice({
         },
         removeItem: (state, action) => {
             let cart = state.cartList;
-            let arr =
-            cart.filter(
-                item => item._id !== action.payload._id
-            );
+            let arr = cart.filter(item => item._id !== action.payload._id);
             state.cartList = arr;
-            
         },
         removeChapter: (state, action) => {
-
-            console.log(">>>>>>>>>> action.payload", action.payload);
-            console.log(">>>>>>>>>> state.cartList", state.cartList);
-            let chap = state.cartList
-            let arr = chap.filter(item =>
-                item != action.payload);
-            state.cartList = arr;
+            const { idBook, idChapter } = action.payload;
+            state.cartList.map((item, index) => {
+                if (item._id === idBook) {
+                    let chapter = item.chapter || {};
+                    delete chapter[idChapter];
+                    state.cartList[index].chapter = chapter;
+                    return;
+                }
+            });
         },
         removeBookPayment: (state: CartList, action) => {
             const data = action.payload;
@@ -97,7 +99,7 @@ export const {
     saveCartReducer,
     saveChapterReducer,
     saveStatusCartReducer,
-    removeItem: removeItem,
+    removeItem,
     removeChapter,
     removeBookPayment,
 } = cartSlice.actions;

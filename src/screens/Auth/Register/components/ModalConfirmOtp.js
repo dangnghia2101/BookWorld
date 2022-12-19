@@ -1,6 +1,8 @@
 import { Block, ModalBox, Text, TextInput } from '@components';
+import { useAppSelector } from '@hooks';
 import React, { useEffect } from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
+import { useTheme } from 'themeNew';
 
 const ModalConfirmOtp = ({
     confirmCode,
@@ -14,24 +16,29 @@ const ModalConfirmOtp = ({
         setShowModal(showModal);
     }, [showModal]);
 
+    const themeStore = useAppSelector(state => state.root.themeApp.theme);
+    const { colors } = useTheme(themeStore);
+
     return (
-        <ModalBox transparent={true} isVisible={showModal}>
+        <ModalBox
+            onBackdropPress={() => setShowModal(!showModal)}
+            transparent={true}
+            isVisible={showModal}>
             <Block
                 style={{
-                    backgroundColor: 'white',
                     justifyContent: 'center',
                     alignContent: 'center',
                     alignItems: 'center',
+                    backgroundColor: colors.background,
                 }}
-                backgroundColor="white"
                 marginHorizontal={20}
-                borderRadius={15}
+                radius={15}
                 padding={20}>
                 <Text
                     style={{
                         fontSize: 15,
                         lineHeight: 23,
-                        color: '#575555',
+                        color: colors.textInBox,
                         fontStyle: 'normal',
                     }}
                     center>
@@ -43,18 +50,21 @@ const ModalConfirmOtp = ({
                         fontWeight: 'bold',
                         fontSize: 15,
                         lineHeight: 23,
-                        color: '#000000',
+                        color: colors.textInBox,
                     }}>
                     {phone}
                 </Text>
 
                 <TextInput
-                        value={codeOTP}
-                        onChangeText={setCodeOTP}
-                        keyboardType="numeric"
-                        placeholder={'OTP'}
-                        inputStyle={{paddingHorizontal: '40%',}}
-                    />
+                    value={codeOTP}
+                    onChangeText={setCodeOTP}
+                    keyboardType="numeric"
+                    placeholder={'OTP'}
+                    inputStyle={{
+                        paddingHorizontal: '40%',
+                        color: colors.textInBox,
+                    }}
+                />
                 <TouchableOpacity
                     style={{
                         width: '100%',
@@ -62,7 +72,7 @@ const ModalConfirmOtp = ({
                         justifyContent: 'center',
                         alignItems: 'center',
                         borderRadius: 15,
-                        backgroundColor: 'red',
+                        backgroundColor: colors.primary,
                         height: 50,
                         shadowColor: '#000',
                         shadowOffset: {
@@ -80,7 +90,7 @@ const ModalConfirmOtp = ({
                             lineHeight: 50,
                             alignItems: 'center',
                             fontWeight: '700',
-                            color: '#FFFFFF',
+                            color: colors.textInBox,
                         }}
                         height={55}>
                         Đồng ý

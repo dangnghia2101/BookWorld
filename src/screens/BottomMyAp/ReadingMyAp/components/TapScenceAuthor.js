@@ -1,6 +1,7 @@
 import React from 'react';
 import { ScrollView } from 'react-native';
 import ItemAuthor from './ItemAuthor';
+import EmptyIcon from '@assets/svgs/EmptyIcon';
 import { Block, NoData } from '@components';
 import { useGetAllAuthorQuery } from '@redux/servicesNew';
 import { useAppSelector } from '@hooks';
@@ -15,7 +16,12 @@ const TapScenceAuthor = ({ route }) => {
       ))}
     </ScrollView>
   ) : (
-    <NoData title={'Chưa có tác giả'}></NoData>
+    <Block
+      flex
+      justifyCenter
+      alignCenter>
+      <EmptyIcon />
+    </Block >
   );
 
 };

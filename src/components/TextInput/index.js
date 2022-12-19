@@ -36,7 +36,7 @@ const InputText = ({
 }) => {
     const themeStore = useAppSelector(state => state.root.themeApp.theme);
     const { colors } = useTheme(themeStore);
-    const [secureEye, setSecureEye] = useState(false);
+    const [secureEye, setSecureEye] = useState(true);
     const ColorErr = colorErr || colors.primary;
     const ColorNotErr = colorNotErr || colors.grey12;
 
@@ -49,6 +49,7 @@ const InputText = ({
                     component="Ionicons"
                     name={secureEye ? 'ios-eye-off-outline' : 'eye-outline'}
                     size={20}
+                    color={colors.textInBox}
                 />
             </Pressable>
         );

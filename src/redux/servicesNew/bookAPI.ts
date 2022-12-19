@@ -72,8 +72,12 @@ export const bookAPI = createApi({
             }),
             async onQueryStarted(id, { dispatch, queryFulfilled }) {
                 try {
+                    dispatch(changeLoading('SHOW'));
                     const { data } = await queryFulfilled;
-                    dispatch(saveTabCategoryReducer({ data: data.data })); // Save data in store, using reducer
+                    dispatch(saveTabCategoryReducer({ data: data.data }));
+                    dispatch(changeLoading('HIDE'));
+
+                    // Save data in store, using reducer
                 } catch (err) {
                     // console.log('error api getAllBookByCategory... ', err);
                 }
@@ -110,6 +114,7 @@ export const bookAPI = createApi({
             async onQueryStarted(id, { dispatch, queryFulfilled }) {
                 try {
                     dispatch(changeLoading('SHOW'));
+                    const { data } = await queryFulfilled;
                     dispatch(changeLoading('HIDE')); // Save data in store, using reducer
                 } catch (err) {
                     dispatch(changeLoading('HIDE'));
@@ -127,6 +132,16 @@ export const bookAPI = createApi({
             }),
             transformResponse: (response: { data: chapterType }) =>
                 response.data,
+            async onQueryStarted(id, { dispatch, queryFulfilled, getState }) {
+                try {
+                    getState();
+                    const { data } = await queryFulfilled;
+                    // Save data in store, using reducer
+                } catch (err) {
+                    dispatch(changeLoading('HIDE'));
+                    console.log('error api getAllChapterBook... ', err);
+                }
+            },
         }),
     }),
 });

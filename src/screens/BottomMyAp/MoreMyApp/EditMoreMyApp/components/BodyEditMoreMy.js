@@ -4,6 +4,8 @@ import { StyleSheet, Image } from 'react-native';
 import { makeStyles, useTheme } from 'themeNew';
 import { useAppSelector, useAppDispatch } from '@hooks';
 import { withNamespaces } from 'react-i18next';
+import { isEmpty } from 'lodash';
+import { icons } from '@assets';
 
 const BodyEditMoreMy = props => {
     const { name, email, image } = props;
@@ -22,19 +24,20 @@ const BodyEditMoreMy = props => {
                 backgroundColor={colors.text}
                 style={styles.shadowColor}>
                 <Image
-                    source={{
-                        uri: image,
-                    }}
+                    source={!isEmpty(image) ? { uri: image } : icons.logo}
                     style={styles.imageInformation}
                 />
                 <Text
                     size={20}
                     fontType={'bold1'}
-                    color={themeNew.colors.textDark}>
-                    {name}
+                    color={themeNew.colors.textInBox}>
+                    {isEmpty(name.trim()) ? 'Update name' : name}
                 </Text>
-                <Text fontType='regular1' fontSize={13} color={themeNew.colors.textDark}>
-                    {email}
+                <Text
+                    fontType="regular1"
+                    fontSize={13}
+                    color={themeNew.colors.textDark}>
+                    {isEmpty(email.trim()) ? 'email@gmail.com' : email}
                 </Text>
                 <Block row marginVertical={15}>
                     <Image

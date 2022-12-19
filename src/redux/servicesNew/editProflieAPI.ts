@@ -1,4 +1,4 @@
-import { loginReducer } from '@redux/reducerNew';
+import { changeLoading, loginReducer } from '@redux/reducerNew';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { MAIN_API } from './endpoint';
 
@@ -25,8 +25,9 @@ export const editProfileAPI = createApi({
             },
             async onQueryStarted(id, { dispatch, queryFulfilled }) {
                 try {
-                    const { data } = await queryFulfilled;
-                    dispatch(loginReducer(data.data));
+                    dispatch(changeLoading('SHOW'));
+                    const data = await queryFulfilled;
+                    dispatch(changeLoading('HIDE'));
                 } catch (err) {
                     console.log('error editProfile ... ', err);
                 }

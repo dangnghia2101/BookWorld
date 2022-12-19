@@ -13,6 +13,7 @@ import { Modal, TouchableOpacity } from 'react-native';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import { makeStyles, useTheme } from 'themeNew';
 import { withNamespaces } from 'react-i18next';
+import { useGetFavoriteBookQuery } from '@redux/servicesNew'
 
 const ChapterBook = ({
     detailBook,
@@ -147,17 +148,49 @@ const ChapterBook = ({
         setData(detailBook?.filter(item => item?.element?.htmlChapter !== ''));
     }, [detailBook, isRead]);
 
+
     return (
         <Block
             width={WINDOW_WIDTH - 50}
             alignSelf="center"
             marginBottom={100}
             flex>
+
+            <Block row marginVertical={5}>
+                <Text
+                    marginTop={5}
+                    color={themeNew.colors.textInBox}
+                    fontType={'bold1'}
+                    size={20}>
+                    {t('chapTer')}
+                </Text>
+                <TouchableOpacity
+                    style={{
+                        backgroundColor: themeNew.colors.primary,
+                        justifyContent: 'center',
+                        paddingHorizontal: 10,
+                        marginLeft: '55%',
+                        borderRadius: 5,
+                    }}
+                    onPress={() => {
+                        data?.map(item => {
+                            if (item.isPay === false) {
+                                bookNotPay.push(item);
+                            }
+                        });
+                        setChapItem(bookNotPay);
+                        setVisible1(true);
+                    }}>
+                    <Text fontType={'bold'} color="white">
+                        {t('buy')}
+                    </Text>
+                </TouchableOpacity>
+            </Block>
             <Block
                 width={200}
                 row
                 alignSelf="center"
-                marginTop={30}
+                marginVertical={20}
                 justifyCenter>
                 <Button onPress={() => setIsRead(true)}>
                     <Block
@@ -204,37 +237,6 @@ const ChapterBook = ({
                     </Block>
                 </Button>
             </Block>
-            <Block row marginVertical={5}>
-                <Text
-                    marginTop={5}
-                    color={themeNew.colors.textInBox}
-                    fontType={'bold1'}
-                    size={20}>
-                    {t('chapTer')}
-                </Text>
-                <TouchableOpacity
-                    style={{
-                        backgroundColor: themeNew.colors.primary,
-                        justifyContent: 'center',
-                        paddingHorizontal: 10,
-                        marginLeft: '55%',
-                        borderRadius: 5,
-                    }}
-                    onPress={() => {
-                        data?.map(item => {
-                            if (item.isPay === false) {
-                                bookNotPay.push(item);
-                            }
-                        });
-                        setChapItem(bookNotPay);
-                        setVisible1(true);
-                    }}>
-                    <Text fontType={'bold'} color="white">
-                        {t('buy')}
-                    </Text>
-                </TouchableOpacity>
-            </Block>
-
             <Block
                 row
                 width={'100%'}
@@ -250,7 +252,7 @@ const ChapterBook = ({
                                         {
                                             idChapter: item.idChapter,
                                             nameBook: nameBook,
-                                            item,
+                                            dataInfoBook: infoBook
                                         },
                                     );
                                 } else {

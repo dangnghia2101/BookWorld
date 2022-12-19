@@ -25,7 +25,7 @@ const _renderStar = num => {
   return star;
 };
 
-const EvaluateBook = ({ idChapter }) => {
+const EvaluateBook = ({ idChapter, t }) => {
   const [evaluate, setEvaluate] = useState(0);
   const [comment, setComment] = useState('');
   const [postComment] = usePostCommentMutation();
@@ -34,18 +34,21 @@ const EvaluateBook = ({ idChapter }) => {
   const themeStore = useAppSelector(state => state.root.themeApp.theme);
   const themeNew = useTheme(themeStore);
   const styles = useStyles(themeStore);
-  console.log("listComment----------------------", listComment);
+  // console.log("listComment----------------------", getAllComment);
   useEffect(() => {
     const getDataComment = async () => {
       const dataComment = await getAllComment(idChapter);
       let listReverse = [];
-      dataComment.data.data.map(item => {
-        listReverse = [item, ...listReverse]
-      })
-      setListComment(listReverse);
+      if (dataComment?.data) {
+        dataComment.data.data.map(item => {
+          listReverse = [item, ...listReverse]
+        })
+        setListComment(listReverse);
+      }
     }
     getDataComment();
-  }, [status])
+  }, [])
+
   const myInfo = useAppSelector(state => state.root.auth);
 
 
@@ -53,13 +56,21 @@ const EvaluateBook = ({ idChapter }) => {
     try {
       if (evaluate > 0 && comment.length != 0) {
         const body = { idChapter: idChapter, content: comment, idUser: myInfo._id, userName: myInfo.name, evaluate: evaluate };
+        console.log("bodyyyyyyyyyyyyyyyyyyyyyyyyyyy", body);
         await postComment(body);
         ToastAndroid.show("Đăng bình luận thành công!", ToastAndroid.SHORT);
         setEvaluate(0);
         setComment('');
-        // listComment = getAllComment(idChapter);
         const dataComment = await getAllComment(idChapter);
-        setListComment(dataComment?.data?.data?.reverse());
+        let listReverse = [];
+        if (dataComment?.data) {
+          dataComment.data.data.map(item => {
+            listReverse = [item, ...listReverse]
+          })
+          console.log("listComment----------------------", dataComment?.data?.data);
+          setListComment(listReverse);
+
+        }
       } else {
         if (evaluate <= 0) {
           ToastAndroid.show("Bạn chưa đánh giá!", ToastAndroid.SHORT);
@@ -76,7 +87,7 @@ const EvaluateBook = ({ idChapter }) => {
   return (
     <Block backgroundColor={themeNew.colors.background} marginHorizontal={10} marginTop={40}>
       <Text center marginTop={30} color={themeNew.colors.textInBox} size={18}>
-        Xếp hạng đánh giá
+        {t('ratingStarReview')}
       </Text>
       <Text
         center
@@ -119,7 +130,7 @@ const EvaluateBook = ({ idChapter }) => {
           <Progress.Bar
             color={theme.colors.black}
             height={12}
-            progress={0.8}
+            progress={0.05}
             width={Dimensions.get('window').width - 200}
           />
         </Block>
@@ -135,7 +146,7 @@ const EvaluateBook = ({ idChapter }) => {
           <Progress.Bar
             color={theme.colors.black}
             height={12}
-            progress={0.8}
+            progress={0.2}
             width={Dimensions.get('window').width - 200}
           />
         </Block>
@@ -151,7 +162,7 @@ const EvaluateBook = ({ idChapter }) => {
           <Progress.Bar
             color={theme.colors.black}
             height={12}
-            progress={0.8}
+            progress={0.1}
             width={Dimensions.get('window').width - 200}
           />
         </Block>
@@ -167,7 +178,7 @@ const EvaluateBook = ({ idChapter }) => {
           <Progress.Bar
             color={theme.colors.black}
             height={12}
-            progress={0.8}
+            progress={0.09}
             width={Dimensions.get('window').width - 200}
           />
         </Block>
@@ -176,10 +187,10 @@ const EvaluateBook = ({ idChapter }) => {
         </Text>
       </Block>
       <Text center color={themeNew.colors.textInBox} size={18} marginTop={30}>
-        Đánh giá sách
+        {t('bookReviews')}
       </Text>
       <Text center color={themeNew.colors.textInBox} size={14}>
-        Hãy cho người khác biết suy nghĩ của bạn
+        {t('yourThink')}
       </Text>
       {/* Star cua người đánh giá */}
       <Block row justifyCenter>
@@ -218,27 +229,27 @@ const EvaluateBook = ({ idChapter }) => {
       <TextInput
         value={comment}
         onChangeText={setComment}
-        placeholder="Nhập vào đây"
+        placeholder={t('fillInHere')}
         style={styles.tip_comment}
-        placeholderTextColor={themeNew.colors.text}
+        placeholderTextColor={themeNew.colors.textDark}
         multiline={true}
         maxLength={400}
         textAlignVertical="top"
       />
 
-      <Block width={'100%'} alignCenter marginTop={20}>
+      <Block width={'100%'} alignCenter marginVertical={20}>
         <Button style={styles.btn_submit_comment}
           onPress={handleSubmitComment}>
           <Text center color={theme.colors.gray3} size={16}>
             {' '}
-            Đăng bình luận{' '}
+            {t('comment')} {' '}
           </Text>
         </Button>
       </Block>
 
       {/* List comment */}
       {listComment.map((item, index) => (
-        <ItemComment key={index} item={item} />
+        <ItemComment index={index} key={index} item={item} />
       ))}
     </Block>
   );

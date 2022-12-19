@@ -1,7 +1,8 @@
 import { Block, Container, Icon, Text } from '@components';
+import BottomSheet, { BottomSheetBackdrop } from '@gorhom/bottom-sheet';
 import { useAppSelector } from '@hooks';
+import { useNavigation } from '@react-navigation/core';
 import { useGetChatsMutation } from '@redux/servicesNew';
-import { theme } from '@theme';
 import React, {
     useCallback,
     useEffect,
@@ -13,15 +14,10 @@ import { Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import io from 'socket.io-client';
 import { useTheme } from 'themeNew';
-import Header from '../Header';
 import ChatInput from './components/ChatInput';
 import MessagesList from './components/MessageList';
-import BottomSheet, { BottomSheetBackdrop } from '@gorhom/bottom-sheet';
-import { useNavigation } from '@react-navigation/core';
 
 const RoomChat = ({ route }) => {
-    const [clicked, setClicked] = useState(false);
-    const [searchPhrase, setSearchPhrase] = useState('');
     const socketRef = useRef();
     const { id, image, name, users } = route.params;
     const [getChats, { isSuccess }] = useGetChatsMutation();
@@ -106,18 +102,22 @@ const RoomChat = ({ route }) => {
             enablePanDownToClose={true}
             backdropComponent={renderBackdrop}>
             <Block
-                backgroundColor={colors.white}
+                backgroundColor={colors.background}
                 paddingHorizontal={10}
                 alignCenter
                 flex>
-                <Text marginVertical={10} size={16} fontType="bold">
-                    Thong tin nhom
+                <Text
+                    marginVertical={10}
+                    size={16}
+                    fontType="bold1"
+                    color={colors.textInBox}>
+                    Thông tin nhóm
                 </Text>
                 <Block
                     width="100%"
                     alignCenter
                     borderTopWidth={3}
-                    borderColor={colors.grey16}
+                    borderColor={colors.text}
                     paddingVertical={10}>
                     <Image source={{ uri: image }} style={styles.imageRoom} />
                     <Block row alignCenter>
@@ -125,13 +125,14 @@ const RoomChat = ({ route }) => {
                             marginRight={10}
                             marginTop={10}
                             size={20}
-                            fontType="bold">
+                            fontType="bold1"
+                            color={colors.textInBox}>
                             {name}
                         </Text>
                         <Icon
                             component="Feather"
                             name="edit-3"
-                            color={colors.grey4}
+                            color={colors.textInBox}
                             size={20}
                         />
                     </Block>
@@ -140,7 +141,7 @@ const RoomChat = ({ route }) => {
                         width="90%"
                         paddingVertical={20}
                         borderBottomWidth={2}
-                        borderColor={colors.grey16}
+                        borderColor={colors.text}
                         justifyCenter>
                         <Block alignCenter>
                             <Block
@@ -160,8 +161,9 @@ const RoomChat = ({ route }) => {
                             <Text
                                 marginTop={5}
                                 size={12}
-                                style={{ width: 80, textAlign: 'center' }}>
-                                Tat thong bao
+                                style={{ width: 80, textAlign: 'center' }}
+                                color={colors.textInBox}>
+                                Tắt thông báo
                             </Text>
                         </Block>
                         <Block alignCenter>
@@ -175,14 +177,15 @@ const RoomChat = ({ route }) => {
                                 <Icon
                                     component="Ionicons"
                                     name="ios-attach"
-                                    color={colors.grey4}
+                                    color={colors.text}
                                     size={25}
                                 />
                             </Block>
                             <Text
                                 marginTop={5}
                                 size={12}
-                                style={{ width: 80, textAlign: 'center' }}>
+                                style={{ width: 80, textAlign: 'center' }}
+                                color={colors.textInBox}>
                                 Tin ghim
                             </Text>
                         </Block>
@@ -204,8 +207,9 @@ const RoomChat = ({ route }) => {
                             <Text
                                 marginTop={5}
                                 size={12}
-                                style={{ width: 80, textAlign: 'center' }}>
-                                Tat thong bao
+                                style={{ width: 80, textAlign: 'center' }}
+                                color={colors.textInBox}>
+                                Tắt thông báo
                             </Text>
                         </Block>
                         <Block alignCenter>
@@ -226,8 +230,9 @@ const RoomChat = ({ route }) => {
                             <Text
                                 marginTop={5}
                                 size={12}
-                                style={{ width: 80, textAlign: 'center' }}>
-                                Cai dat
+                                style={{ width: 80, textAlign: 'center' }}
+                                color={colors.textInBox}>
+                                Cài đặt
                             </Text>
                         </Block>
                     </Block>
@@ -235,48 +240,63 @@ const RoomChat = ({ route }) => {
                         width="90%"
                         paddingVertical={20}
                         borderBottomWidth={2}
-                        borderColor={colors.grey16}>
-                        <Text size={16} fontType="bold">
-                            Thanh vien nhom
+                        borderColor={colors.text}>
+                        <Text
+                            size={16}
+                            fontType="bold"
+                            color={colors.textInBox}>
+                            Thành viên nhóm
                         </Text>
 
                         <Block row alignCenter paddingVertical={5}>
                             <Icon
                                 component="Ionicons"
                                 name="people-outline"
-                                color={colors.grey4}
+                                color={colors.textInBox}
                                 size={25}
                             />
-                            <Text marginLeft={10} size={16}>
-                                {users.length} thanh vien
+                            <Text
+                                marginLeft={10}
+                                size={16}
+                                color={colors.textInBox}>
+                                {users.length} thành viên
                             </Text>
                         </Block>
                     </Block>
                     <Block width="90%" paddingVertical={20}>
-                        <Text size={16} fontType="bold">
-                            Thiet lap bao mat
+                        <Text
+                            size={16}
+                            fontType="bold"
+                            color={colors.textInBox}>
+                            Thiết lập và bảo mật
                         </Text>
 
                         <Block row alignCenter paddingVertical={5}>
                             <Icon
                                 component="Ionicons"
                                 name="eye-off-outline"
-                                color={colors.grey4}
+                                color={colors.textInBox}
                                 size={25}
                             />
-                            <Text marginLeft={10} size={16}>
-                                {users.length} an tro chuyen
+                            <Text
+                                marginLeft={10}
+                                size={16}
+                                color={colors.textInBox}>
+                                {users.length} ẩn trò chuyện
                             </Text>
                         </Block>
                         <Block row alignCenter paddingVertical={5}>
                             <Icon
                                 component="Ionicons"
                                 name="warning-outline"
-                                color={colors.grey4}
+                                color={colors.textInBox}
                                 size={25}
                             />
-                            <Text marginLeft={10} size={16}>
-                                Bao cao
+                            <Text
+                                marginLeft={10}
+                                size={16}
+                                color={colors.textInBox}>
+                                Báo cáo
                             </Text>
                         </Block>
                         <Block
@@ -294,7 +314,7 @@ const RoomChat = ({ route }) => {
                                 marginLeft={10}
                                 size={16}
                                 color={colors.primary}>
-                                Xoa lich su tro chuyen
+                                Xoá lịch sử trò chuyện
                             </Text>
                         </Block>
                         <Block row alignCenter paddingVertical={5}>
@@ -308,7 +328,7 @@ const RoomChat = ({ route }) => {
                                 marginLeft={10}
                                 size={16}
                                 color={colors.primary}>
-                                Roi khoi nhom
+                                Rời khỏi nhóm
                             </Text>
                         </Block>
                     </Block>
@@ -318,14 +338,12 @@ const RoomChat = ({ route }) => {
     );
 
     return (
-        <Block
-            flex
-            marginTop={inset.top}
-            paddingHorizontal={10}
-            backgroundColor={colors.background}>
+        <Container
+            style={{ backgroundColor: colors.background }}
+            statusColor={colors.background}>
             <Block
                 borderBottomWidth={2}
-                borderColor={colors.grey16}
+                borderColor={colors.text}
                 row
                 paddingVertical={10}
                 alignCenter
@@ -335,16 +353,20 @@ const RoomChat = ({ route }) => {
                         component="MaterialIcons"
                         name="arrow-back-ios"
                         size={20}
-                        color={colors.grey4}
+                        color={colors.textDark}
                     />
                 </TouchableOpacity>
                 <Image source={{ uri: image }} style={styles.imageRoom} />
                 <Block flex>
-                    <Text marginLeft={10} size={18} fontType="bold">
+                    <Text
+                        marginLeft={10}
+                        size={18}
+                        fontType="bold"
+                        color={colors.textDark}>
                         {name}
                     </Text>
-                    <Text marginLeft={10} size={14}>
-                        Gioi thieu ne
+                    <Text marginLeft={10} size={14} color={colors.textDark}>
+                        Giới thiệu nè
                     </Text>
                 </Block>
                 <TouchableOpacity
@@ -352,7 +374,7 @@ const RoomChat = ({ route }) => {
                     <Icon
                         component="Ionicons"
                         name="ios-information-circle-outline"
-                        color={colors.grey4}
+                        color={colors.textDark}
                         size={30}
                     />
                 </TouchableOpacity>
@@ -360,7 +382,7 @@ const RoomChat = ({ route }) => {
             <MessagesList onSwipeToReply={swipeToReply} messages={messages} />
             <ChatInput onSubmitHandler={onSubmitHandler} id={id} />
             {bottomSheetInfo()}
-        </Block>
+        </Container>
     );
 };
 
