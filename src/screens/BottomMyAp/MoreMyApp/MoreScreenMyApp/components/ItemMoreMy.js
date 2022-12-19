@@ -43,7 +43,11 @@ const ItemMoreMy = ({ props, t }) => {
                     color={themeNew.colors.textDark}>
                     {t('totalReadingTime')}
                 </Text>
-                <Text size={40} center color={themeNew.colors.textDark}>
+                <Text
+                    fontType={'bold1'}
+                    size={40}
+                    center
+                    color={themeNew.colors.textDark}>
                     {sumTimeRead}
                 </Text>
                 <Text
@@ -60,7 +64,11 @@ const ItemMoreMy = ({ props, t }) => {
                     color={themeNew.colors.textDark}>
                     {t('numberOfBooksRead')}
                 </Text>
-                <Text size={40} center color={themeNew.colors.textDark}>
+                <Text
+                    fontType={'bold1'}
+                    size={40}
+                    center
+                    color={themeNew.colors.textDark}>
                     23
                 </Text>
                 <Text
