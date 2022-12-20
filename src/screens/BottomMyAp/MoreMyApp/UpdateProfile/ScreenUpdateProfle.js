@@ -338,7 +338,7 @@ const useStyle = makeStyles()(({ normalize, colors }) => ({
     TouchableOpacity: {
         width: '100%',
         height: 55,
-        backgroundColor: colors.creamRed,
+        backgroundColor: colors.primary,
         borderRadius: 50,
         marginTop: '40%',
         marginBottom: '10%',

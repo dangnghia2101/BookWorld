@@ -21,7 +21,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { WebView } from 'react-native-webview';
 import { useTheme } from 'themeNew';
 import EvaluateBook from '../DetailBookScreenMyAp/components/EvaluateBook';
-import { useGetFavoriteBookQuery } from '@redux/servicesNew'
+import { useGetFavoriteBookQuery } from '@redux/servicesNew';
 
 import { withNamespaces } from 'react-i18next';
 const PlayBookScreenMyAp = ({ route, t }) => {
@@ -42,7 +42,6 @@ const PlayBookScreenMyAp = ({ route, t }) => {
     const [createTimeRead, { isLoading, data, error }] =
         useCreateTimeReadMutation();
     const dataFavorite = useAppSelector(state => state.root.book.favoriteList);
-    console.log("dataFavoriteeeeeeeeeeeee", dataFavorite[0]?.favoriteBooks);
     const dataGet = useGetDetailChapterBookQuery({
         id: idChapter,
         token: myInfo.token,
@@ -160,25 +159,29 @@ const PlayBookScreenMyAp = ({ route, t }) => {
     useEffect(() => {
         let flg = false;
         dataFavorite[0]?.favoriteBooks.map(itemFvr => {
-            console.log("itemFavoriteeeeeeeeeee----------", itemFvr);
             if (itemFvr.idBook._id == dataInfoBook._id) {
                 flg = true;
             }
-
-        })
+        });
         setColorHeart(flg);
-    }, [])
+    }, []);
     const handleSaveFavoriteBook = async () => {
         try {
-            setColorHeart(true)
-            const body = { id: myInfo._id, idBook: dataInfoBook._id, token: myInfo.token }
+            setColorHeart(true);
+            const body = {
+                id: myInfo._id,
+                idBook: dataInfoBook._id,
+                token: myInfo.token,
+            };
             await saveFavoriteBook(body);
-            ToastAndroid.show("Đã thêm vào sách yêu thích", ToastAndroid.SHORT);
+            ToastAndroid.show('Đã thêm vào sách yêu thích', ToastAndroid.SHORT);
         } catch (error) {
-            ToastAndroid.show("Chưa thêm vào sách yêu thích", ToastAndroid.SHORT);
+            ToastAndroid.show(
+                'Chưa thêm vào sách yêu thích',
+                ToastAndroid.SHORT,
+            );
         }
-
-    }
+    };
 
     return (
         <Container
@@ -219,12 +222,19 @@ const PlayBookScreenMyAp = ({ route, t }) => {
                         borderBottomColor={theme.colors.grey14}
                         marginTop={15}
                     />
-                    <Button onPress={handleSaveFavoriteBook} row style={[styles.rowModal]}>
+                    <Button
+                        onPress={handleSaveFavoriteBook}
+                        row
+                        style={[styles.rowModal]}>
                         <IconView
                             component={'AntDesign'}
                             name={true ? 'heart' : 'hearto'}
                             size={20}
-                            color={colorHeart ? theme.colors.primary : theme.colors.textInBox}
+                            color={
+                                colorHeart
+                                    ? theme.colors.primary
+                                    : theme.colors.textInBox
+                            }
                         />
                         <Text
                             style={styles.textRowModal}
@@ -292,7 +302,7 @@ const PlayBookScreenMyAp = ({ route, t }) => {
                         <Text style={styles.textRowModal}>{t('comment')}</Text>
                     </Button>
                 </Block>
-            </BottomSheet >
+            </BottomSheet>
             <BottomSheet
                 index={-1}
                 ref={bottomSheetCommetnRef}

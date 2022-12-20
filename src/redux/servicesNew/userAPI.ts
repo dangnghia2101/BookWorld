@@ -61,6 +61,24 @@ export const userApi = createApi({
             },
             invalidatesTags: ['Post'],
         }),
+        forgotPassword: builder.mutation({
+            query: body => ({
+                url: '/accounts/resetPassword',
+                method: 'POST',
+                body: body,
+                headers: {
+                    'Content-type': 'application/json; charset=UTF-8',
+                },
+            }),
+            async onQueryStarted(id, { dispatch, queryFulfilled }) {
+                try {
+                    const { data } = await queryFulfilled;
+                    console.log('==== forgot password ', data);
+                } catch (err) {
+                    console.log('error api forgot password... ', err);
+                }
+            },
+        }),
         loginPhone: builder.mutation({
             query: body => ({
                 url: '/accounts/registerNumberPhone',
@@ -94,13 +112,16 @@ export const userApi = createApi({
                 url: `accounts/profile`,
                 headers: { Authorization: `Bearer ${body.token}` },
             }),
-            transformResponse: (response: { data: any }) => response.data,
+            transformResponse: (response: { data: any }) => response,
             async onQueryStarted(id, { dispatch, queryFulfilled }) {
                 try {
-                    console.log('getInforUser api BEFORE');
                     const { data } = await queryFulfilled;
-                    console.log('getInforUser api ', data);
-                    dispatch(loginReducer(data));
+                    dispatch(
+                        loginReducer({
+                            ...data.data,
+                            ...{ token: data.token },
+                        }),
+                    );
                     // Save data in store, using reducer
                 } catch (err) {
                     dispatch(changeLoading('HIDE'));
@@ -111,10 +132,6 @@ export const userApi = createApi({
     }),
 });
 
-export const {
-    useLoginMutation,
-    useGetLoginQuery,
-    useLoginPhoneMutation,
-    useLoginPhoneNumberMutation,
-    useLazyGetInforUserQuery,
-} = userApi;
+export const { useLoginMutation, useGetLoginQuery, useLoginPhoneMutation, useLoginPhoneNumberMutation, useForgotPasswordMutation, 
+    useLazyGetInforUserQuery, } =
+    userApi;
