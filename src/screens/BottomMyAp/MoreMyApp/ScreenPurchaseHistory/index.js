@@ -2,7 +2,6 @@ import React from 'react';
 import { Block, HeaderWithButton } from '@components';
 import { ScrollView } from 'react-native';
 import HeaderPurchase from './components/HeaderPurchase';
-import ChartPurchase from './components/ChartPurchase.';
 import BodyPurchaseHistory from './components/BodyPurchaseHistory';
 import { makeStyles, useTheme } from 'themeNew';
 import { useAppSelector, useAppDispatch } from '@hooks';
@@ -16,7 +15,6 @@ const MoreMyApp = props => {
     <Block flex justifyCenter backgroundColor={themeNew.colors.background}>
       <HeaderWithButton isBackHeader title={t('purchaseHistory')} />
       <ScrollView showsVerticalScrollIndicator={false}>
-        {/* <ChartPurchase /> */}
         <BodyPurchaseHistory />
       </ScrollView>
     </Block>

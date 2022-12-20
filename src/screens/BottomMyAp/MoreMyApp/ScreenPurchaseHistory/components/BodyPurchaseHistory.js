@@ -7,16 +7,19 @@ import { useNavigation } from '@react-navigation/native';
 import { colors, makeStyles, useTheme } from 'themeNew';
 import { useAppSelector, useAppDispatch } from '@hooks';
 import { withNamespaces } from 'react-i18next';
-import { useLazyGetPurchaseHistoryCartQuery, useGetPurchaseHistoryCartQuery
+import { 
+  useLazyGetPurchaseHistoryCartQuery, 
+  useGetPurchaseHistoryCartQuery
 } from '@redux/servicesNew';
+import ItemPurchaseCart from './ItemPurchaseCart';
 
 const BodyPurchaseHistory = props => {
-  const navigation = useNavigation();
+  const [getPurchaseHistoryCart] = useLazyGetPurchaseHistoryCartQuery();
   const { t } = props;
   const [dataPurchase, setDataPurchase] = useState([]);
-  const [getPurchaseHistoryCart] = useLazyGetPurchaseHistoryCartQuery();
-
+ 
   const myInfo = useAppSelector(state => state.root.auth);
+  console.log(myInfo.token);
   const themeStore = useAppSelector(state => state.root.themeApp.theme);
   const themeNew = useTheme(themeStore);
   const styles = useStyle(props, themeStore);
@@ -24,15 +27,13 @@ const BodyPurchaseHistory = props => {
   useEffect(() => {
     const fetchGetPurchase = async () => {
         let { data } = await getPurchaseHistoryCart(myInfo.token);
-        setDataPurchase(data);
-        console.log("data",data);
+        setDataPurchase(data?.purchaseHistory);
+        console.log("data", data?.purchaseHistory);
     };
     fetchGetPurchase();
 }, []);
 
-console.log("data purchase:", dataPurchase?.data);
-
-  return dataPurchase?.data?.length > 0 ? (
+  return dataPurchase?.length > 0 ? (
     <Block marginHorizontal={20} flex>
       <Block>
           <Text
@@ -42,8 +43,8 @@ console.log("data purchase:", dataPurchase?.data);
             marginVertical={10}>
             {t('myPurchase')}
           </Text>
-          {dataPurchase?.data.map((item, index) => (
-            <ItemRank key={index} item={item} />
+          {dataPurchase?.map((item, index) => (
+            <ItemPurchaseCart key={index} item={item} />
           ))}
         </Block>
       </Block>

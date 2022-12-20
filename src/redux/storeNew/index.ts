@@ -10,6 +10,7 @@ import {
     ReadingReducer,
     RankReducer,
     SearchReducer,
+    PurchaseHistoryReducer
 } from '@redux/reducerNew';
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import {
@@ -36,6 +37,7 @@ import {
     chatAPI,
     rankAPI,
     commentAPI,
+    purchaseAPI
 } from '@redux/servicesNew';
 import { setupListeners } from '@reduxjs/toolkit/query';
 import { userPhoneApi } from '@redux/servicesNew/userPhoneAPI';
@@ -51,6 +53,7 @@ const rootReducer = combineReducers({
     reading: ReadingReducer,
     rank: RankReducer,
     search: SearchReducer,
+    purchaseHistory: PurchaseHistoryReducer
     // ...other reducers here
 });
 
@@ -82,6 +85,7 @@ export const store = configureStore({
         [rankAPI.reducerPath]: rankAPI.reducer,
         [chatAPI.reducerPath]: chatAPI.reducer,
         [commentAPI.reducerPath]: commentAPI.reducer,
+        [purchaseAPI.reducerPath]: purchaseAPI.reducer,
     },
     middleware: getDefaultMiddleware =>
         getDefaultMiddleware({
@@ -107,7 +111,8 @@ export const store = configureStore({
             .concat(profileAPI.middleware)
             .concat(chatAPI.middleware)
             .concat(rankAPI.middleware)
-            .concat(commentAPI.middleware),
+            .concat(commentAPI.middleware)
+            .concat(purchaseAPI.middleware),
 });
 
 export const persistor = persistStore(store);
