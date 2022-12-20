@@ -15,15 +15,15 @@ const ItemLastMoreMy = ({ t })  => {
   const styles = useStyles(themeStore);
 
   useGetCountTop10Query();
-  const ranks = useAppSelector(state => state.root.rank.ranks);
+  const ranks = useAppSelector(state => state.root.rank.ranks); 
   
   return ranks?.data?.length > 0 ? (
       <Block marginHorizontal={26}>
         <Text fontType={'bold1'} size={16} color={themeNew.colors.textDark}>
               {t('rank')}
               </Text>
-        {ranks?.data.map((item, index) => (
-          <ItemRank key={index} item={item} />
+          {ranks?.data.map((item, index) => (
+          <ItemRank index={index} key={index} item={item} />
         ))}
       </Block>
     ) : (

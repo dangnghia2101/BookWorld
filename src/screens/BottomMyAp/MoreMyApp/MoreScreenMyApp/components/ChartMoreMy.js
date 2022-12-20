@@ -13,7 +13,7 @@ import {
     useLazyGetReadTimeBookQuery,
 } from '@redux/servicesNew';
 import { MONTHS } from '@utils/constants';
-import { VictoryBar, VictoryChart } from 'victory-native';
+import { VictoryBar, VictoryChart, VictoryLabel } from 'victory-native';
 import EmptyIcon from '@assets/svgs/EmptyIcon';
 
 const thisYear = new Date().getFullYear();
@@ -118,7 +118,7 @@ const ChartMoreMy = props => {
     }, [dataReadTime]);
 
     return (
-        <Block marginTop={50} column justifyCenter>
+        <Block marginTop={40} column justifyCenter>
             <Block
                 style={styles.dateContainer}
                 row
@@ -175,19 +175,43 @@ const ChartMoreMy = props => {
                     </Text>
                 </TouchableOpacity>
             </Block>
-
+            
             {data.length > 0 ? (
-                <VictoryChart>
+                <VictoryChart
+                    // style={{
+                    //     parent: {
+                    //     border: "1px solid #ccc"
+                    //     },
+                    //     background: {
+                    //     fill: "pink"
+                    //     }
+                    // }}
+                    >
+                    <VictoryLabel x={'40%'} y={30} style={styles.title}
+                        text={t('readtime')}/>
+                    <VictoryLabel x={35} y={30} style={styles.labelOne}
+                        text={t("minute")}
+                        />
                     <VictoryBar
                         style={{
-                            data: { fill: '#0D7EF9', width: 15 },
+                            data: { fill: '#0D7EF9', width: 10 },
                         }}
+                        alignment="start"
+                        // animate={{
+                        //     duration: 3000,
+                        //     onLoad: {
+                        //         duration: 3000,
+                        //     },
+                        // }}
                         animate={{
-                            duration: 3000,
-                            onLoad: {
-                                duration: 3000,
-                            },
-                        }}
+                            onExit: {
+                              duration: 500,
+                              before: () => ({
+                                _y: 0,
+                                label: "BYE"
+                              })
+                            }
+                          }}
                         x={'x'}
                         y={'y'}
                         data={data}
@@ -222,5 +246,9 @@ const useStyle = makeStyles()(({ colors }) => ({
         borderRadius: 6,
         justifyContent: 'center',
         alignItems: 'center',
+    },
+    title: {
+        fontSize: 18,
+        color: colors.textDark,
     },
 }));

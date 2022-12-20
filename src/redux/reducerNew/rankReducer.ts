@@ -21,7 +21,7 @@ const rankSlice = createSlice({
     initialState: defaultRankState,
     reducers: {
         saveRank: (
-            state: RankArrayState,
+            state: RankArrayState, 
             action: PayloadAction<RankState[]>,
         ) => {
             state.ranks = action.payload;
