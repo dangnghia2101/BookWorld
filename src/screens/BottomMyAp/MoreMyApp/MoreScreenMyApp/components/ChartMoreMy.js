@@ -118,7 +118,7 @@ const ChartMoreMy = props => {
     }, [dataReadTime]);
 
     return (
-        <Block marginTop={50} column justifyCenter>
+        <Block marginTop={40} column justifyCenter>
             <Block
                 style={styles.dateContainer}
                 row

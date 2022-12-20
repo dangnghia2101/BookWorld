@@ -27,8 +27,8 @@ const BodyPurchaseHistory = props => {
   useEffect(() => {
     const fetchGetPurchase = async () => {
         let { data } = await getPurchaseHistoryCart(myInfo.token);
-        setDataPurchase(data?.purchaseHistory);
-        console.log("data", data?.purchaseHistory);
+        setDataPurchase(data);
+        console.log("data", data);
     };
     fetchGetPurchase();
 }, []);
