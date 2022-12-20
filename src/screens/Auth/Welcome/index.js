@@ -17,7 +17,7 @@ import { useRef } from 'react';
 
 import Paginator from './components/Paginator';
 import { useAppSelector } from '@hooks';
-import { useTheme } from 'themeNew';
+import { colors, useTheme } from 'themeNew';
 
 const { width, heigth } = Dimensions.get('window');
 const Welcome = () => {
@@ -129,7 +129,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
     },
     buttomDangNhap: {
-        backgroundColor: 'red',
+        backgroundColor: colors.light.primary,
         width: '48%',
         marginBottom: '20%',
         height: 55,

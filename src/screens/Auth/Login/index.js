@@ -22,7 +22,7 @@ import {
 } from 'react-native';
 import { withNamespaces } from 'react-i18next';
 import Toast from 'react-native-simple-toast';
-
+import { theme } from '@theme';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { colors, useTheme } from 'themeNew';
 const Login = ({ t }) => {
@@ -588,13 +588,13 @@ const styles = StyleSheet.create({
         position: 'absolute',
         width: 157,
         height: 10,
-        backgroundColor: 'red',
+        backgroundColor: colors.light.primary
     },
     gradients: {
         position: 'absolute',
         width: 157,
         height: 10,
-        backgroundColor: 'red',
+        backgroundColor: colors.light.primary,
     },
     textButtomLogin: {
         fontSize: 18,
@@ -609,7 +609,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 10,
-        backgroundColor: 'red',
+        backgroundColor: colors.light.primary,
         shadowColor: '#000',
         shadowOffset: {
             width: 0,
