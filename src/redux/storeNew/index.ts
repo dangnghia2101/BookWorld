@@ -10,7 +10,7 @@ import {
     ReadingReducer,
     RankReducer,
     SearchReducer,
-    PurchaseHistoryReducer
+    PurchaseHistoryReducer,
 } from '@redux/reducerNew';
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import {
@@ -37,7 +37,7 @@ import {
     chatAPI,
     rankAPI,
     commentAPI,
-    purchaseAPI
+    purchaseAPI,
 } from '@redux/servicesNew';
 import { setupListeners } from '@reduxjs/toolkit/query';
 import { userPhoneApi } from '@redux/servicesNew/userPhoneAPI';
@@ -53,7 +53,7 @@ const rootReducer = combineReducers({
     reading: ReadingReducer,
     rank: RankReducer,
     search: SearchReducer,
-    purchaseHistory: PurchaseHistoryReducer
+    purchaseHistory: PurchaseHistoryReducer,
     // ...other reducers here
 });
 

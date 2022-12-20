@@ -11,14 +11,13 @@ const ItemMoreMy = ({ props, t }) => {
     const themeNew = useTheme(themeStore);
     const styles = useStyle(props, themeStore);
     const [sumTimeRead, setSumTimeRead] = useState(0);
+    const [sumBookRead, setSumBookRead] = useState(0);
     const myInfo = useAppSelector(state => state.root.auth);
     const { data: dataReadTime } = useGetReadTimeBookQuery(myInfo._id);
 
     useEffect(() => {
         try {
             if (dataReadTime) {
-                let handleData = [];
-
                 for (const year in dataReadTime) {
                     let sum = 0;
                     for (const month in dataReadTime[year]) {
@@ -27,12 +26,13 @@ const ItemMoreMy = ({ props, t }) => {
                         }
                     }
                     setSumTimeRead((sum / 60 / 60).toFixed(0));
+                    setSumBookRead(23);
                 }
             }
         } catch (e) {
             console.log('[Error handleDataMonth] ', e);
         }
-    }, []);
+    }, [dataReadTime]);
 
     return (
         <Block marginTop={10} row justifyContent={'space-around'}>
@@ -69,7 +69,7 @@ const ItemMoreMy = ({ props, t }) => {
                     size={40}
                     center
                     color={themeNew.colors.textDark}>
-                    23
+                    {sumBookRead}
                 </Text>
                 <Text
                     fontType={'medium1'}

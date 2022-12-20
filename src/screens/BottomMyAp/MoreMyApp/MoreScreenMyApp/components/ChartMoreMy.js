@@ -23,8 +23,6 @@ const ChartMoreMy = props => {
     const [data, setData] = useState([]);
     const [index, setIndex] = useState(1);
     const myInfo = useAppSelector(state => state.root.auth);
-    // const dataReadTime = useLazyGetReadTimeBookQuery(myInfo._id);
-    //thuc hien dau goi do getReadTimeBook(id);
     const { data: dataReadTime } = useGetReadTimeBookQuery(myInfo._id);
     //chay 1 lan
 
@@ -122,7 +120,8 @@ const ChartMoreMy = props => {
             <Block
                 style={styles.dateContainer}
                 row
-                justifyContent={'space-around'}>
+                justifyContent={'space-around'}
+                marginBottom={30}>
                 <TouchableOpacity
                     style={[
                         styles.itemChartContainer,
@@ -175,23 +174,30 @@ const ChartMoreMy = props => {
                     </Text>
                 </TouchableOpacity>
             </Block>
-            
+
             {data.length > 0 ? (
                 <VictoryChart
-                    // style={{
-                    //     parent: {
-                    //     border: "1px solid #ccc"
-                    //     },
-                    //     background: {
-                    //     fill: "pink"
-                    //     }
-                    // }}
-                    >
-                    <VictoryLabel x={'40%'} y={30} style={styles.title}
-                        text={t('readtime')}/>
-                    <VictoryLabel x={35} y={30} style={styles.labelOne}
-                        text={t("minute")}
-                        />
+                // style={{
+                //     parent: {
+                //     border: "1px solid #ccc"
+                //     },
+                //     background: {
+                //     fill: "pink"
+                //     }
+                // }}
+                >
+                    <VictoryLabel
+                        x={'40%'}
+                        y={10}
+                        style={styles.title}
+                        text={t('readtime')}
+                    />
+                    <VictoryLabel
+                        x={20}
+                        y={30}
+                        style={styles.labelOne}
+                        text={t('hours')}
+                    />
                     <VictoryBar
                         style={{
                             data: { fill: '#0D7EF9', width: 10 },
@@ -205,13 +211,13 @@ const ChartMoreMy = props => {
                         // }}
                         animate={{
                             onExit: {
-                              duration: 500,
-                              before: () => ({
-                                _y: 0,
-                                label: "BYE"
-                              })
-                            }
-                          }}
+                                duration: 500,
+                                before: () => ({
+                                    _y: 0,
+                                    label: 'BYE',
+                                }),
+                            },
+                        }}
                         x={'x'}
                         y={'y'}
                         data={data}
@@ -248,7 +254,11 @@ const useStyle = makeStyles()(({ colors }) => ({
         alignItems: 'center',
     },
     title: {
-        fontSize: 18,
-        color: colors.textDark,
+        fontSize: 16,
+        color: 'red',
+        fontFamily: 'Lato-Bold',
+    },
+    labelOne: {
+        fontFamily: 'Lato-Regular',
     },
 }));
