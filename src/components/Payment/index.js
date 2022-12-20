@@ -103,6 +103,7 @@ const PaymentScreen = ({ price, t }) => {
         }
         const params = {
             body: pay,
+            totalPrice: price,
             token: myInfo.token,
         };
 

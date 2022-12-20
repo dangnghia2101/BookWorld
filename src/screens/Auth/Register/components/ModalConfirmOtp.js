@@ -2,7 +2,7 @@ import { Block, ModalBox, Text, TextInput } from '@components';
 import { useAppSelector } from '@hooks';
 import React, { useEffect } from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
-import { useTheme } from 'themeNew';
+import {colors, useTheme } from 'themeNew';
 
 const ModalConfirmOtp = ({
     confirmCode,
@@ -162,7 +162,7 @@ const styles = ({ isDisable }) =>
             justifyContent: 'center',
             alignItems: 'center',
             borderRadius: 15,
-            backgroundColor: 'red',
+            backgroundColor: colors.light.primary,
             height: 50,
             shadowColor: '#000',
             shadowOffset: {
