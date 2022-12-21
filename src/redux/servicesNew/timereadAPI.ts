@@ -13,7 +13,7 @@ export const timereadAPI = createApi({
                 return {
                     url: 'accounts/changeReadTimeBook',
                     method: 'POST',
-                    body: body.time,
+                    body: { time: body.time },
                     headers: { Authorization: `Bearer ${body.token}` },
                 };
             },

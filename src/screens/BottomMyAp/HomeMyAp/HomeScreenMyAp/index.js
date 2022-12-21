@@ -8,6 +8,9 @@ import {
     useGetAllBookQuery,
     useGetAllCategoryQuery,
     useLazyGetInforUserQuery,
+    useLazyGetAllAuthorQuery,
+    useLazyGetAllBookQuery,
+    useLazyGetAllCategoryQuery,
 } from '@redux/servicesNew';
 import { height, width } from '@utils/responsive';
 import { useAppSelector } from 'hooks';
@@ -19,7 +22,7 @@ import {
     LogBox,
     Platform,
     ScrollView,
-    StatusBar,
+    RefreshControl,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
@@ -38,15 +41,26 @@ const widthItemEventIncoming = width - width / 3;
 const WIDTH_ITEM_INVIEW = widthItemEventIncoming - 20;
 
 const HomeScreenMyAp = ({ t }) => {
-    useGetAllBookQuery();
-    useGetAllCategoryQuery();
+    const [getAllBook] = useLazyGetAllBookQuery();
+    const [getAllAuthor] = useLazyGetAllAuthorQuery();
+    const [getAllCategory] = useLazyGetAllCategoryQuery();
+
+    useEffect(() => {
+        getAllBook();
+        getAllAuthor();
+        getAllCategory();
+    }, []);
+
+    // useGetAllBookQuery();
+    // useGetAllCategoryQuery();
+    // useGetAllAuthorQuery();
     const navigation = useNavigation();
-    useGetAllAuthorQuery();
 
     const authors = useAppSelector(state => state.root.author.authors);
 
     const [isCollapsible, setIsCollapsible] = useState(true);
     const [bookFree, setBookFree] = useState([]);
+    const [isRefresh, setRefresh] = useState(false);
     const [getInforUser] = useLazyGetInforUserQuery();
 
     const scrollX = React.useRef(new Animated.Value(0)).current;
@@ -72,15 +86,8 @@ const HomeScreenMyAp = ({ t }) => {
         if (allBooks) {
             setBookFree(allBooks.filter(item => item?.isPrice <= 0));
         }
+        getInforUser({ token: myInfo.token });
     }, []);
-
-    console.log('===> myInfo  ', myInfo.token);
-
-    // useEffect(() => {
-    //     if (myInfo) {
-    //         getInforUser({ token: myInfo.token });
-    //     }
-    // }, [myInfo]);
 
     //Cập nhật mỗi lần thay đổi TabView
 
@@ -262,7 +269,18 @@ const HomeScreenMyAp = ({ t }) => {
                 nestedScrollEnabled={true}
                 style={{
                     backgroundColor: theme.colors.background,
-                }}>
+                }}
+                refreshControl={
+                    <RefreshControl
+                        refreshing={isRefresh}
+                        onRefresh={async () => {
+                            await getAllBook();
+                            await getAllAuthor();
+                            await getAllCategory();
+                            setRefresh(false);
+                        }}
+                    />
+                }>
                 <Block flex>
                     {renderSearch()}
                     <HeaderListBook title={t('mostViewedBooks')} />

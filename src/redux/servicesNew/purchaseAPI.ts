@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { MAIN_API } from './endpoint';
+import { savePurchase } from '@redux/reducerNew';
 
 type PurchaseState = {
     _id?: string;
@@ -22,6 +23,15 @@ export const purchaseAPI = createApi({
             },
             transformResponse: (response: { data: PurchaseState[] }) =>
                 response.data,
+            async onQueryStarted(id, { dispatch, queryFulfilled }) {
+                try {
+                    const { data } = await queryFulfilled;
+                    dispatch(savePurchase(data.data));
+                } catch (err) {
+                    console.log('error api getPurchase... ', err);
+                }
+            },
+           
         }),
     }),
 });

@@ -1,4 +1,4 @@
-import { Block, Text } from '@components';
+import { Block, Text, NoData } from '@components';
 import React, {useState, useEffect} from 'react';
 import { StyleSheet, Pressable, TouchableOpacity, Image, View } from 'react-native';
 import IconView from '@components/Icon';
@@ -7,16 +7,19 @@ import { useNavigation } from '@react-navigation/native';
 import { colors, makeStyles, useTheme } from 'themeNew';
 import { useAppSelector, useAppDispatch } from '@hooks';
 import { withNamespaces } from 'react-i18next';
-import { useLazyGetPurchaseHistoryCartQuery,useGetPurchaseHistoryCartQuery
+import { 
+  useLazyGetPurchaseHistoryCartQuery, 
+  useGetPurchaseHistoryCartQuery
 } from '@redux/servicesNew';
+import ItemPurchaseCart from './ItemPurchaseCart';
 
 const BodyPurchaseHistory = props => {
-  const navigation = useNavigation();
+  const [getPurchaseHistoryCart] = useLazyGetPurchaseHistoryCartQuery();
   const { t } = props;
   const [dataPurchase, setDataPurchase] = useState([]);
-  const [getPurchaseHistoryCart] = useLazyGetPurchaseHistoryCartQuery();
-
+ 
   const myInfo = useAppSelector(state => state.root.auth);
+  console.log(myInfo.token);
   const themeStore = useAppSelector(state => state.root.themeApp.theme);
   const themeNew = useTheme(themeStore);
   const styles = useStyle(props, themeStore);
@@ -25,148 +28,29 @@ const BodyPurchaseHistory = props => {
     const fetchGetPurchase = async () => {
         let { data } = await getPurchaseHistoryCart(myInfo.token);
         setDataPurchase(data);
+        console.log("data", data);
     };
     fetchGetPurchase();
 }, []);
 
-  return (
-    <Block marginHorizontal={20} flex height={20000}>
+  return dataPurchase?.length > 0 ? (
+    <Block marginHorizontal={20} flex>
       <Block>
-        <Text
-          fontType={'bold1'}
-          color={themeNew.colors.textDark}
-          size={16}
-          marginVertical={10}>
-          {t('myPurchase')}
-        </Text>
-        <Block>
-          <TouchableOpacity style={[styles.itemPurchase, styles.shadowColor]}>
-            <Block row marginHorizontal={15} marginVertical={15}>
-              <Image
-                style={styles.image}
-                source={require('../../../../../assets/images/Vector.png')}
-              />
-              <Block column marginLeft={10}>
-                <Text
-                  size={18}
-                  fontType="bold1"
-                  numberOfLines={2}
-                  color={themeNew.colors.textDark}>
-                  Đắc nhân tâm
-                </Text>
-                <Text fontType={'regular1'} size={14} color={themeNew.colors.textDark}>
-                  Dale Carnegie
-                </Text>
-                <Text fontType={'regular1'} size={14} color={themeNew.colors.textDark}>
-                  Chương 1,2
-                </Text>
-              </Block>
-            </Block>
-            <Block borderBottomWidth={0.4}
-              backgroundColor={themeNew.colors.grey8}>
-            </Block>
-            <Block row marginHorizontal={15} marginVertical={15} alignSelf={'baseline'}>
-              <Block width={'40%'}>
-                <Text fontType='medium1' size={12} color={themeNew.colors.grey8}>
-                  2 {t('product')}
-                </Text>
-              </Block>
-              <Block row width={'60%'} alignItems={'flex-end'}>
-                <Image
-                  style={styles.icon_logo}
-                  source={require('../../../../../assets/images/logo_icon.png')}
-                />
-                <Text fontType='medium1' size={14} color={themeNew.colors.grey8}>
-                  {t('intoMoney')}:
-                </Text>
-                <Text fontType='medium1' size={14} color={themeNew.colors.grey8}>
-                  15.000 VNĐ
-                </Text>
-              </Block>
-
-            </Block>
-
-            <Block borderBottomWidth={0.4}
-              backgroundColor={themeNew.colors.grey8}>
-            </Block>
-            <Block alignItems={'flex-end'} right={10}>
-              <TouchableOpacity style={[styles.btnCmt, styles.shadowColor]}>
-                <Text fontType='medium1' size={14} color={themeNew.colors.white}>{t('rate')}</Text>
-              </TouchableOpacity>
-            </Block>
-
-          </TouchableOpacity>
+          <Text
+            fontType={'bold1'}
+            color={themeNew.colors.textDark}
+            size={16}
+            marginVertical={10}>
+            {t('myPurchase')}
+          </Text>
+          {dataPurchase?.map((item, index) => (
+            <ItemPurchaseCart key={index} item={item} />
+          ))}
         </Block>
       </Block>
-      <Block>
-        <Text
-          fontType={'bold1'}
-          color={themeNew.colors.textDark}
-          size={16}
-          marginVertical={10}>
-          {t('myPurchase')}
-        </Text>
-        <Block>
-          <TouchableOpacity style={[styles.itemPurchase, styles.shadowColor]}>
-            <Block row marginHorizontal={15} marginVertical={15}>
-              <Image
-                style={styles.image}
-                source={require('../../../../../assets/images/Vector.png')}
-              />
-              <Block column marginLeft={10}>
-                <Text
-                  size={18}
-                  fontType="bold1"
-                  numberOfLines={2}
-                  color={themeNew.colors.textDark}>
-                  Nhà giả kim
-                </Text>
-                <Text fontType={'regular1'} size={14} color={themeNew.colors.textDark}>
-                  Paulo Coelho
-                </Text>
-                <Text fontType={'regular1'} size={14} color={themeNew.colors.textDark}>
-                  Chương 1
-                </Text>
-              </Block>
-            </Block>
-            <Block borderBottomWidth={0.4}
-              backgroundColor={themeNew.colors.grey8}>
-            </Block>
-            <Block row marginHorizontal={15} marginVertical={15} alignSelf={'baseline'}>
-              <Block width={'40%'}>
-                <Text fontType='medium1' size={12} color={themeNew.colors.grey8}>
-                  1 {t('product')}
-                </Text>
-              </Block>
-              <Block row width={'60%'} alignItems={'flex-end'}>
-                <Image
-                  style={styles.icon_logo}
-                  source={require('../../../../../assets/images/logo_icon.png')}
-                />
-                <Text fontType='medium1' size={14} color={themeNew.colors.grey8}>
-                  {t('intoMoney')}:
-                </Text>
-                <Text fontType='medium1' size={14} color={themeNew.colors.grey8}>
-                  10.000 VNĐ
-                </Text>
-              </Block>
-
-            </Block>
-
-            <Block borderBottomWidth={0.4}
-              backgroundColor={themeNew.colors.grey8}>
-            </Block>
-            <Block alignItems={'flex-end'} right={10}>
-              <TouchableOpacity style={[styles.btnCmt, styles.shadowColor]}>
-                <Text fontType='medium1' size={14} color={themeNew.colors.white}>{t('rate')}</Text>
-              </TouchableOpacity>
-            </Block>
-
-          </TouchableOpacity>
-        </Block>
-      </Block>
-    </Block>
-  );
+      ) : (
+      <NoData title={'Không có đơn mua nào'}></NoData>
+    );
 };
 
 export default withNamespaces()(BodyPurchaseHistory);

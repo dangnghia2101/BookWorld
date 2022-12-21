@@ -11,6 +11,7 @@ const ItemRank = ({ item, t, index}) => {
     const themeStore = useAppSelector(state => state.root.themeApp.theme);
     const themeNew = useTheme(themeStore);
     const styles = useStyles(themeStore);
+    const time = ((item.timeRead)/1000/60).toFixed(0);
     
     return (
         <Block relative>
@@ -28,20 +29,32 @@ const ItemRank = ({ item, t, index}) => {
                     {item?.name}
                     </Text>
                     <Block marginVertical={10}>
-                    <Text fontType={'medium1'} color="#9A9B9B" size={10}>
-                        {t('totalReadingTime')}
-                        {item?.timeRead}
-                    </Text>
-                    <Text fontType={'medium1'} color="#9A9B9B" size={10}>
-                        {t('numberOfBooksRead')}
-                        {item?.historyBookRead}
-                    </Text>
+                      <Block row>
+                        <Text fontType={'medium1'} color="#9A9B9B" size={10}>
+                            {t('totalReadingTime')}: 
+                        </Text>
+                        <Text fontType={'medium1'} color="#9A9B9B" size={10} marginHorizontal={4}>
+                          {time}
+                        </Text>
+                        <Text fontType={'medium1'} color="#9A9B9B" size={10}>
+                          {t('minute')}
+                        </Text>
+                      </Block>
+                      <Block row>
+                      <Text fontType={'medium1'} color="#9A9B9B" size={10}>
+                          {t('numberOfBooksRead')}:
+                      </Text>
+                        <Text fontType={'medium1'} color="#9A9B9B" size={10} marginHorizontal={5}>
+                          {item?.historyBookRead}
+                      </Text>
+                      </Block>
+                    
                     </Block>
                 </View>
                     <Block row justifyContent={'center'}>
                         <View style={styles.rankContainer} opacity={0.15} />
                         <Text style={styles.sttRank} fontSize={15} color="#FA4D96">
-                        1
+                        {index+1}
                         </Text>
                     </Block>
                 </Block>
@@ -68,7 +81,7 @@ const useStyles = makeStyles()(({ colors }) => ({
         borderRadius: 35,
       },
       item: {
-        width: '45%',
+        width: '50%',
         justifyContent: 'center',
         alignItems: 'flex-start',
       },

@@ -1,18 +1,15 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 // import actions from '@redux/actions';
 // import { bottom } from '@screens/Bottom';
+import React, { useState } from 'react';
 import { bottom } from '../screens/BottomMyAp';
-import React, { useEffect, useState } from 'react';
 import CustomTabar from './CustomTabar';
 // import {useDispatch, useSelector} from 'react-redux';
-import { routes } from './routes';
 import IconView from '@components/Icon';
-import { View, Text, StyleSheet } from 'react-native';
-import Tabbar from '@mindinventory/react-native-tab-bar-interaction';
-import HomeScreenMyAp from '@screens/BottomMyAp/HomeMyAp/HomeScreenMyAp';
 import { createStackNavigator } from '@react-navigation/stack';
-import { useNavigation } from '@react-navigation/native';
 import { theme } from '@theme';
+import { StyleSheet, View } from 'react-native';
+import { routes } from './routes';
 
 const Stack = createStackNavigator();
 
@@ -55,69 +52,6 @@ const activeHome = isPlay => {
     );
 };
 
-const activeStore = isPlay => {
-    return (
-        <View
-            style={[
-                styles.container_icon,
-                {
-                    backgroundColor: isPlay
-                        ? theme.colors.red
-                        : theme.colors.gray4,
-                },
-            ]}>
-            <IconView
-                component={'MaterialIcons'}
-                name={'book-open-page-variant-outline'}
-                size={25}
-                color={isPlay ? 'white' : 'black'}
-            />
-        </View>
-    );
-};
-
-const activeChat = isPlay => {
-    return (
-        <View
-            style={[
-                styles.container_icon,
-                {
-                    backgroundColor: isPlay
-                        ? theme.colors.red
-                        : theme.colors.gray4,
-                },
-            ]}>
-            <IconView
-                component={'MaterialIcons'}
-                name={'chat'}
-                size={25}
-                color={isPlay ? 'white' : 'black'}
-            />
-        </View>
-    );
-};
-
-const activeSetting = isPlay => {
-    return (
-        <View
-            style={[
-                styles.container_icon,
-                {
-                    backgroundColor: isPlay
-                        ? theme.colors.red
-                        : theme.colors.gray4,
-                },
-            ]}>
-            <IconView
-                component={'MaterialIcons'}
-                name={'settings'}
-                size={25}
-                color={isPlay ? 'white' : 'black'}
-            />
-        </View>
-    );
-};
-
 const tabData = [
     {
         name: 'Nhà',
@@ -127,58 +61,9 @@ const tabData = [
     },
 ];
 const BottomTabMyAp = () => {
-    const navigation = useNavigation();
-
-    const [tabs, setTabs] = useState(tabData);
-    const [bgColor, setBgColor] = useState(theme.colors.red);
-    const [tabActive, setTabActive] = useState(1);
-
     // useEffect(() => {
     //   I18nManage.forceRTL(true);
     // }, []);
-
-    const onTabChange = item => {
-        let tempTabs = [...tabs];
-        setTimeout(() => {
-            tempTabs.map(val => {
-                if (item.name === 'Home' && val.name === 'Home') {
-                    // val.activeIcon = Object.assign({}, activeHome(true));
-                    // setBgColor('#FFC0C7');
-                    navigation.navigate(routes.HOME_MY_AP);
-                } else if (item.name === 'Cart' && val.name === 'Cart') {
-                    // val.activeIcon = Object.assign({}, activeList(true));
-                    // setBgColor('#FF7128');
-                    navigation.navigate(routes.CART_MY_AP);
-                } else if (item.name === 'Search' && val.name === 'Search') {
-                    // val.activeIcon = Object.assign({}, activeCamera(true));
-                } else if (item.name === 'Setting' && val.name === 'Setting') {
-                    // val.activeIcon = Object.assign({}, activeNotification(true));
-                } else {
-                    val.activeIcon = null;
-                }
-            });
-
-            setTabs(tempTabs);
-        }, 500);
-
-        tempTabs.map(val => {
-            if (item.name === 'Nhà' && val.name === 'Nhà') {
-                val.activeIcon = Object.assign({}, activeHome(true));
-                navigation.navigate(routes.HOME_MY_AP);
-            } else if (item.name === 'Lưu trữ' && val.name === 'Lưu trữ') {
-                val.activeIcon = Object.assign({}, activeStore(true));
-                navigation.navigate(routes.READING_MY_APP);
-            } else if (item.name === 'Nhắn tin' && val.name === 'Nhắn tin') {
-                val.activeIcon = Object.assign({}, activeChat(true));
-                navigation.navigate(routes.CART_MY_AP);
-            } else if (item.name === 'Cài đặt' && val.name === 'Cài đặt') {
-                val.activeIcon = Object.assign({}, activeSetting(true));
-                navigation.navigate(routes.MORE_MY_APP);
-            } else {
-                val.activeIcon = null;
-            }
-        });
-    };
 
     return (
         <Tab.Navigator

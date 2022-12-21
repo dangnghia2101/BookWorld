@@ -1,5 +1,5 @@
 import { Block, Text, Evaluate } from '@components';
-import React from 'react';
+import React, { memo, useCallback, useMemo } from 'react';
 import { Image, TouchableOpacity, Animated, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { routes } from '@navigation/routes';
@@ -8,8 +8,8 @@ import { makeStyles, useTheme } from 'themeNew';
 import { useAppSelector } from '@hooks';
 import { withNamespaces } from 'react-i18next';
 import Icon from '@components/Icon';
+import { isEqual } from 'lodash';
 
-const PADDING_ITEM = 15;
 const ITEM_WITH = width * 0.6;
 const SPACER_ITEM_SIZE = (width - ITEM_WITH) / 3;
 
@@ -20,7 +20,7 @@ const ItemMostBookRead = ({ item, index, scrollX, size, t }) => {
     let star = [];
 
     const allBooks = useAppSelector(state => state.root.book.bookList);
-    const _renderStar = () => {
+    const _renderStar = useCallback(() => {
         for (let i = 0; i <= allBooks.length; i++) {
             let num = Math.floor(Math.random() * 3) + 3;
             // let star = [];
@@ -36,14 +36,14 @@ const ItemMostBookRead = ({ item, index, scrollX, size, t }) => {
             }
             return star;
         }
-    };
+    }, []);
 
-    const _renderView = () => {
+    const _renderView = useCallback(() => {
         for (let i = 0; i <= allBooks.length; i++) {
             let num = Math.floor(Math.random() * 100);
             return num;
         }
-    };
+    }, []);
 
     const inputRange = [
         (index - 2) * ITEM_WITH,
@@ -198,4 +198,8 @@ const useStyle = makeStyles()(({ colors }) => ({
     },
 }));
 
-export default withNamespaces()(ItemMostBookRead);
+export const areEqualMemo = (prevProps, nextProps) => {
+    return isEqual(prevProps, nextProps);
+};
+
+export default withNamespaces()(memo(ItemMostBookRead, areEqualMemo));

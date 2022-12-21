@@ -112,13 +112,16 @@ export const userApi = createApi({
                 url: `accounts/profile`,
                 headers: { Authorization: `Bearer ${body.token}` },
             }),
-            transformResponse: (response: { data: any }) => response.data,
+            transformResponse: (response: { data: any }) => response,
             async onQueryStarted(id, { dispatch, queryFulfilled }) {
                 try {
-                    console.log('getInforUser api BEFORE');
                     const { data } = await queryFulfilled;
-                    console.log('getInforUser api ', data);
-                    dispatch(loginReducer(data));
+                    dispatch(
+                        loginReducer({
+                            ...data.data,
+                            ...{ token: data.token },
+                        }),
+                    );
                     // Save data in store, using reducer
                 } catch (err) {
                     dispatch(changeLoading('HIDE'));
