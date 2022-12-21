@@ -82,6 +82,7 @@ const PaymentScreen = ({ price, t }) => {
     const paymentChapter = async () => {
         let pay = {
             idChapter: [],
+            totalPrice: price,
         };
         let idProducts = [];
 
@@ -103,7 +104,6 @@ const PaymentScreen = ({ price, t }) => {
         }
         const params = {
             body: pay,
-            totalPrice: price,
             token: myInfo.token,
         };
 
