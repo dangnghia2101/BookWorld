@@ -5,6 +5,7 @@ import React, {useState} from 'react';
 import { withNamespaces } from 'react-i18next';
 import { Image, TouchableOpacity, View } from 'react-native';
 import { makeStyles, useTheme } from 'themeNew';
+import { formatDay } from '@utils/helper';
 
 const ItemPurchaseCart = ({ item, t}) => {
     const themeStore = useAppSelector(state => state.root.themeApp.theme);
@@ -13,11 +14,11 @@ const ItemPurchaseCart = ({ item, t}) => {
 
 return(
         <Block marginBottom={15}>
-          <TouchableOpacity style={[styles.itemPurchase, styles.shadowColor]}  backgroundColor={'#00000020'}>
+          <TouchableOpacity style={[styles.itemPurchase, styles.shadowColor]} backgroundColor={'#00000020'}>
             <Block row marginHorizontal={15} marginVertical={15}>
               <Image
                 style={styles.image}
-                source={require('../../../../../assets/images/Vector.png')}
+                source={{ uri: item.allProduct[0].nameBook}}
               />
               <Block column marginHorizontal={10}>
                 <Text
@@ -25,38 +26,47 @@ return(
                   fontType="bold1"
                   numberOfLines={2}
                   color={themeNew.colors.textDark}>
-                  {item._id}
+                  {item.allProduct[0].ineBook}
                 </Text>
                 <Text fontType={'regular1'} size={14} color={themeNew.colors.textDark}>
-                  Tên tác giả
+                  {item.allProduct[0].imtroductionBook}
                 </Text>
-                <Text fontType={'regular1'} size={14} color={themeNew.colors.textDark}>
-                  Tập 1, 2
-                </Text>
+                <Block row>
+                  <Text fontType={'regular1'} size={14} color={themeNew.colors.textDark}>
+                    {t('chapTer')}
+                  </Text>
+                  <Text fontType={'regular1'} size={14} color={themeNew.colors.textDark} marginHorizontal={4}>
+                    {item.allProduct[0].chapterNumber}
+                  </Text>
+                </Block>
               </Block>
             </Block>
             
             <Block borderWidth={0.2} borderColor={'#42424240'} marginHorizontal={15}/>
             
-            <Block row marginHorizontal={15} marginVertical={15} alignSelf={'baseline'}>
-              <Block width={'40%'}>
+            <Block row marginHorizontal={15} marginVertical={15} justifyContent={'space-between'}>
+              <Block>
                 <Text fontType='medium1' size={12} color={themeNew.colors.grey8}>
-                  2 {t('product')}
+                {''}{formatDay(new Date(item.purchaseDate))}
                 </Text>
               </Block>
-              <Block row width={'60%'} alignItems={'flex-end'}>
+              <Block row alignItems={'flex-end'}>
                 <Image
                   style={styles.icon_logo}
                   source={require('../../../../../assets/images/logo_icon.png')}
                 />
                 <Text fontType='medium1' size={14} color={themeNew.colors.grey8}>
-                  {t('intoMoney')}:
-                </Text>
-                <Text fontType='medium1' size={14} color={themeNew.colors.grey8} marginHorizontal={3}>
-                  {item?.totalPrice}
+                  {' '}{t('intoMoney')}:
                 </Text>
                 <Text fontType='medium1' size={14} color={themeNew.colors.grey8}>
-                  VNĐ
+                  {item.totalPrice}{' '}VNĐ
+                  {/* {priceBook()
+                                            .toFixed(0)
+                                            .replace(
+                                                /(\d)(?=(\d{3})+(?!\d))/g,
+                                                '$1.',
+                                            )}{' '}
+                                        đ */}
                 </Text>
               </Block>
             </Block>

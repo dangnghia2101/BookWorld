@@ -35,20 +35,11 @@ const BodyPurchaseHistory = props => {
 
   return dataPurchase?.length > 0 ? (
     <Block marginHorizontal={20} flex>
-      <Block>
-          <Text
-            fontType={'bold1'}
-            color={themeNew.colors.textDark}
-            size={16}
-            marginVertical={10}>
-            {t('myPurchase')}
-          </Text>
-          {dataPurchase?.map((item, index) => (
-            <ItemPurchaseCart key={index} item={item} />
-          ))}
-        </Block>
-      </Block>
-      ) : (
+      {dataPurchase?.map((item, index) => (
+          <ItemPurchaseCart key={index} item={item} />
+      ))}
+    </Block>
+    ) : (
       <NoData title={'Không có đơn mua nào'}></NoData>
     );
 };
