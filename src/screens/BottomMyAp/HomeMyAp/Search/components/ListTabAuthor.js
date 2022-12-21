@@ -71,8 +71,12 @@ const ListTabAuthor = ({ search, setSearch, t }) => {
                     style={styles.imageStyle}
                 />
                 <Block flexShrink={1} marginLeft={10} paddingTop={10}>
-                    <Text fontType="bold">{item?.name}</Text>
-                    <Text numberOfLines={2}>{item?.aboutAuthor?.details}</Text>
+                    <Text fontType="bold" color={colors.textInBox}>
+                        {item?.name}
+                    </Text>
+                    <Text numberOfLines={2} color={colors.textInBox}>
+                        {item?.aboutAuthor?.details}
+                    </Text>
                 </Block>
                 <Pressable
                     onPress={() =>
@@ -85,7 +89,7 @@ const ListTabAuthor = ({ search, setSearch, t }) => {
                         radius={5}
                         paddingHorizontal={10}
                         paddingVertical={5}>
-                        <Text color={colors.text}>Detail</Text>
+                        <Text color={colors.white}>Detail</Text>
                     </Block>
                 </Pressable>
             </Block>
@@ -93,7 +97,11 @@ const ListTabAuthor = ({ search, setSearch, t }) => {
     };
 
     const SectionHeader = title => (
-        <View style={styles.containerSection}>
+        <View
+            style={[
+                styles.containerSection,
+                { backgroundColor: colors.backgroundDark2 },
+            ]}>
             <Text fontType="medium1" style={styles.headerSection}>
                 {title}
             </Text>
@@ -138,7 +146,7 @@ const useStyle = makeStyles()(({ colors }) => ({
     },
     titleItemHistory: {
         fontSize: 16,
-        color: colors.grey4,
+        color: colors.text,
         marginLeft: 10,
         flexGrow: 1,
     },

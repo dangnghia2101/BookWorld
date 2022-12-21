@@ -5,10 +5,16 @@ import messaging from '@react-native-firebase/messaging';
 import { useLoginPhoneMutation } from '@redux/servicesNew';
 import { PHONE_REG_EXP } from '@utils/constants';
 import React, { useMemo, useState, useEffect } from 'react';
-import { StyleSheet, TouchableOpacity, Image } from 'react-native';
+import {
+    StyleSheet,
+    TouchableOpacity,
+    Image,
+    ToastAndroid,
+} from 'react-native';
 import { useTheme } from 'themeNew';
 import ModalConfirmOtp from './components/ModalConfirmOtp';
 import { changeLoading } from '@redux/reducerNew';
+import { useNavigation } from '@react-navigation/core';
 
 async function getToken() {
     return await messaging().getToken();
@@ -27,6 +33,7 @@ const Register = () => {
     const [visible1, setVisible1] = React.useState(false);
     const { colors } = useTheme(themeStore);
     const dispatch = useAppDispatch();
+    const navigation = useNavigation();
 
     const handleErrorPhone = useMemo(() => {
         if (phone.match(PHONE_REG_EXP) || phone.length == 0) {
@@ -92,9 +99,6 @@ const Register = () => {
             dispatch(changeLoading('HIDE'));
             await confirmOTP.confirm(codeOTP);
             await callApiLogin();
-            console.log('Register success.');
-            setShowModal(false);
-            setVisible(true);
         } catch (error) {
             dispatch(changeLoading('HIDE'));
             // setShowModal(false);
@@ -109,7 +113,21 @@ const Register = () => {
             passwordUser: newPassword,
             token_fcm: await getToken(),
         };
-        await loginPhone(data);
+        const dataLogin = await loginPhone(data);
+        if (dataLogin?.error?.data?.data === 'Số điện thoại đã tồn tại') {
+            ToastAndroid.show(
+                'Số điện thoại đã đăng kí rồi, xin hãy đăng nhập',
+                ToastAndroid.LONG,
+                ToastAndroid.BOTTOM,
+            );
+            navigation.goBack();
+        } else {
+            setVisible(true);
+            navigation.goBack();
+        }
+        setShowModal(false);
+
+        console.log('dataLogin ', dataLogin);
     };
 
     return (

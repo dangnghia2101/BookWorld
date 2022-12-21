@@ -43,7 +43,10 @@ const Search = ({ t, route }) => {
                 onFocus={() => setFocus(true)}
                 iconLeft={renderIconLeft}
                 containerStyle={styles.containerSearch}
-                style={focus ? styles.styleSearchFocus : styles.styleSearch}
+                style={[
+                    focus ? styles.styleSearchFocus : styles.styleSearch,
+                    { backgroundColor: colors.background },
+                ]}
                 value={search}
                 onChangeText={setSearch}
                 onEndEditing={saveSearch}
@@ -58,12 +61,10 @@ const useStyle = makeStyles()(({ normalize, colors }) => ({
         marginHorizontal: 20,
     },
     styleSearch: {
-        backgroundColor: colors.grey13,
         borderColor: colors.grey13,
         height: normalize(50)('moderate'),
     },
     styleSearchFocus: {
-        borderColor: colors.primary,
         borderWidth: 2,
         height: normalize(50)('moderate'),
     },

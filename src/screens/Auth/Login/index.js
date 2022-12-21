@@ -1,30 +1,25 @@
 import { icons } from '@assets';
 import { Block, Container, ModalBox, Text, TextInput } from '@components';
 import { routes } from '@navigation/routes';
+import auth from '@react-native-firebase/auth';
 import messaging from '@react-native-firebase/messaging';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { useNavigation } from '@react-navigation/native';
 import { changeLoading } from '@redux/reducerNew';
 import {
+    useForgotPasswordMutation,
     useLoginMutation,
     useLoginPhoneNumberMutation,
 } from '@redux/servicesNew';
 import { PHONE_REG_EXP } from '@utils/constants';
 import { useAppDispatch, useAppSelector } from 'hooks';
-import React, { useEffect, useState, useMemo } from 'react';
-import { useForgotPasswordMutation } from '@redux/servicesNew';
-import {
-    Image,
-    Modal,
-    Pressable,
-    StyleSheet,
-    TouchableOpacity,
-} from 'react-native';
+import React, { useEffect, useMemo, useState } from 'react';
 import { withNamespaces } from 'react-i18next';
-import Toast from 'react-native-simple-toast';
-import { theme } from '@theme';
+import { Image, Pressable, StyleSheet, TouchableOpacity } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import Toast from 'react-native-simple-toast';
 import { colors, useTheme } from 'themeNew';
+
 const Login = ({ t }) => {
     const themeStore = useAppSelector(state => state.root.themeApp.theme);
     const theme = useTheme(themeStore);
@@ -41,7 +36,6 @@ const Login = ({ t }) => {
     const [visibleModal, setVisibleModal] = useState(false);
     const [phoneUser, setPhoneUser] = useState('');
     const [password, setPassword] = useState('');
-    const [authh, setAuthh] = useState('signin');
     const [visibleNotifi, setVisibleNotifi] = useState(false);
     const [confirmPassword, setConfirmPassword] = useState('');
     const [confirmOTP, setConfirmOTP] = useState(null);
@@ -121,8 +115,8 @@ const Login = ({ t }) => {
             // Storage.setItem('tokenId', idToken);
 
             const googleCredential =
-                authh.GoogleAuthProvider.credential(idToken);
-            return authh().signInWithCredential(googleCredential);
+                auth.GoogleAuthProvider.credential(idToken);
+            return auth().signInWithCredential(googleCredential);
         } catch (error) {
             console.log('=========> id error login', error);
 
@@ -282,7 +276,7 @@ const Login = ({ t }) => {
                     </Text>
                 </TouchableOpacity>
             </Block>
-            <Block bottom={inset.bottom - 150} >
+            <Block bottom={inset.bottom - 150}>
                 <Text fontType="medium1" color={theme.colors.textInBox}>
                     {t('doNotHaveAnAccount')} {'  '}
                     <Text
@@ -588,7 +582,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         width: 157,
         height: 10,
-        backgroundColor: colors.light.primary
+        backgroundColor: colors.light.primary,
     },
     gradients: {
         position: 'absolute',
@@ -597,10 +591,11 @@ const styles = StyleSheet.create({
         backgroundColor: colors.light.primary,
     },
     textButtomLogin: {
-        fontSize: 18,
+        fontSize: 16,
         lineHeight: 50,
         alignItems: 'center',
         color: '#FFFFFF',
+        fontFamily: 'Lato-Bold',
     },
     buttomLogin: {
         width: '100%',
