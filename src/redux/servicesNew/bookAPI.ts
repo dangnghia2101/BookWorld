@@ -148,9 +148,11 @@ export const bookAPI = createApi({
 
 export const {
     useGetAllBookQuery,
+    useLazyGetAllBookQuery,
     useGetAllBookByCategoryQuery,
     useLazyGetAllBookByCategoryQuery,
     useGetAllCategoryQuery,
+    useLazyGetAllCategoryQuery,
     useGetAllChapterBookMutation,
     useGetDetailChapterBookQuery,
 } = bookAPI;

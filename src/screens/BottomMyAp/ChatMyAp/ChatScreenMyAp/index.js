@@ -1,3 +1,4 @@
+import { icons } from '@assets';
 import { Block, Container, Icon, Text, TextInput } from '@components';
 import BottomSheet, {
     BottomSheetBackdrop,
@@ -8,12 +9,11 @@ import { routes } from '@navigation/routes';
 import { useNavigation } from '@react-navigation/core';
 import {
     useCreateGroupMutation,
-    useGetRoomChatQuery,
     useLazyGetRoomChatQuery,
 } from '@redux/servicesNew';
-import { theme } from '@theme';
 import { CustomToast } from '@utils/helper';
 import { height, width } from '@utils/responsive';
+import { isEmpty } from 'lodash';
 import React, {
     useCallback,
     useEffect,
@@ -21,16 +21,15 @@ import React, {
     useRef,
     useState,
 } from 'react';
+import { withNamespaces } from 'react-i18next';
 import { FlatList, Image, Pressable } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { makeStyles, useTheme } from 'themeNew';
-import { withNamespaces } from 'react-i18next';
 const handleKeyExtractor = item => item.toString();
 
 const ChatScreenMyApp = ({ t }) => {
     const [searchPhrase, setSearchPhrase] = useState('');
-    const socketRef = useRef();
     const [getRoomChat, { isSuccess, error }] = useLazyGetRoomChatQuery();
     const themeStore = useAppSelector(state => state.root.themeApp.theme);
     const { authors } = useAppSelector(state => state.root.author);
@@ -40,7 +39,7 @@ const ChatScreenMyApp = ({ t }) => {
     const bottomSheetRef = useRef();
     const inset = useSafeAreaInsets();
     const snapPoints = useMemo(
-        () => [height - 300 + inset.bottom],
+        () => [height - 200 + inset.bottom],
         [inset.bottom],
     );
     const [peopleSearch, setPeopleSearch] = useState(authors);
@@ -48,6 +47,7 @@ const ChatScreenMyApp = ({ t }) => {
     const [searchText, setSearchText] = useState('');
     const [nameGroup, setNameGroup] = useState('');
     const [dataGroups, setDataGroups] = useState([]);
+    const [isRefresh, setRefresh] = useState(false);
 
     const myInfo = useAppSelector(state => state.root.auth);
     // const { data } = useGetRoomChatQuery(myInfo.token);
@@ -84,7 +84,11 @@ const ChatScreenMyApp = ({ t }) => {
                 }>
                 <Block row alignCenter>
                     <Image
-                        source={{ uri: item.image }}
+                        source={
+                            !isEmpty(item.image)
+                                ? { uri: item.image }
+                                : icons.logo
+                        }
                         style={styles.imageGroup}
                     />
                     <Block marginLeft={10} flex>
@@ -140,172 +144,177 @@ const ChatScreenMyApp = ({ t }) => {
             snapPoints={snapPoints}
             enablePanDownToClose={true}
             backdropComponent={renderBackdrop}>
-            <Block
-                backgroundColor={colors.background}
-                paddingHorizontal={10}
-                alignCenter
-                flex>
-                <Text
-                    fontType={'bold1'}
-                    color={colors.textInBox}
-                    marginVertical={10}
-                    size={16}>
-                    {t('createNewGroup')}
-                </Text>
+            <BottomSheetScrollView>
                 <Block
-                    flex
-                    width="100%"
+                    backgroundColor={colors.background}
+                    paddingHorizontal={10}
                     alignCenter
-                    borderTopWidth={3}
-                    borderColor={colors.grey16}
-                    paddingVertical={10}>
-                    <Icon
-                        component="Ionicons"
-                        name="ios-person-circle-outline"
-                        size={100}
+                    flex>
+                    <Text
+                        fontType={'bold1'}
                         color={colors.textInBox}
-                    />
-                    <Block row alignCenter>
-                        <Icon
-                            component="Feather"
-                            name="edit-3"
-                            color={colors.textInBox}
-                            size={20}
-                        />
-                    </Block>
-
-                    <Block width="90%" paddingVertical={10}>
-                        <Text
-                            color={colors.textInBox}
-                            marginBottom={-20}
-                            size={16}
-                            fontType="bold1">
-                            {t('groupName')}
-                        </Text>
-
-                        <TextInput
-                            value={nameGroup}
-                            onChangeText={setNameGroup}
-                            placeholder={t('enterGroupName')}
-                            style={styles.containerSearch}
-                        />
-                    </Block>
-                    <Block width="90%">
-                        <Text
-                            color={colors.textInBox}
-                            marginBottom={-20}
-                            size={16}
-                            fontType="bold1">
-                            {t('addMember')}
-                        </Text>
-
-                        <TextInput
-                            placeholder={t('enterInfo')}
-                            style={styles.containerSearch}
-                            onChangeText={setSearchText}
-                            value={searchText}
-                        />
-                    </Block>
-
-                    <BottomSheetScrollView
-                        style={{
-                            width: width,
-                            paddingHorizontal: 30,
-                            marginTop: 10,
-                        }}>
-                        {peopleSearch.map(item => (
-                            <TouchableOpacity
-                                onPress={() => {
-                                    if (peoplesChoose[item._id]) {
-                                        setPeopleChoose({
-                                            ...peoplesChoose,
-                                            [item._id]: false,
-                                        });
-                                    } else {
-                                        setPeopleChoose({
-                                            ...peoplesChoose,
-                                            [item._id]: true,
-                                        });
-                                    }
-                                }}>
-                                <Block
-                                    borderColor={
-                                        peoplesChoose[item._id]
-                                            ? colors.green
-                                            : colors.white
-                                    }
-                                    borderWidth={2}
-                                    radius={15}
-                                    row
-                                    padding={10}
-                                    marginVertical={5}
-                                    alignCenter
-                                    flex>
-                                    <Image
-                                        source={{ uri: item.image }}
-                                        style={styles.imagePeople}
-                                    />
-                                    <Text
-                                        color={colors.textInBox}
-                                        flex
-                                        marginLeft={10}>
-                                        {item.name}
-                                    </Text>
-
-                                    {peoplesChoose[item._id] && (
-                                        <Icon
-                                            component="AntDesign"
-                                            name="checkcircleo"
-                                            color={colors.green}
-                                            size={20}
-                                        />
-                                    )}
-                                </Block>
-                            </TouchableOpacity>
-                        ))}
-                    </BottomSheetScrollView>
-                </Block>
-                <TouchableOpacity
-                    onPress={async () => {
-                        const body = {
-                            bodySend: {
-                                name: nameGroup,
-                                image: '',
-                                users: [
-                                    ...Object.keys(peoplesChoose),
-                                    myInfo._id,
-                                ],
-                            },
-                            token: myInfo.token,
-                        };
-
-                        const response = await createGroup(body);
-
-                        if (response.data.statusCode === 200) {
-                            bottomSheetRef.current.snapToIndex(-1);
-                            setPeopleChoose({});
-                            setNameGroup('');
-                            CustomToast('Tạo nhóm thành công');
-
-                            const { data } = await getRoomChat(myInfo.token);
-                            setDataGroups(data);
-                        } else {
-                            CustomToast('Đăng kí thất bại');
-                        }
-                    }}>
+                        marginVertical={10}
+                        size={16}>
+                        {t('createNewGroup')}
+                    </Text>
                     <Block
-                        width={width * 0.85}
-                        height={50}
-                        justifyCenter
+                        flex
+                        width="100%"
                         alignCenter
-                        backgroundColor={colors.primary}
-                        radius={10}>
-                        <Text fontType={'bold1'} color={colors.white}>
-                            {t('createGroup')}
-                        </Text>
+                        borderTopWidth={3}
+                        borderColor={colors.grey16}
+                        paddingVertical={10}>
+                        <Icon
+                            component="Ionicons"
+                            name="ios-person-circle-outline"
+                            size={100}
+                            color={colors.textInBox}
+                        />
+                        <Block row alignCenter>
+                            <Icon
+                                component="Feather"
+                                name="edit-3"
+                                color={colors.textInBox}
+                                size={20}
+                            />
+                        </Block>
+
+                        <Block width="90%" paddingVertical={10}>
+                            <Text
+                                color={colors.textInBox}
+                                marginBottom={-20}
+                                size={16}
+                                fontType="bold1">
+                                {t('groupName')}
+                            </Text>
+
+                            <TextInput
+                                value={nameGroup}
+                                onChangeText={setNameGroup}
+                                placeholder={t('enterGroupName')}
+                                style={styles.containerSearch}
+                            />
+                        </Block>
+                        <Block width="90%">
+                            <Text
+                                color={colors.textInBox}
+                                marginBottom={-20}
+                                size={16}
+                                fontType="bold1">
+                                {t('addMember')}
+                            </Text>
+
+                            <TextInput
+                                placeholder={t('enterInfo')}
+                                style={styles.containerSearch}
+                                onChangeText={setSearchText}
+                                value={searchText}
+                            />
+                        </Block>
+
+                        <BottomSheetScrollView
+                            style={{
+                                width: width,
+                                paddingHorizontal: 30,
+                                marginTop: 10,
+                                height: 300,
+                            }}>
+                            {peopleSearch.map(item => (
+                                <TouchableOpacity
+                                    onPress={() => {
+                                        if (peoplesChoose[item._id]) {
+                                            setPeopleChoose({
+                                                ...peoplesChoose,
+                                                [item._id]: false,
+                                            });
+                                        } else {
+                                            setPeopleChoose({
+                                                ...peoplesChoose,
+                                                [item._id]: true,
+                                            });
+                                        }
+                                    }}>
+                                    <Block
+                                        borderColor={
+                                            peoplesChoose[item._id]
+                                                ? colors.green
+                                                : colors.white
+                                        }
+                                        borderWidth={2}
+                                        radius={15}
+                                        row
+                                        padding={10}
+                                        marginVertical={5}
+                                        alignCenter
+                                        flex>
+                                        <Image
+                                            source={{ uri: item.image }}
+                                            style={styles.imagePeople}
+                                        />
+                                        <Text
+                                            color={colors.textInBox}
+                                            flex
+                                            marginLeft={10}>
+                                            {item.name}
+                                        </Text>
+
+                                        {peoplesChoose[item._id] && (
+                                            <Icon
+                                                component="AntDesign"
+                                                name="checkcircleo"
+                                                color={colors.green}
+                                                size={20}
+                                            />
+                                        )}
+                                    </Block>
+                                </TouchableOpacity>
+                            ))}
+                        </BottomSheetScrollView>
                     </Block>
-                </TouchableOpacity>
-            </Block>
+                    <TouchableOpacity
+                        onPress={async () => {
+                            const body = {
+                                bodySend: {
+                                    name: nameGroup,
+                                    image: '',
+                                    users: [
+                                        ...Object.keys(peoplesChoose),
+                                        myInfo._id,
+                                    ],
+                                },
+                                token: myInfo.token,
+                            };
+
+                            const response = await createGroup(body);
+
+                            if (response.data.statusCode === 200) {
+                                bottomSheetRef.current.snapToIndex(-1);
+                                setPeopleChoose({});
+                                setNameGroup('');
+                                CustomToast('Tạo nhóm thành công');
+
+                                const { data } = await getRoomChat(
+                                    myInfo.token,
+                                );
+                                setDataGroups(data);
+                            } else {
+                                CustomToast('Đăng kí thất bại');
+                            }
+                        }}>
+                        <Block
+                            width={width * 0.85}
+                            height={50}
+                            justifyCenter
+                            alignCenter
+                            backgroundColor={colors.primary}
+                            radius={10}>
+                            <Text fontType={'bold1'} color={colors.white}>
+                                {t('createGroup')}
+                            </Text>
+                        </Block>
+                    </TouchableOpacity>
+                </Block>
+            </BottomSheetScrollView>
         </BottomSheet>
     );
 
@@ -317,6 +326,12 @@ const ChatScreenMyApp = ({ t }) => {
                 renderItem={renderItemChat}
                 ItemSeparatorComponent={renderSpace}
                 showsVerticalScrollIndicator={false}
+                refreshing={isRefresh}
+                onRefresh={async () => {
+                    let { data } = await getRoomChat(myInfo.token);
+                    setRefresh(true);
+                    setDataGroups(data);
+                }}
             />
         );
     }, [dataGroups]);
