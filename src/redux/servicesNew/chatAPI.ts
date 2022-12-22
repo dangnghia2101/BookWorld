@@ -80,7 +80,7 @@ export const chatAPI = createApi({
         createGroup: builder.mutation<
             MessageState[],
             {
-                bodySend: { name: string; image: string; users: [] };
+                formData: { name: string; image: string; users: [] };
                 token: string;
             }
         >({
@@ -88,8 +88,12 @@ export const chatAPI = createApi({
                 return {
                     url: 'rooms/create-room',
                     method: 'POST',
-                    headers: { Authorization: `Bearer ${body.token}` },
-                    body: body.bodySend,
+                    headers: {
+                        Accept: 'application/json',
+                        'Content-Type': 'multipart/form-data',
+                        Authorization: `Bearer ${body.token}`,
+                    },
+                    body: body.formData,
                 };
             },
             transformResponse: (response: any) => response,
@@ -104,6 +108,33 @@ export const chatAPI = createApi({
                 }
             },
         }),
+        // createGroup: builder.mutation<
+        //     MessageState[],
+        //     {
+        //         bodySend: { name: string; image: string; users: [] };
+        //         token: string;
+        //     }
+        // >({
+        //     query: body => {
+        //         return {
+        //             url: 'rooms/create-room',
+        //             method: 'POST',
+        //             headers: { Authorization: `Bearer ${body.token}` },
+        //             body: body.bodySend,
+        //         };
+        //     },
+        //     transformResponse: (response: any) => response,
+        //     async onQueryStarted(id, { dispatch, queryFulfilled }) {
+        //         try {
+        //             dispatch(changeLoading('SHOW'));
+        //             const { data } = await queryFulfilled;
+        //             dispatch(changeLoading('HIDE')); // Save data in store, using reducer
+        //         } catch (err) {
+        //             dispatch(changeLoading('HIDE'));
+        //             console.log('error api getAllChapterBook... ', err);
+        //         }
+        //     },
+        // }),
     }),
 });
 

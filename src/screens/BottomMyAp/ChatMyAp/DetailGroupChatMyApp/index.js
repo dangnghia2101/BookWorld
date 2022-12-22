@@ -3,6 +3,7 @@ import BottomSheet, { BottomSheetBackdrop } from '@gorhom/bottom-sheet';
 import { useAppSelector } from '@hooks';
 import { useNavigation } from '@react-navigation/core';
 import { useGetChatsMutation } from '@redux/servicesNew';
+import { DOMAIN } from '@redux/servicesNew/endpoint';
 import React, {
     useCallback,
     useEffect,
@@ -40,7 +41,7 @@ const RoomChat = ({ route }) => {
     }, []);
 
     useEffect(() => {
-        socketRef.current = io('https://bookworlddasboard.herokuapp.com');
+        socketRef.current = io(DOMAIN);
         socketRef.current.emit('add-user', id);
     }, []);
 
