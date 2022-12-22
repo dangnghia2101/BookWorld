@@ -50,7 +50,7 @@ const ListTabAuthor = ({ search, setSearch, t }) => {
                     size={25}
                     color={colors.grey10}
                 />
-                <Text style={styles.titleItemHistory}>{title}</Text>
+                <Text color={colors.textInBox} style={styles.titleItemHistory}>{title}</Text>
                 <TouchableOpacity onPress={() => dispatch(deleteSearch(index))}>
                     <Icon
                         component="MaterialIcons"
@@ -85,11 +85,12 @@ const ListTabAuthor = ({ search, setSearch, t }) => {
                         })
                     }>
                     <Block
+                        marginLeft={10}
                         backgroundColor={colors.primary}
                         radius={5}
                         paddingHorizontal={10}
                         paddingVertical={5}>
-                        <Text color={colors.white}>Detail</Text>
+                        <Text color={colors.white}>{t('detail')}</Text>
                     </Block>
                 </Pressable>
             </Block>
@@ -146,7 +147,6 @@ const useStyle = makeStyles()(({ colors }) => ({
     },
     titleItemHistory: {
         fontSize: 16,
-        color: colors.text,
         marginLeft: 10,
         flexGrow: 1,
     },

@@ -116,10 +116,10 @@ const DetailCart = ({ route, t }) => {
                     marginHorizontal={20}>
                     <Block marginBottom={20} />
                     <Block row style={styles.AllPriceBook}>
-                        <Text fontType="regular1" size={15}>
+                        <Text color={themeNew.colors.textInBox} fontType="regular1" size={15}>
                             {t('totalPrice')}
                         </Text>
-                        <Text fontType="regular1" style={styles.textPrice}>
+                        <Text color={themeNew.colors.textInBox} fontType="regular1" style={styles.textPrice}>
                             {price
                                 .toFixed(0)
                                 .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')}{' '}
@@ -127,10 +127,10 @@ const DetailCart = ({ route, t }) => {
                         </Text>
                     </Block>
                     <Block row style={styles.AllPriceBook}>
-                        <Text fontType="regular1" size={15}>
+                        <Text color={themeNew.colors.textInBox} fontType="regular1" size={15}>
                             {t('discount')}
                         </Text>
-                        <Text fontType="regular1" style={styles.textPrice}>
+                        <Text color={themeNew.colors.textInBox} fontType="regular1" style={styles.textPrice}>
                             {(price * 0.1)
                                 .toFixed(0)
                                 .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')}{' '}

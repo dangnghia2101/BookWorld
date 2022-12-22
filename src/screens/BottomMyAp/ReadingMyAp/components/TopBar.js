@@ -45,7 +45,7 @@ const TopBarrr = props => {
                         handleBack && handleBack();
                     }}
                     size={Platform.OS === 'ios' ? 40 : 28}
-                    color={theme.colors.text}
+                    color={theme.colors.textInBox}
                     name={Platform.OS === 'ios' ? 'chevron-left' : 'arrow-left'}
                 />
             </Block>

@@ -169,7 +169,7 @@ const PaymentScreen = ({ price, t }) => {
                         size={16}
                         fontType="medium1"
                         color={colors.textInBox}>
-                        Tổng tiền phải thanh toán của bạn
+                        {t('totalHaveToPay')}
                     </Text>
                     <Block
                         alignCenter
@@ -280,7 +280,7 @@ const PaymentScreen = ({ price, t }) => {
                         />
                     </Block>
                     <Text style={styles.textOTP} center>
-                        Thanh toán thành công
+                        {t('paymentSuccess')}
                     </Text>
                 </Block>
             </ModalPoup>
@@ -302,7 +302,7 @@ const PaymentScreen = ({ price, t }) => {
                             />
                         </Block>
                         <Text style={styles.textOTP} center>
-                            Thanh toán không thành công
+                            {t('paymentFailed')}
                         </Text>
                         <TouchableOpacity
                             style={{ marginTop: 10 }}
@@ -310,7 +310,7 @@ const PaymentScreen = ({ price, t }) => {
                             onPress={() => {
                                 setVisibleCartErr(false);
                             }}>
-                            <Text size={14}>Kiểm tra lại thông tin</Text>
+                            <Text size={14}>{t('checkInfo')}</Text>
                         </TouchableOpacity>
                     </Block>
                 </Block>

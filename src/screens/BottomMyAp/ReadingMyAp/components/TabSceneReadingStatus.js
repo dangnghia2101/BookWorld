@@ -8,7 +8,7 @@ import { withNamespaces } from 'react-i18next';
 const TabSceneReadingStatus = ({ route, t }) => {
   const allBooks = useAppSelector(state => state.root.book.bookList);
   return allBooks.length > 0 ? (
-    <ScrollView>
+    <ScrollView style={styles.container}>
       {allBooks.map((item, index) => (
         <ItemCateBook key={index} item={item} />
       ))}
@@ -22,5 +22,7 @@ const TabSceneReadingStatus = ({ route, t }) => {
     </Block >
   );
 };
+const styles = StyleSheet.create({
 
+});
 export default withNamespaces()(TabSceneReadingStatus);
