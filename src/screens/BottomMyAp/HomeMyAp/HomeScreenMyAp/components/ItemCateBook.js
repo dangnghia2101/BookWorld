@@ -66,9 +66,10 @@ const ItemCateBook = ({ item, t }) => {
                         uri: item.image || '',
                     }}
                 />
-                <Block marginHorizontal={10} flex>
+                <Block marginHorizontal={10} flex paddingLeft={10}>
                     <Text
-                        size={18}
+                        size={17}
+                        width='75%'
                         fontType="bold1"
                         numberOfLines={2}
                         color={theme.colors.textInBox}>

@@ -41,7 +41,7 @@ const DetailAuthor = ({ route, t }) => {
                         </Text>
                     </Block>
 
-                    <Block paddingHorizontal={24} marginTop={200}>
+                    <Block paddingHorizontal={24} marginTop={300}>
                         <Block>
                             <Text
                                 fontType="bold1"
@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
         fontSize: 24,
         lineHeight: 36,
         left: '32%',
-        top: '80%',
+        top: '75%',
         width: 250,
     },
     iconBack: {

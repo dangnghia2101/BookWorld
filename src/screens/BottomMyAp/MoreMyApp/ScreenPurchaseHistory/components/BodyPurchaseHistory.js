@@ -1,5 +1,5 @@
 import { Block, Text, NoData } from '@components';
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Pressable, TouchableOpacity, Image, View } from 'react-native';
 import IconView from '@components/Icon';
 import { routes } from '@navigation/routes';
@@ -7,8 +7,8 @@ import { useNavigation } from '@react-navigation/native';
 import { colors, makeStyles, useTheme } from 'themeNew';
 import { useAppSelector, useAppDispatch } from '@hooks';
 import { withNamespaces } from 'react-i18next';
-import { 
-  useLazyGetPurchaseHistoryCartQuery, 
+import {
+  useLazyGetPurchaseHistoryCartQuery,
   useGetPurchaseHistoryCartQuery
 } from '@redux/servicesNew';
 import ItemPurchaseCart from './ItemPurchaseCart';
@@ -29,17 +29,27 @@ const BodyPurchaseHistory = props => {
         console.log(data);
     };
     fetchGetPurchase();
-}, []);
+  }, []);
 
   return dataPurchase?.length > 0 ? (
     <Block marginHorizontal={20} flex>
-      {dataPurchase?.map((item, index) => (
+      <Block>
+        <Text
+          fontType={'bold1'}
+          color={themeNew.colors.textDark}
+          size={16}
+          marginVertical={10}>
+          {t('myPurchase')}
+        </Text>
+        {dataPurchase?.map((item, index) => (
           <ItemPurchaseCart key={index} item={item} />
-      ))}
+        ))}
+      </Block>
     </Block>
-    ) : (
-      <NoData title={'Không có đơn mua nào'}></NoData>
-    );
+  ) : (
+    <NoData title={t('noOrdersYet')}></NoData>
+  );
+
 };
 
 export default withNamespaces()(BodyPurchaseHistory);
