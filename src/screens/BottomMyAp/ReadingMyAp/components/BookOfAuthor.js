@@ -17,13 +17,17 @@ const BookOfAuthor = ({ t, idAuthor }) => {
     }, []);
 
     return data?.data?.length > 0 ? (
-        <Block>
+        <Block backgroundColor={colors.background}>
             {data?.data.map((item, index) => (
                 <ItemCateBook key={index} item={item} />
             ))}
         </Block>
     ) : (
-        <Block alignCenter justifyCenter marginVertical={20}>
+        <Block
+            alignCenter
+            justifyCenter
+            paddingVertical={20}
+            backgroundColor={colors.background}>
             <EmptyIcon />
             <Text fontType="bold1" color={colors.textInBox}>
                 Author not have book yet

@@ -4,13 +4,10 @@ import { Block, Container, Icon, Text } from '@components';
 import { routes } from '@navigation/routes';
 import { useNavigation } from '@react-navigation/native';
 import {
-    useGetAllAuthorQuery,
-    useGetAllBookQuery,
-    useGetAllCategoryQuery,
-    useLazyGetInforUserQuery,
     useLazyGetAllAuthorQuery,
     useLazyGetAllBookQuery,
     useLazyGetAllCategoryQuery,
+    useLazyGetInforUserQuery,
 } from '@redux/servicesNew';
 import { height, width } from '@utils/responsive';
 import { useAppSelector } from 'hooks';
@@ -21,12 +18,12 @@ import {
     Image,
     LogBox,
     Platform,
-    ScrollView,
     RefreshControl,
+    ScrollView,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
-import { colors, makeStyles, useTheme } from 'themeNew';
+import { makeStyles, useTheme } from 'themeNew';
 import HeaderHome from './components/HeaderHome';
 import HeaderListBook from './components/HeaderListEvent';
 import ItemAuthor from './components/ItemAuthor';
@@ -75,16 +72,13 @@ const HomeScreenMyAp = ({ t }) => {
     const styles = useStyle(themeStore);
     const inset = useSafeAreaInsets();
 
-    let freeBook = [];
-    allBooks.map(item => {
-        if (item.isPrice === null || item.isPrice === 0) {
-            freeBook.push(item);
-        }
-    });
-
     useEffect(() => {
         if (allBooks) {
-            setBookFree(allBooks.filter(item => item?.isPrice <= 0));
+            setBookFree(
+                allBooks.filter(
+                    item => item.isPrice === null || item.isPrice <= 0,
+                ),
+            );
         }
         getInforUser({ token: myInfo.token });
     }, []);
@@ -179,7 +173,7 @@ const HomeScreenMyAp = ({ t }) => {
                     }}
                 />
                 <Animated.FlatList
-                    data={freeBook}
+                    data={bookFree}
                     keyExtractor={item => Math.random() + item._id}
                     renderItem={item => <ItemBookFree item={item.item} />}
                     bounces={false}

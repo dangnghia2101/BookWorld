@@ -366,7 +366,7 @@ const RoomChat = ({ route }) => {
                         {name}
                     </Text>
                     <Text marginLeft={10} size={14} color={colors.textDark}>
-                        Giới thiệu nè
+                        Giới thiệu
                     </Text>
                 </Block>
                 <TouchableOpacity

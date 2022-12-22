@@ -21,21 +21,17 @@ const ItemMostBookRead = ({ item, index, scrollX, size, t }) => {
 
     const allBooks = useAppSelector(state => state.root.book.bookList);
     const _renderStar = useCallback(() => {
-        for (let i = 0; i <= allBooks.length; i++) {
-            let num = Math.floor(Math.random() * 3) + 3;
-            // let star = [];
-            for (let j = 1; j <= num; j++) {
-                star.push(
-                    <Icon
-                        component={'AntDesign'}
-                        name="star"
-                        color={theme.colors.yellow}
-                        size={15}
-                    />,
-                );
-            }
-            return star;
+        for (let j = 1; j <= item?.evaluate; j++) {
+            star.push(
+                <Icon
+                    component={'AntDesign'}
+                    name="star"
+                    color={theme.colors.yellow}
+                    size={15}
+                />,
+            );
         }
+        return star;
     }, []);
 
     const _renderView = useCallback(() => {
@@ -114,7 +110,7 @@ const ItemMostBookRead = ({ item, index, scrollX, size, t }) => {
                     size={11}
                     fontType="medium1"
                     color={theme.colors.textInBox}>
-                    {_renderView()} {t('view')}
+                    {item?.view} {t('view')}
                 </Text>
                 <Block row alignCenter>
                     {_renderStar()}

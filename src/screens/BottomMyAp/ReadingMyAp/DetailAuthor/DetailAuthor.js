@@ -20,17 +20,13 @@ const DetailAuthor = ({ route, t }) => {
 
             <ScrollView showsVerticalScrollIndicator={false}>
                 <Block backgroundColor={themeNew.colors.background} flex>
-                    <Block relative width="100%" height="40%">
-                        <Block
-                            width="100%"
-                            height={'50%'}
-                            backgroundColor={themeNew.colors.grey3}></Block>
-                        <Block
-                            width={'70%'}
-                            height={'60%'}
-                            absolute
-                            top={50}
-                            left={90}>
+                    <Block
+                        width="100%"
+                        height={150}
+                        backgroundColor={themeNew.colors.textInBox}
+                    />
+                    <Block absolute width="100%" height="40%">
+                        <Block width={'70%'} height={'60%'} top={50} left={90}>
                             <Image
                                 style={styles.imgAuthor}
                                 source={{ uri: item.avatar }}
@@ -45,7 +41,7 @@ const DetailAuthor = ({ route, t }) => {
                         </Text>
                     </Block>
 
-                    <Block paddingHorizontal={24}>
+                    <Block paddingHorizontal={24} marginTop={200}>
                         <Block>
                             <Text
                                 fontType="bold1"
@@ -104,7 +100,10 @@ const DetailAuthor = ({ route, t }) => {
                     </Block>
                 </Block>
 
-                <Block marginTop={400} bottom={20}>
+                <Block
+                    paddingTop={50}
+                    paddingBottom={20}
+                    backgroundColor={themeNew.colors.background}>
                     <Text
                         marginHorizontal={20}
                         fontType="bold1"

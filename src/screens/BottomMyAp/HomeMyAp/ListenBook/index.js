@@ -244,14 +244,14 @@ const ListenBook = ({ route, t }) => {
 
     const ItemBook = ({ item }) => {
         return (
-            <Block flex height={70} row alignCenter marginHorizontal={10}>
+            <Block row alignCenter marginVertical={10}>
                 <Image source={{ uri: item.image }} style={style.imageStyle} />
                 <Block width="70%" marginLeft={10} paddingTop={10}>
                     <Text color={colors.textInBox} fontType="bold">
                         {item.name}
                     </Text>
                     <Text color={colors.textInBox} flexGrow={1}>
-                        {item.introduction}
+                        {item.introduction?.slice(0, 100)}
                     </Text>
                 </Block>
                 <Pressable style={{ flex: 1, alignItems: 'flex-end' }}>
@@ -275,7 +275,11 @@ const ListenBook = ({ route, t }) => {
                 enablePanDownToClose={true}
                 backdropComponent={renderBackdrop}>
                 <Block backgroundColor={colors.background} alignCenter flex>
-                    <Text marginVertical={10} size={16} fontType="bold">
+                    <Text
+                        marginVertical={10}
+                        size={16}
+                        fontType="bold"
+                        color={colors.textInBox}>
                         {t('waitingList')}
                     </Text>
                     <Block

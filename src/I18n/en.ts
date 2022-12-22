@@ -44,7 +44,7 @@ export default {
     searchHere: 'Search here',
     chapTer: 'Chapter',
     bookToRead: 'Book to read',
-    bookToListen: 'book to listen',
+    bookToListen: 'Book to listen',
     yourCart: 'Your cart',
     numberOfEpisodes: 'number of episodes',
     askRemove: 'Do you want to remove a book from your cart?',

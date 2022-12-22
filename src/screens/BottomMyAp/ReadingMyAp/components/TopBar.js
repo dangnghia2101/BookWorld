@@ -45,7 +45,7 @@ const TopBarrr = props => {
                         handleBack && handleBack();
                     }}
                     size={Platform.OS === 'ios' ? 40 : 28}
-                    color={theme.colors.textDark}
+                    color={theme.colors.text}
                     name={Platform.OS === 'ios' ? 'chevron-left' : 'arrow-left'}
                 />
             </Block>
@@ -81,7 +81,7 @@ const TopBarrr = props => {
                     paddingVertical={15}
                     marginTop={insets.top}
                     justifyCenter
-                    backgroundColor={themeNew.colors.grey3}>
+                    backgroundColor={themeNew.colors.textInBox}>
                     {renderBackHeader()}
                 </Block>
             ) : (
