@@ -71,44 +71,49 @@ const ChatScreenMyApp = ({ t }) => {
         setPeopleSearch(findPeople);
     }, [searchDebounce]);
 
-    const renderItemChat = useCallback(({ item }) => {
-        return (
-            <Pressable
-                onPress={() =>
-                    navigation.navigate(routes.DETAIL_GROUP_CHAT_MY_APP, {
-                        id: item._id,
-                        image: item.image,
-                        name: item.name,
-                        users: item.users,
-                    })
-                }>
-                <Block row alignCenter>
-                    <Image
-                        source={
-                            !isEmpty(item.image)
-                                ? { uri: item.image }
-                                : icons.logo
-                        }
-                        style={styles.imageGroup}
-                    />
-                    <Block marginLeft={10} flex>
-                        <Text
-                            color={colors.textInBox}
-                            size={14}
-                            fontType="bold">
-                            {item.name}
-                        </Text>
-                        <Text color={colors.textInBox}>{item.description}</Text>
+    const renderItemChat = useCallback(
+        ({ item }) => {
+            return (
+                <Pressable
+                    onPress={() =>
+                        navigation.navigate(routes.DETAIL_GROUP_CHAT_MY_APP, {
+                            id: item._id,
+                            image: item.image,
+                            name: item.name,
+                            users: item.users,
+                        })
+                    }>
+                    <Block row alignCenter>
+                        <Image
+                            source={
+                                !isEmpty(item.image)
+                                    ? { uri: item.image }
+                                    : icons.logo
+                            }
+                            style={styles.imageGroup}
+                        />
+                        <Block marginLeft={10} flex>
+                            <Text
+                                color={colors.textInBox}
+                                size={14}
+                                fontType="bold">
+                                {item.name}
+                            </Text>
+                            <Text color={colors.textInBox}>
+                                {item.description}
+                            </Text>
+                        </Block>
+                        <Block>
+                            <Text color={colors.textInBox} size={10}>
+                                12:40
+                            </Text>
+                        </Block>
                     </Block>
-                    <Block>
-                        <Text color={colors.textInBox} size={10}>
-                            12:40
-                        </Text>
-                    </Block>
-                </Block>
-            </Pressable>
-        );
-    });
+                </Pressable>
+            );
+        },
+        [colors],
+    );
 
     const searchIcon = () => (
         <Icon

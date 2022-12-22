@@ -385,9 +385,9 @@ const Cart = ({ t }) => {
                 snapPoints={snapPoints}
                 enablePanDownToClose={true}
                 backdropComponent={renderBackdrop}>
-                <Block>
+                <Block backgroundColor={theme.colors.background}>
                     <Block row style={styles.Container1}>
-                        <Block>
+                        <Block backgroundColor={theme.colors.background}>
                             <Image
                                 style={styles.image1}
                                 source={{ uri: cartItem?.image }}
@@ -397,11 +397,12 @@ const Cart = ({ t }) => {
                             <Text
                                 fontType={'bold1'}
                                 size={20}
+                                color={theme.colors.textInBox}
                                 style={styles.Name}>
                                 {cartItem?.name}
                             </Text>
                             <Text
-                                color="#9D9D9D"
+                                color={theme.colors.textInBox}
                                 size={14}
                                 numberOfLines={1}
                                 marginTop={5}>
@@ -422,7 +423,7 @@ const Cart = ({ t }) => {
                             <Fontisto
                                 name={'close-a'}
                                 size={20}
-                                color={'black'}
+                                color={theme.colors.textInBox}
                                 style={styles.hide}
                             />
                         </TouchableOpacity>
