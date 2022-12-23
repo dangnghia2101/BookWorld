@@ -272,11 +272,11 @@ const Cart = ({ t }) => {
                         {
                             cartItem.SL !== 1
                                 ? dispatch(
-                                      removeChapter({
-                                          idBook: cartItem?._id,
-                                          idChapter: item,
-                                      }),
-                                  )
+                                    removeChapter({
+                                        idBook: cartItem?._id,
+                                        idChapter: item,
+                                    }),
+                                )
                                 : handleRemoveBook();
                         }
                     }}>
@@ -284,7 +284,7 @@ const Cart = ({ t }) => {
                 </TouchableOpacity>
                 <Block style={styles.chap} row marginVertical={10}>
                     <Text size={14}>
-                        Chương{' '}
+                        {t('chapTer')}{' '}
                         {cartItem?.chapter[item]?.chapterNumber &&
                             cartItem.chapter[item].chapterNumber}
                     </Text>
@@ -301,7 +301,6 @@ const Cart = ({ t }) => {
             <Block
                 justifyCenter
                 alignCenter
-                // backgroundColor={theme.colors.white}
                 height={50}
                 row>
                 <Text
@@ -328,7 +327,7 @@ const Cart = ({ t }) => {
                             center
                             marginTop={260}
                             size={16}>
-                            Giỏ hàng trống
+                            {t('cartIsEmpty')}
                         </Text>
                     </Block>
                 )}
@@ -370,9 +369,9 @@ const Cart = ({ t }) => {
                             marginTop={5}>
                             {allPrice
                                 ? allPrice &&
-                                  allPrice
-                                      .toFixed(0)
-                                      .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')
+                                allPrice
+                                    .toFixed(0)
+                                    .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')
                                 : 0}{' '}
                             đ
                         </Text>
@@ -385,7 +384,7 @@ const Cart = ({ t }) => {
                 snapPoints={snapPoints}
                 enablePanDownToClose={true}
                 backdropComponent={renderBackdrop}>
-                <Block backgroundColor={theme.colors.background}>
+                <Block paddingVertical={10} backgroundColor={theme.colors.background}>
                     <Block row style={styles.Container1}>
                         <Block backgroundColor={theme.colors.background}>
                             <Image
@@ -419,7 +418,7 @@ const Cart = ({ t }) => {
                                 ₫
                             </Text>
                         </Block>
-                        <TouchableOpacity onPress={() => {}}>
+                        <TouchableOpacity onPress={() => { }}>
                             <Fontisto
                                 name={'close-a'}
                                 size={20}
@@ -440,7 +439,8 @@ const Cart = ({ t }) => {
                         marginVertical={10}
                         marginLeft={30}
                         style={styles.Name}
-                        size={20}>
+                        size={20}
+                        color={theme.colors.textInBox}>
                         {t('chapTer')}
                     </Text>
                     <Block bottom={10} paddingLeft={10} paddingBottom={10}>
@@ -506,6 +506,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     hide: {
+        width: '16%',
         backgroundColor: '#D7DDE8',
         position: 'absolute',
         marginLeft: 88,

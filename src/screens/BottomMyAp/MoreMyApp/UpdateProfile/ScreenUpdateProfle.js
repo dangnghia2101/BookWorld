@@ -22,7 +22,6 @@ import { useLazyGetInforUserQuery } from '@redux/servicesNew';
 import { isEmpty } from 'lodash';
 import { icons } from '@assets';
 const createFormData = (photo, name) => {
-    console.log('createFormDataaaaaaa', photo);
     const data = new FormData();
     data.append('file', photo.base64);
     data.append('name', name);

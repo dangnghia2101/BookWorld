@@ -26,22 +26,35 @@ import { FlatList, Image, Pressable } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { makeStyles, useTheme } from 'themeNew';
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import { PermissionsAndroid } from 'react-native';
 const handleKeyExtractor = item => item.toString();
+
+const createFormData = (photo, name, users) => {
+    const data = new FormData();
+    data.append('file', photo.base64);
+    data.append('name', name);
+    data.append('users', JSON.stringify(users));
+    return data;
+};
 
 const ChatScreenMyApp = ({ t }) => {
     const [searchPhrase, setSearchPhrase] = useState('');
     const [getRoomChat, { isSuccess, error }] = useLazyGetRoomChatQuery();
+    const [imageUri, setImageUri] = useState({});
     const themeStore = useAppSelector(state => state.root.themeApp.theme);
     const { authors } = useAppSelector(state => state.root.author);
     const { colors } = useTheme(themeStore);
     const styles = useStyle(themeStore);
     const navigation = useNavigation();
     const bottomSheetRef = useRef();
+    const bottomSheetPhotoRef = useRef();
     const inset = useSafeAreaInsets();
     const snapPoints = useMemo(
         () => [height - 200 + inset.bottom],
         [inset.bottom],
     );
+    const snapPointsPhoto = useMemo(() => [150], [inset.bottom]);
     const [peopleSearch, setPeopleSearch] = useState(authors);
     const [peoplesChoose, setPeopleChoose] = useState({});
     const [searchText, setSearchText] = useState('');
@@ -169,20 +182,36 @@ const ChatScreenMyApp = ({ t }) => {
                         borderTopWidth={3}
                         borderColor={colors.grey16}
                         paddingVertical={10}>
-                        <Icon
-                            component="Ionicons"
-                            name="ios-person-circle-outline"
-                            size={100}
-                            color={colors.textInBox}
-                        />
-                        <Block row alignCenter>
-                            <Icon
-                                component="Feather"
-                                name="edit-3"
-                                color={colors.textInBox}
-                                size={20}
-                            />
-                        </Block>
+                        <TouchableOpacity
+                            onPress={() => {
+                                bottomSheetPhotoRef.current.snapToIndex(0);
+                            }}
+                            style={{
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                            }}>
+                            {isEmpty(imageUri) ? (
+                                <Icon
+                                    component="Ionicons"
+                                    name="ios-person-circle-outline"
+                                    size={100}
+                                    color={colors.textInBox}
+                                />
+                            ) : (
+                                <Image
+                                    style={styles.imageNewGroup}
+                                    source={{ uri: imageUri?.uri }}
+                                />
+                            )}
+                            <Block row alignCenter marginTop={5}>
+                                <Icon
+                                    component="Feather"
+                                    name="edit-3"
+                                    color={colors.textInBox}
+                                    size={20}
+                                />
+                            </Block>
+                        </TouchableOpacity>
 
                         <Block width="90%" paddingVertical={10}>
                             <Text
@@ -278,33 +307,34 @@ const ChatScreenMyApp = ({ t }) => {
                     </Block>
                     <TouchableOpacity
                         onPress={async () => {
-                            const body = {
-                                bodySend: {
-                                    name: nameGroup,
-                                    image: '',
-                                    users: [
-                                        ...Object.keys(peoplesChoose),
-                                        myInfo._id,
-                                    ],
-                                },
-                                token: myInfo.token,
-                            };
+                            handleUploadPhoto();
+                            // const body = {
+                            //     bodySend: {
+                            //         name: nameGroup,
+                            //         image: '',
+                            //         users: [
+                            //             ...Object.keys(peoplesChoose),
+                            //             myInfo._id,
+                            //         ],
+                            //     },
+                            //     token: myInfo.token,
+                            // };
 
-                            const response = await createGroup(body);
+                            // const response = await createGroup(body);
 
-                            if (response.data.statusCode === 200) {
-                                bottomSheetRef.current.snapToIndex(-1);
-                                setPeopleChoose({});
-                                setNameGroup('');
-                                CustomToast('Tạo nhóm thành công');
+                            // if (response.data.statusCode === 200) {
+                            //     bottomSheetRef.current.snapToIndex(-1);
+                            //     setPeopleChoose({});
+                            //     setNameGroup('');
+                            //     CustomToast('Tạo nhóm thành công');
 
-                                const { data } = await getRoomChat(
-                                    myInfo.token,
-                                );
-                                setDataGroups(data);
-                            } else {
-                                CustomToast('Đăng kí thất bại');
-                            }
+                            //     const { data } = await getRoomChat(
+                            //         myInfo.token,
+                            //     );
+                            //     setDataGroups(data);
+                            // } else {
+                            //     CustomToast('Đăng kí thất bại');
+                            // }
                         }}>
                         <Block
                             width={width * 0.85}
@@ -340,6 +370,74 @@ const ChatScreenMyApp = ({ t }) => {
             />
         );
     }, [dataGroups]);
+
+    const options = {
+        saveToPhotos: true,
+        mediaType: 'photo',
+        maxWidth: 500,
+        maxHeigth: 500,
+        includeBase64: true,
+    };
+
+    const chooseImageGallary = async () => {
+        // const result = await launchImageLibrary(options);
+        // setImageUri(result.assets[0].uri);
+        bottomSheetPhotoRef.current?.close();
+        const result = await launchImageLibrary(options);
+        setImageUri({
+            uri: result.assets[0].uri,
+            name: result.assets[0].fileName,
+            type: result.assets[0].type,
+            base64: result.assets[0].base64,
+        });
+    };
+
+    const takePhoto = async () => {
+        const granted = await PermissionsAndroid.request(
+            PermissionsAndroid.PERMISSIONS.CAMERA,
+        );
+        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+            // const result = await launchCamera(options)
+            // setImageUri(result.assets[0].uri);
+            // setImageUri({ uri: result.assets[0].uri, name: result.assets[0].fileName, type: result.assets[0].type });
+            const result = await launchCamera(options);
+            // setImageUri({ uri: result.assets[0].uri, name: result.assets[0].fileName, type: result.assets[0].type });
+            setImageUri({
+                uri: result.assets[0].uri,
+                name: result.assets[0].fileName,
+                type: result.assets[0].type,
+                base64: result.assets[0].base64,
+            }); // console.log("takePhoto result =", result)
+
+            if (snapTI == 0) {
+                // snapTI = -1;
+                bottomSheetPhotoRef.current?.close();
+            }
+        }
+        bottomSheetPhotoRef.current?.close();
+    };
+
+    const handleUploadPhoto = async () => {
+        const body = {
+            formData: createFormData(imageUri, nameGroup, [
+                ...Object.keys(peoplesChoose),
+                myInfo._id,
+            ]),
+            token: myInfo.token,
+        };
+
+        const aw = await createGroup(body);
+
+        if (aw?.data?.data) {
+            await getInforUser({ token: myInfo.token });
+
+            ToastAndroid.show(
+                `Create ${name}  success`,
+                ToastAndroid.SHORT,
+                ToastAndroid.BOTTOM,
+            );
+        }
+    };
 
     return (
         <Container style={styles.root} statusColor={colors.background}>
@@ -391,6 +489,68 @@ const ChatScreenMyApp = ({ t }) => {
 
                 {renderGroup()}
                 {bottomSheetInfo()}
+                <BottomSheet
+                    style={styles.bottomSheet}
+                    index={-1}
+                    ref={bottomSheetPhotoRef}
+                    backdropComponent={renderBackdrop}
+                    snapPoints={snapPointsPhoto}
+                    enablePanDownToClose={true}>
+                    <Block
+                        width={'100%'}
+                        justifyCenter
+                        height={'100%'}
+                        backgroundColor={colors.background}>
+                        <TouchableOpacity
+                            style={styles.buttomLogin}
+                            onPress={() => takePhoto()}>
+                            <Block
+                                width={35}
+                                alignCenter
+                                marginLeft={15}
+                                backgroundColor={colors.grey12}
+                                radius={100}
+                                height={36}
+                                justifyCenter>
+                                <Icon
+                                    component={'Ionicons'}
+                                    name={'camera-outline'}
+                                    size={22}
+                                    color={colors.grey6}
+                                />
+                            </Block>
+                            <Text
+                                color={colors.textInBox}
+                                style={styles.textButtomLogin}>
+                                {t('takePhoto')}
+                            </Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            style={styles.buttomLogin}
+                            onPress={() => chooseImageGallary()}>
+                            <Block
+                                width={35}
+                                alignCenter
+                                marginLeft={15}
+                                backgroundColor={colors.grey12}
+                                radius={100}
+                                height={36}
+                                justifyCenter>
+                                <Icon
+                                    component={'FontAwesome'}
+                                    name={'picture-o'}
+                                    size={17}
+                                    color={colors.grey6}
+                                />
+                            </Block>
+                            <Text
+                                color={colors.textInBox}
+                                style={styles.textButtomLogin}>
+                                {t('choosePhoto')}
+                            </Text>
+                        </TouchableOpacity>
+                    </Block>
+                </BottomSheet>
             </Block>
         </Container>
     );
@@ -414,5 +574,28 @@ const useStyle = makeStyles()(({ normalize, colors }) => ({
         height: 40,
         width: 40,
         borderRadius: 10,
+    },
+    bottomSheet: {
+        borderWidth: 1,
+        borderColor: colors.grey6,
+        borderTopLeftRadius: 10,
+        borderTopRightRadius: 10,
+    },
+    imageNewGroup: {
+        width: 90,
+        height: 90,
+        borderRadius: 100,
+    },
+    buttomLogin: {
+        width: '100%',
+        flexDirection: 'row',
+        borderRadius: 10,
+        alignContent: 'center',
+        marginTop: 10,
+    },
+    textButtomLogin: {
+        fontSize: 16,
+        marginLeft: 10,
+        fontFamily: 'Lato-Regular',
     },
 }));
