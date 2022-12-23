@@ -59,8 +59,8 @@ export const bookAPI = createApi({
             }),
             async onQueryStarted(id, { dispatch, queryFulfilled }) {
                 try {
-                    const data = await queryFulfilled;
-                    dispatch(saveBookReducer(data)); // Save data in store, using reducer
+                    const { data } = await queryFulfilled;
+                    dispatch(saveBookReducer({ data: data.data })); // Save data in store, using reducer
                 } catch (err) {
                     // console.log('error api getAllBook... ', err);
                 }

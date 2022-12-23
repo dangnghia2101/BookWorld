@@ -1,2 +1,2 @@
-export const MAIN_API = 'http://192.168.0.103:80/api';
+export const MAIN_API = 'https://www.bookworlddashboard.shop/api';
 export const DOMAIN = 'https://www.bookworlddashboard.shop';
