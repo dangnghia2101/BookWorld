@@ -27,7 +27,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.googleusercontent.apps.1078600024718-aej719396knc3qrborvdm5jtfvoe9ult</string>
+				<string>com.googleusercontent.apps.1078600024718-tu7l97je3pk0lnsdfemkqsho59m76env</string>
 			</array>
 		</dict>
 	</array>
@@ -54,22 +54,7 @@
 	<string>Photo Library Access</string>
 	<key>UIAppFonts</key>
 	<array>
-		<string>AntDesign.ttf</string>
-		<string>Entypo.ttf</string>
-		<string>EvillIcon.ttf</string>
-		<string>Feather.ttf</string>
-		<string>FontAwesome.ttf</string>
-		<string>FontAwesome5_Brands.ttf</string>
-		<string>FontAwesome5_Regular.ttf</string>
-		<string>FontAwesome5_Solid.ttf</string>
-		<string>Fontisto.ttf</string>
-		<string>Foundation.ttf</string>
-		<string>Ionicons.ttf</string>
-		<string>MaterialCommunityIcons.ttf</string>
-		<string>MaterialIcons.ttf</string>
-		<string>Octicons.ttf</string>
-		<string>SimpleLineIcons.ttf</string>
-		<string>Zocial.ttf</string>
+		<string></string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
@@ -85,5 +70,26 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+
+	<key>UIAppFonts</key>
+	<array>
+		<string>fonts/AntDesign.ttf</string>
+		<string>fonts/Entypo.ttf</string>
+		<string>fonts/EvillIcon.ttf</string>
+		<string>fonts/Feather.ttf</string>
+		<string>fonts/FontAwesome.ttf</string>
+		<string>fonts/FontAwesome5_Brands.ttf</string>
+		<string>fonts/FontAwesome5_Regular.ttf</string>
+		<string>fonts/FontAwesome5_Solid.ttf</string>
+		<string>fonts/Fontisto.ttf</string>
+		<string>fonts/Foundation.ttf</string>
+		<string>fonts/Ionicons.ttf</string>
+		<string>fonts/MaterialCommunityIcons.ttf</string>
+		<string>fonts/MaterialIcons.ttf</string>
+		<string>fonts/Octicons.ttf</string>
+		<string>fonts/SimpleLineIcons.ttf</string>
+		<string>fonts/Zocial.ttf</string>
+	</array>
+
 </dict>
 </plist>
