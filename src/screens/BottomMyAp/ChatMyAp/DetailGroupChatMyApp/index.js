@@ -48,6 +48,7 @@ const RoomChat = ({ route }) => {
     //👇🏻 Runs whenever there is new trigger from the backend
 
     const onSubmitHandler = _message => {
+        console.log('onSubmitHandler ', _message);
         setMessages([
             ...messages,
             {
@@ -55,6 +56,11 @@ const RoomChat = ({ route }) => {
                 createdAt: new Date(),
                 message: _message.msg,
                 fromSelf: true,
+                avatar: myInfo.image,
+                name: myInfo.name,
+                image: _message?.file
+                    ? `data:image/jpeg;base64,${_message?.file}`
+                    : undefined,
             },
         ]);
 
@@ -71,6 +77,8 @@ const RoomChat = ({ route }) => {
                     createdAt: new Date().toDateString(),
                     message: msg,
                     fromSelf: false,
+                    avatar: image,
+                    name: name,
                 },
             ]);
         });
