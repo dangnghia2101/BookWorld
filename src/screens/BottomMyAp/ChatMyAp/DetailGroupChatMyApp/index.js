@@ -48,7 +48,7 @@ const RoomChat = ({ route }) => {
     //👇🏻 Runs whenever there is new trigger from the backend
 
     const onSubmitHandler = _message => {
-        console.log('onSubmitHandler ', _message);
+        // console.log('onSubmitHandler ', _message);
         setMessages([
             ...messages,
             {
@@ -64,12 +64,16 @@ const RoomChat = ({ route }) => {
             },
         ]);
 
-        socketRef.current.emit('send-msg', { ..._message, name: myInfo.name });
+        socketRef.current.emit('send-msg', {
+            ..._message,
+            name: myInfo.name,
+            avatar: myInfo.image,
+        });
     };
 
     useEffect(() => {
         socketRef.current.on('msg-recieve', ({ msg, name, image }) => {
-            console.log('msg-recieve ', msg, name, image);
+            console.log('msg-recieve ', image);
             setMessages([
                 ...messages,
                 {
@@ -79,10 +83,11 @@ const RoomChat = ({ route }) => {
                     fromSelf: false,
                     avatar: image,
                     name: name,
+                    image: image ? image : undefined,
                 },
             ]);
         });
-    }, [socketRef, messages]);
+    }, [socketRef]);
 
     const [reply, setReply] = useState('');
     const [isLeft, setIsLeft] = useState();
