@@ -42,12 +42,6 @@ const HomeScreenMyAp = ({ t }) => {
     const [getAllAuthor] = useLazyGetAllAuthorQuery();
     const [getAllCategory] = useLazyGetAllCategoryQuery();
 
-    useEffect(() => {
-        getAllBook();
-        getAllAuthor();
-        getAllCategory();
-    }, []);
-
     // useGetAllBookQuery();
     // useGetAllCategoryQuery();
     // useGetAllAuthorQuery();
@@ -73,6 +67,12 @@ const HomeScreenMyAp = ({ t }) => {
     const inset = useSafeAreaInsets();
 
     useEffect(() => {
+        getAllBook(myInfo.token);
+        getAllAuthor();
+        getAllCategory();
+    }, []);
+
+    useEffect(() => {
         if (allBooks) {
             setBookFree(
                 allBooks.filter(
@@ -81,7 +81,7 @@ const HomeScreenMyAp = ({ t }) => {
             );
         }
         getInforUser({ token: myInfo.token });
-    }, []);
+    }, [allBooks]);
 
     //Cập nhật mỗi lần thay đổi TabView
 
@@ -268,7 +268,7 @@ const HomeScreenMyAp = ({ t }) => {
                     <RefreshControl
                         refreshing={isRefresh}
                         onRefresh={async () => {
-                            await getAllBook();
+                            await getAllBook(myInfo.token);
                             await getAllAuthor();
                             await getAllCategory();
                             setRefresh(false);

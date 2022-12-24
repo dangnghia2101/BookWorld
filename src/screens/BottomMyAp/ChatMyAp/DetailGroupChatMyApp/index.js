@@ -58,11 +58,12 @@ const RoomChat = ({ route }) => {
             },
         ]);
 
-        socketRef.current.emit('send-msg', _message);
+        socketRef.current.emit('send-msg', { ..._message, name: myInfo.name });
     };
 
     useEffect(() => {
-        socketRef.current.on('msg-recieve', msg => {
+        socketRef.current.on('msg-recieve', ({ msg, name, image }) => {
+            console.log('msg-recieve ', msg, name, image);
             setMessages([
                 ...messages,
                 {
@@ -343,6 +344,7 @@ const RoomChat = ({ route }) => {
             style={{ backgroundColor: colors.background }}
             statusColor={colors.background}>
             <Block
+                marginTop={40}
                 borderBottomWidth={2}
                 borderColor={colors.text}
                 row

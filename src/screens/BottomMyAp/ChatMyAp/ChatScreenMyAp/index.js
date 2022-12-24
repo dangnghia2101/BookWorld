@@ -9,6 +9,7 @@ import { routes } from '@navigation/routes';
 import { useNavigation } from '@react-navigation/core';
 import {
     useCreateGroupMutation,
+    useGetAllAccountQuery,
     useLazyGetRoomChatQuery,
 } from '@redux/servicesNew';
 import { CustomToast } from '@utils/helper';
@@ -22,12 +23,17 @@ import React, {
     useState,
 } from 'react';
 import { withNamespaces } from 'react-i18next';
-import { FlatList, Image, Pressable } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import {
+    FlatList,
+    Image,
+    PermissionsAndroid,
+    Pressable,
+    TouchableOpacity,
+} from 'react-native';
+import FastImage from 'react-native-fast-image';
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { makeStyles, useTheme } from 'themeNew';
-import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
-import { PermissionsAndroid } from 'react-native';
 const handleKeyExtractor = item => item.toString();
 
 const createFormData = (photo, name, users) => {
@@ -41,9 +47,9 @@ const createFormData = (photo, name, users) => {
 const ChatScreenMyApp = ({ t }) => {
     const [searchPhrase, setSearchPhrase] = useState('');
     const [getRoomChat, { isSuccess, error }] = useLazyGetRoomChatQuery();
+    const { data: allAccount } = useGetAllAccountQuery();
     const [imageUri, setImageUri] = useState({});
     const themeStore = useAppSelector(state => state.root.themeApp.theme);
-    const { authors } = useAppSelector(state => state.root.author);
     const { colors } = useTheme(themeStore);
     const styles = useStyle(themeStore);
     const navigation = useNavigation();
@@ -55,7 +61,7 @@ const ChatScreenMyApp = ({ t }) => {
         [inset.bottom],
     );
     const snapPointsPhoto = useMemo(() => [150], [inset.bottom]);
-    const [peopleSearch, setPeopleSearch] = useState(authors);
+    const [peopleSearch, setPeopleSearch] = useState([]);
     const [peoplesChoose, setPeopleChoose] = useState({});
     const [searchText, setSearchText] = useState('');
     const [nameGroup, setNameGroup] = useState('');
@@ -63,14 +69,15 @@ const ChatScreenMyApp = ({ t }) => {
     const [isRefresh, setRefresh] = useState(false);
 
     const myInfo = useAppSelector(state => state.root.auth);
-    // const { data } = useGetRoomChatQuery(myInfo.token);
     const [createGroup] = useCreateGroupMutation();
 
     useEffect(() => {
         const fetchGetGroups = async () => {
             let { data } = await getRoomChat(myInfo.token);
-            // const reversedData = data.reverse();
-            setDataGroups(data);
+
+            let reversedData = [];
+            data.forEach(item => reversedData.unshift(item));
+            setDataGroups(reversedData);
         };
         fetchGetGroups();
     }, []);
@@ -78,10 +85,12 @@ const ChatScreenMyApp = ({ t }) => {
     const searchDebounce = useDebounce(searchText, 300);
 
     useEffect(() => {
-        const findPeople = authors.filter(item =>
-            item.name.includes(searchDebounce),
-        );
-        setPeopleSearch(findPeople);
+        if (allAccount?.data) {
+            const findPeople = allAccount?.data.filter(item =>
+                item.name.includes(searchDebounce),
+            );
+            setPeopleSearch(findPeople);
+        }
     }, [searchDebounce]);
 
     const renderItemChat = useCallback(
@@ -97,13 +106,13 @@ const ChatScreenMyApp = ({ t }) => {
                         })
                     }>
                     <Block row alignCenter>
-                        <Image
+                        <FastImage
+                            style={styles.imageGroup}
                             source={
                                 !isEmpty(item.image)
                                     ? { uri: item.image }
                                     : icons.logo
                             }
-                            style={styles.imageGroup}
                         />
                         <Block marginLeft={10} flex>
                             <Text
@@ -308,33 +317,6 @@ const ChatScreenMyApp = ({ t }) => {
                     <TouchableOpacity
                         onPress={async () => {
                             handleUploadPhoto();
-                            // const body = {
-                            //     bodySend: {
-                            //         name: nameGroup,
-                            //         image: '',
-                            //         users: [
-                            //             ...Object.keys(peoplesChoose),
-                            //             myInfo._id,
-                            //         ],
-                            //     },
-                            //     token: myInfo.token,
-                            // };
-
-                            // const response = await createGroup(body);
-
-                            // if (response.data.statusCode === 200) {
-                            //     bottomSheetRef.current.snapToIndex(-1);
-                            //     setPeopleChoose({});
-                            //     setNameGroup('');
-                            //     CustomToast('Tạo nhóm thành công');
-
-                            //     const { data } = await getRoomChat(
-                            //         myInfo.token,
-                            //     );
-                            //     setDataGroups(data);
-                            // } else {
-                            //     CustomToast('Đăng kí thất bại');
-                            // }
                         }}>
                         <Block
                             width={width * 0.85}
@@ -363,9 +345,12 @@ const ChatScreenMyApp = ({ t }) => {
                 showsVerticalScrollIndicator={false}
                 refreshing={isRefresh}
                 onRefresh={async () => {
-                    let { data } = await getRoomChat(myInfo.token);
                     setRefresh(true);
-                    setDataGroups(data);
+                    let { data } = await getRoomChat(myInfo.token);
+                    setRefresh(false);
+                    let reversedData = [];
+                    data.forEach(item => reversedData.unshift(item));
+                    setDataGroups(reversedData);
                 }}
             />
         );
@@ -407,7 +392,7 @@ const ChatScreenMyApp = ({ t }) => {
                 name: result.assets[0].fileName,
                 type: result.assets[0].type,
                 base64: result.assets[0].base64,
-            }); // console.log("takePhoto result =", result)
+            });
 
             if (snapTI == 0) {
                 // snapTI = -1;
@@ -429,13 +414,9 @@ const ChatScreenMyApp = ({ t }) => {
         const aw = await createGroup(body);
 
         if (aw?.data?.data) {
-            await getInforUser({ token: myInfo.token });
+            CustomToast(`Create ${name} success`);
 
-            ToastAndroid.show(
-                `Create ${name}  success`,
-                ToastAndroid.SHORT,
-                ToastAndroid.BOTTOM,
-            );
+            bottomSheetRef.current?.close();
         }
     };
 
@@ -504,26 +485,28 @@ const ChatScreenMyApp = ({ t }) => {
                         <TouchableOpacity
                             style={styles.buttomLogin}
                             onPress={() => takePhoto()}>
-                            <Block
-                                width={35}
-                                alignCenter
-                                marginLeft={15}
-                                backgroundColor={colors.grey12}
-                                radius={100}
-                                height={36}
-                                justifyCenter>
-                                <Icon
-                                    component={'Ionicons'}
-                                    name={'camera-outline'}
-                                    size={22}
-                                    color={colors.grey6}
-                                />
+                            <Block justifyCenter row>
+                                <Block
+                                    width={35}
+                                    alignCenter
+                                    marginLeft={15}
+                                    backgroundColor={colors.grey12}
+                                    radius={100}
+                                    height={36}
+                                    justifyCenter>
+                                    <Icon
+                                        component={'Ionicons'}
+                                        name={'camera-outline'}
+                                        size={22}
+                                        color={colors.grey6}
+                                    />
+                                </Block>
+                                <Text
+                                    color={colors.textInBox}
+                                    style={styles.textButtomLogin}>
+                                    {t('takePhoto')}
+                                </Text>
                             </Block>
-                            <Text
-                                color={colors.textInBox}
-                                style={styles.textButtomLogin}>
-                                {t('takePhoto')}
-                            </Text>
                         </TouchableOpacity>
                         <TouchableOpacity
                             style={styles.buttomLogin}
@@ -562,7 +545,7 @@ const useStyle = makeStyles()(({ normalize, colors }) => ({
     imageGroup: {
         height: normalize(50)('moderate'),
         width: normalize(50)('moderate'),
-        borderRadius: normalize(15)('moderate'),
+        borderRadius: normalize(100)('moderate'),
     },
     root: {
         backgroundColor: colors.white,
@@ -597,5 +580,9 @@ const useStyle = makeStyles()(({ normalize, colors }) => ({
         fontSize: 16,
         marginLeft: 10,
         fontFamily: 'Lato-Regular',
+        textAlign: 'center',
+        height: 20,
+        alignSelf: 'center',
+        justifyContent: 'center',
     },
 }));

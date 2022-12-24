@@ -7,6 +7,7 @@ import { routes } from '@navigation/routes';
 import { withNamespaces } from 'react-i18next';
 import { useAppSelector } from '@hooks';
 import { useTheme, makeStyles } from 'themeNew';
+import FastImage from 'react-native-fast-image';
 
 const { width, height } = Dimensions.get('window');
 
@@ -28,10 +29,11 @@ const ItemFavoriteBook = ({ item, t }) => {
                 })
             }>
             <Block width={width} marginRight={PADDING_ITEM} row marginTop={30}>
-                <Image
+                <FastImage
                     style={styles.image}
                     source={{
                         uri: item?.idBook?.image || '',
+                        priority: FastImage.priority.high,
                     }}
                 />
                 <Block marginHorizontal={10} flex>

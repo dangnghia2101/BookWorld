@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { withNamespaces } from 'react-i18next';
 import { Image, TouchableOpacity } from 'react-native';
+import FastImage from 'react-native-fast-image';
 import { makeStyles, useTheme } from 'themeNew';
 
 const ItemAuthor = ({ item, t }) => {
@@ -15,17 +16,23 @@ const ItemAuthor = ({ item, t }) => {
 
     return (
         <TouchableOpacity
-            onPress={() => navigation.navigate(routes.DETAIL_AUTHOR_MY_AP, { bookmark: true, item })}
+            onPress={() =>
+                navigation.navigate(routes.DETAIL_AUTHOR_MY_AP, {
+                    bookmark: true,
+                    item,
+                })
+            }
             style={{
                 marginHorizontal: 10,
                 marginTop: 10,
                 alignItems: 'center',
             }}>
-            <Image
+            <FastImage
+                style={styles.image}
                 source={{
                     uri: item.avatar || '',
+                    priority: FastImage.priority.normal,
                 }}
-                style={styles.image}
             />
             <Text color={theme.colors.textInBox} size={12} marginTop={5}>
                 {item?.name.slice(0, 12)}

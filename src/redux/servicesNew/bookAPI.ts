@@ -52,8 +52,9 @@ export const bookAPI = createApi({
     }),
     endpoints: builder => ({
         getAllBook: builder.query<BookState[], string>({
-            query: () => ({
+            query: body => ({
                 url: `books/getAllBook`,
+                headers: { Authorization: `Bearer ${body}` },
                 validateStatus: (response, result) =>
                     response.status === 200 && !result.isError, // Our tricky API always returns a 200, but sets an `isError` property when there is an error.
             }),

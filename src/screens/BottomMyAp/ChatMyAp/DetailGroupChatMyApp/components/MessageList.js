@@ -27,6 +27,9 @@ const MessagesList = ({ onSwipeToReply, messages }) => {
                         isLeft={!message.fromSelf}
                         message={message.message}
                         onSwipe={onSwipeToReply}
+                        name={message?.name}
+                        image={message?.image}
+                        avatar={message?.avatar}
                     />
                 ))}
         </ScrollView>
