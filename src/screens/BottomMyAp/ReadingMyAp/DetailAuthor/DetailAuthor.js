@@ -3,6 +3,7 @@ import { useAppSelector } from '@hooks';
 import React from 'react';
 import { withNamespaces } from 'react-i18next';
 import { Image, ScrollView, StyleSheet } from 'react-native';
+import FastImage from 'react-native-fast-image';
 import { useTheme } from 'themeNew';
 import BookOfAuthor from '../components/BookOfAuthor';
 import TopBar from '../components/TopBar';
@@ -27,9 +28,12 @@ const DetailAuthor = ({ route, t }) => {
                     />
                     <Block absolute width="100%" height="40%">
                         <Block width={'70%'} height={'60%'} top={50} left={90}>
-                            <Image
+                            <FastImage
                                 style={styles.imgAuthor}
-                                source={{ uri: item.avatar }}
+                                source={{
+                                    uri: item.avatar,
+                                    priority: FastImage.priority.high,
+                                }}
                             />
                         </Block>
                         <Text

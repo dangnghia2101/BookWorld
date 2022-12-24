@@ -14,6 +14,7 @@ import { makeStyles, useTheme } from 'themeNew';
 import { routes } from '@navigation/routes';
 import { withNamespaces } from 'react-i18next';
 import { deleteSearch } from '@redux/reducerNew';
+import FastImage from 'react-native-fast-image';
 
 const ListTabBook = ({ search, setSearch, t }) => {
     const themeStore = useAppSelector(state => state.root.themeApp.theme);
@@ -62,7 +63,9 @@ const ListTabBook = ({ search, setSearch, t }) => {
                     size={25}
                     color={colors.grey10}
                 />
-                <Text color={colors.textInBox} style={styles.titleItemHistory}>{title}</Text>
+                <Text color={colors.textInBox} style={styles.titleItemHistory}>
+                    {title}
+                </Text>
                 <TouchableOpacity onPress={() => dispatch(deleteSearch(index))}>
                     <Icon
                         component="MaterialIcons"
@@ -80,7 +83,13 @@ const ListTabBook = ({ search, setSearch, t }) => {
         let num = Math.floor(Math.random() * 3) + 3;
         return (
             <Block row alignCenter marginHorizontal={20} marginVertical={10}>
-                <Image source={{ uri: item.image }} style={styles.imageStyle} />
+                <FastImage
+                    style={styles.imageStyle}
+                    source={{
+                        uri: item.image,
+                        priority: FastImage.priority.high,
+                    }}
+                />
                 <Block flex={1} marginLeft={10} paddingTop={10}>
                     <Text fontType="bold" color={colors.textInBox}>
                         {item.name}

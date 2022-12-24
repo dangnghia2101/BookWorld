@@ -34,6 +34,7 @@ import Fontisto from 'react-native-vector-icons/Fontisto';
 import { colors, useTheme } from 'themeNew';
 import { isEmpty } from 'lodash';
 import { width } from '@utils/responsive';
+import FastImage from 'react-native-fast-image';
 const ModalPoup = ({ visible, children }) => {
     const [showModal, setShowModal] = React.useState(visible);
     useEffect(() => {
@@ -58,6 +59,7 @@ const ModalPoup = ({ visible, children }) => {
 
 const Cart = ({ t }) => {
     const [visibleCart, setVisibleCart] = useState(false);
+    const idBookDelete = useRef('');
     const navigation = useNavigation();
     const [allPrice, setAllPrice] = useState();
     const [cartItem, setCartItem] = useState({});
@@ -135,9 +137,12 @@ const Cart = ({ t }) => {
                 ]}
                 onPress={() => detailCart(item, index)}>
                 <Block row marginVertical={10}>
-                    <Image
+                    <FastImage
                         style={styles.image}
-                        source={{ uri: item.image }}
+                        source={{
+                            uri: item.image,
+                            priority: FastImage.priority.high,
+                        }}
                         resizeMode="cover"
                     />
                     <Block marginHorizontal={20} marginTop={5} width={'55%'}>
@@ -177,6 +182,7 @@ const Cart = ({ t }) => {
                         }}
                         onPress={() => {
                             setVisibleCart(true);
+                            idBookDelete.current = item?._id;
                         }}>
                         <Feather name={'trash-2'} size={18} color={'gray'} />
                     </TouchableOpacity>
@@ -216,45 +222,6 @@ const Cart = ({ t }) => {
                         </TouchableOpacity>
                     )}
                 </Block>
-                <ModalPoup visible={visibleCart}>
-                    <Block style={styles.clone}>
-                        <Fontisto
-                            name={'close-a'}
-                            size={14}
-                            color={'black'}
-                            onPress={() => {
-                                setVisibleCart(false);
-                            }}
-                        />
-                    </Block>
-                    <Block alignCenter={'center'}>
-                        <Text
-                            fontType={'medium1'}
-                            style={styles.textOTP}
-                            center>
-                            {t('askRemove')}
-                        </Text>
-                        <Block>
-                            <Image
-                                source={require('../../../../assets/icons/faile.png')}
-                                style={{ width: 60, height: 60 }}
-                            />
-                        </Block>
-                        <TouchableOpacity
-                            style={styles.buttomAddCart}
-                            onPress={() => {
-                                dispatch(removeItem({ _id: item._id })),
-                                    { setVisibleCart: setVisibleCart(false) };
-                            }}>
-                            <Text
-                                fontType={'bold1'}
-                                style={styles.textButtomLogin}
-                                height={55}>
-                                {t('delete')}
-                            </Text>
-                        </TouchableOpacity>
-                    </Block>
-                </ModalPoup>
             </TouchableOpacity>
         );
     };
@@ -272,11 +239,11 @@ const Cart = ({ t }) => {
                         {
                             cartItem.SL !== 1
                                 ? dispatch(
-                                    removeChapter({
-                                        idBook: cartItem?._id,
-                                        idChapter: item,
-                                    }),
-                                )
+                                      removeChapter({
+                                          idBook: cartItem?._id,
+                                          idChapter: item,
+                                      }),
+                                  )
                                 : handleRemoveBook();
                         }
                     }}>
@@ -298,11 +265,7 @@ const Cart = ({ t }) => {
             statusColor={theme.colors.background}
             edges={['left', 'right']}
             style={{ backgroundColor: theme.colors.background, flex: 1 }}>
-            <Block
-                justifyCenter
-                alignCenter
-                height={50}
-                row>
+            <Block justifyCenter alignCenter height={50} row>
                 <Text
                     fontType="bold1"
                     color={theme.colors.textInBox}
@@ -369,9 +332,9 @@ const Cart = ({ t }) => {
                             marginTop={5}>
                             {allPrice
                                 ? allPrice &&
-                                allPrice
-                                    .toFixed(0)
-                                    .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')
+                                  allPrice
+                                      .toFixed(0)
+                                      .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')
                                 : 0}{' '}
                             đ
                         </Text>
@@ -384,7 +347,9 @@ const Cart = ({ t }) => {
                 snapPoints={snapPoints}
                 enablePanDownToClose={true}
                 backdropComponent={renderBackdrop}>
-                <Block paddingVertical={10} backgroundColor={theme.colors.background}>
+                <Block
+                    paddingVertical={10}
+                    backgroundColor={theme.colors.background}>
                     <Block row style={styles.Container1}>
                         <Block backgroundColor={theme.colors.background}>
                             <Image
@@ -418,7 +383,7 @@ const Cart = ({ t }) => {
                                 ₫
                             </Text>
                         </Block>
-                        <TouchableOpacity onPress={() => { }}>
+                        <TouchableOpacity onPress={() => {}}>
                             <Fontisto
                                 name={'close-a'}
                                 size={20}
@@ -455,6 +420,42 @@ const Cart = ({ t }) => {
                     </Block>
                 </Block>
             </BottomSheet>
+            <ModalPoup visible={visibleCart}>
+                <Block style={styles.clone}>
+                    <Fontisto
+                        name={'close-a'}
+                        size={14}
+                        color={'black'}
+                        onPress={() => {
+                            setVisibleCart(false);
+                        }}
+                    />
+                </Block>
+                <Block alignCenter={'center'}>
+                    <Text fontType={'medium1'} style={styles.textOTP} center>
+                        {t('askRemove')}
+                    </Text>
+                    <Block>
+                        <Image
+                            source={require('../../../../assets/icons/faile.png')}
+                            style={{ width: 60, height: 60 }}
+                        />
+                    </Block>
+                    <TouchableOpacity
+                        style={styles.buttomAddCart}
+                        onPress={() => {
+                            dispatch(removeItem({ _id: idBookDelete.current })),
+                                { setVisibleCart: setVisibleCart(false) };
+                        }}>
+                        <Text
+                            fontType={'bold1'}
+                            style={styles.textButtomLogin}
+                            height={55}>
+                            {t('delete')}
+                        </Text>
+                    </TouchableOpacity>
+                </Block>
+            </ModalPoup>
         </Container>
     );
 };

@@ -129,9 +129,21 @@ export const userApi = createApi({
                 }
             },
         }),
+        getAllAccount: builder.query<any, { token: string }>({
+            query: body => ({
+                url: `accounts/getAllUsers`,
+            }),
+            transformResponse: (response: { data: any }) => response,
+        }),
     }),
 });
 
-export const { useLoginMutation, useGetLoginQuery, useLoginPhoneMutation, useLoginPhoneNumberMutation, useForgotPasswordMutation, 
-    useLazyGetInforUserQuery, } =
-    userApi;
+export const {
+    useLoginMutation,
+    useGetLoginQuery,
+    useLoginPhoneMutation,
+    useLoginPhoneNumberMutation,
+    useForgotPasswordMutation,
+    useLazyGetInforUserQuery,
+    useGetAllAccountQuery,
+} = userApi;

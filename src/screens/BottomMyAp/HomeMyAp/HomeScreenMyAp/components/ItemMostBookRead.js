@@ -9,6 +9,7 @@ import { useAppSelector } from '@hooks';
 import { withNamespaces } from 'react-i18next';
 import Icon from '@components/Icon';
 import { isEqual } from 'lodash';
+import FastImage from 'react-native-fast-image';
 
 const ITEM_WITH = width * 0.6;
 const SPACER_ITEM_SIZE = (width - ITEM_WITH) / 3;
@@ -89,10 +90,11 @@ const ItemMostBookRead = ({ item, index, scrollX, size, t }) => {
                     elevation: 9,
                 }}>
                 {/* <Block width={width / 2} marginRight={PADDING_ITEM}> */}
-                <Image
+                <FastImage
                     style={styles.image}
                     source={{
                         uri: item.image,
+                        priority: FastImage.priority.high,
                     }}
                 />
                 <Text

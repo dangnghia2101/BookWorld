@@ -7,6 +7,7 @@ import { routes } from '@navigation/routes';
 import { withNamespaces } from 'react-i18next';
 import { useAppSelector } from '@hooks';
 import { useTheme, makeStyles } from 'themeNew';
+import FastImage from 'react-native-fast-image';
 
 const { width, height } = Dimensions.get('window');
 
@@ -60,16 +61,17 @@ const ItemCateBook = ({ item, t }) => {
                 })
             }>
             <Block width={width} marginRight={PADDING_ITEM} row marginTop={30}>
-                <Image
+                <FastImage
                     style={styles.image}
                     source={{
                         uri: item.image || '',
+                        priority: FastImage.priority.normal,
                     }}
                 />
                 <Block marginHorizontal={10} flex paddingLeft={10}>
                     <Text
                         size={17}
-                        width='75%'
+                        width="75%"
                         fontType="bold1"
                         numberOfLines={2}
                         color={theme.colors.textInBox}>
@@ -90,7 +92,7 @@ const ItemCateBook = ({ item, t }) => {
                             marginLeft={5}
                             marginRight={20}
                             size={14}
-                            fontType='regular1'
+                            fontType="regular1"
                             color={theme.colors.textInBox}>
                             {_renderDownload()}
                         </Text>
@@ -105,7 +107,7 @@ const ItemCateBook = ({ item, t }) => {
                             marginLeft={5}
                             marginRight={20}
                             size={14}
-                            fontType='regular1'
+                            fontType="regular1"
                             color={theme.colors.textInBox}>
                             {_renderView()} view
                         </Text>
@@ -113,10 +115,16 @@ const ItemCateBook = ({ item, t }) => {
 
                     <Block row alignCenter>
                         {_renderStar()}
-                        <Text color={theme.colors.textInBox} marginLeft={5}>{star.length}.0</Text>
+                        <Text color={theme.colors.textInBox} marginLeft={5}>
+                            {star.length}.0
+                        </Text>
                     </Block>
 
-                    <Block style={styles.container} row marginTop={10} alignCenter>
+                    <Block
+                        style={styles.container}
+                        row
+                        marginTop={10}
+                        alignCenter>
                         <Button
                             style={[
                                 styles.btnItemCate,
@@ -162,7 +170,7 @@ export default withNamespaces()(ItemCateBook);
 
 const useStyles = makeStyles()(({ colors }) => ({
     container: {
-        marginTop: '16%'
+        marginTop: '16%',
     },
     inputSection: {
         color: colors.white,

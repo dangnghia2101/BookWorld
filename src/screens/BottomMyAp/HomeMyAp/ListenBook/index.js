@@ -46,6 +46,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { icons, NotFoundIcon } from '@assets';
 import Share from 'react-native-share';
 import { withNamespaces } from 'react-i18next';
+import FastImage from 'react-native-fast-image';
 
 const { width, height } = Dimensions.get('window');
 
@@ -220,10 +221,12 @@ const ListenBook = ({ route, t }) => {
         return (
             <Animated.View style={style.mainWrapper}>
                 <View style={[style.imageWrapper, style.elevation]}>
-                    <Image
-                        //   source={item.artwork}
-                        source={{ uri: trackArtwork }}
-                        style={style.musicImage}
+                    <FastImage
+                        style={styles.musicImage}
+                        source={{
+                            uri: item?.artwork,
+                            priority: FastImage.priority.high,
+                        }}
                     />
                 </View>
             </Animated.View>
@@ -402,11 +405,10 @@ const ListenBook = ({ route, t }) => {
                     data={[
                         {
                             id: 'trackId',
-                            url: 'http://commondatastorage.googleapis.com/codeskulptor-demos/DDR_assets/Sevish_-__nbsp_.mp3',
+                            url: dataGet?.linkAudio,
                             title: 'Track Title',
                             artist: 'Track Artist',
-                            artwork:
-                                'https://cdn.pixabay.com/photo/2018/08/14/13/23/ocean-3605547__340.jpg',
+                            artwork: dataGet?.image,
                         },
                     ]}
                     keyExtractor={keyExtractor}

@@ -1,6 +1,7 @@
 import { changeLoading } from '@redux/reducerNew';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { string } from 'prop-types';
+import { AnyAction } from 'redux';
 
 import { MAIN_API } from './endpoint';
 
@@ -64,14 +65,18 @@ export const chatAPI = createApi({
         }),
         sendMessage: builder.mutation<
             MessageState[],
-            { token: string; room: string; message: string }
+            { token: string; room: string; message: string; file: any }
         >({
             query: body => {
                 return {
                     url: 'messages/send-message',
                     method: 'POST',
                     headers: { Authorization: `Bearer ${body.token}` },
-                    body: { message: body.message, room: body.room },
+                    body: {
+                        message: body.message,
+                        room: body.room,
+                        file: body.file,
+                    },
                 };
             },
             transformResponse: (response: { data: MessageState[] }) =>

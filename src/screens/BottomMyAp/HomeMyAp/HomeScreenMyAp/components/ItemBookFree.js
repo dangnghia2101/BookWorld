@@ -5,6 +5,7 @@ import { isEmpty } from 'lodash';
 import React from 'react';
 import { withNamespaces } from 'react-i18next';
 import { Image, TouchableOpacity } from 'react-native';
+import FastImage from 'react-native-fast-image';
 import { makeStyles } from 'themeNew';
 
 const ItemBookFree = ({ item, t }) => {
@@ -23,11 +24,12 @@ const ItemBookFree = ({ item, t }) => {
                 })
             }>
             {!isEmpty(item.image) ? (
-                <Image
+                <FastImage
+                    style={styles.image}
                     source={{
                         uri: item.image,
+                        priority: FastImage.priority.normal,
                     }}
-                    style={styles.image}
                 />
             ) : null}
         </TouchableOpacity>

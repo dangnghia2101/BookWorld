@@ -8,6 +8,7 @@ import { routes } from '@navigation/routes';
 import { makeStyles, useTheme } from 'themeNew';
 import { withNamespaces } from 'react-i18next';
 import { useAppSelector } from '@hooks';
+import FastImage from 'react-native-fast-image';
 
 const ItemAuthor = ({ item, t }) => {
     const navigation = useNavigation();
@@ -131,9 +132,12 @@ const ItemAuthor = ({ item, t }) => {
                         padding={7}
                         borderWidth={3}
                         borderColor={theme.colors.grey9}>
-                        <Image
+                        <FastImage
                             style={styles.avatar}
-                            source={{ uri: item.avatar }}
+                            source={{
+                                uri: item.avatar,
+                                priority: FastImage.priority.high,
+                            }}
                         />
                     </Block>
                 </Block>

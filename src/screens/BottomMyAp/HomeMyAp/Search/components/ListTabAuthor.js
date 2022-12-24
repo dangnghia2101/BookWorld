@@ -13,6 +13,7 @@ import {
     TouchableOpacity,
     View,
 } from 'react-native';
+import FastImage from 'react-native-fast-image';
 import { makeStyles, useTheme } from 'themeNew';
 
 const ListTabAuthor = ({ search, setSearch, t }) => {
@@ -50,7 +51,9 @@ const ListTabAuthor = ({ search, setSearch, t }) => {
                     size={25}
                     color={colors.grey10}
                 />
-                <Text color={colors.textInBox} style={styles.titleItemHistory}>{title}</Text>
+                <Text color={colors.textInBox} style={styles.titleItemHistory}>
+                    {title}
+                </Text>
                 <TouchableOpacity onPress={() => dispatch(deleteSearch(index))}>
                     <Icon
                         component="MaterialIcons"
@@ -66,9 +69,12 @@ const ListTabAuthor = ({ search, setSearch, t }) => {
     const ItemAuthor = item => {
         return (
             <Block height={70} row alignCenter marginHorizontal={20}>
-                <Image
-                    source={{ uri: item?.avatar }}
+                <FastImage
                     style={styles.imageStyle}
+                    source={{
+                        uri: item?.avatar,
+                        priority: FastImage.priority.high,
+                    }}
                 />
                 <Block flexShrink={1} marginLeft={10} paddingTop={10}>
                     <Text fontType="bold" color={colors.textInBox}>
