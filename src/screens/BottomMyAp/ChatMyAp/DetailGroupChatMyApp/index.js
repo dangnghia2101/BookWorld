@@ -58,11 +58,12 @@ const RoomChat = ({ route }) => {
             },
         ]);
 
-        socketRef.current.emit('send-msg', _message);
+        socketRef.current.emit('send-msg', { ..._message, name: myInfo.name });
     };
 
     useEffect(() => {
-        socketRef.current.on('msg-recieve', msg => {
+        socketRef.current.on('msg-recieve', ({ msg, name }) => {
+            console.log('msg-recieve ', msg, name);
             setMessages([
                 ...messages,
                 {

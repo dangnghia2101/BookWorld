@@ -1,5 +1,6 @@
 import { Block } from '@components';
 import { useAppSelector } from '@hooks';
+import { DOMAIN } from '@redux/servicesNew/endpoint';
 import { theme } from '@theme';
 import React, { useEffect, useRef, useState } from 'react';
 import { StyleSheet } from 'react-native';
@@ -20,7 +21,7 @@ const RoomChat = () => {
     const [messages, setMessages] = useState([]);
 
     useEffect(() => {
-        socketRef.current = io('https://bookworlddasboard.herokuapp.com');
+        socketRef.current = io(DOMAIN);
         socketRef.current.emit('add-user', myInfo._id);
     }, []);
 

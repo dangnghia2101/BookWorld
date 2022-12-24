@@ -363,8 +363,9 @@ const ChatScreenMyApp = ({ t }) => {
                 showsVerticalScrollIndicator={false}
                 refreshing={isRefresh}
                 onRefresh={async () => {
-                    let { data } = await getRoomChat(myInfo.token);
                     setRefresh(true);
+                    let { data } = await getRoomChat(myInfo.token);
+                    setRefresh(false);
                     setDataGroups(data);
                 }}
             />
