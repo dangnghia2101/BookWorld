@@ -28,7 +28,7 @@ function debounce(func, timeout = 300) {
     };
 }
 
-const RoomChat = ({ route }) => {
+const DetailGroupChatMyApp = ({ route }) => {
     const socketRef = useRef();
     const { id, image, name, users } = route.params;
     const [getChats, { isSuccess }] = useGetChatsMutation();
@@ -433,7 +433,7 @@ const RoomChat = ({ route }) => {
     );
 };
 
-export default RoomChat;
+export default DetailGroupChatMyApp;
 
 const styles = StyleSheet.create({
     imageRoom: {
