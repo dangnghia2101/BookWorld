@@ -56,12 +56,6 @@ const DetailGroupChatMyApp = ({ route }) => {
 
     useEffect(() => {
         const handleUpdateMessage = _newMessage => {
-            console.log(
-                'handleUpdateMessage ',
-                _newMessage.name,
-                _newMessage.message,
-                myInfo.name,
-            );
             setMessages([...messages, _newMessage]);
         };
 
