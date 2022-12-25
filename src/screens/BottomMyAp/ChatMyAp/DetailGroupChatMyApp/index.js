@@ -42,9 +42,7 @@ const RoomChat = ({ route }) => {
 
     const navigation = useNavigation();
 
-    const processChange = debounce((image, msg, name) => {
-        console.log('msg-recieve ', messages.length, myInfo.name);
-
+    const processChange = debounce((image, msg, name, avatar) => {
         setMessages([
             ...messages,
             {
@@ -52,7 +50,7 @@ const RoomChat = ({ route }) => {
                 createdAt: new Date().toDateString(),
                 message: msg,
                 fromSelf: false,
-                avatar: image,
+                avatar: avatar,
                 name: name,
                 image: image ? image : undefined,
             },
@@ -69,8 +67,8 @@ const RoomChat = ({ route }) => {
         socketRef.current = io(DOMAIN);
         socketRef.current.emit('add-user', id);
 
-        socketRef.current.on('msg-recieve', ({ msg, name, image }) => {
-            processChange(image, msg, name);
+        socketRef.current.on('msg-recieve', ({ msg, name, image, avatar }) => {
+            processChange(image, msg, name, avatar);
         });
     }, []);
 
@@ -91,7 +89,7 @@ const RoomChat = ({ route }) => {
                 fromSelf: true,
                 avatar: myInfo.image,
                 name: myInfo.name,
-                image: _message?.file
+                file: _message?.file
                     ? `data:image/jpeg;base64,${_message?.file}`
                     : undefined,
             },

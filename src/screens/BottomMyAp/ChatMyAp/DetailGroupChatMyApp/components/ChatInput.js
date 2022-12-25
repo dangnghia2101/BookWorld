@@ -213,7 +213,7 @@ const ChatInput = ({
                 <Block
                     zIndex={1000}
                     absolute
-                    bottom={inset.bottom + 40}
+                    bottom={inset.bottom + 80}
                     left={20}>
                     <Block
                         backgroundColor={colors.white}

@@ -162,7 +162,7 @@ const Message = ({
                         </View>
                     </View>
                 </Block>
-                {!isEmpty(image) && (
+                {image ? (
                     <Block
                         style={
                             isLeft
@@ -180,7 +180,7 @@ const Message = ({
                             ]}
                         />
                     </Block>
-                )}
+                ) : null}
 
                 <View style={styles.timeView}>
                     <Text
