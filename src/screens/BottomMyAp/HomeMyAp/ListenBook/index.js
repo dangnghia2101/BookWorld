@@ -508,7 +508,7 @@ const ListenBook = ({ route, t }) => {
                 backgroundColor={colors.background}
                 style={style.bottomSection}>
                 <Block style={style.bottomIconContainer}>
-                    <TouchableOpacity onPress={() => {}}>
+                    <TouchableOpacity onPress={() => { }}>
                         <Ionicons
                             name="heart-outline"
                             size={25}
