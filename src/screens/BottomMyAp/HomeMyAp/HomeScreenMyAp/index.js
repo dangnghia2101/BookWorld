@@ -74,11 +74,14 @@ const HomeScreenMyAp = ({ t }) => {
 
     useEffect(() => {
         if (allBooks) {
-            setBookFree(
-                allBooks.filter(
-                    item => item.isPrice === null || item.isPrice <= 0,
-                ),
-            );
+            let filterData = [];
+
+            allBooks.forEach(item => {
+                if (item.isPrice === 0) {
+                    filterData.push(item);
+                }
+            });
+            setBookFree(filterData);
         }
         getInforUser({ token: myInfo.token });
     }, [allBooks]);

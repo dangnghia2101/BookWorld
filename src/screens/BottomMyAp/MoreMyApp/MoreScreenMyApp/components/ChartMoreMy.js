@@ -214,7 +214,7 @@ const ChartMoreMy = props => {
                                 duration: 500,
                                 before: () => ({
                                     _y: 0,
-                                    label: 'BYE',
+                                    label: '',
                                 }),
                             },
                         }}

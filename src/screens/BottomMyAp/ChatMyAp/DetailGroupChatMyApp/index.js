@@ -18,6 +18,16 @@ import { useTheme } from 'themeNew';
 import ChatInput from './components/ChatInput';
 import MessagesList from './components/MessageList';
 
+function debounce(func, timeout = 300) {
+    let timer;
+    return (...args) => {
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+            func.apply(this, args);
+        }, timeout);
+    };
+}
+
 const RoomChat = ({ route }) => {
     const socketRef = useRef();
     const { id, image, name, users } = route.params;
@@ -32,18 +42,41 @@ const RoomChat = ({ route }) => {
 
     const navigation = useNavigation();
 
+    const processChange = debounce((image, msg, name) => {
+        console.log('msg-recieve ', messages.length, myInfo.name);
+
+        setMessages([
+            ...messages,
+            {
+                user: 1,
+                createdAt: new Date().toDateString(),
+                message: msg,
+                fromSelf: false,
+                avatar: image,
+                name: name,
+                image: image ? image : undefined,
+            },
+        ]);
+    });
+
     useEffect(() => {
         const fetchApiChat = async () => {
             const { data } = await getChats({ token: myInfo.token, room: id });
             setMessages(data);
         };
         fetchApiChat();
-    }, []);
 
-    useEffect(() => {
         socketRef.current = io(DOMAIN);
         socketRef.current.emit('add-user', id);
+
+        socketRef.current.on('msg-recieve', ({ msg, name, image }) => {
+            processChange(image, msg, name);
+        });
     }, []);
+
+    // useEffect(() => {
+
+    // }, []);
 
     //👇🏻 Runs whenever there is new trigger from the backend
 
@@ -72,21 +105,21 @@ const RoomChat = ({ route }) => {
     };
 
     useEffect(() => {
-        socketRef.current.on('msg-recieve', ({ msg, name, image }) => {
-            console.log('msg-recieve ', image);
-            setMessages([
-                ...messages,
-                {
-                    user: 1,
-                    createdAt: new Date().toDateString(),
-                    message: msg,
-                    fromSelf: false,
-                    avatar: image,
-                    name: name,
-                    image: image ? image : undefined,
-                },
-            ]);
-        });
+        // socketRef.current.on('msg-recieve', ({ msg, name, image }) => {
+        //     console.log('msg-recieve ', image);
+        //     setMessages([
+        //         ...messages,
+        //         {
+        //             user: 1,
+        //             createdAt: new Date().toDateString(),
+        //             message: msg,
+        //             fromSelf: false,
+        //             avatar: image,
+        //             name: name,
+        //             image: image ? image : undefined,
+        //         },
+        //     ]);
+        // });
     }, [socketRef]);
 
     const [reply, setReply] = useState('');

@@ -2,6 +2,7 @@ import { Block } from '@components';
 import { useAppSelector } from '@hooks';
 import { formatDate } from '@utils/helper';
 import { width } from '@utils/responsive';
+import { isEmpty } from 'lodash';
 import React, { useState, useRef } from 'react';
 import { View, Text, StyleSheet, Alert } from 'react-native';
 import FastImage from 'react-native-fast-image';
@@ -31,6 +32,8 @@ const Message = ({
     const { colors } = useTheme(themeStore);
     const startingPosition = 0;
     const x = useSharedValue(startingPosition);
+
+    console.log('MESSAGE ', image);
 
     const isOnLeft = type => {
         if (isLeft && type === 'messageContainer') {
@@ -159,7 +162,7 @@ const Message = ({
                         </View>
                     </View>
                 </Block>
-                {image && (
+                {!isEmpty(image) && (
                     <Block
                         style={
                             isLeft

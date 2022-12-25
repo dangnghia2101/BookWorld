@@ -25,6 +25,10 @@ import { request, PERMISSIONS, RESULTS } from 'react-native-permissions';
 import IconView from '@components/Icon';
 import { useAppSelector } from '@hooks';
 import { useSendMessageMutation } from '@redux/servicesNew';
+import { Block, Icon } from '@components';
+import FastImage from 'react-native-fast-image';
+import { isEmpty } from 'lodash';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const createFormData = photo => {
     const data = new FormData();
@@ -50,6 +54,7 @@ const ChatInput = ({
     const [imageUri, setImageUri] = useState({ uri: '' });
 
     const styles = useStyle(themeStore);
+    const inset = useSafeAreaInsets();
 
     useEffect(() => {
         if (showEmojiPicker) {
@@ -190,19 +195,50 @@ const ChatInput = ({
                         });
 
                         setMessage('');
+                        setImageUri({ uri: '' });
                     }}>
                     {/* 6329ba557a5b2854e9a16383 cua Vy
             63254bcca085e871f7a1f933 cua Nghia
         */}
                     <IconView
                         component="MaterialCommunityIcons"
-                        name={message ? 'send' : 'microphone'}
+                        name={'send'}
                         size={23}
                         color={colors.white}
                     />
                 </TouchableOpacity>
             </View>
             {/* <EmojiPicker /> */}
+            {!isEmpty(imageUri.uri) ? (
+                <Block
+                    zIndex={1000}
+                    absolute
+                    bottom={inset.bottom + 40}
+                    left={20}>
+                    <Block
+                        backgroundColor={colors.white}
+                        absolute
+                        top={-5}
+                        right={-5}
+                        zIndex={10000}
+                        radius={100}
+                        padding={2}>
+                        <TouchableOpacity
+                            onPress={() => setImageUri({ uri: '' })}>
+                            <Icon
+                                component="MaterialIcons"
+                                name="clear"
+                                size={14}
+                                color={colors.grey10}
+                            />
+                        </TouchableOpacity>
+                    </Block>
+                    <FastImage
+                        source={{ uri: imageUri.uri }}
+                        style={styles.imageUploadFile}
+                    />
+                </Block>
+            ) : null}
         </Animated.View>
     );
 };
@@ -307,6 +343,20 @@ const useStyle = makeStyles()(({ normalize, colors }) => ({
         width: normalize(50)('moderate'),
         alignItems: 'center',
         justifyContent: 'center',
+    },
+    imageUploadFile: {
+        width: 70,
+        height: 100,
+        borderRadius: 10,
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 2,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+
+        elevation: 5,
     },
 }));
 
