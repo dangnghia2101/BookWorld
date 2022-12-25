@@ -222,7 +222,7 @@ const ListenBook = ({ route, t }) => {
             <Animated.View style={style.mainWrapper}>
                 <View style={[style.imageWrapper, style.elevation]}>
                     <FastImage
-                        style={styles.musicImage}
+                        style={style.musicImage}
                         source={{
                             uri: item?.artwork,
                             priority: FastImage.priority.high,
@@ -508,7 +508,7 @@ const ListenBook = ({ route, t }) => {
                 backgroundColor={colors.background}
                 style={style.bottomSection}>
                 <Block style={style.bottomIconContainer}>
-                    <TouchableOpacity onPress={() => {}}>
+                    <TouchableOpacity onPress={() => { }}>
                         <Ionicons
                             name="heart-outline"
                             size={25}

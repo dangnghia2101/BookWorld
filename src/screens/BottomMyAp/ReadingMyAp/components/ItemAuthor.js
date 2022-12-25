@@ -34,6 +34,14 @@ const ItemAuthor = ({ item, t }) => {
             return star;
         }
     };
+
+    const _renderView = () => {
+
+        let num = Math.floor(Math.random() * 999) + 100;
+        return num;
+
+    };
+
     return (
         <TouchableOpacity
             onPress={() =>
@@ -98,7 +106,7 @@ const ItemAuthor = ({ item, t }) => {
                             fontType="medium1"
                             color={theme.colors.textInBox}
                             style={styles.totalRead}>
-                            23
+                            {_renderView()}
                         </Text>
                         <Text
                             fontType="bold1"
@@ -110,7 +118,7 @@ const ItemAuthor = ({ item, t }) => {
                             fontType="medium1"
                             color={theme.colors.textInBox}
                             style={styles.totalRead}>
-                            23
+                            {_renderView()}
                         </Text>
                     </Block>
                 </Block>
