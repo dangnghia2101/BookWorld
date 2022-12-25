@@ -43,22 +43,6 @@ const DetailGroupChatMyApp = ({ route }) => {
 
     const navigation = useNavigation();
 
-    const processChange = debounce((image, msg, name, avatar) => {
-        // let messageList = [
-        //     ...messages,
-        //     {
-        //         user: 1,
-        //         createdAt: new Date().toDateString(),
-        //         message: msg,
-        //         fromSelf: false,
-        //         avatar: avatar,
-        //         name: name,
-        //         image: image ? image : undefined,
-        //     },
-        // ];
-        // setMessages(messages);
-    });
-
     useEffect(() => {
         const fetchApiChat = async () => {
             const { data } = await getChats({ token: myInfo.token, room: id });
@@ -68,31 +52,47 @@ const DetailGroupChatMyApp = ({ route }) => {
 
         socketRef.current = io(DOMAIN);
         socketRef.current.emit('add-user', id);
-
-        socketRef.current.on('msg-recieve', ({ msg, name, image, avatar }) => {
-            // processChange(image, msg, name, avatar);
-            console.log('msg-recieve ', msg, messages.length);
-            let messageList = [
-                ...messages,
-                {
-                    user: 1,
-                    createdAt: new Date().toDateString(),
-                    message: msg,
-                    fromSelf: false,
-                    avatar: avatar,
-                    name: name,
-                    image: image ? image : undefined,
-                },
-            ];
-            if (messageList.length > 0) {
-                setMessages(messageList);
-            }
-        });
     }, []);
 
-    // useEffect(() => {
+    useEffect(() => {
+        const handleUpdateMessage = _newMessage => {
+            console.log(
+                'handleUpdateMessage ',
+                _newMessage.name,
+                _newMessage.message,
+                myInfo.name,
+            );
+            setMessages([...messages, _newMessage]);
+        };
 
-    // }, []);
+        socketRef.current.on('msg-recieve', ({ msg, name, image, avatar }) => {
+            handleUpdateMessage({
+                user: 1,
+                createdAt: new Date().toDateString(),
+                message: msg,
+                fromSelf: false,
+                avatar: avatar,
+                name: name,
+                image: image ? image : undefined,
+            });
+        });
+        return () => {
+            socketRef.current.off(
+                'msg-recieve',
+                ({ msg, name, image, avatar }) => {
+                    handleUpdateMessage({
+                        user: 1,
+                        createdAt: new Date().toDateString(),
+                        message: msg,
+                        fromSelf: false,
+                        avatar: avatar,
+                        name: name,
+                        image: image ? image : undefined,
+                    });
+                },
+            );
+        };
+    }, [messages]);
 
     //👇🏻 Runs whenever there is new trigger from the backend
 
