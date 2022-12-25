@@ -23,16 +23,11 @@ export const purchaseAPI = createApi({
             },
             transformResponse: (response: { data: PurchaseState[] }) =>
                 response.data,
-            // async onQueryStarted(id, { dispatch, queryFulfilled }) {
-            //     try {
-            //         const { data } = await queryFulfilled;
-            //         dispatch(savePurchase(data.data));
-            //     } catch (err) {
-            //         console.log('error api getPurchase... ', err);
-            //     }
-            // },
         }),
     }),
 });
 
-export const {useGetPurchaseHistoryCartQuery, useLazyGetPurchaseHistoryCartQuery} = purchaseAPI;
+export const {
+    useGetPurchaseHistoryCartQuery,
+    useLazyGetPurchaseHistoryCartQuery,
+} = purchaseAPI;

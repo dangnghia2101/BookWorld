@@ -348,15 +348,6 @@ const useStyle = makeStyles()(({ normalize, colors }) => ({
         width: 70,
         height: 100,
         borderRadius: 10,
-        shadowColor: '#000',
-        shadowOffset: {
-            width: 2,
-            height: 2,
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-
-        elevation: 5,
     },
 }));
 

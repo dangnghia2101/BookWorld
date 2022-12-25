@@ -4,6 +4,7 @@ import { useAppSelector } from '@hooks';
 import { useNavigation } from '@react-navigation/core';
 import { useGetChatsMutation } from '@redux/servicesNew';
 import { DOMAIN } from '@redux/servicesNew/endpoint';
+import { isEmpty } from 'lodash';
 import React, {
     useCallback,
     useEffect,
@@ -43,18 +44,19 @@ const DetailGroupChatMyApp = ({ route }) => {
     const navigation = useNavigation();
 
     const processChange = debounce((image, msg, name, avatar) => {
-        setMessages([
-            ...messages,
-            {
-                user: 1,
-                createdAt: new Date().toDateString(),
-                message: msg,
-                fromSelf: false,
-                avatar: avatar,
-                name: name,
-                image: image ? image : undefined,
-            },
-        ]);
+        // let messageList = [
+        //     ...messages,
+        //     {
+        //         user: 1,
+        //         createdAt: new Date().toDateString(),
+        //         message: msg,
+        //         fromSelf: false,
+        //         avatar: avatar,
+        //         name: name,
+        //         image: image ? image : undefined,
+        //     },
+        // ];
+        // setMessages(messages);
     });
 
     useEffect(() => {
@@ -68,7 +70,23 @@ const DetailGroupChatMyApp = ({ route }) => {
         socketRef.current.emit('add-user', id);
 
         socketRef.current.on('msg-recieve', ({ msg, name, image, avatar }) => {
-            processChange(image, msg, name, avatar);
+            // processChange(image, msg, name, avatar);
+            console.log('msg-recieve ', msg, messages.length);
+            let messageList = [
+                ...messages,
+                {
+                    user: 1,
+                    createdAt: new Date().toDateString(),
+                    message: msg,
+                    fromSelf: false,
+                    avatar: avatar,
+                    name: name,
+                    image: image ? image : undefined,
+                },
+            ];
+            if (messageList.length > 0) {
+                setMessages(messageList);
+            }
         });
     }, []);
 
@@ -89,7 +107,7 @@ const DetailGroupChatMyApp = ({ route }) => {
                 fromSelf: true,
                 avatar: myInfo.image,
                 name: myInfo.name,
-                file: _message?.file
+                image: _message?.file
                     ? `data:image/jpeg;base64,${_message?.file}`
                     : undefined,
             },

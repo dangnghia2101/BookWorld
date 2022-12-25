@@ -32,7 +32,10 @@ const DetailBookScreenMyAp = ({ route }) => {
     const [isRead, setIsRead] = useState(_isRead || true);
     const [colorHeart, setColorHeart] = useState();
     const myInfo = useAppSelector(state => state.root.auth);
-    const { data } = useGetFavoriteBookQuery(myInfo._id);
+    const { data } = useGetFavoriteBookQuery({
+        id: myInfo._id,
+        token: myInfo.token,
+    });
 
     const themeStore = useAppSelector(state => state.root.themeApp.theme);
     const themeNew = useTheme(themeStore);
@@ -113,13 +116,16 @@ const DetailBookScreenMyAp = ({ route }) => {
 
     useEffect(() => {
         let flg = false;
-        console.log('Get favorite book ', data);
-        data?.data[0]?.favoriteBooks.map(itemFvr => {
-            if (itemFvr.idBook._id == item._id) {
-                flg = true;
-            }
-        });
-        setColorHeart(flg);
+        try {
+            data?.data[0]?.favoriteBooks.map(itemFvr => {
+                if (itemFvr?.idBook._id == item?._id) {
+                    flg = true;
+                }
+            });
+            setColorHeart(flg);
+        } catch (e) {
+            console.log('[Error] getColorHeart ', e);
+        }
     }, []);
 
     const favoriteIcon = () => {

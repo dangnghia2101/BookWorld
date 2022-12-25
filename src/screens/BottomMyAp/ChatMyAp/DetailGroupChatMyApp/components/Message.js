@@ -33,8 +33,6 @@ const Message = ({
     const startingPosition = 0;
     const x = useSharedValue(startingPosition);
 
-    console.log('MESSAGE ', image);
-
     const isOnLeft = type => {
         if (isLeft && type === 'messageContainer') {
             return {

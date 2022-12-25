@@ -1,2 +1,2 @@
-export const MAIN_API = 'https://eaa4-116-193-68-242.ap.ngrok.io/api';
-export const DOMAIN = 'https://eaa4-116-193-68-242.ap.ngrok.io';
+export const MAIN_API = 'https://www.bookworlddashboard.shop/api';
+export const DOMAIN = 'https://www.bookworlddashboard.shop';

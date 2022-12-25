@@ -53,7 +53,7 @@ const ItemCateBook = ({ item, t }) => {
 
     return (
         <Block paddingHorizontal={10} marginTop={15} row>
-            <Block >
+            <Block>
                 <FastImage
                     style={styles.image}
                     source={{
@@ -63,7 +63,7 @@ const ItemCateBook = ({ item, t }) => {
                 />
             </Block>
             <Block justifyContent={'space-between'} marginLeft={15}>
-                <Block backgroundColor={theme.colors.Orange} width={280}>
+                <Block width={280}>
                     <Text
                         size={17}
                         width="75%"

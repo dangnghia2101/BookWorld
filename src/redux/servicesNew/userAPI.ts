@@ -73,7 +73,6 @@ export const userApi = createApi({
             async onQueryStarted(id, { dispatch, queryFulfilled }) {
                 try {
                     const { data } = await queryFulfilled;
-                    console.log('==== forgot password ', data);
                 } catch (err) {
                     console.log('error api forgot password... ', err);
                 }
@@ -130,8 +129,11 @@ export const userApi = createApi({
             },
         }),
         getAllAccount: builder.query<any, { token: string }>({
-            query: body => ({
+            query: ({ token }) => ({
                 url: `accounts/getAllUsers`,
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
             }),
             transformResponse: (response: { data: any }) => response,
         }),
