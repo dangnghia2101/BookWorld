@@ -1,65 +1,83 @@
-import { Text, Block } from '@components';
+import { Block, Text } from '@components';
 import { useAppSelector } from '@hooks';
-import { useNavigation } from '@react-navigation/native';
-import React, {useState} from 'react';
+import React from 'react';
 import { withNamespaces } from 'react-i18next';
 import { Image, TouchableOpacity, View } from 'react-native';
-import { makeStyles, useTheme } from 'themeNew';
+import { makeStyles } from 'themeNew';
 
-const ItemRank = ({ item, t, index}) => {
-    const navigation = useNavigation();
+const ItemRank = ({ item, t, index }) => {
     const themeStore = useAppSelector(state => state.root.themeApp.theme);
-    const themeNew = useTheme(themeStore);
     const styles = useStyles(themeStore);
-    const time = ((item.timeRead)/1000/60).toFixed(0);
-    
+    const time = (item.timeRead / 60 / 60).toFixed(0);
+
     return (
         <Block relative>
             <TouchableOpacity>
                 <Block row style={styles.itemContainer} padding={10}>
                     <Block row justifyContent={'center'} alignItems={'center'}>
-                        <Image source={require('../../../../../assets/images/Vector.png')} />
                         <Image
-                        style={styles.imageRank}
-                        source={{ uri: item?.image }}
+                            source={require('../../../../../assets/images/Vector.png')}
+                        />
+                        <Image
+                            style={styles.imageRank}
+                            source={{ uri: item?.image }}
                         />
                     </Block>
-                <View style={styles.item}>
-                    <Text fontType={'bold1'} color="white" size={15}>
-                    {item?.name}
-                    </Text>
-                    <Block marginVertical={10}>
-                      <Block row>
-                        <Text fontType={'medium1'} color="#9A9B9B" size={10}>
-                            {t('totalReadingTime')}: 
+                    <View style={styles.item}>
+                        <Text fontType={'bold1'} color="white" size={15}>
+                            {item?.name}
                         </Text>
-                        <Text fontType={'medium1'} color="#9A9B9B" size={10} marginHorizontal={4}>
-                          {time}
-                        </Text>
-                        <Text fontType={'medium1'} color="#9A9B9B" size={10}>
-                          {t('minute')}
-                        </Text>
-                      </Block>
-                      <Block row>
-                      <Text fontType={'medium1'} color="#9A9B9B" size={10}>
-                          {t('numberOfBooksRead')}:
-                      </Text>
-                        <Text fontType={'medium1'} color="#9A9B9B" size={10} marginHorizontal={5}>
-                          {item?.historyBookRead}
-                      </Text>
-                      </Block>
-                    
-                    </Block>
-                </View>
+                        <Block marginVertical={10}>
+                            <Block row>
+                                <Text
+                                    fontType={'medium1'}
+                                    color="#9A9B9B"
+                                    size={10}>
+                                    {t('totalReadingTime')}:
+                                </Text>
+                                <Text
+                                    fontType={'medium1'}
+                                    color="#9A9B9B"
+                                    size={10}
+                                    marginHorizontal={4}>
+                                    {time}
+                                </Text>
+                                <Text
+                                    fontType={'medium1'}
+                                    color="#9A9B9B"
+                                    size={10}>
+                                    {t('hours')}
+                                </Text>
+                            </Block>
+                            <Block row>
+                                <Text
+                                    fontType={'medium1'}
+                                    color="#9A9B9B"
+                                    size={10}>
+                                    {t('numberOfBooksRead')}:
+                                </Text>
+                                <Text
+                                    fontType={'medium1'}
+                                    color="#9A9B9B"
+                                    size={10}
+                                    marginHorizontal={5}>
+                                    Đang cập nhật
+                                </Text>
+                            </Block>
+                        </Block>
+                    </View>
                     <Block row justifyContent={'center'}>
                         <View style={styles.rankContainer} opacity={0.15} />
-                        <Text style={styles.sttRank} fontSize={15} color="#FA4D96">
-                        {index+1}
+                        <Text
+                            style={styles.sttRank}
+                            fontSize={15}
+                            color="#FA4D96">
+                            {index + 1}
                         </Text>
                     </Block>
                 </Block>
             </TouchableOpacity>
-      </Block>
+        </Block>
     );
 };
 
@@ -73,26 +91,26 @@ const useStyles = makeStyles()(({ colors }) => ({
         height: 100,
         borderRadius: 20,
         marginVertical: 10,
-      },
-      imageRank: {
+    },
+    imageRank: {
         position: 'absolute',
         height: 50,
         width: 50,
         borderRadius: 35,
-      },
-      item: {
+    },
+    item: {
         width: '50%',
         justifyContent: 'center',
         alignItems: 'flex-start',
-      },
-      rankContainer: {
+    },
+    rankContainer: {
         width: 30,
         height: 30,
         backgroundColor: '#FA4D96',
         borderRadius: 8,
-      },
-      sttRank: {
+    },
+    sttRank: {
         position: 'absolute',
         top: 4.5,
-      },
+    },
 }));
