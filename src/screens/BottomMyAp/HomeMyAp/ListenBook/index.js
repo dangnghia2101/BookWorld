@@ -222,7 +222,7 @@ const ListenBook = ({ route, t }) => {
             <Animated.View style={style.mainWrapper}>
                 <View style={[style.imageWrapper, style.elevation]}>
                     <FastImage
-                        style={styles.musicImage}
+                        style={style.musicImage}
                         source={{
                             uri: item?.artwork,
                             priority: FastImage.priority.high,

@@ -1,5 +1,5 @@
 import { useAppSelector } from '@hooks';
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { ScrollView } from 'react-native';
 import { useTheme } from 'themeNew';
 
@@ -10,6 +10,12 @@ const MessagesList = ({ onSwipeToReply, messages }) => {
     const scrollView = useRef();
     const themeStore = useAppSelector(state => state.root.themeApp.theme);
     const { colors } = useTheme(themeStore);
+
+    useEffect(() => {
+        if (scrollView.current) {
+            scrollView.current.scrollToEnd({ animated: true });
+        }
+    }, [messages]);
 
     return (
         <ScrollView
