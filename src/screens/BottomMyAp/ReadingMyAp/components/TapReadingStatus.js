@@ -30,7 +30,7 @@ const TapReadingStatus = () => {
       },
       {
         _id: 'cate03',
-        name: 'Tác giả yêu thích',
+        name: 'Tác giả',
       },
     ],
     book: [
@@ -188,8 +188,11 @@ const styles = StyleSheet.create({
   tabBarIndicatorStyle: {
     height: 2,
     backgroundColor: theme.colors.creamRed
+
   },
   tabStyle: {
-    width: 'auto',
+    width: 150,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
 });
