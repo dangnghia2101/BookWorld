@@ -4,11 +4,9 @@ import { useAppDispatch, useAppSelector } from '@hooks';
 import { saveSearchReducer } from '@redux/reducerNew';
 import React, { useState } from 'react';
 import { withNamespaces } from 'react-i18next';
-import { ScrollView } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { makeStyles, useTheme } from 'themeNew';
 import TabTopicSearch from './components/TabTopicSearch';
-const Search = ({ t }) => {
+const Search = ({ t, route }) => {
     const themeStore = useAppSelector(state => state.root.themeApp.theme);
     const { colors } = useTheme(themeStore);
     const [search, setSearch] = useState('');
@@ -45,7 +43,10 @@ const Search = ({ t }) => {
                 onFocus={() => setFocus(true)}
                 iconLeft={renderIconLeft}
                 containerStyle={styles.containerSearch}
-                style={focus ? styles.styleSearchFocus : styles.styleSearch}
+                style={[
+                    focus ? styles.styleSearchFocus : styles.styleSearch,
+                    { backgroundColor: colors.background },
+                ]}
                 value={search}
                 onChangeText={setSearch}
                 onEndEditing={saveSearch}
@@ -60,12 +61,10 @@ const useStyle = makeStyles()(({ normalize, colors }) => ({
         marginHorizontal: 20,
     },
     styleSearch: {
-        backgroundColor: colors.grey13,
         borderColor: colors.grey13,
         height: normalize(50)('moderate'),
     },
     styleSearchFocus: {
-        borderColor: colors.primary,
         borderWidth: 2,
         height: normalize(50)('moderate'),
     },

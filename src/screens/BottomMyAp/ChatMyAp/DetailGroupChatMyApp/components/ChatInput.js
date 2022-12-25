@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import {
+    PermissionsAndroid,
     Platform,
     Text,
     TextInput,
+    ToastAndroid,
     TouchableOpacity,
     View,
 } from 'react-native';
@@ -14,6 +16,8 @@ import Animated, {
     withTiming,
 } from 'react-native-reanimated';
 import { makeStyles, useTheme } from 'themeNew';
+import { launchImageLibrary } from 'react-native-image-picker';
+import { request, PERMISSIONS, RESULTS } from 'react-native-permissions';
 
 // import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 // import EmojiPicker from "./emojis/EmojiPicker";
@@ -21,6 +25,12 @@ import { makeStyles, useTheme } from 'themeNew';
 import IconView from '@components/Icon';
 import { useAppSelector } from '@hooks';
 import { useSendMessageMutation } from '@redux/servicesNew';
+
+const createFormData = photo => {
+    const data = new FormData();
+    data.append('file', photo.base64);
+    return data;
+};
 
 const ChatInput = ({
     reply,
@@ -37,6 +47,7 @@ const ChatInput = ({
     const { colors } = useTheme(themeStore);
     const myInfo = useAppSelector(state => state.root.auth);
     const [sendMessage] = useSendMessageMutation();
+    const [imageUri, setImageUri] = useState({ uri: '' });
 
     const styles = useStyle(themeStore);
 
@@ -62,8 +73,59 @@ const ChatInput = ({
         };
     });
 
+    const options = {
+        saveToPhotos: true,
+        mediaType: 'photo',
+        maxWidth: 100,
+        maxHeigth: 100,
+        includeBase64: true,
+    };
+
+    const chooseImageGallary = async () => {
+        const result = await launchImageLibrary(options);
+        console.log('chooseImageGallary ', result.assets[0].fileSize);
+        setImageUri({
+            uri: result.assets[0].uri,
+            name: result.assets[0].fileName,
+            type: result.assets[0].type,
+            base64: result.assets[0].base64,
+        });
+        // } else {
+        //     ToastAndroid.show(
+        //         'You must accept permistion choose image',
+        //         ToastAndroid.SHORT,
+        //         ToastAndroid.BOTTOM,
+        //     );
+        // }
+    };
+
+    const handleUploadPhoto = async () => {
+        const body = {
+            formData: createFormData(imageUri),
+            token: myInfo.token,
+        };
+
+        // const aw = await editProfile(body);
+
+        // if (aw?.data?.data) {
+        //     await getInforUser({ token: myInfo.token });
+        //     navigaion.goBack();
+
+        //     ToastAndroid.show(
+        //         'Update profile success',
+        //         ToastAndroid.SHORT,
+        //         ToastAndroid.BOTTOM,
+        //     );
+        // }
+    };
+
     return (
-        <Animated.View style={[styles.container, heightAnimatedStyle]}>
+        <Animated.View
+            style={[
+                styles.container,
+                heightAnimatedStyle,
+                { backgroundColor: colors.background },
+            ]}>
             {reply ? (
                 <View style={styles.replyContainer}>
                     <TouchableOpacity
@@ -100,7 +162,9 @@ const ChatInput = ({
                             color={colors.grey6}
                         />
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.rightIconButtonStyle}>
+                    <TouchableOpacity
+                        onPress={() => chooseImageGallary()}
+                        style={styles.rightIconButtonStyle}>
                         <IconView
                             component="MaterialCommunityIcons"
                             name="camera"
@@ -116,11 +180,13 @@ const ChatInput = ({
                             from: myInfo._id,
                             to: id,
                             msg: message,
+                            file: imageUri.base64,
                         });
                         sendMessage({
                             token: myInfo.token,
                             message: message,
                             room: id,
+                            file: imageUri.base64,
                         });
 
                         setMessage('');
@@ -144,7 +210,6 @@ const ChatInput = ({
 const useStyle = makeStyles()(({ normalize, colors }) => ({
     container: {
         justifyContent: 'center',
-        backgroundColor: 'white',
     },
     replyContainer: {
         paddingHorizontal: 10,
@@ -173,7 +238,7 @@ const useStyle = makeStyles()(({ normalize, colors }) => ({
     },
     inputAndMicrophone: {
         flexDirection: 'row',
-        backgroundColor: colors.grey14,
+        backgroundColor: colors.text,
         flex: 3,
         marginRight: 10,
         borderRadius: 30,

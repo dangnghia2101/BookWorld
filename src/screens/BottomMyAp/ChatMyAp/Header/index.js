@@ -28,7 +28,7 @@ const Header = ({ clicked, searchPhrase, setSearchPhrase, setClicked }) => {
   }, []);
 
   return (
-    <Block backgroundColor={theme.colors.background} style={[styles.container, { paddingTop: paddingTop }]}>
+    <Block backgroundColor={theme.colors.Orange} style={[styles.container, { paddingTop: paddingTop }]}>
       <Search
         clicked={clicked}
         setClicked={setClicked}
@@ -48,7 +48,6 @@ const Header = ({ clicked, searchPhrase, setSearchPhrase, setClicked }) => {
 
 const useStyle = makeStyles()(({ normalize, colors }) => ({
   container: {
-    marginVertical: 15,
     justifyContent: 'flex-start',
     alignItems: 'center',
     flexDirection: 'row',

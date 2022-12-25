@@ -1,10 +1,17 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import {
+    createSlice,
+    PayloadAction,
+    createEntityAdapter,
+} from '@reduxjs/toolkit';
+import { keys } from 'lodash';
 
+const cartAdapter = createEntityAdapter();
 export type CartState = {
     _id: string;
     name: string;
     isPrice: number;
     image: string;
+    introduction: string;
     chapter?: {
         [key: number]: ChapterState;
     };
@@ -52,27 +59,21 @@ const cartSlice = createSlice({
             ] = action.payload.data;
         },
         removeItem: (state, action) => {
-            let arr = state.cartList.filter(
-                arrow => arrow._id === action.payload,
-            );
+            let cart = state.cartList;
+            let arr = cart.filter(item => item._id !== action.payload._id);
             state.cartList = arr;
         },
-        removeBookCart: (state: CartList, action) => {
-            let { id, index } = action.payload;
-            state.cartList = state.cartList.splice(
-                state.cartList.findIndex(arrow => arrow._id === id),
-                index,
-            );
+        removeChapter: (state, action) => {
+            const { idBook, idChapter } = action.payload;
+            state.cartList.map((item, index) => {
+                if (item._id === idBook) {
+                    let chapter = item.chapter || {};
+                    delete chapter[idChapter];
+                    state.cartList[index].chapter = chapter;
+                    return;
+                }
+            });
         },
-        // removeChapter: (state: CartList, action) => {
-        //     let arr = state.cartList.filter(item => item.chapter[].idChapter === action.payload);
-        //     state.cartList = arr;
-
-            // let { id, index, keyChapter } = action.payload;
-            // let arr = state.cartList[index];
-            // delete arr.chapter[keyChapter];
-            // state.cartList[index] = arr;
-        // },
         removeBookPayment: (state: CartList, action) => {
             const data = action.payload;
             let newCart: CartState[] = [];
@@ -98,9 +99,8 @@ export const {
     saveCartReducer,
     saveChapterReducer,
     saveStatusCartReducer,
-    removeItem: removeItem,
+    removeItem,
     removeChapter,
-    removeBookCart,
     removeBookPayment,
 } = cartSlice.actions;
 export const CartReducer = cartSlice.reducer;

@@ -5,7 +5,7 @@ import DetailBookScreenMyAp from './DetailBookScreenMyAp';
 import { ListenBook } from './ListenBook';
 import PlayBookScreenMyAp from './PlayBookScreenMyAp';
 import Search from './Search';
-
+import SeeMoreScreen from './HomeScreenMyAp/components/SeeMoreScreen';
 export {
     DetailBookScreenMyAp,
     PlayBookScreenMyAp,
@@ -14,4 +14,5 @@ export {
     Payment,
     ScreenNotification,
     Search,
+    SeeMoreScreen
 };

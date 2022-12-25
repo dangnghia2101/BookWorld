@@ -1,6 +1,8 @@
 import { Block, ModalBox, Text, TextInput } from '@components';
+import { useAppSelector } from '@hooks';
 import React, { useEffect } from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
+import {colors, useTheme } from 'themeNew';
 
 const ModalConfirmOtp = ({
     confirmCode,
@@ -8,33 +10,89 @@ const ModalConfirmOtp = ({
     setShowModal,
     setCodeOTP,
     codeOTP,
-    phone
+    phone,
 }) => {
     useEffect(() => {
         setShowModal(showModal);
     }, [showModal]);
 
+    const themeStore = useAppSelector(state => state.root.themeApp.theme);
+    const { colors } = useTheme(themeStore);
+
     return (
-        <ModalBox transparent={true} isVisible={showModal}>
+        <ModalBox
+            onBackdropPress={() => setShowModal(!showModal)}
+            transparent={true}
+            isVisible={showModal}>
             <Block
-                style={styles.modalBackGround}
-                backgroundColor="white"
+                style={{
+                    justifyContent: 'center',
+                    alignContent: 'center',
+                    alignItems: 'center',
+                    backgroundColor: colors.background,
+                }}
                 marginHorizontal={20}
-                borderRadius={15}
+                radius={15}
                 padding={20}>
-                <Text style={styles.textOTP} center>
+                <Text
+                    style={{
+                        fontSize: 15,
+                        lineHeight: 23,
+                        color: colors.textInBox,
+                        fontStyle: 'normal',
+                    }}
+                    center>
                     Mã OTP đã được gửi về số điện thoại của bạn
                 </Text>
-                <Text marginTop={18} style={styles.textPhone}>
+                <Text
+                    marginTop={18}
+                    style={{
+                        fontWeight: 'bold',
+                        fontSize: 15,
+                        lineHeight: 23,
+                        color: colors.textInBox,
+                    }}>
                     {phone}
                 </Text>
 
-                <TextInput onChangeText={setCodeOTP} value={codeOTP} />
-
+                <TextInput
+                    value={codeOTP}
+                    onChangeText={setCodeOTP}
+                    keyboardType="numeric"
+                    placeholder={'OTP'}
+                    inputStyle={{
+                        paddingHorizontal: '40%',
+                        color: colors.textInBox,
+                    }}
+                />
                 <TouchableOpacity
-                    style={styles.buttomLogin}
+                    style={{
+                        width: '100%',
+                        marginTop: 43,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        borderRadius: 15,
+                        backgroundColor: colors.primary,
+                        height: 50,
+                        shadowColor: '#000',
+                        shadowOffset: {
+                            width: 0,
+                            height: 3,
+                        },
+                        shadowOpacity: 1,
+                        shadowRadius: 6,
+                        elevation: 7,
+                    }}
                     onPress={confirmCode}>
-                    <Text style={styles.textButtomLogin} height={55}>
+                    <Text
+                        style={{
+                            fontSize: 16,
+                            lineHeight: 50,
+                            alignItems: 'center',
+                            fontWeight: '700',
+                            color: colors.textInBox,
+                        }}
+                        height={55}>
                         Đồng ý
                     </Text>
                 </TouchableOpacity>
@@ -104,7 +162,7 @@ const styles = ({ isDisable }) =>
             justifyContent: 'center',
             alignItems: 'center',
             borderRadius: 15,
-            backgroundColor: 'red',
+            backgroundColor: colors.light.primary,
             height: 50,
             shadowColor: '#000',
             shadowOffset: {

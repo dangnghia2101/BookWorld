@@ -56,6 +56,7 @@ export const theme = {
         mirage: '#181E25',
         // themes
         background: '#05222C',
+        backgroundItem: '#05222C',
         text: '#FFFFFF',
         primary: '#35C4BA',
         disabled: '#8FA2B7',
@@ -104,6 +105,7 @@ export const theme = {
         mirage: '#181E25',
         // themes
         background: '#FFFFFF',
+        backgroundItem: '#FFFFFF',
         text: '#000000',
         primary: '#35C4BA',
         disabled: '#8FA2B7',

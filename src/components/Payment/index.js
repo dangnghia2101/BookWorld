@@ -4,7 +4,7 @@ import {
     CardForm,
 } from '@stripe/stripe-react-native';
 import React, { useState, useEffect } from 'react';
-import { Block, Text, HeaderWithButton } from '@components';
+import { Block, Text, HeaderWithButton, ModalBox } from '@components';
 import {
     ScrollView,
     TouchableOpacity,
@@ -82,6 +82,7 @@ const PaymentScreen = ({ price, t }) => {
     const paymentChapter = async () => {
         let pay = {
             idChapter: [],
+            totalPrice: price,
         };
         let idProducts = [];
 
@@ -160,15 +161,15 @@ const PaymentScreen = ({ price, t }) => {
     return (
         <Block backgroundColor={colors.background} relative>
             <HeaderWithButton isBackHeader title={t('pay')} />
-            <ScrollView bounces={false}>
+            <ScrollView bounces={false} showsVerticalScrollIndicator={false}>
                 <Block alignCenter>
                     <Text
                         marginTop={30}
                         marginBottom={20}
                         size={16}
-                        fontType='medium1'
+                        fontType="medium1"
                         color={colors.textInBox}>
-                        Tổng tiền phải thanh toán của bạn
+                        {t('totalHaveToPay')}
                     </Text>
                     <Block
                         alignCenter
@@ -176,24 +177,21 @@ const PaymentScreen = ({ price, t }) => {
                         height={130}
                         marginBottom={20}
                         radius={20}
-                        backgroundColor={colors.textInBox}
+                        backgroundColor={colors.white}
                         style={{
                             justifyContent: 'center',
                             alignItems: 'center',
-                            shadowColor: theme.colors.gray2,
+                            shadowColor: theme.colors.black,
                             shadowOffset: {
                                 width: 0,
-                                height: 2,
+                                height: 7,
                             },
-                            shadowOpacity: 0.25,
-                            shadowRadius: 12,
+                            shadowOpacity: 1,
+                            shadowRadius: 3,
 
-                            elevation: 3,
+                            elevation: 2.5,
                         }}>
-                        <Text
-                            color={colors.text}
-                            size={35}
-                            fontType={'bold'}>
+                        <Text color={colors.grey4} size={35} fontType={'bold'}>
                             {price
                                 .toFixed(0)
                                 .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')}
@@ -282,39 +280,41 @@ const PaymentScreen = ({ price, t }) => {
                         />
                     </Block>
                     <Text style={styles.textOTP} center>
-                        Thanh toán thành công
+                        {t('paymentSuccess')}
                     </Text>
                 </Block>
             </ModalPoup>
 
-            <ModalPoup visible={visibleCartErr}>
-                <Block style={styles.clone}>
-                    <Fontisto
-                        name={'close-a'}
-                        size={12}
-                        color={'black'}
-                        onPress={() => {
-                            setVisibleCartErr(false);
-                        }}
-                    />
-                </Block>
-                <Block alignCenter={'center'}>
-                    <Block>
-                        <Image
-                            source={require('../../assets/icons/faile.png')}
-                            style={{ width: 70, height: 70 }}
-                        />
+            <ModalBox
+                isVisible={visibleCartErr}
+                onBackdropPress={() => setVisibleCartErr(!visibleCartErr)}>
+                <Block
+                    backgroundColor={'white'}
+                    radius={15}
+                    alignSelf={'center'}
+                    justifyCenter={'center'}
+                    padding={20}>
+                    <Block alignCenter={'center'}>
+                        <Block>
+                            <Image
+                                source={require('../../assets/icons/faile.png')}
+                                style={{ width: 70, height: 70 }}
+                            />
+                        </Block>
+                        <Text style={styles.textOTP} center>
+                            {t('paymentFailed')}
+                        </Text>
+                        <TouchableOpacity
+                            style={{ marginTop: 10 }}
+                            center
+                            onPress={() => {
+                                setVisibleCartErr(false);
+                            }}>
+                            <Text size={14}>{t('checkInfo')}</Text>
+                        </TouchableOpacity>
                     </Block>
-                    <Text style={styles.textOTP} center>
-                        Thanh toán không thành công
-                    </Text>
-                    <TouchableOpacity style={{ marginTop: 10 }} center onPress={() => {
-                        setVisibleCartErr(false);
-                    }}>
-                        <Text size={14}>Kiểm tra lại thông tin</Text>
-                    </TouchableOpacity>
                 </Block>
-            </ModalPoup>
+            </ModalBox>
         </Block>
     );
 };

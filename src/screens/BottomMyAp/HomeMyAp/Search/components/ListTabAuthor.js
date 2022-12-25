@@ -13,6 +13,7 @@ import {
     TouchableOpacity,
     View,
 } from 'react-native';
+import FastImage from 'react-native-fast-image';
 import { makeStyles, useTheme } from 'themeNew';
 
 const ListTabAuthor = ({ search, setSearch, t }) => {
@@ -50,7 +51,9 @@ const ListTabAuthor = ({ search, setSearch, t }) => {
                     size={25}
                     color={colors.grey10}
                 />
-                <Text style={styles.titleItemHistory}>{title}</Text>
+                <Text color={colors.textInBox} style={styles.titleItemHistory}>
+                    {title}
+                </Text>
                 <TouchableOpacity onPress={() => dispatch(deleteSearch(index))}>
                     <Icon
                         component="MaterialIcons"
@@ -66,13 +69,20 @@ const ListTabAuthor = ({ search, setSearch, t }) => {
     const ItemAuthor = item => {
         return (
             <Block height={70} row alignCenter marginHorizontal={20}>
-                <Image
-                    source={{ uri: item?.avatar }}
+                <FastImage
                     style={styles.imageStyle}
+                    source={{
+                        uri: item?.avatar,
+                        priority: FastImage.priority.high,
+                    }}
                 />
                 <Block flexShrink={1} marginLeft={10} paddingTop={10}>
-                    <Text fontType="bold">{item?.name}</Text>
-                    <Text numberOfLines={2}>{item?.aboutAuthor?.details}</Text>
+                    <Text fontType="bold" color={colors.textInBox}>
+                        {item?.name}
+                    </Text>
+                    <Text numberOfLines={2} color={colors.textInBox}>
+                        {item?.aboutAuthor?.details}
+                    </Text>
                 </Block>
                 <Pressable
                     onPress={() =>
@@ -81,11 +91,12 @@ const ListTabAuthor = ({ search, setSearch, t }) => {
                         })
                     }>
                     <Block
+                        marginLeft={10}
                         backgroundColor={colors.primary}
                         radius={5}
                         paddingHorizontal={10}
                         paddingVertical={5}>
-                        <Text color={colors.text}>Detail</Text>
+                        <Text color={colors.white}>{t('detail')}</Text>
                     </Block>
                 </Pressable>
             </Block>
@@ -93,7 +104,11 @@ const ListTabAuthor = ({ search, setSearch, t }) => {
     };
 
     const SectionHeader = title => (
-        <View style={styles.containerSection}>
+        <View
+            style={[
+                styles.containerSection,
+                { backgroundColor: colors.backgroundDark2 },
+            ]}>
             <Text fontType="medium1" style={styles.headerSection}>
                 {title}
             </Text>
@@ -138,7 +153,6 @@ const useStyle = makeStyles()(({ colors }) => ({
     },
     titleItemHistory: {
         fontSize: 16,
-        color: colors.grey4,
         marginLeft: 10,
         flexGrow: 1,
     },

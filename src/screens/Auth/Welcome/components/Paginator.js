@@ -1,5 +1,6 @@
 import {StyleSheet, Animated, useWindowDimensions, View} from 'react-native';
 import React from 'react';
+import { colors, useTheme } from 'themeNew';
 
 const Paginator = ({data, scrollX}) => {
   const {width} = useWindowDimensions();
@@ -36,7 +37,7 @@ const styles = StyleSheet.create({
   dot: {
     height: 10,
     borderRadius: 5,
-    backgroundColor: '#D45555',
+    backgroundColor: colors.light.primary,
     marginHorizontal: 8,
   },
 });

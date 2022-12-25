@@ -13,10 +13,12 @@ const EditMoreMyApp = props => {
     const { t } = props;
     const myInfo = useAppSelector(state => state.root.auth);
     const themeStore = useAppSelector(state => state.root.themeApp.theme);
-    const themeNew = useTheme(themeStore);
+    const { colors } = useTheme(themeStore);
 
     return (
-        <Block backgroundColor={themeNew.colors.background} flex>
+        <Container
+            style={{ backgroundColor: colors.background, flex: 1 }}
+            statusColor={colors.background}>
             <HeaderWithButton title={t('profile')} isBackHeader />
             <ScrollView showsVerticalScrollIndicator={false}>
                 <BodyEditMoreMy
@@ -27,7 +29,7 @@ const EditMoreMyApp = props => {
                 <ItemEditMoreMy />
                 <ItemEditLastMoreMy />
             </ScrollView>
-        </Block>
+        </Container>
     );
 };
 

@@ -14,7 +14,14 @@ import {
     View,
 } from 'react-native';
 
-import { Block, Container, HeaderWithButton, Icon, ModalBox, Text } from '@components';
+import {
+    Block,
+    Container,
+    HeaderWithButton,
+    Icon,
+    ModalBox,
+    Text,
+} from '@components';
 import { useAppDispatch, useAppSelector } from '@hooks';
 import Slider from '@react-native-community/slider';
 import { changeLoading } from '@redux/reducerNew';
@@ -39,6 +46,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { icons, NotFoundIcon } from '@assets';
 import Share from 'react-native-share';
 import { withNamespaces } from 'react-i18next';
+import FastImage from 'react-native-fast-image';
 
 const { width, height } = Dimensions.get('window');
 
@@ -213,10 +221,12 @@ const ListenBook = ({ route, t }) => {
         return (
             <Animated.View style={style.mainWrapper}>
                 <View style={[style.imageWrapper, style.elevation]}>
-                    <Image
-                        //   source={item.artwork}
-                        source={{ uri: trackArtwork }}
+                    <FastImage
                         style={style.musicImage}
+                        source={{
+                            uri: item?.artwork,
+                            priority: FastImage.priority.high,
+                        }}
                     />
                 </View>
             </Animated.View>
@@ -237,11 +247,15 @@ const ListenBook = ({ route, t }) => {
 
     const ItemBook = ({ item }) => {
         return (
-            <Block flex height={70} row alignCenter marginHorizontal={10}>
+            <Block row alignCenter marginVertical={10}>
                 <Image source={{ uri: item.image }} style={style.imageStyle} />
                 <Block width="70%" marginLeft={10} paddingTop={10}>
-                    <Text color={colors.textInBox} fontType="bold">{item.name}</Text>
-                    <Text color={colors.textInBox} flexGrow={1}>{item.introduction}</Text>
+                    <Text color={colors.textInBox} fontType="bold">
+                        {item.name}
+                    </Text>
+                    <Text color={colors.textInBox} flexGrow={1}>
+                        {item.introduction?.slice(0, 100)}
+                    </Text>
                 </Block>
                 <Pressable style={{ flex: 1, alignItems: 'flex-end' }}>
                     <Icon
@@ -264,7 +278,11 @@ const ListenBook = ({ route, t }) => {
                 enablePanDownToClose={true}
                 backdropComponent={renderBackdrop}>
                 <Block backgroundColor={colors.background} alignCenter flex>
-                    <Text marginVertical={10} size={16} fontType="bold">
+                    <Text
+                        marginVertical={10}
+                        size={16}
+                        fontType="bold"
+                        color={colors.textInBox}>
                         {t('waitingList')}
                     </Text>
                     <Block
@@ -373,10 +391,12 @@ const ListenBook = ({ route, t }) => {
     const keyExtractor = item => item.toString();
 
     return (
-        <Container style={style.container}>
+        <Container statusColor={colors.background} edges={['left', 'right']}>
             {/* music player section */}
             <HeaderWithButton isBackHeader />
-            <Block backgroundColor={colors.background} style={style.mainContainer}>
+            <Block
+                backgroundColor={colors.background}
+                style={style.mainContainer}>
                 {/* Image */}
 
                 <Animated.FlatList
@@ -385,11 +405,10 @@ const ListenBook = ({ route, t }) => {
                     data={[
                         {
                             id: 'trackId',
-                            url: 'http://commondatastorage.googleapis.com/codeskulptor-demos/DDR_assets/Sevish_-__nbsp_.mp3',
+                            url: dataGet?.linkAudio,
                             title: 'Track Title',
                             artist: 'Track Artist',
-                            artwork:
-                                'https://cdn.pixabay.com/photo/2018/08/14/13/23/ocean-3605547__340.jpg',
+                            artwork: dataGet?.image,
                         },
                     ]}
                     keyExtractor={keyExtractor}
@@ -444,7 +463,7 @@ const ListenBook = ({ route, t }) => {
                                 .toLocaleTimeString()
                                 .substring(3)}
                         </Text>
-                        <Text color={colors.textInBox} >
+                        <Text color={colors.textInBox}>
                             {new Date(
                                 (progress.duration - progress.position) * 1000,
                             )
@@ -484,9 +503,10 @@ const ListenBook = ({ route, t }) => {
                     </TouchableOpacity>
                 </Block>
             </Block>
-
             {/* bottom section */}
-            <Block backgroundColor={colors.background} style={style.bottomSection}>
+            <Block
+                backgroundColor={colors.background}
+                style={style.bottomSection}>
                 <Block style={style.bottomIconContainer}>
                     <TouchableOpacity onPress={() => { }}>
                         <Ionicons
@@ -522,7 +542,6 @@ const ListenBook = ({ route, t }) => {
                     </TouchableOpacity>
                 </Block>
             </Block>
-
             {bottomSheetReadyRead()}
             {renderShare()}
         </Container>
@@ -533,7 +552,7 @@ export default withNamespaces()(ListenBook);
 const useStyle = makeStyles()(({ normalize, colors }) => ({
     container: {
         flex: 1,
-        backgroundColor: colors.background
+        backgroundColor: colors.background,
     },
     mainContainer: {
         flex: 1,
