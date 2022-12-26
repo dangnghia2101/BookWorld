@@ -11,13 +11,17 @@ import EmptyIcon from '@assets/svgs/EmptyIcon';
 const BooksByCategory = ({ route, t }) => {
     const { id, title } = route.params;
     const themeStore = useAppSelector(state => state.root.themeApp.theme);
+    const myInfo = useAppSelector(state => state.root.auth);
     const { colors } = useTheme(themeStore);
 
     const [getAllBookByCategory] = useLazyGetAllBookByCategoryQuery();
     const [data, setData] = useState([]);
 
     useEffect(async () => {
-        const listBookByCategory = await getAllBookByCategory(id);
+        const listBookByCategory = await getAllBookByCategory({
+            token: myInfo.token,
+            params: id,
+        });
         setData(listBookByCategory.data);
     }, []);
 

@@ -1,6 +1,6 @@
 import { Block, Text } from '@components';
 import React from 'react';
-import { StyleSheet, Pressable } from 'react-native';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 import IconView from '@components/Icon';
 import { routes } from '@navigation/routes';
 import { useNavigation } from '@react-navigation/native';
@@ -27,7 +27,7 @@ const ItemEditMoreMy = props => {
                     {t('purchase')}
                 </Text>
                 <Block>
-                    <Pressable
+                    <TouchableOpacity
                         style={[styles.btnItem, styles.shadowColor]}
                         onPress={() =>
                             navigation.navigate(routes.PURCHASE_HISTORY)
@@ -68,7 +68,7 @@ const ItemEditMoreMy = props => {
                                 color={themeNew.colors.textDark}
                             />
                         </Block>
-                    </Pressable>
+                    </TouchableOpacity>
                 </Block>
                 <Text
                     fontType={'bold'}
@@ -78,7 +78,7 @@ const ItemEditMoreMy = props => {
                     {t('settings')}
                 </Text>
                 <Block>
-                    <Pressable
+                    <TouchableOpacity
                         style={[styles.btnItem, styles.shadowColor]}
                         onPress={() =>
                             navigation.navigate(routes.EDIT_PROFILE_SCREEN)
@@ -119,9 +119,9 @@ const ItemEditMoreMy = props => {
                                 color={themeNew.colors.textDark}
                             />
                         </Block>
-                    </Pressable>
+                    </TouchableOpacity>
 
-                    <Pressable style={[styles.btnItem, styles.shadowColor]}>
+                    <TouchableOpacity style={[styles.btnItem, styles.shadowColor]}>
                         <Block
                             marginHorizontal={10}
                             backgroundColor={'#00000020'}
@@ -158,9 +158,9 @@ const ItemEditMoreMy = props => {
                                 color={themeNew.colors.textDark}
                             />
                         </Block>
-                    </Pressable>
+                    </TouchableOpacity>
 
-                    <Pressable style={[styles.btnItem, styles.shadowColor]}>
+                    <TouchableOpacity style={[styles.btnItem, styles.shadowColor]}>
                         <Block
                             marginHorizontal={10}
                             backgroundColor={'#00000020'}
@@ -198,9 +198,9 @@ const ItemEditMoreMy = props => {
                                 color={themeNew.colors.textDark}
                             />
                         </Block>
-                    </Pressable>
+                    </TouchableOpacity>
 
-                    <Pressable
+                    <TouchableOpacity
                         style={[styles.btnItem, styles.shadowColor]}
                         onPress={() => navigation.navigate(routes.THEME_MODE)}>
                         <Block
@@ -239,9 +239,9 @@ const ItemEditMoreMy = props => {
                                 color={themeNew.colors.textDark}
                             />
                         </Block>
-                    </Pressable>
+                    </TouchableOpacity>
 
-                    <Pressable
+                    <TouchableOpacity
                         style={[styles.btnItem, styles.shadowColor]}
                         onPress={() =>
                             navigation.navigate(routes.CHANGE_LANGUAGE)
@@ -282,7 +282,7 @@ const ItemEditMoreMy = props => {
                                 color={themeNew.colors.textDark}
                             />
                         </Block>
-                    </Pressable>
+                    </TouchableOpacity>
                 </Block>
             </Block>
         </Block>

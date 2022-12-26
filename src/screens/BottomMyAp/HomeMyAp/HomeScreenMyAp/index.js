@@ -38,6 +38,8 @@ const widthItemEventIncoming = width - width / 3;
 const WIDTH_ITEM_INVIEW = widthItemEventIncoming - 20;
 
 const HomeScreenMyAp = ({ t }) => {
+    const myInfo = useAppSelector(state => state.root.auth);
+
     const [getAllBook] = useLazyGetAllBookQuery();
     const [getAllAuthor] = useLazyGetAllAuthorQuery();
     const [getAllCategory] = useLazyGetAllCategoryQuery();
@@ -56,8 +58,6 @@ const HomeScreenMyAp = ({ t }) => {
 
     const scrollX = React.useRef(new Animated.Value(0)).current;
 
-    const myInfo = useAppSelector(state => state.root.auth);
-
     const allBooks = useAppSelector(state => state.root.book.bookList);
     const allCategories = useAppSelector(state => state.root.book.categoryList);
     const themeStore = useAppSelector(state => state.root.themeApp.theme);
@@ -68,17 +68,20 @@ const HomeScreenMyAp = ({ t }) => {
 
     useEffect(() => {
         getAllBook(myInfo.token);
-        getAllAuthor();
-        getAllCategory();
+        getAllAuthor(myInfo.token);
+        getAllCategory(myInfo.token);
     }, []);
 
     useEffect(() => {
         if (allBooks) {
-            setBookFree(
-                allBooks.filter(
-                    item => item.isPrice === null || item.isPrice <= 0,
-                ),
-            );
+            let filterData = [];
+
+            allBooks.forEach(item => {
+                if (item.isPrice === 0) {
+                    filterData.push(item);
+                }
+            });
+            setBookFree(filterData);
         }
         getInforUser({ token: myInfo.token });
     }, [allBooks]);
@@ -269,8 +272,8 @@ const HomeScreenMyAp = ({ t }) => {
                         refreshing={isRefresh}
                         onRefresh={async () => {
                             await getAllBook(myInfo.token);
-                            await getAllAuthor();
-                            await getAllCategory();
+                            await getAllAuthor(myInfo.token);
+                            await getAllCategory(myInfo.token);
                             setRefresh(false);
                         }}
                     />

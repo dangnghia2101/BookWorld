@@ -123,7 +123,10 @@ const PaymentScreen = ({ price, t }) => {
             paymentMethod: 'card',
         };
 
-        const response = await createPayment(sentData);
+        const response = await createPayment({
+            body: sentData,
+            token: myInfo.token,
+        });
 
         if (response.data) {
             const clientSecret = response.data.clientSecret;

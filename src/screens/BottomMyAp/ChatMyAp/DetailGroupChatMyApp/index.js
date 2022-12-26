@@ -4,6 +4,7 @@ import { useAppSelector } from '@hooks';
 import { useNavigation } from '@react-navigation/core';
 import { useGetChatsMutation } from '@redux/servicesNew';
 import { DOMAIN } from '@redux/servicesNew/endpoint';
+import { isEmpty } from 'lodash';
 import React, {
     useCallback,
     useEffect,
@@ -18,7 +19,17 @@ import { useTheme } from 'themeNew';
 import ChatInput from './components/ChatInput';
 import MessagesList from './components/MessageList';
 
-const RoomChat = ({ route }) => {
+function debounce(func, timeout = 300) {
+    let timer;
+    return (...args) => {
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+            func.apply(this, args);
+        }, timeout);
+    };
+}
+
+const DetailGroupChatMyApp = ({ route }) => {
     const socketRef = useRef();
     const { id, image, name, users } = route.params;
     const [getChats, { isSuccess }] = useGetChatsMutation();
@@ -38,16 +49,49 @@ const RoomChat = ({ route }) => {
             setMessages(data);
         };
         fetchApiChat();
-    }, []);
 
-    useEffect(() => {
         socketRef.current = io(DOMAIN);
         socketRef.current.emit('add-user', id);
     }, []);
 
+    useEffect(() => {
+        const handleUpdateMessage = _newMessage => {
+            setMessages([...messages, _newMessage]);
+        };
+
+        socketRef.current.on('msg-recieve', ({ msg, name, image, avatar }) => {
+            handleUpdateMessage({
+                user: 1,
+                createdAt: new Date().toDateString(),
+                message: msg,
+                fromSelf: false,
+                avatar: avatar,
+                name: name,
+                image: image ? image : undefined,
+            });
+        });
+        return () => {
+            socketRef.current.off(
+                'msg-recieve',
+                ({ msg, name, image, avatar }) => {
+                    handleUpdateMessage({
+                        user: 1,
+                        createdAt: new Date().toDateString(),
+                        message: msg,
+                        fromSelf: false,
+                        avatar: avatar,
+                        name: name,
+                        image: image ? image : undefined,
+                    });
+                },
+            );
+        };
+    }, [messages]);
+
     //👇🏻 Runs whenever there is new trigger from the backend
 
     const onSubmitHandler = _message => {
+        // console.log('onSubmitHandler ', _message);
         setMessages([
             ...messages,
             {
@@ -55,26 +99,38 @@ const RoomChat = ({ route }) => {
                 createdAt: new Date(),
                 message: _message.msg,
                 fromSelf: true,
+                avatar: myInfo.image,
+                name: myInfo.name,
+                image: _message?.file
+                    ? `data:image/jpeg;base64,${_message?.file}`
+                    : undefined,
             },
         ]);
 
-        socketRef.current.emit('send-msg', { ..._message, name: myInfo.name });
+        socketRef.current.emit('send-msg', {
+            ..._message,
+            name: myInfo.name,
+            avatar: myInfo.image,
+        });
     };
 
     useEffect(() => {
-        socketRef.current.on('msg-recieve', ({ msg, name, image }) => {
-            console.log('msg-recieve ', msg, name, image);
-            setMessages([
-                ...messages,
-                {
-                    user: 1,
-                    createdAt: new Date().toDateString(),
-                    message: msg,
-                    fromSelf: false,
-                },
-            ]);
-        });
-    }, [socketRef, messages]);
+        // socketRef.current.on('msg-recieve', ({ msg, name, image }) => {
+        //     console.log('msg-recieve ', image);
+        //     setMessages([
+        //         ...messages,
+        //         {
+        //             user: 1,
+        //             createdAt: new Date().toDateString(),
+        //             message: msg,
+        //             fromSelf: false,
+        //             avatar: image,
+        //             name: name,
+        //             image: image ? image : undefined,
+        //         },
+        //     ]);
+        // });
+    }, [socketRef]);
 
     const [reply, setReply] = useState('');
     const [isLeft, setIsLeft] = useState();
@@ -389,7 +445,7 @@ const RoomChat = ({ route }) => {
     );
 };
 
-export default RoomChat;
+export default DetailGroupChatMyApp;
 
 const styles = StyleSheet.create({
     imageRoom: {

@@ -2,6 +2,7 @@ import { Block } from '@components';
 import { useAppSelector } from '@hooks';
 import { formatDate } from '@utils/helper';
 import { width } from '@utils/responsive';
+import { isEmpty } from 'lodash';
 import React, { useState, useRef } from 'react';
 import { View, Text, StyleSheet, Alert } from 'react-native';
 import FastImage from 'react-native-fast-image';
@@ -159,7 +160,7 @@ const Message = ({
                         </View>
                     </View>
                 </Block>
-                {image && (
+                {image ? (
                     <Block
                         style={
                             isLeft
@@ -177,7 +178,7 @@ const Message = ({
                             ]}
                         />
                     </Block>
-                )}
+                ) : null}
 
                 <View style={styles.timeView}>
                     <Text

@@ -21,7 +21,6 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { WebView } from 'react-native-webview';
 import { useTheme } from 'themeNew';
 import EvaluateBook from '../DetailBookScreenMyAp/components/EvaluateBook';
-import { useGetFavoriteBookQuery } from '@redux/servicesNew';
 
 import { withNamespaces } from 'react-i18next';
 const PlayBookScreenMyAp = ({ route, t }) => {
@@ -159,7 +158,7 @@ const PlayBookScreenMyAp = ({ route, t }) => {
     useEffect(() => {
         let flg = false;
         dataFavorite[0]?.favoriteBooks.map(itemFvr => {
-            if (itemFvr.idBook._id == dataInfoBook._id) {
+            if (itemFvr?.idBook._id == dataInfoBook?._id) {
                 flg = true;
             }
         });

@@ -13,7 +13,6 @@ import { Modal, TouchableOpacity } from 'react-native';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import { makeStyles, useTheme } from 'themeNew';
 import { withNamespaces } from 'react-i18next';
-import { useGetFavoriteBookQuery } from '@redux/servicesNew'
 
 const ChapterBook = ({
     detailBook,
@@ -63,9 +62,9 @@ const ChapterBook = ({
 
     let bookNotPay = [];
     const addAllCart = _item => {
-        let objChapter = {}
+        let objChapter = {};
         _item.forEach(element => {
-            objChapter[element.chapterNumber] = element
+            objChapter[element.chapterNumber] = element;
         });
         const data = {
             _id: infoBook._id,
@@ -148,14 +147,12 @@ const ChapterBook = ({
         setData(detailBook?.filter(item => item?.element?.htmlChapter !== ''));
     }, [detailBook, isRead]);
 
-
     return (
         <Block
             width={WINDOW_WIDTH - 50}
             alignSelf="center"
             marginBottom={100}
             flex>
-
             <Block row marginVertical={5}>
                 <Text
                     marginTop={5}
@@ -252,7 +249,7 @@ const ChapterBook = ({
                                         {
                                             idChapter: item.idChapter,
                                             nameBook: nameBook,
-                                            dataInfoBook: infoBook
+                                            dataInfoBook: infoBook,
                                         },
                                     );
                                 } else {
