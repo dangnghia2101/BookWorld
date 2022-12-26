@@ -1,88 +1,107 @@
-import React, {useState, useEffect} from 'react';
-import {
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  StatusBar,
-  NativeModules,
-  Platform,
-} from 'react-native';
-import {Block} from '@components';
-import {theme} from '@theme';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import {useNavigation, useRoute} from '@react-navigation/native';
+import { Block, Text } from '@components';
+import { WINDOW_WIDTH } from '@gorhom/bottom-sheet';
+import { useAppSelector } from '@hooks';
+import { useNavigation } from '@react-navigation/core';
+import React from 'react';
+import { theme } from '@theme';
+import { Platform } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import Feather from 'react-native-vector-icons/Feather';
+import { useTheme } from 'themeNew';
+const TopBarrr = props => {
+    const {
+        title,
+        isBackHeader,
+        children,
+        rightIcon,
+        handleBack,
+        backgroundColor,
+    } = props;
+    const insets = useSafeAreaInsets();
+    const HEIGHT_HEADER = 50;
+    const themeStore = useAppSelector(state => state.root.themeApp.theme);
+    const themeNew = useTheme(themeStore);
 
-const {colors} = theme;
+    const navigation = useNavigation();
+    const Title = ({ title }) => {
+        return (
+            <Text
+                justifyCenter
+                alignCenter
+                flex
+                size={20}
+                color={themeNew.colors.textInBox}
+                fontType="bold">
+                {title}
+            </Text>
+        );
+    };
+    const backIcon = () => {
+        return (
+            <Block justifyCenter width={50} paddingVertical={2}>
+                <Feather
+                    onPress={() => {
+                        navigation.goBack();
+                        handleBack && handleBack();
+                    }}
+                    size={Platform.OS === 'ios' ? 40 : 28}
+                    color={theme.colors.textInBox}
+                    name={Platform.OS === 'ios' ? 'chevron-left' : 'arrow-left'}
+                />
+            </Block>
+        );
+    };
 
-function TopBar({headerTitle}) {
-  const navigation = useNavigation();
-  const activeRoute = useRoute();
+    const renderBackHeader = () => {
+        return (
+            <Block
+                width={WINDOW_WIDTH - 50}
+                alignSelf="center"
+                row
+                space={'between'}>
+                {backIcon()}
+                <Block alignCenter justifyCenter>
+                    <Text
+                        color={themeNew.colors.text}
+                        size={18}
+                        fontType={'bold'}>
+                        {title}
+                    </Text>
+                </Block>
+                <Block width={50} justifyCenter alignCenter>
+                    {rightIcon}
+                </Block>
+            </Block>
+        );
+    };
+    return (
+        <>
+            {isBackHeader ? (
+                <Block
+                    paddingVertical={15}
+                    marginTop={insets.top}
+                    justifyCenter
+                    backgroundColor={themeNew.colors.textInBox}>
+                    {renderBackHeader()}
+                </Block>
+            ) : (
+                <Block
+                    style={{
+                        // marginTop: insets.top,
+                        backgroundColor: backgroundColor
+                            ? backgroundColor
+                            : themeNew.colors.text,
+                        height: HEIGHT_HEADER,
+                    }}
+                    alignCenter
+                    justifyCenter
+                    row>
+                    <Title title={title} />
+                    {children}
+                </Block>
+            )}
+        </>
+    );
+};
 
-  let headerName = headerTitle ? headerTitle : activeRoute.name;
-
-  const [paddingTop, setPaddingTop] = useState(0);
-  const [height, setHeight] = useState(0);
-
-  useEffect(() => {
-    if (Platform.OS === 'ios') {
-      NativeModules.StatusBarManager.getHeight(statusBarHeight => {
-        const STATUS_BAR_HEIGHT = statusBarHeight.height;
-        const HEIGHT = 50 + STATUS_BAR_HEIGHT;
-        setPaddingTop(STATUS_BAR_HEIGHT);
-        setHeight(HEIGHT);
-      });
-    } else {
-      const STATUS_BAR_HEIGHT = StatusBar.currentHeight;
-      const HEIGHT = 50 + STATUS_BAR_HEIGHT;
-      setPaddingTop(STATUS_BAR_HEIGHT);
-      setHeight(HEIGHT);
-    }
-  }, []);
-
-  return (
-    <Block
-      backgroundColor={colors.orange}
-      height={height}
-      paddingTop={paddingTop}
-      paddingHorizontal={10}>
-      <Block style={styles.container}>
-        <TouchableOpacity
-          style={styles.iconBack}
-          onPress={() => navigation.goBack()}>
-          <Ionicons name="chevron-back" color="white" size={30} />
-        </TouchableOpacity>
-        {<Text style={styles.textHeader}>{headerName}</Text>}
-      </Block>
-    </Block>
-  );
-}
-
-TopBar.propTypes = {};
-
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingBottom: 10,
-    height: 60,
-    marginTop: -5,
-  },
-  iconBack: {
-    alignItems: 'center',
-    justifyCenter: 'center',
-    padding: 5,
-    height: 40,
-  },
-  textHeader: {
-    fontSize: 18,
-    color: 'white',
-    marginRight: 10,
-    flex: 1,
-    fontWeight: 'bold',
-  },
-  safe: {
-    backgroundColor: '#F95B00',
-  },
-});
-
-export default TopBar;
+export default TopBarrr;

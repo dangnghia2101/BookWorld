@@ -8,6 +8,9 @@ import {
     CartReducer,
     AuthorReducer,
     ReadingReducer,
+    RankReducer,
+    SearchReducer,
+    PurchaseHistoryReducer,
 } from '@redux/reducerNew';
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import {
@@ -29,7 +32,12 @@ import {
     timereadAPI,
     authorAPI,
     profileAPI,
+    editProfileAPI,
+    bookOfAuthAPI,
     chatAPI,
+    rankAPI,
+    commentAPI,
+    purchaseAPI,
 } from '@redux/servicesNew';
 import { setupListeners } from '@reduxjs/toolkit/query';
 import { userPhoneApi } from '@redux/servicesNew/userPhoneAPI';
@@ -43,6 +51,9 @@ const rootReducer = combineReducers({
     cart: CartReducer,
     author: AuthorReducer,
     reading: ReadingReducer,
+    rank: RankReducer,
+    search: SearchReducer,
+    purchaseHistory: PurchaseHistoryReducer,
     // ...other reducers here
 });
 
@@ -52,7 +63,7 @@ const persistConfig = {
     key: 'roott',
     storage: AsyncStorage,
     timeout: 30000,
-    whitelist: ['setting', 'themeApp', 'auth', 'cart', 'reading'],
+    whitelist: ['setting', 'themeApp', 'auth', 'cart', 'reading', 'search'],
     stateReconciler: autoMergeLevel2,
 };
 
@@ -68,7 +79,13 @@ export const store = configureStore({
         [timereadAPI.reducerPath]: timereadAPI.reducer,
         [authorAPI.reducerPath]: authorAPI.reducer,
         [profileAPI.reducerPath]: profileAPI.reducer,
+        [editProfileAPI.reducerPath]: editProfileAPI.reducer,
+        [bookOfAuthAPI.reducerPath]: bookOfAuthAPI.reducer,
         [chatAPI.reducerPath]: chatAPI.reducer,
+        [rankAPI.reducerPath]: rankAPI.reducer,
+        [chatAPI.reducerPath]: chatAPI.reducer,
+        [commentAPI.reducerPath]: commentAPI.reducer,
+        [purchaseAPI.reducerPath]: purchaseAPI.reducer,
     },
     middleware: getDefaultMiddleware =>
         getDefaultMiddleware({
@@ -89,7 +106,13 @@ export const store = configureStore({
             .concat(userPhoneApi.middleware)
             .concat(authorAPI.middleware)
             .concat(timereadAPI.middleware)
-            .concat(chatAPI.middleware),
+            .concat(editProfileAPI.middleware)
+            .concat(bookOfAuthAPI.middleware)
+            .concat(profileAPI.middleware)
+            .concat(chatAPI.middleware)
+            .concat(rankAPI.middleware)
+            .concat(commentAPI.middleware)
+            .concat(purchaseAPI.middleware),
 });
 
 export const persistor = persistStore(store);

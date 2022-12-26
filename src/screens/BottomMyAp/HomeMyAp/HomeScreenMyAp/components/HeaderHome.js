@@ -1,9 +1,12 @@
+import { icons } from '@assets';
 import { Block, Button, Text } from '@components';
 import IconView from '@components/Icon';
 import { useAppDispatch, useAppSelector } from '@hooks';
+import { routes } from '@navigation/routes';
 import { useNavigation } from '@react-navigation/native';
 import { changeLanguage, changeTheme } from '@redux/reducerNew';
 import { theme } from '@theme';
+import { isEmpty } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { withNamespaces } from 'react-i18next';
 import {
@@ -11,7 +14,7 @@ import {
     NativeModules,
     Platform,
     StatusBar,
-    Text as Text1,
+    // Text as Text1,
 } from 'react-native';
 import { makeStyles, useTheme } from 'themeNew';
 
@@ -48,17 +51,18 @@ const HeaderHome = props => {
             borderColor={themeNew.colors.grey12}
             space={'between'}
             row
-            backgroundColor={themeNew.colors.grey14}
+            backgroundColor={themeNew.colors.background}
             paddingVertical={20}>
             <Block alignCenter row marginLeft={15} flex>
                 <Image
-                    source={{ uri: image }}
+                    source={!isEmpty(image) ? { uri: image } : icons.logo}
                     style={{ width: 40, height: 40, borderRadius: 100 }}
                 />
                 <Block flexGrow={1}>
                     <Text
                         marginLeft={10}
                         size={12}
+                        fontType="medium1"
                         marginHorizontal={5}
                         color={themeNew.colors.grey8}>
                         Welcom to BookWorld!
@@ -69,27 +73,18 @@ const HeaderHome = props => {
                         size={18}
                         marginHorizontal={5}
                         color={themeNew.colors.textInBox}
-                        fontType="bold1"
+                        fontType="medium1"
                         numberOfLines={1}>
-                        {name}
+                        {isEmpty(name.trim()) ? 'Update name' : name}
                     </Text>
                 </Block>
             </Block>
 
             <Block marginRight={15}>
                 <Button
-                    onPress={() => {
-                        dispatch(
-                            changeTheme(
-                                themeStore === 'dark' ? 'light' : 'dark',
-                            ),
-                        );
-                        dispatch(
-                            changeLanguage(
-                                languageStore === 'en' ? 'vi' : 'en',
-                            ),
-                        );
-                    }}>
+                    onPress={() =>
+                        navigation.navigate(routes.NOTIFICATION_SCREEN)
+                    }>
                     <IconView
                         component={'MaterialCommunityIcons'}
                         name={'bell-outline'}

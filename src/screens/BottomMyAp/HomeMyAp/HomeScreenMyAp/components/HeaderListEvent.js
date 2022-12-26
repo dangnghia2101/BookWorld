@@ -4,19 +4,21 @@ import { StyleSheet, TouchableOpacity } from 'react-native';
 import { theme } from '@theme';
 import { useAppSelector } from '@hooks';
 import { makeStyles, useTheme } from 'themeNew';
+import { t } from 'i18next';
 
 const { colors } = theme;
 
 const HeaderListBook = ({ title, action }) => {
   const themeStore = useAppSelector(state => state.root.themeApp.theme);
-
   const theme = useTheme(themeStore);
-  const styles = useStyle(themeStore); return (
+  const styles = useStyle(themeStore);
+
+  return (
     <Block row justifyContent={'space-between'} alignCenter marginLeft={12} marginTop={20}>
-      <Text style={styles.titleSection}>{title}</Text>
+      <Text fontType='bold1' color={theme.colors.textInBox} style={styles.titleSection}>{title}</Text>
       {action && (
         <TouchableOpacity onPress={action}>
-          <Text style={styles.titleViewAll}>Xem thêm</Text>
+          <Text fontType='bold1' style={styles.titleViewAll}>{t('seeMore')}</Text>
         </TouchableOpacity>
       )}
     </Block>
@@ -26,8 +28,6 @@ const HeaderListBook = ({ title, action }) => {
 const useStyle = makeStyles()(({ normalize, colors }) => ({
   titleSection: {
     fontSize: 18,
-    color: colors.grey4,
-    fontWeight: 'bold',
   },
   titleViewAll: {
     color: colors.primary,

@@ -33,6 +33,7 @@ export const theme = {
         redTranparent: '#e8a5a5',
         gray3: '#E0E0E0',
         gray4: '#F6F6F6',
+        gray5: 'rgba(71, 71, 72, 0.9)',
         backgroundOpacity: 'rgba(0, 0, 0, 0.4)',
         blueTitle: '#092C4C',
         orange2: '#F95B00',
@@ -55,6 +56,7 @@ export const theme = {
         mirage: '#181E25',
         // themes
         background: '#05222C',
+        backgroundItem: '#05222C',
         text: '#FFFFFF',
         primary: '#35C4BA',
         disabled: '#8FA2B7',
@@ -103,6 +105,7 @@ export const theme = {
         mirage: '#181E25',
         // themes
         background: '#FFFFFF',
+        backgroundItem: '#FFFFFF',
         text: '#000000',
         primary: '#35C4BA',
         disabled: '#8FA2B7',

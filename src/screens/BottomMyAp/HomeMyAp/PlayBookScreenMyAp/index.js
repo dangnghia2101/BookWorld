@@ -1,7 +1,14 @@
-import { Block, Button, HeaderWithButton, Text } from '@components';
+import { Block, Button, Container, HeaderWithButton, Text } from '@components';
 import IconView from '@components/Icon';
-import BottomSheet, { BottomSheetBackdrop } from '@gorhom/bottom-sheet';
+import BottomSheet, {
+    BottomSheetBackdrop,
+    BottomSheetScrollView,
+} from '@gorhom/bottom-sheet';
 import { useAppSelector } from '@hooks';
+import {
+    useCreateTimeReadMutation,
+    useGetDetailChapterBookQuery,
+} from '@redux/servicesNew';
 import React, {
     useCallback,
     useEffect,
@@ -9,37 +16,35 @@ import React, {
     useRef,
     useState,
 } from 'react';
-import { StyleSheet } from 'react-native';
+import { Alert, BackHandler, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { WebView } from 'react-native-webview';
 import { useTheme } from 'themeNew';
-import { BackHandler, Alert } from 'react-native';
-import {
-    useCreateTimeReadMutation,
-    useGetDetailChapterBookQuery,
-} from '@redux/servicesNew';
+import EvaluateBook from '../DetailBookScreenMyAp/components/EvaluateBook';
 
-const PlayBookScreenMyAp = ({ route }) => {
+import { withNamespaces } from 'react-i18next';
+const PlayBookScreenMyAp = ({ route, t }) => {
+    const { dataInfoBook, idChapter } = route.params;
     const myInfo = useAppSelector(state => state.root.auth);
-    const { idChapter } = route.params;
-
+    const webref = useRef(null);
+    const [themeBack, setThemeBack] = useState(true); //True background white
+    const [size, setSize] = useState(16);
+    const [colorHeart, setColorHeart] = useState();
+    const themeStore = useAppSelector(state => state.root.themeApp.theme);
+    const theme = useTheme(themeStore);
+    const inset = useSafeAreaInsets();
+    const snapPoints = useMemo(() => [300 + inset.bottom], [inset.bottom]);
+    const snapPoints2 = useMemo(() => [700 + inset.bottom], [inset.bottom]);
+    const bottomSheetRef = useRef(null);
+    const bottomSheetCommetnRef = useRef(null);
+    var snapTI = -1;
+    const [createTimeRead, { isLoading, data, error }] =
+        useCreateTimeReadMutation();
+    const dataFavorite = useAppSelector(state => state.root.book.favoriteList);
     const dataGet = useGetDetailChapterBookQuery({
         id: idChapter,
         token: myInfo.token,
     }).data;
-
-    const webref = useRef();
-    const [themeBack, setThemeBack] = useState(true); //True background white
-    const [size, setSize] = useState(40);
-    const themeStore = useAppSelector(state => state.root.themeApp.theme);
-    const theme = useTheme(themeStore);
-    const inset = useSafeAreaInsets();
-
-    const snapPoints = useMemo(() => [260 + inset.bottom], [inset.bottom]);
-    const bottomSheetRef = useRef();
-
-    const [createTimeRead, { isLoading, data, error }] =
-        useCreateTimeReadMutation();
     const timeStart = new Date();
 
     const renderBackdrop = useCallback(
@@ -55,7 +60,9 @@ const PlayBookScreenMyAp = ({ route }) => {
     );
 
     const renderRightIconHeader = () => (
-        <Button onPress={() => bottomSheetRef.current?.snapToIndex(0)}>
+        <Button
+            style={{ marginRight: -25 }}
+            onPress={() => bottomSheetRef.current?.snapToIndex(0)}>
             <IconView
                 component={'Entypo'}
                 name={'dots-three-vertical'}
@@ -76,16 +83,10 @@ const PlayBookScreenMyAp = ({ route }) => {
   });
 `;
 
-    const backgroundBlack = `
-  document.body.style.background = "${theme.colors.dark2}";
-  document.querySelectorAll("p, div, td").forEach(item => {
-    item.style.color = '${theme.colors.gray4}';
-  });`;
-
     const backgroundWhite = `
-  document.body.style.background = "${theme.colors.white}";
+  document.body.style.background = "${theme.colors.background}";
   document.querySelectorAll("p, div, td").forEach(item => {
-    item.style.color = '${theme.colors.dark2}';
+    item.style.color = '${theme.colors.textInBox}';
   });`;
 
     const changeSize = `
@@ -94,14 +95,12 @@ const PlayBookScreenMyAp = ({ route }) => {
   });`;
 
     useEffect(() => {
-        if (webref.current) {
-            if (themeBack === true) {
+        if (dataGet) {
+            setTimeout(() => {
                 webref.current.injectJavaScript(backgroundWhite);
-            } else {
-                webref.current.injectJavaScript(backgroundBlack);
-            }
+            }, 300);
         }
-    }, [backgroundBlack, backgroundWhite, themeBack, dataGet]);
+    }, [backgroundWhite, themeStore, dataGet]);
 
     useEffect(() => {
         if (webref.current) {
@@ -138,13 +137,10 @@ const PlayBookScreenMyAp = ({ route }) => {
             ]);
             return true;
         };
-
         const backHandlerEvent = BackHandler.addEventListener(
             'hardwareBackPress',
             backHandler,
         );
-
-        return () => backHandlerEvent.remove();
     }, []);
 
     const renderHtml = useCallback(() => {
@@ -154,22 +150,49 @@ const PlayBookScreenMyAp = ({ route }) => {
                 scalesPageToFit={false}
                 injectedJavaScript={initailStyle}
                 originWhitelist={['*']}
-                source={{ html: dataGet.htmlChapter }}
+                source={{ html: dataGet?.htmlChapter }}
             />
         );
-    }, [dataGet, initailStyle, webref]);
+    }, [dataGet, initailStyle]);
+
+    useEffect(() => {
+        let flg = false;
+        dataFavorite[0]?.favoriteBooks.map(itemFvr => {
+            if (itemFvr?.idBook._id == dataInfoBook?._id) {
+                flg = true;
+            }
+        });
+        setColorHeart(flg);
+    }, []);
+    const handleSaveFavoriteBook = async () => {
+        try {
+            setColorHeart(true);
+            const body = {
+                id: myInfo._id,
+                idBook: dataInfoBook._id,
+                token: myInfo.token,
+            };
+            await saveFavoriteBook(body);
+            ToastAndroid.show('Đã thêm vào sách yêu thích', ToastAndroid.SHORT);
+        } catch (error) {
+            ToastAndroid.show(
+                'Chưa thêm vào sách yêu thích',
+                ToastAndroid.SHORT,
+            );
+        }
+    };
 
     return (
-        <Block backgroundColor={theme.colors.text} style={{ flex: 1 }}>
+        <Container
+            statusColor={theme.colors.background}
+            edges={['left', 'right']}>
             <HeaderWithButton
                 handleBack={endReadBook}
                 title={dataGet?.title}
                 isBackHeader
                 rightIcon={renderRightIconHeader()}
             />
-
             {dataGet && renderHtml()}
-
             {/* {renderHtml()} */}
             <BottomSheet
                 index={-1}
@@ -178,88 +201,38 @@ const PlayBookScreenMyAp = ({ route }) => {
                 enablePanDownToClose={true}
                 backdropComponent={renderBackdrop}>
                 <Block
-                    backgroundColor={
-                        !themeBack ? theme.colors.black : theme.colors.white
-                    }
+                    flex
+                    backgroundColor={theme.colors.background}
                     borderWidth={!themeBack ? 1 : 0}
                     borderColor={
                         !themeBack ? theme.colors.white : theme.colors.red
                     }
                     paddingHorizontal={10}>
                     <Text
+                        marginTop={10}
                         center
                         size={18}
                         fontType={'bold'}
                         color={theme.colors.grey4}>
-                        Cài đặt
+                        {t('settings')}
                     </Text>
                     <Block
                         borderBottomWidth={1}
                         borderBottomColor={theme.colors.grey14}
                         marginTop={15}
                     />
-                    <Button row style={[styles.rowModal]}>
-                        <IconView
-                            component={'MaterialIcons'}
-                            name={true ? 'favorite' : 'favorite-border'}
-                            size={20}
-                            color={
-                                themeBack
-                                    ? theme.colors.red
-                                    : theme.colors.white
-                            }
-                        />
-                        <Text
-                            style={styles.textRowModal}
-                            color={
-                                !themeBack
-                                    ? theme.colors.white
-                                    : theme.colors.dark2
-                            }>
-                            {true ? 'Lưu sách yêu thích ' : 'Đã lưu'}
-                        </Text>
-                    </Button>
-
-                    {/* Che do ban ngay */}
                     <Button
+                        onPress={handleSaveFavoriteBook}
                         row
-                        style={[styles.rowModal]}
-                        onPress={() => setThemeBack(!themeBack)}>
-                        <IconView
-                            component={'Ionicons'}
-                            name={
-                                themeBack ? 'ios-sunny-outline' : 'moon-outline'
-                            }
-                            size={20}
-                            color={
-                                !themeBack
-                                    ? theme.colors.white
-                                    : theme.colors.dark2
-                            }
-                        />
-                        <Text
-                            style={styles.textRowModal}
-                            color={
-                                !themeBack
-                                    ? theme.colors.white
-                                    : theme.colors.dark2
-                            }>
-                            {themeBack ? 'Chế độ ban ngày' : 'Chế độ ban đêm'}
-                        </Text>
-                    </Button>
-
-                    <Button
-                        row
-                        style={[styles.rowModal]}
-                        onPress={() => setSize(size + 2)}>
+                        style={[styles.rowModal]}>
                         <IconView
                             component={'AntDesign'}
-                            name={'plus'}
+                            name={true ? 'heart' : 'hearto'}
                             size={20}
                             color={
-                                !themeBack
-                                    ? theme.colors.white
-                                    : theme.colors.dark2
+                                colorHeart
+                                    ? theme.colors.primary
+                                    : theme.colors.textInBox
                             }
                         />
                         <Text
@@ -269,7 +242,7 @@ const PlayBookScreenMyAp = ({ route }) => {
                                     ? theme.colors.white
                                     : theme.colors.dark2
                             }>
-                            Tăng kích cỡ chữ
+                            {colorHeart ? t('saved') : t('saveFavoriteBooks')}
                         </Text>
                     </Button>
 
@@ -281,11 +254,7 @@ const PlayBookScreenMyAp = ({ route }) => {
                             component={'AntDesign'}
                             name={'minus'}
                             size={22}
-                            color={
-                                !themeBack
-                                    ? theme.colors.white
-                                    : theme.colors.dark2
-                            }
+                            color={theme.colors.textInBox}
                         />
                         <Text
                             style={styles.textRowModal}
@@ -294,12 +263,57 @@ const PlayBookScreenMyAp = ({ route }) => {
                                     ? theme.colors.white
                                     : theme.colors.dark2
                             }>
-                            Giảm kích cỡ chữ
+                            {t('increaseFontSize')}
                         </Text>
+                    </Button>
+                    <Button
+                        row
+                        style={[styles.rowModal]}
+                        onPress={() => setSize(size + 2)}>
+                        <IconView
+                            component={'AntDesign'}
+                            name={'plus'}
+                            size={22}
+                            color={theme.colors.textInBox}
+                        />
+                        <Text
+                            style={styles.textRowModal}
+                            color={
+                                !themeBack
+                                    ? theme.colors.white
+                                    : theme.colors.dark2
+                            }>
+                            {t('reduceFontSize')}
+                        </Text>
+                    </Button>
+                    <Button
+                        row
+                        style={[styles.rowModal]}
+                        onPress={() =>
+                            bottomSheetCommetnRef.current?.snapToIndex(0)
+                        }>
+                        <IconView
+                            component={'EvilIcons'}
+                            name={'comment'}
+                            size={22}
+                            color={theme.colors.textInBox}
+                        />
+                        <Text style={styles.textRowModal}>{t('comment')}</Text>
                     </Button>
                 </Block>
             </BottomSheet>
-        </Block>
+            <BottomSheet
+                index={-1}
+                ref={bottomSheetCommetnRef}
+                snapPoints={snapPoints2}
+                enablePanDownToClose={true}
+                backdropComponent={renderBackdrop}>
+                <BottomSheetScrollView
+                    backgroundColor={theme.colors.background}>
+                    <EvaluateBook idChapter={idChapter} />
+                </BottomSheetScrollView>
+            </BottomSheet>
+        </Container>
     );
 };
 
@@ -336,4 +350,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default PlayBookScreenMyAp;
+export default withNamespaces()(PlayBookScreenMyAp);

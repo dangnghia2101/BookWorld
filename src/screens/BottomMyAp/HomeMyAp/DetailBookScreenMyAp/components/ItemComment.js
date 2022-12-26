@@ -1,13 +1,10 @@
-import {Block, Text, Button} from '@components';
+import { Block, Text, Button } from '@components';
 import React from 'react';
-import {Image, StyleSheet, TouchableOpacity} from 'react-native';
+import { Image, StyleSheet, TouchableOpacity } from 'react-native';
 import Icon from '@components/Icon';
-
-import {theme} from '@theme';
-import {images} from '@assets';
-import {startCase} from 'lodash';
-
-const {colors} = theme;
+import { theme } from '@theme';
+import { formatDay } from '@utils/helper';
+const { colors } = theme;
 const PADDING_ITEM = 15;
 
 const _renderStar = num => {
@@ -25,27 +22,35 @@ const _renderStar = num => {
   return star;
 };
 
-const ItemComment = ({item}) => {
+const ItemComment = ({ item, index }) => {
+
   return (
-    <Block>
+    <Block borderBottomWidth={1} paddingBottom={20} borderColor={theme.colors.gray2}>
       <Block marginRight={PADDING_ITEM} row marginTop={20}>
         <Image
           style={styles.image}
           source={{
-            uri: item.Image,
+            uri: item.image,
           }}
         />
         <Block marginHorizontal={10}>
-          <Text size={15} fontType="regular">
-            {item.UserName}
-          </Text>
+          <Block row>
+            <Text size={15} fontType="regular">
+              {item.userName}
+            </Text>
+            <Text size={12} color={colors.gray} marginLeft={10} marginTop={3} fontType="regular">
+              {formatDay(new Date(item.time))}
+              {/* {item.time} */}
+            </Text>
+          </Block>
+
           <Block row marginTop={5}>
-            {_renderStar(item.Evaluate)}
+            {_renderStar(item.evaluate)}
           </Block>
         </Block>
       </Block>
       <Block marginTop={5} marginLeft={5}>
-        <Text color={colors.gray}>{item.Content}</Text>
+        <Text color={colors.gray}>{item.content}</Text>
       </Block>
     </Block>
   );

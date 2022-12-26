@@ -2,7 +2,7 @@ export const colors = {
   dark: {
     basic: 'rgb(151, 153, 169)',
     default: 'rgb(244,245,249)',
-    background: '#05222C',
+    background: '#262626',
     disableddisableddisabled: '#8FA2B7',
     secondary: '#15313D',
     black_transparent: 'rgba(0,0,0,0.4)',
@@ -40,7 +40,7 @@ export const colors = {
     backgroundModal: '#232f34',
     transparent: '#00000000',
     backgroundErrorText: '#FFF8F8',
-    text: '#242424',
+    text: '#555555',
     textDark: '#FFFFFF',
     backgroundDark: '#FFFFFF',
     backgroundDark2: '#555555',
@@ -62,7 +62,7 @@ export const colors = {
   light: {
     basic: 'rgb(151, 153, 169)',
     default: 'rgb(244,245,249)',
-    background: '#FFFFFF',
+    background: '#F2F2F5',
     disabled: '#8FA2B7',
     secondary: 'rgba(143,162,183,0.2)',
     black_transparent: 'rgba(0,0,0,0.4)',
@@ -111,67 +111,68 @@ export const colors = {
     OrangeBG: '#FEFAF8',
     PinkBG: '#FFF8FF',
     Orange: '#F0A073',
-    Pink: '#F683DD',
+    Pink: '#ff597b',
     profit: '#29BF6F',
     greenBG: '#F4FCF8',
     yellow: '#F9A220',
     blue: '#4484FF',
     loss: '#DF554A',
     icon: '#45464D',
+    darkPurple: '#331A45',
   },
 };
 
 export type Color =
-  | 'secondary'
-  | 'basic'
-  | 'default'
-  | 'disabled'
-  // themes
-  | 'background'
-  | 'border'
-  | 'textgray'
-  | 'black_transparent'
-  | 'backgroundItem'
-  | 'search'
-  | 'borderPortal'
-  | 'redPastel'
-  | 'greenPastel'
-  | 'grayPastel'
-  | 'backgroundIcon'
-  | 'primary5'
-  | 'primary0'
-  | 'grey16'
-  | 'grey15'
-  | 'grey14'
-  | 'grey13'
-  | 'grey12'
-  | 'grey11'
-  | 'grey10'
-  | 'grey9'
-  | 'grey8'
-  | 'grey7'
-  | 'grey6'
-  | 'grey5'
-  | 'grey4'
-  | 'grey3'
-  | 'grey2'
-  | 'grey1'
-  | 'primary'
-  | 'white'
-  | 'black'
-  | 'text'
-  | 'transparent'
-  | 'green'
-  | 'pending'
-  | 'OrangeBG'
-  | 'PinkBG'
-  | 'Orange'
-  | 'Pink'
-  | 'profit'
-  | 'greenBG'
-  | 'yellow'
-  | 'alert'
-  | 'alertBG'
-  | 'blue'
-  | 'loss';
+    | 'secondary'
+    | 'basic'
+    | 'default'
+    | 'disabled'
+    // themes
+    | 'background'
+    | 'border'
+    | 'textgray'
+    | 'black_transparent'
+    | 'backgroundItem'
+    | 'search'
+    | 'borderPortal'
+    | 'redPastel'
+    | 'greenPastel'
+    | 'grayPastel'
+    | 'backgroundIcon'
+    | 'primary5'
+    | 'primary0'
+    | 'grey16'
+    | 'grey15'
+    | 'grey14'
+    | 'grey13'
+    | 'grey12'
+    | 'grey11'
+    | 'grey10'
+    | 'grey9'
+    | 'grey8'
+    | 'grey7'
+    | 'grey6'
+    | 'grey5'
+    | 'grey4'
+    | 'grey3'
+    | 'grey2'
+    | 'grey1'
+    | 'primary'
+    | 'white'
+    | 'black'
+    | 'text'
+    | 'transparent'
+    | 'green'
+    | 'pending'
+    | 'OrangeBG'
+    | 'PinkBG'
+    | 'Orange'
+    | 'Pink'
+    | 'profit'
+    | 'greenBG'
+    | 'yellow'
+    | 'alert'
+    | 'alertBG'
+    | 'blue'
+    | 'loss';
 export type ThemeColor = typeof colors;

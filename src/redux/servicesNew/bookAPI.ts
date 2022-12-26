@@ -4,6 +4,7 @@ import {
     changeLoading,
     saveTabCategoryReducer,
     saveCategoryReducer,
+    saveFavoriteBookReducer,
     AuthState,
 } from '@redux/reducerNew';
 
@@ -51,8 +52,9 @@ export const bookAPI = createApi({
     }),
     endpoints: builder => ({
         getAllBook: builder.query<BookState[], string>({
-            query: () => ({
+            query: body => ({
                 url: `books/getAllBook`,
+                headers: { Authorization: `Bearer ${body}` },
                 validateStatus: (response, result) =>
                     response.status === 200 && !result.isError, // Our tricky API always returns a 200, but sets an `isError` property when there is an error.
             }),
@@ -65,14 +67,24 @@ export const bookAPI = createApi({
                 }
             },
         }),
-        getAllBookByCategory: builder.query<BookState[], string>({
+        getAllBookByCategory: builder.query<
+            BookState[],
+            { token: string; params: string }
+        >({
             query: actions => ({
-                url: `books/${actions}/getBookByIdCategory`,
+                url: `books/${actions.params}/getBookByIdCategory`,
+                headers: {
+                    Authorization: `Bearer ${actions.token}`,
+                },
             }),
             async onQueryStarted(id, { dispatch, queryFulfilled }) {
                 try {
+                    dispatch(changeLoading('SHOW'));
                     const { data } = await queryFulfilled;
-                    dispatch(saveTabCategoryReducer({ data: data.data })); // Save data in store, using reducer
+                    dispatch(saveTabCategoryReducer({ data: data.data }));
+                    dispatch(changeLoading('HIDE'));
+
+                    // Save data in store, using reducer
                 } catch (err) {
                     // console.log('error api getAllBookByCategory... ', err);
                 }
@@ -80,10 +92,11 @@ export const bookAPI = createApi({
             transformResponse: (response: any) => response.data,
         }),
         getAllCategory: builder.query<BookState[], string>({
-            query: () => ({
+            query: token => ({
                 url: `categories/getAllCategories`,
-                validateStatus: (response, result) =>
-                    response.status === 200 && !result.isError, // Our tricky API always returns a 200, but sets an `isError` property when there is an error.
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
             }),
             async onQueryStarted(id, { dispatch, queryFulfilled }) {
                 try {
@@ -109,6 +122,7 @@ export const bookAPI = createApi({
             async onQueryStarted(id, { dispatch, queryFulfilled }) {
                 try {
                     dispatch(changeLoading('SHOW'));
+                    const { data } = await queryFulfilled;
                     dispatch(changeLoading('HIDE')); // Save data in store, using reducer
                 } catch (err) {
                     dispatch(changeLoading('HIDE'));
@@ -126,15 +140,27 @@ export const bookAPI = createApi({
             }),
             transformResponse: (response: { data: chapterType }) =>
                 response.data,
+            async onQueryStarted(id, { dispatch, queryFulfilled, getState }) {
+                try {
+                    getState();
+                    const { data } = await queryFulfilled;
+                    // Save data in store, using reducer
+                } catch (err) {
+                    dispatch(changeLoading('HIDE'));
+                    console.log('error api getAllChapterBook... ', err);
+                }
+            },
         }),
     }),
 });
 
 export const {
     useGetAllBookQuery,
+    useLazyGetAllBookQuery,
     useGetAllBookByCategoryQuery,
     useLazyGetAllBookByCategoryQuery,
     useGetAllCategoryQuery,
+    useLazyGetAllCategoryQuery,
     useGetAllChapterBookMutation,
     useGetDetailChapterBookQuery,
 } = bookAPI;

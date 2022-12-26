@@ -1,79 +1,35 @@
-import {Block, Text} from '@components';
-import React from 'react';
-import {StyleSheet, View, Image} from 'react-native';
-import {makeStyles, useTheme} from 'themeNew';
-import {withNamespaces} from 'react-i18next';
-import {useAppSelector, useAppDispatch} from '@hooks';
+import { Block, Text, NoData } from '@components';
+import React, { useCallback } from 'react';
+import { Animated } from 'react-native';
+import { makeStyles, useTheme } from 'themeNew';
+import { withNamespaces } from 'react-i18next';
+import { useAppSelector, useAppDispatch } from '@hooks';
+import ItemRank from './ItemRank';
+import { useGetCountTop10Query } from '@redux/servicesNew';
 
-const ItemLastMoreMy = props => {
-  const {t} = props;
-  const themeStore = useAppSelector(state => state.root.themeApp.theme);
-  const themeNew = useTheme(themeStore);
-  const styles = useStyle(props, themeStore);
-  return (
-    <Block marginHorizontal={26} relative>
-      <Text size={16} color={themeNew.colors.textDark}>
-        {t('rank')}
-      </Text>
-      <Block row style={styles.itemContainer} padding={10}>
-        <Block row justifyContent={'center'} alignItems={'center'}>
-          <Image source={require('../../../../../assets/images/Vector.png')} />
-          <Image
-            style={styles.imageRank}
-            source={require('../../../../../assets/images/rank.png')}
-          />
-        </Block>
-        <View style={styles.item}>
-          <Text color="white" size={15}>
-            Hồ Hoàng Phúc
-          </Text>
-          <Block marginVertical={10}>
-            <Text color="#9A9B9B" size={10}>
-              Tổng thời gian đọc
+const ItemLastMoreMy = ({ t }) => {
+    const themeStore = useAppSelector(state => state.root.themeApp.theme);
+    const themeNew = useTheme(themeStore);
+    const styles = useStyles(themeStore);
+    const myInfo = useAppSelector(state => state.root.auth);
+
+    useGetCountTop10Query(myInfo.token);
+    const ranks = useAppSelector(state => state.root.rank.ranks);
+
+    return ranks?.data?.length > 0 ? (
+        <Block marginHorizontal={26}>
+            <Text fontType={'bold1'} size={16} color={themeNew.colors.textDark}>
+                {t('rank')}
             </Text>
-            <Text color="#9A9B9B" size={10}>
-              Số sách đã đọc
-            </Text>
-          </Block>
-        </View>
-        <Block row justifyContent={'center'}>
-          <View style={styles.rankContainer} opacity={0.15} />
-          <Text style={styles.sttRank} fontSize={15} color="#FA4D96">
-            1
-          </Text>
+            {ranks?.data.map((item, index) => (
+                <ItemRank index={index} key={index} item={item} />
+            ))}
         </Block>
-      </Block>
-    </Block>
-  );
+    ) : (
+        <NoData title={'Không có bảng xếp hạng'}></NoData>
+    );
 };
 
 export default withNamespaces()(ItemLastMoreMy);
 
-const useStyle = makeStyles()(({colors}) => ({
-  itemContainer: {
-    backgroundColor: '#242042',
-    justifyContent: 'space-between',
-    width: '100%',
-    height: 100,
-    borderRadius: 20,
-    marginVertical: 10,
-  },
-  imageRank: {
-    position: 'absolute',
-  },
-  item: {
-    width: '35%',
-    justifyContent: 'center',
-    alignItems: 'flex-start',
-  },
-  rankContainer: {
-    width: 30,
-    height: 30,
-    backgroundColor: '#FA4D96',
-    borderRadius: 8,
-  },
-  sttRank: {
-    position: 'absolute',
-    top: 4.5,
-  },
-}));
+const useStyles = makeStyles()(({ colors }) => ({}));

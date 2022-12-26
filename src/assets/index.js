@@ -24,3 +24,4 @@ const lotties = {
 export { icons, images, lotties };
 
 export * from './icons';
+export * from './svgs';

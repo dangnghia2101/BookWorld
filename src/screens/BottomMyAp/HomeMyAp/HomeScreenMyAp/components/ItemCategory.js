@@ -7,6 +7,7 @@ import { width } from '@utils/responsive';
 import React from 'react';
 import { withNamespaces } from 'react-i18next';
 import { Image, TouchableOpacity } from 'react-native';
+import FastImage from 'react-native-fast-image';
 import { makeStyles, useTheme } from 'themeNew';
 
 const ItemCategory = ({ item }) => {
@@ -27,9 +28,12 @@ const ItemCategory = ({ item }) => {
             }>
             <Block alignCenter justifyCenter>
                 {item?.item?.image && (
-                    <Image
+                    <FastImage
                         style={styles.image}
-                        source={{ uri: item.item.image || '' }}
+                        source={{
+                            uri: item.item.image || '',
+                            priority: FastImage.priority.high,
+                        }}
                     />
                 )}
                 <Text
@@ -37,7 +41,9 @@ const ItemCategory = ({ item }) => {
                     marginHorizontal={5}
                     marginTop={5}
                     numberOfLines={2}
-                    flexGrow>
+                    color={colors.textInBox}
+                    flexGrow
+                    fontType="regular1">
                     {item?.item?.name}
                 </Text>
             </Block>

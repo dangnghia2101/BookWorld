@@ -4,7 +4,7 @@ import {
     CardForm,
 } from '@stripe/stripe-react-native';
 import React, { useState, useEffect } from 'react';
-import { Block, Text, HeaderWithButton } from '@components';
+import { Block, Text, HeaderWithButton, ModalBox } from '@components';
 import {
     ScrollView,
     TouchableOpacity,
@@ -14,15 +14,22 @@ import {
 } from 'react-native';
 import { useTheme } from 'themeNew';
 import { useAppSelector } from '@hooks';
-import { useCreatePaymentMutation } from '@redux/servicesNew';
+import {
+    useCreatePaymentChapterMutation,
+    useCreatePaymentMutation,
+} from '@redux/servicesNew';
 import { useNavigation } from '@react-navigation/native';
 import { routes } from '@navigation/routes';
 import { theme } from '@theme';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import { changeLoading } from '@redux/reducerNew';
 import { useAppDispatch } from 'hooks';
-
-const PaymentScreen = ({ price }) => {
+import {
+    removeBookCart,
+    removeBookPayment,
+} from '@redux/reducerNew/cartReducer';
+import { withNamespaces } from 'react-i18next';
+const PaymentScreen = ({ price, t }) => {
     const ModalPoup = ({ visible, children }) => {
         const [showModal, setShowModal] = React.useState(visible);
         useEffect(() => {
@@ -46,14 +53,21 @@ const PaymentScreen = ({ price }) => {
     };
 
     const [visibleCart, setVisibleCart] = useState(false);
+
+    const [visibleCartErr, setVisibleCartErr] = useState(false);
     const navigation = useNavigation();
 
     const { confirmPayment } = useStripe();
 
     const [createPayment] = useCreatePaymentMutation();
 
+    const [createPaymentChapter] = useCreatePaymentChapterMutation();
+
     const themeStore = useAppSelector(state => state.root.themeApp.theme);
 
+    const bookStore = useAppSelector(state => state.root.cart.cartList);
+
+    const myInfo = useAppSelector(state => state.root.auth);
     const { colors } = useTheme(themeStore);
     const dispatch = useAppDispatch();
 
@@ -64,6 +78,43 @@ const PaymentScreen = ({ price }) => {
         name: 'Nguyen Van A',
     };
 
+    // console.log('>>>>>>>>>>>> bookStore', bookStore);
+    const paymentChapter = async () => {
+        let pay = {
+            idChapter: [],
+            totalPrice: price,
+        };
+        let idProducts = [];
+
+        {
+            bookStore.map(item => {
+                if (item.status === true) {
+                    idProducts.push(item._id);
+                    let arrIdChapter = [];
+                    for (var key of Object.keys(item.chapter)) {
+                        arrIdChapter.push(item.chapter[key].idChapter);
+                    }
+
+                    pay.idChapter.push({
+                        idBook: item._id,
+                        idChapter: arrIdChapter,
+                    });
+                }
+            });
+        }
+        const params = {
+            body: pay,
+            token: myInfo.token,
+        };
+
+        const response = await createPaymentChapter(params);
+        dispatch(removeBookPayment(idProducts));
+
+        if (response.data) {
+            console.log('response: ');
+        }
+    };
+
     const initPayment = async () => {
         dispatch(changeLoading('SHOW'));
         const sentData = {
@@ -72,7 +123,10 @@ const PaymentScreen = ({ price }) => {
             paymentMethod: 'card',
         };
 
-        const response = await createPayment(sentData);
+        const response = await createPayment({
+            body: sentData,
+            token: myInfo.token,
+        });
 
         if (response.data) {
             const clientSecret = response.data.clientSecret;
@@ -88,7 +142,10 @@ const PaymentScreen = ({ price }) => {
 
             if (error) {
                 console.log('Payment failued ', error);
+                dispatch(changeLoading('HIDE'));
+                setVisibleCartErr(true);
             } else {
+                paymentChapter();
                 console.log('Payment success ', paymentIntent);
                 dispatch(changeLoading('HIDE'));
                 setVisibleCart(true);
@@ -105,16 +162,17 @@ const PaymentScreen = ({ price }) => {
     };
 
     return (
-        <Block relative>
-            <HeaderWithButton isBackHeader title={'Thanh toán'} />
-            <ScrollView bounces={false}>
+        <Block backgroundColor={colors.background} relative>
+            <HeaderWithButton isBackHeader title={t('pay')} />
+            <ScrollView bounces={false} showsVerticalScrollIndicator={false}>
                 <Block alignCenter>
                     <Text
                         marginTop={30}
                         marginBottom={20}
                         size={16}
-                        color={theme.colors.gray}>
-                        Tổng tiền phải thanh toán của bạn
+                        fontType="medium1"
+                        color={colors.textInBox}>
+                        {t('totalHaveToPay')}
                     </Text>
                     <Block
                         alignCenter
@@ -122,23 +180,21 @@ const PaymentScreen = ({ price }) => {
                         height={130}
                         marginBottom={20}
                         radius={20}
+                        backgroundColor={colors.white}
                         style={{
                             justifyContent: 'center',
                             alignItems: 'center',
-                            shadowColor: theme.colors.gray2,
+                            shadowColor: theme.colors.black,
                             shadowOffset: {
                                 width: 0,
-                                height: 2,
+                                height: 7,
                             },
-                            shadowOpacity: 0.25,
-                            shadowRadius: 12,
+                            shadowOpacity: 1,
+                            shadowRadius: 3,
 
-                            elevation: 5,
+                            elevation: 2.5,
                         }}>
-                        <Text
-                            color={theme.colors.gray}
-                            size={35}
-                            fontType={'bold'}>
+                        <Text color={colors.grey4} size={35} fontType={'bold'}>
                             {price
                                 .toFixed(0)
                                 .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')}
@@ -227,10 +283,41 @@ const PaymentScreen = ({ price }) => {
                         />
                     </Block>
                     <Text style={styles.textOTP} center>
-                        Thanh toán thành công
+                        {t('paymentSuccess')}
                     </Text>
                 </Block>
             </ModalPoup>
+
+            <ModalBox
+                isVisible={visibleCartErr}
+                onBackdropPress={() => setVisibleCartErr(!visibleCartErr)}>
+                <Block
+                    backgroundColor={'white'}
+                    radius={15}
+                    alignSelf={'center'}
+                    justifyCenter={'center'}
+                    padding={20}>
+                    <Block alignCenter={'center'}>
+                        <Block>
+                            <Image
+                                source={require('../../assets/icons/faile.png')}
+                                style={{ width: 70, height: 70 }}
+                            />
+                        </Block>
+                        <Text style={styles.textOTP} center>
+                            {t('paymentFailed')}
+                        </Text>
+                        <TouchableOpacity
+                            style={{ marginTop: 10 }}
+                            center
+                            onPress={() => {
+                                setVisibleCartErr(false);
+                            }}>
+                            <Text size={14}>{t('checkInfo')}</Text>
+                        </TouchableOpacity>
+                    </Block>
+                </Block>
+            </ModalBox>
         </Block>
     );
 };
@@ -261,4 +348,4 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
 });
-export default PaymentScreen;
+export default withNamespaces()(PaymentScreen);

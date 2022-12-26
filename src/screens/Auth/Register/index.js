@@ -1,13 +1,20 @@
-import { Block, Text, TextInput } from '@components';
-import { useAppSelector } from '@hooks';
+import { Block, Text, TextInput, ModalBox } from '@components';
+import { useAppDispatch, useAppSelector } from 'hooks';
 import auth from '@react-native-firebase/auth';
 import messaging from '@react-native-firebase/messaging';
 import { useLoginPhoneMutation } from '@redux/servicesNew';
 import { PHONE_REG_EXP } from '@utils/constants';
-import React, { useMemo, useState } from 'react';
-import { StyleSheet, TouchableOpacity } from 'react-native';
+import React, { useMemo, useState, useEffect } from 'react';
+import {
+    StyleSheet,
+    TouchableOpacity,
+    Image,
+    ToastAndroid,
+} from 'react-native';
 import { useTheme } from 'themeNew';
 import ModalConfirmOtp from './components/ModalConfirmOtp';
+import { changeLoading } from '@redux/reducerNew';
+import { useNavigation } from '@react-navigation/core';
 
 async function getToken() {
     return await messaging().getToken();
@@ -15,7 +22,6 @@ async function getToken() {
 
 const Register = () => {
     const themeStore = useAppSelector(state => state.root.themeApp.theme);
-
     const [loginPhone] = useLoginPhoneMutation();
     const [phone, setPhone] = useState('');
     const [newPassword, setNewPassword] = useState('');
@@ -23,10 +29,14 @@ const Register = () => {
     const [confirmOTP, setConfirmOTP] = useState(null);
     const [codeOTP, setCodeOTP] = useState('');
     const [showModal, setShowModal] = React.useState(false);
+    const [visible, setVisible] = React.useState(false);
+    const [visible1, setVisible1] = React.useState(false);
     const { colors } = useTheme(themeStore);
+    const dispatch = useAppDispatch();
+    const navigation = useNavigation();
 
     const handleErrorPhone = useMemo(() => {
-        if (phone.match(PHONE_REG_EXP)) {
+        if (phone.match(PHONE_REG_EXP) || phone.length == 0) {
             return [false, ''];
         } else {
             return [true, 'Format phone invalid'];
@@ -34,7 +44,7 @@ const Register = () => {
     }, [phone]);
 
     const handleErrorNewPassword = useMemo(() => {
-        if (newPassword.length > 5) {
+        if (newPassword.length > 5 || newPassword.length == 0) {
             return [false, ''];
         } else {
             return [true, 'New password at least 6 character'];
@@ -42,18 +52,31 @@ const Register = () => {
     }, [newPassword]);
 
     const handleErrorComfirmPassword = useMemo(() => {
-        if (newPassword === confirmPassword) {
+        if (newPassword === confirmPassword || confirmPassword.length == 0) {
             return [false, ''];
         } else {
             return [true, 'Confirm password nat match New Password'];
         }
     }, [confirmPassword, newPassword]);
 
+    const handleErrorNo = useMemo(() => {
+        if (
+            newPassword.length == 0 &&
+            confirmPassword.length == 0 &&
+            phone.length == 0
+        ) {
+            return [true, ''];
+        } else {
+            return [false, ''];
+        }
+    }, [confirmPassword, newPassword, phone]);
+
     const handleSendLogin = useMemo(() => {
         if (
-            !handleErrorPhone[0] &&
-            !handleErrorNewPassword[0] &&
-            !handleErrorComfirmPassword[0]
+            !handleErrorPhone[1] &&
+            !handleErrorNewPassword[1] &&
+            !handleErrorComfirmPassword[1] &&
+            !handleErrorNo[0]
         ) {
             return false;
         } else {
@@ -64,6 +87,7 @@ const Register = () => {
     //Send OTP from Firebase
     const signInWithPhoneNumber = async () => {
         console.log('PHONE  +84 ' + phone);
+        dispatch(changeLoading('SHOW'));
         const confirmation = await auth().signInWithPhoneNumber('+84 ' + phone);
         setConfirmOTP(confirmation);
         setShowModal(true);
@@ -72,12 +96,13 @@ const Register = () => {
     //Confirm code OTP
     async function confirmCode() {
         try {
+            dispatch(changeLoading('HIDE'));
             await confirmOTP.confirm(codeOTP);
             await callApiLogin();
-            console.log('Register success.');
-            setShowModal(false);
         } catch (error) {
-            setShowModal(false);
+            dispatch(changeLoading('HIDE'));
+            // setShowModal(false);
+            setVisible1(true);
             console.log('Invalid code.');
         }
     }
@@ -88,31 +113,59 @@ const Register = () => {
             passwordUser: newPassword,
             token_fcm: await getToken(),
         };
-        await loginPhone(data);
+        const dataLogin = await loginPhone(data);
+        if (dataLogin?.error?.data?.data === 'Số điện thoại đã tồn tại') {
+            ToastAndroid.show(
+                'Số điện thoại đã đăng kí rồi, xin hãy đăng nhập',
+                ToastAndroid.LONG,
+                ToastAndroid.BOTTOM,
+            );
+            navigation.goBack();
+        } else {
+            setVisible(true);
+            navigation.goBack();
+        }
+        setShowModal(false);
+
+        console.log('dataLogin ', dataLogin);
     };
 
     return (
         <Block
             flex
             alignCenter
-            paddingTop={56}
-            backgroundColor={'white'}
+            paddingTop={30}
+            backgroundColor={colors.background}
             paddingHorizontal={20}>
-            <Text h1 bold size={30} style={styles.textWelcomLogin}>
+            <Text
+                h1
+                fontType="bold1"
+                size={30}
+                style={styles.textWelcomLogin}
+                color={colors.textInBox}>
                 {' '}
                 Xin Chào Bạn Mới{' '}
             </Text>
-            <Text paddingHorizontal={45} size={13} lineHeight={20} center>
+            <Text
+                paddingHorizontal={45}
+                marginVertical={40}
+                size={13}
+                lineHeight={20}
+                fontType={'medium1'}
+                center
+                color={colors.textInBox}>
                 {' '}
                 Vui lòng đăng ký tài khoản để sử dụng ứng dụng Lưu ý nhập đầy đủ
                 thông tin ở bên dưới{' '}
             </Text>
 
             <TextInput
-                onChangeText={setPhone}
                 value={phone}
-                label={'Phone number'}
-                keyboardType="phone-pad"
+                onChangeText={setPhone}
+                keyboardType="numeric"
+                label={'Phone Number'}
+                placeholder={'Số điện thoại'}
+                color={colors.textInBox}
                 errorText={handleErrorPhone[1]}
                 isError={handleErrorPhone[0]}
             />
@@ -120,19 +173,79 @@ const Register = () => {
                 onChangeText={setNewPassword}
                 value={newPassword}
                 label={'New Password'}
+                placeholder={'Mật khẩu'}
                 isSecure={true}
                 errorText={handleErrorNewPassword[1]}
                 isError={handleErrorNewPassword[0]}
+                color={colors.textInBox}
             />
             <TextInput
                 onChangeText={setConfirmPassword}
                 value={confirmPassword}
                 label={'Confirm Passord'}
+                placeholder={'Nhập lại mật khẩu'}
                 isSecure={true}
                 errorText={handleErrorComfirmPassword[1]}
                 isError={handleErrorComfirmPassword[0]}
             />
-
+            <ModalBox
+                isVisible={visible1}
+                onBackdropPress={() => setVisible1(!visible1)}>
+                <Block
+                    backgroundColor={colors.background}
+                    radius={15}
+                    alignSelf={'center'}
+                    justifyCenter={'center'}
+                    padding={20}>
+                    <Block alignCenter={'center'}>
+                        <Text
+                            color={colors.textInBox}
+                            fontType="medium1"
+                            style={{ fontWeight: '700', marginVertical: 20 }}>
+                            Đăng ký không thành công
+                        </Text>
+                        <Block>
+                            <Image
+                                source={require('../../../assets/icons/faile.png')}
+                                style={{ width: 55, height: 55 }}
+                            />
+                        </Block>
+                        <Text
+                            color={colors.textInBox}
+                            fontType="medium1"
+                            marginTop={10}
+                            center>
+                            OTP không đúng
+                        </Text>
+                    </Block>
+                </Block>
+            </ModalBox>
+            <ModalBox
+                isVisible={visible}
+                onBackdropPress={() => setVisible(!visible)}>
+                <Block
+                    backgroundColor={colors.background}
+                    radius={15}
+                    alignSelf={'center'}
+                    justifyCenter={'center'}
+                    padding={20}>
+                    <Block alignCenter={'center'}>
+                        <Block>
+                            <Image
+                                source={require('../../../assets/icons/success.png')}
+                                style={{ width: 70, height: 70 }}
+                            />
+                        </Block>
+                        <Text
+                            marginTop={10}
+                            center
+                            color={colors.textInBox}
+                            fontType="medium1">
+                            Đăng ký thành công
+                        </Text>
+                    </Block>
+                </Block>
+            </ModalBox>
             <ModalConfirmOtp
                 confirmCode={confirmCode}
                 setShowModal={setShowModal}
@@ -140,14 +253,25 @@ const Register = () => {
                 setConfirmOTP={setConfirmOTP}
                 setCodeOTP={setCodeOTP}
                 codeOTP={codeOTP}
+                phone={phone}
             />
 
             <TouchableOpacity
                 onPress={signInWithPhoneNumber}
+                disabled={handleSendLogin}
                 style={styles({ isDisable: handleSendLogin }).buttomLogin}
-                height={59}
-                disabled={handleSendLogin}>
-                <Text style={styles.textButtomLogin}>Đăng ký</Text>
+                height={59}>
+                <Text
+                    style={{
+                        fontSize: 16,
+                        lineHeight: 50,
+                        alignItems: 'center',
+                        fontWeight: '700',
+                        fontFamily: 'Poppins',
+                        color: '#FFFFFF',
+                    }}>
+                    Đăng ký
+                </Text>
             </TouchableOpacity>
         </Block>
     );
@@ -214,16 +338,18 @@ const styles = ({ isDisable }) =>
             justifyContent: 'center',
             alignItems: 'center',
             borderRadius: 15,
-            backgroundColor: isDisable ? '#818181' : '#DD4455',
+            backgroundColor: isDisable ? '#818181' : '#E83625',
             height: 50,
+            shadowColor: '#000',
             shadowColor: '#000',
             shadowOffset: {
                 width: 0,
-                height: 3,
+                height: 1,
             },
-            shadowOpacity: 1,
-            shadowRadius: 6,
-            elevation: 7,
+            shadowOpacity: 0.22,
+            shadowRadius: 2.22,
+
+            elevation: 3,
         },
         textInput2: {
             borderRadius: 15,
@@ -236,13 +362,12 @@ const styles = ({ isDisable }) =>
             shadowColor: '#000',
             shadowOffset: {
                 width: 0,
-                height: 3,
+                height: 1,
             },
-            paddingLeft: 18,
-            shadowOpacity: 1,
-            shadowRadius: 6,
+            shadowOpacity: 0.22,
+            shadowRadius: 2.22,
 
-            elevation: 7,
+            elevation: 3,
         },
         textInput: {
             borderRadius: 15,
@@ -257,7 +382,6 @@ const styles = ({ isDisable }) =>
         textWelcomLogin: {
             fontWeight: 'bold',
             lineHeight: 45,
-            color: '#464444',
         },
         textDescribe: {
             marginTop: 18,

@@ -4,13 +4,13 @@ import { SceneMap, TabBar, TabView } from 'react-native-tab-view';
 import ListTabBook from './ListTabBook';
 import { useAppSelector } from 'hooks';
 import { colors, makeStyles, useTheme } from 'themeNew';
-import { strings } from 'I18n';
+import ListTabAuthor from './ListTabAuthor';
 
 const TabTopicSearch = ({ search, setSearch }) => {
     const [routes] = useState([
-        { key: 'Book', title: 'Book' },
-        { key: 'Author', title: 'Author' },
-        { key: 'Group', title: 'Group' },
+        { key: 'BookTab', title: 'Book' },
+        { key: 'AuthorTab', title: 'Author' },
+        // { key: 'Group', title: 'Group' },
     ]);
     const [index, setIndex] = useState(0);
 
@@ -26,8 +26,8 @@ const TabTopicSearch = ({ search, setSearch }) => {
                         color={
                             focused ? theme.colors.primary : theme.colors.grey10
                         }
-                        fontType="bold">
-                        {route.title}
+                        fontType="bold1">
+                        {route?.title}
                     </Text>
                 </Block>
             );
@@ -47,7 +47,7 @@ const TabTopicSearch = ({ search, setSearch }) => {
                         pressColor={theme.colors.white}
                         scrollEnabled={true}
                         style={{
-                            backgroundColor: theme.colors.text,
+                            backgroundColor: theme.colors.background,
                         }}
                         // inactiveColor='yellow'
                     />
@@ -63,19 +63,18 @@ const TabTopicSearch = ({ search, setSearch }) => {
         ],
     );
 
+    const renderScene = SceneMap({
+        BookTab: () => <ListTabBook search={search} setSearch={setSearch} />,
+        AuthorTab: () => (
+            <ListTabAuthor search={search} setSearch={setSearch} />
+        ),
+    });
+
     return (
         <TabView
             lazy
             navigationState={{ index, routes }}
-            renderScene={({ route }) => {
-                return (
-                    <ListTabBook
-                        route={route}
-                        search={search}
-                        setSearch={setSearch}
-                    />
-                );
-            }}
+            renderScene={renderScene}
             renderTabBar={renderTabBar}
             onIndexChange={setIndex}
         />

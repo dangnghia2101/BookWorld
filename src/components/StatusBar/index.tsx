@@ -15,22 +15,11 @@ export const StatusBar: FC<StatusBarProps> = props => {
     const theme = useTheme(themeStore);
     const { statusColor, children } = props;
     return (
-        <View
-            {...children}
-            style={[
-                styles.root,
-                {
-                    backgroundColor: statusColor || theme.colors.background,
-                },
-            ]}>
-            <RNStatusBar
-                animated
-                barStyle={
-                    themeStore === 'dark' ? 'light-content' : 'dark-content'
-                }
-                backgroundColor={statusColor || theme.colors.black}
-            />
-        </View>
+        <RNStatusBar
+            animated
+            barStyle={themeStore === 'dark' ? 'light-content' : 'dark-content'}
+            backgroundColor={statusColor || theme.colors.black}
+        />
     );
 };
 

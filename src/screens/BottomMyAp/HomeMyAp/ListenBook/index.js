@@ -14,7 +14,14 @@ import {
     View,
 } from 'react-native';
 
-import { Block, Container, Icon, ModalBox, Text } from '@components';
+import {
+    Block,
+    Container,
+    HeaderWithButton,
+    Icon,
+    ModalBox,
+    Text,
+} from '@components';
 import { useAppDispatch, useAppSelector } from '@hooks';
 import Slider from '@react-native-community/slider';
 import { changeLoading } from '@redux/reducerNew';
@@ -37,6 +44,9 @@ import BottomSheet, {
 } from '@gorhom/bottom-sheet';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { icons, NotFoundIcon } from '@assets';
+import Share from 'react-native-share';
+import { withNamespaces } from 'react-i18next';
+import FastImage from 'react-native-fast-image';
 
 const { width, height } = Dimensions.get('window');
 
@@ -86,7 +96,7 @@ const togglePlayBack = async playBackState => {
     }
 };
 
-export const ListenBook = ({ route }) => {
+const ListenBook = ({ route, t }) => {
     const { idChapter, nameBook } = route.params;
     const playBackState = usePlaybackState();
     const progress = useProgress();
@@ -211,10 +221,12 @@ export const ListenBook = ({ route }) => {
         return (
             <Animated.View style={style.mainWrapper}>
                 <View style={[style.imageWrapper, style.elevation]}>
-                    <Image
-                        //   source={item.artwork}
-                        source={{ uri: trackArtwork }}
+                    <FastImage
                         style={style.musicImage}
+                        source={{
+                            uri: item?.artwork,
+                            priority: FastImage.priority.high,
+                        }}
                     />
                 </View>
             </Animated.View>
@@ -235,11 +247,15 @@ export const ListenBook = ({ route }) => {
 
     const ItemBook = ({ item }) => {
         return (
-            <Block flex height={70} row alignCenter marginHorizontal={10}>
+            <Block row alignCenter marginVertical={10}>
                 <Image source={{ uri: item.image }} style={style.imageStyle} />
                 <Block width="70%" marginLeft={10} paddingTop={10}>
-                    <Text fontType="bold">{item.name}</Text>
-                    <Text flexGrow={1}>{item.introduction}</Text>
+                    <Text color={colors.textInBox} fontType="bold">
+                        {item.name}
+                    </Text>
+                    <Text color={colors.textInBox} flexGrow={1}>
+                        {item.introduction?.slice(0, 100)}
+                    </Text>
                 </Block>
                 <Pressable style={{ flex: 1, alignItems: 'flex-end' }}>
                     <Icon
@@ -261,19 +277,25 @@ export const ListenBook = ({ route }) => {
                 snapPoints={snapPoints}
                 enablePanDownToClose={true}
                 backdropComponent={renderBackdrop}>
-                <Block
-                    backgroundColor={colors.white}
-                    paddingHorizontal={10}
-                    alignCenter
-                    flex>
-                    <Text marginVertical={10} size={16} fontType="bold">
-                        Danh sach cho
+                <Block backgroundColor={colors.background} alignCenter flex>
+                    <Text
+                        marginVertical={10}
+                        size={16}
+                        fontType="bold"
+                        color={colors.textInBox}>
+                        {t('waitingList')}
                     </Text>
+                    <Block
+                        height={1}
+                        backgroundColor={colors.grey12}
+                        width={'100%'}
+                    />
 
                     <BottomSheetFlatList
                         data={allBooks}
                         renderItem={ItemBook}
                         keyExtractor={keyExtractor}
+                        showsVerticalScrollIndicator={false}
                         style={{
                             width: width,
                             paddingHorizontal: 30,
@@ -284,10 +306,26 @@ export const ListenBook = ({ route }) => {
         );
     };
 
+    const shareToFacebookStory = async _social => {
+        const shareOptions = {
+            message: `Sách ${nameBook} hay quá`,
+            title: `Sách ${nameBook} hay quá`,
+            url: trackArtwork,
+            social: _social,
+        };
+
+        try {
+            const ShareResponse = await Share.shareSingle(shareOptions);
+            console.log('Response =>', ShareResponse);
+        } catch (error) {
+            console.log('Error =>', error);
+        }
+    };
+
     const renderShare = () => {
         return (
             <ModalBox
-                isVisible={true}
+                isVisible={visibleModal}
                 onBackdropPress={() => setVisibleModal(!visibleModal)}>
                 <Block
                     width={width * 0.7}
@@ -297,8 +335,12 @@ export const ListenBook = ({ route }) => {
                     justifyCenter={'center'}
                     alignCenter
                     padding={20}>
-                    <Text color={colors.grey6} fontType="bold1" size={16}>
-                        Chia sẻ cuốn sách thú vị
+                    <Text
+                        color={colors.grey4}
+                        fontType="bold1"
+                        size={16}
+                        marginBottom={15}>
+                        {t('shareIntBooks')}
                     </Text>
                     {trackArtwork ? (
                         <Image
@@ -309,14 +351,37 @@ export const ListenBook = ({ route }) => {
                     ) : (
                         <NotFoundIcon width={100} height={100} />
                     )}
+                    <Text
+                        color={colors.grey4}
+                        size={14}
+                        fontType="bold1"
+                        marginTop={10}>
+                        {nameBook}
+                    </Text>
 
                     <Block
                         marginTop={20}
                         row
                         width={width * 0.3}
                         space="around">
-                        <Image source={icons.facebook} style={style.iconLogo} />
-                        <Image source={icons.twitter} style={style.iconLogo} />
+                        <TouchableOpacity
+                            onPress={() =>
+                                shareToFacebookStory(Share.Social.FACEBOOK)
+                            }>
+                            <Image
+                                source={icons.facebook}
+                                style={style.iconLogo}
+                            />
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={() =>
+                                shareToFacebookStory(Share.Social.TWITTER)
+                            }>
+                            <Image
+                                source={icons.twitter}
+                                style={style.iconLogo}
+                            />
+                        </TouchableOpacity>
                     </Block>
                 </Block>
             </ModalBox>
@@ -326,9 +391,12 @@ export const ListenBook = ({ route }) => {
     const keyExtractor = item => item.toString();
 
     return (
-        <Container style={style.container}>
+        <Container statusColor={colors.background} edges={['left', 'right']}>
             {/* music player section */}
-            <View style={style.mainContainer}>
+            <HeaderWithButton isBackHeader />
+            <Block
+                backgroundColor={colors.background}
+                style={style.mainContainer}>
                 {/* Image */}
 
                 <Animated.FlatList
@@ -337,11 +405,10 @@ export const ListenBook = ({ route }) => {
                     data={[
                         {
                             id: 'trackId',
-                            url: 'http://commondatastorage.googleapis.com/codeskulptor-demos/DDR_assets/Sevish_-__nbsp_.mp3',
+                            url: dataGet?.linkAudio,
                             title: 'Track Title',
                             artist: 'Track Artist',
-                            artwork:
-                                'https://cdn.pixabay.com/photo/2018/08/14/13/23/ocean-3605547__340.jpg',
+                            artwork: dataGet?.image,
                         },
                     ]}
                     keyExtractor={keyExtractor}
@@ -365,10 +432,11 @@ export const ListenBook = ({ route }) => {
                 <Block alignCenter>
                     <Text
                         fontType="bold1"
+                        color={colors.textInBox}
                         style={[style.songContent, style.songTitle]}>
                         {nameBook}
                     </Text>
-                    <Text color={colors.grey6} size={14}>
+                    <Text color={colors.blue} size={14}>
                         {trackArtist}
                     </Text>
                 </Block>
@@ -390,12 +458,12 @@ export const ListenBook = ({ route }) => {
 
                     {/* Progress Durations */}
                     <View style={style.progressLevelDuraiton}>
-                        <Text style={style.progressLabelText}>
+                        <Text color={colors.textInBox}>
                             {new Date(progress.position * 1000)
                                 .toLocaleTimeString()
                                 .substring(3)}
                         </Text>
-                        <Text style={style.progressLabelText}>
+                        <Text color={colors.textInBox}>
                             {new Date(
                                 (progress.duration - progress.position) * 1000,
                             )
@@ -406,7 +474,7 @@ export const ListenBook = ({ route }) => {
                 </Block>
 
                 {/* music control */}
-                <View style={style.musicControlsContainer}>
+                <Block style={style.musicControlsContainer}>
                     <TouchableOpacity onPress={skipToPrevious}>
                         <Ionicons
                             name="play-skip-back-outline"
@@ -433,13 +501,14 @@ export const ListenBook = ({ route }) => {
                             color={colors.primary}
                         />
                     </TouchableOpacity>
-                </View>
-            </View>
-
+                </Block>
+            </Block>
             {/* bottom section */}
-            <View style={style.bottomSection}>
-                <View style={style.bottomIconContainer}>
-                    <TouchableOpacity onPress={() => {}}>
+            <Block
+                backgroundColor={colors.background}
+                style={style.bottomSection}>
+                <Block style={style.bottomIconContainer}>
+                    <TouchableOpacity onPress={() => { }}>
                         <Ionicons
                             name="heart-outline"
                             size={25}
@@ -455,7 +524,7 @@ export const ListenBook = ({ route }) => {
                         />
                     </TouchableOpacity>
 
-                    <TouchableOpacity onPress={() => {}}>
+                    <TouchableOpacity onPress={() => setVisibleModal(true)}>
                         <Ionicons
                             name="share-outline"
                             size={25}
@@ -471,18 +540,19 @@ export const ListenBook = ({ route }) => {
                             color="#888888"
                         />
                     </TouchableOpacity>
-                </View>
-            </View>
-
+                </Block>
+            </Block>
             {bottomSheetReadyRead()}
             {renderShare()}
         </Container>
     );
 };
+export default withNamespaces()(ListenBook);
+
 const useStyle = makeStyles()(({ normalize, colors }) => ({
     container: {
         flex: 1,
-        backgroundColor: colors.white,
+        backgroundColor: colors.background,
     },
     mainContainer: {
         flex: 1,
@@ -490,9 +560,8 @@ const useStyle = makeStyles()(({ normalize, colors }) => ({
         justifyContent: 'center',
     },
     bottomSection: {
-        borderTopColor: colors.grey14,
+        borderTopColor: colors.grey12,
         borderWidth: normalize(1)('moderate'),
-        borderBottomColor: colors.grey14,
         width: width,
         alignItems: 'center',
         paddingVertical: 15,
@@ -534,7 +603,6 @@ const useStyle = makeStyles()(({ normalize, colors }) => ({
     },
     songContent: {
         textAlign: 'center',
-        color: colors.textDark,
     },
     songTitle: {
         fontSize: 18,
@@ -557,9 +625,6 @@ const useStyle = makeStyles()(({ normalize, colors }) => ({
         flexDirection: 'row',
         justifyContent: 'space-between',
     },
-    progressLabelText: {
-        color: colors.textDark,
-    },
 
     musicControlsContainer: {
         flexDirection: 'row',
@@ -580,5 +645,6 @@ const useStyle = makeStyles()(({ normalize, colors }) => ({
     imageBookShare: {
         height: normalize(200)('moderate'),
         width: normalize(150)('moderate'),
+        borderRadius: normalize(10)('moderate'),
     },
 }));

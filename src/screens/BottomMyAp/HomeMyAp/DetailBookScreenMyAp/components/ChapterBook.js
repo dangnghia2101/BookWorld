@@ -12,6 +12,7 @@ import React, { useEffect, useState } from 'react';
 import { Modal, TouchableOpacity } from 'react-native';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import { makeStyles, useTheme } from 'themeNew';
+import { withNamespaces } from 'react-i18next';
 
 const ChapterBook = ({
     detailBook,
@@ -19,9 +20,11 @@ const ChapterBook = ({
     isRead,
     setIsRead,
     infoBook,
+    t,
     // navigation,
 }) => {
     const [visible, setVisible] = useState(false);
+    const [visible1, setVisible1] = useState(false);
     const [chapItem, setChapItem] = useState();
     const themeStore = useAppSelector(state => state.root.themeApp.theme);
     const themeNew = useTheme(themeStore);
@@ -29,29 +32,65 @@ const ChapterBook = ({
     const navigation = useNavigation();
     const bookStore = useAppSelector(state => state.root.cart.cartList);
     const dispatch = useAppDispatch();
-
+    const [showModal, setShowModal] = React.useState(visible);
+    const [showModal1, setShowModal1] = React.useState(visible1);
     const theme = useTheme(themeStore);
     const styles = useStyle(themeStore);
-    const ModalPoup = ({ visible, children }) => {
-        const [showModal, setShowModal] = React.useState(visible);
-        useEffect(() => {
-            toggleModal();
-        }, [visible]);
 
-        const toggleModal = () => {
-            if (visible) {
-                setShowModal(true);
-            } else {
-                setShowModal(false);
-            }
+    useEffect(() => {
+        toggleModal();
+    }, [visible]);
+
+    const toggleModal = () => {
+        if (visible) {
+            setShowModal(true);
+        } else {
+            setShowModal(false);
+        }
+    };
+    useEffect(() => {
+        toggleModal1();
+    }, [visible1]);
+
+    const toggleModal1 = () => {
+        if (visible1) {
+            setShowModal1(true);
+        } else {
+            setShowModal1(false);
+        }
+    };
+
+    let bookNotPay = [];
+    const addAllCart = _item => {
+        let objChapter = {};
+        _item.forEach(element => {
+            objChapter[element.chapterNumber] = element;
+        });
+        const data = {
+            _id: infoBook._id,
+            name: infoBook.name,
+            isPrice: infoBook.isPrice,
+            image: infoBook.image,
+            introduction: infoBook.introduction,
+            chapter: objChapter,
+            status: false,
         };
-        return (
-            <Modal transparent visible={showModal}>
-                <Block flex={1} style={styles.modalBackGround}>
-                    <Block style={styles.modalContainer}>{children}</Block>
-                </Block>
-            </Modal>
-        );
+
+        let co = 0;
+        bookStore.map(item => {
+            if (item._id === infoBook._id) {
+                co = 1;
+                return;
+            }
+        });
+        if (co === 0) {
+            dispatch(saveCartReducer(data));
+        } else {
+            _item.map(item => {
+                addChapter(item);
+            });
+        }
+        setVisible1(false);
     };
     const addCart = _item => {
         const data = {
@@ -59,7 +98,8 @@ const ChapterBook = ({
             name: infoBook.name,
             isPrice: infoBook.isPrice,
             image: infoBook.image,
-            chapter: { _item },
+            introduction: infoBook.introduction,
+            chapter: { [_item.chapterNumber]: _item },
             status: false,
         };
 
@@ -81,7 +121,7 @@ const ChapterBook = ({
         bookStore.map((item, index) => {
             if (item._id === infoBook._id) {
                 const data = {
-                    _id: chapter._id,
+                    idChapter: chapter.idChapter,
                     title: chapter.title,
                     price: chapter.price,
                     chapterNumber: chapter.chapterNumber,
@@ -113,11 +153,41 @@ const ChapterBook = ({
             alignSelf="center"
             marginBottom={100}
             flex>
+            <Block row marginVertical={5}>
+                <Text
+                    marginTop={5}
+                    color={themeNew.colors.textInBox}
+                    fontType={'bold1'}
+                    size={20}>
+                    {t('chapTer')}
+                </Text>
+                <TouchableOpacity
+                    style={{
+                        backgroundColor: themeNew.colors.primary,
+                        justifyContent: 'center',
+                        paddingHorizontal: 10,
+                        marginLeft: '55%',
+                        borderRadius: 5,
+                    }}
+                    onPress={() => {
+                        data?.map(item => {
+                            if (item.isPay === false) {
+                                bookNotPay.push(item);
+                            }
+                        });
+                        setChapItem(bookNotPay);
+                        setVisible1(true);
+                    }}>
+                    <Text fontType={'bold'} color="white">
+                        {t('buy')}
+                    </Text>
+                </TouchableOpacity>
+            </Block>
             <Block
                 width={200}
                 row
                 alignSelf="center"
-                marginTop={30}
+                marginVertical={20}
                 justifyCenter>
                 <Button onPress={() => setIsRead(true)}>
                     <Block
@@ -135,9 +205,9 @@ const ChapterBook = ({
                                     ? themeNew.colors.text
                                     : themeNew.colors.grey10
                             }
-                            fontType={'bold'}
+                            fontType={'bold1'}
                             size={12}>
-                            Sach doc
+                            {t('bookToRead')}
                         </Text>
                     </Block>
                 </Button>
@@ -157,20 +227,13 @@ const ChapterBook = ({
                                     ? themeNew.colors.text
                                     : themeNew.colors.grey10
                             }
-                            fontType={'bold'}
+                            fontType={'bold1'}
                             size={12}>
-                            Sach Nghe
+                            {t('bookToListen')}
                         </Text>
                     </Block>
                 </Button>
             </Block>
-            <Text
-                marginTop={5}
-                color={themeNew.colors.textInBox}
-                fontType={'bold'}
-                size={20}>
-                Tập
-            </Text>
             <Block
                 row
                 width={'100%'}
@@ -183,7 +246,11 @@ const ChapterBook = ({
                                 if (isRead) {
                                     navigation.navigate(
                                         routes.PLAY_BOOK_MY_AP,
-                                        { idChapter: item.idChapter },
+                                        {
+                                            idChapter: item.idChapter,
+                                            nameBook: nameBook,
+                                            dataInfoBook: infoBook,
+                                        },
                                     );
                                 } else {
                                     navigation.navigate(routes.LISTEN_BOOK, {
@@ -192,7 +259,7 @@ const ChapterBook = ({
                                     });
                                 }
                             } else {
-                                setChapItem(item.element);
+                                setChapItem(item);
                                 setVisible(true);
                             }
                         }}
@@ -222,38 +289,80 @@ const ChapterBook = ({
                 ))}
             </Block>
 
-            <ModalPoup visible={visible}>
-                <Block style={styles.clone}>
-                    <Fontisto
-                        name={'close-a'}
-                        size={12}
-                        color={'black'}
-                        onPress={() => {
-                            setVisible(false);
-                        }}
-                    />
+            <Modal transparent visible={showModal1}>
+                <Block flex={1} style={styles.modalBackGround}>
+                    <Block style={styles.modalContainer}>
+                        <Block style={styles.clone}>
+                            <Fontisto
+                                name={'close-a'}
+                                size={12}
+                                color={'black'}
+                                onPress={() => {
+                                    setVisible1(false);
+                                }}
+                            />
+                        </Block>
+                        <Block alignCenter={'center'}>
+                            <Text style={styles.textOTP} center>
+                                Mua cả quyển sách
+                            </Text>
+                            <TouchableOpacity
+                                style={styles.buttomAddCart}
+                                onPress={() => addAllCart(chapItem)}>
+                                <Text
+                                    style={styles.textButtomLogin}
+                                    height={55}>
+                                    {t('addToCart')}
+                                </Text>
+                            </TouchableOpacity>
+                        </Block>
+                    </Block>
                 </Block>
-                <Block alignCenter={'center'}>
-                    <Text style={styles.textOTP} center>
-                        Mua để có thể xem sách
-                    </Text>
-                    <Text size={18} center>
-                        Chương {chapItem?.chapterNumber}
-                    </Text>
-                    <TouchableOpacity
-                        style={styles.buttomAddCart}
-                        onPress={() => addCart(chapItem)}>
-                        <Text style={styles.textButtomLogin} height={55}>
-                            Thêm vào giỏ hàng
-                        </Text>
-                    </TouchableOpacity>
+            </Modal>
+
+            <Modal transparent visible={showModal}>
+                <Block flex={1} style={styles.modalBackGround}>
+                    <Block style={styles.modalContainer}>
+                        <Block style={styles.clone}>
+                            <Fontisto
+                                name={'close-a'}
+                                size={12}
+                                color={'black'}
+                                onPress={() => {
+                                    setVisible(false);
+                                }}
+                            />
+                        </Block>
+
+                        <Block alignCenter={'center'}>
+                            <Text style={styles.textOTP} center>
+                                {t('buyToSeeBook')}
+                            </Text>
+                            <Text size={18} center>
+                                {t('chapTer')} {chapItem?.chapterNumber}
+                            </Text>
+                            <TouchableOpacity
+                                style={styles.buttomAddCart}
+                                onPress={() => addCart(chapItem)}>
+                                <Text
+                                    style={styles.textButtomLogin}
+                                    height={55}>
+                                    {t('addToCart')}
+                                </Text>
+                            </TouchableOpacity>
+                        </Block>
+                    </Block>
                 </Block>
-            </ModalPoup>
+            </Modal>
         </Block>
     );
 };
 
 const useStyle = makeStyles()(({ normalize, colors }) => ({
+    modal: {
+        height: '50%',
+        backgroundColor: colors.blue,
+    },
     textButtomLogin: {
         fontSize: 16,
         fontWeight: '700',
@@ -282,12 +391,12 @@ const useStyle = makeStyles()(({ normalize, colors }) => ({
         width: '75%',
         backgroundColor: 'rgba(253,253,253,10)',
         paddingHorizontal: 20,
-        paddingVertical: 20,
-        borderRadius: 20,
+        paddingVertical: 30,
+        borderRadius: 30,
         borderColor: 'black',
     },
     modalBackGround: {
-        backgroundColor: 'rgba(0,0,0,0.3)',
+        backgroundColor: 'rgba(0,0,0,0.2)',
         justifyContent: 'center',
         alignContent: 'center',
         alignItems: 'center',
@@ -306,4 +415,4 @@ const useStyle = makeStyles()(({ normalize, colors }) => ({
     },
 }));
 
-export default ChapterBook;
+export default withNamespaces()(ChapterBook);

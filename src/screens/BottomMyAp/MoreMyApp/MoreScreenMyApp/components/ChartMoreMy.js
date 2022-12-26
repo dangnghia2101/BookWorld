@@ -1,28 +1,29 @@
-import { StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
-import React, { useEffect, useState } from 'react';
-import { Block, Text, Button } from '@components';
+import { Block, Text } from '@components';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Dimensions, TouchableOpacity } from 'react-native';
 
-// import Plot from 'react-plotly.js';
-// import Plot from 'react-plotly.js';
 const screenWidth = Dimensions.get('window').width;
 
-import { makeStyles, useTheme } from 'themeNew';
+import { useAppSelector } from '@hooks';
 import { withNamespaces } from 'react-i18next';
-import { useAppSelector, useAppDispatch } from '@hooks';
+import { makeStyles, useTheme } from 'themeNew';
 
-import {
-    useGetReadTimeBookQuery,
-    useLazyGetReadTimeBookQuery,
-} from '@redux/servicesNew';
+import { useGetReadTimeBookQuery } from '@redux/servicesNew';
+import { MONTHS } from '@utils/constants';
+import { VictoryBar, VictoryChart, VictoryLabel } from 'victory-native';
+import EmptyIcon from '@assets/svgs/EmptyIcon';
+
+const thisYear = new Date().getFullYear();
+const thisMonth = MONTHS[new Date().getMonth() + 1];
 
 const ChartMoreMy = props => {
     const [data, setData] = useState([]);
-    const [getReadTimeBook] = useLazyGetReadTimeBookQuery();
-    //thuc hien dau goi do getReadTimeBook(id);
+    const [index, setIndex] = useState(1);
     const myInfo = useAppSelector(state => state.root.auth);
-    const actions = myInfo._id;
-    //console.log("id >>>", actions);
-    // data = useGetReadTimeBookQuery(actions);
+    const { data: dataReadTime } = useGetReadTimeBookQuery({
+        params: myInfo._id,
+        token: myInfo.token,
+    });
     //chay 1 lan
 
     const { t } = props;
@@ -30,142 +31,203 @@ const ChartMoreMy = props => {
     const themeNew = useTheme(themeStore);
     const styles = useStyle(props, themeStore);
 
-    useEffect(async () => {
-        // const dataChart = await getReadTimeBook(actions);
-        // setData(dataChart.data)
-        console.log('datasever >>');
-        // if(data?.data[0]){
-        //   const dataChart = await getReadTimeBook(actions);
-        //   setData(dataChart.data)
-        // console.log(">>", setData(data?.data[0][2022]));
-        // //useState
-        // }
+    // useEffect(() => {
+    //     getReadTimeBook(myInfo._id);
+    // }, []);
 
-        // const getDataChart = async () => {
-        //   const data2 = await getReadTimeBook(actions);
-        //   console.log("datasever >>", data2);
-        // }
-        // getDataChart();
-    }, []);
+    useEffect(() => {
+        if (dataReadTime) {
+            handleDataMonth();
+        }
+    }, [dataReadTime]);
 
-    //  const data2 = getReadTimeBook(actions);
+    const handleDataYear = useCallback(() => {
+        setIndex(2);
+        try {
+            if (dataReadTime) {
+                let handleData = [];
 
-    // const data = [
-    //   {
-    //     month: 'January',
-    //     time: 500,
-    //   },
-    //   {
-    //     month: 'February',
-    //     time: 400,
-    //   },
-    //   {
-    //     month: 'March',
-    //     time: 450,
-    //   },
-    //   {
-    //     month: 'April',
-    //     time: 480,
-    //   },
-    //   {
-    //     month: 'May',
-    //     time: 500,
-    //   },
-    //   {
-    //     month: 'June',
-    //     time: 500,
-    //   },
-    //   {
-    //     month: 'July',
-    //     time: 500,
-    //   },
-    //   {
-    //     month: 'August',
-    //     time: 500,
-    //   },
-    //   {
-    //     month: 'Setember',
-    //     time: 500,
-    //   },
-    //   {
-    //     month: 'October',
-    //     time: 200,
-    //   },
-    //   {
-    //     month: 'November',
-    //     time: 500,
-    //   },
-    //   {
-    //     month: 'December',
-    //     time: 500,
-    //   },
-    // ];
+                for (const year in dataReadTime) {
+                    let sum = 0;
+                    for (const month in dataReadTime[year]) {
+                        for (const day in dataReadTime[year][month]) {
+                            sum += dataReadTime[year][month][day];
+                        }
+                    }
+                    handleData.push({
+                        x: year,
+                        y: (sum / 60 / 60).toFixed(0),
+                    });
+                }
 
-    const sample = [
-        { cate: 'A', values: [20, 31, 24, 60], types: ['1', '2', '3', '4'] },
-        { cate: 'B', values: [20, 2, 1, 60], types: ['1', '2', '3', '4'] },
-        { cate: 'C', values: [1, 31, 24, 60], types: ['1', '2', '3', '4'] },
-    ];
-
-    function handleClick(e) {
-        sample.forEach(each => {
-            if (each.cate === e.target.id) {
-                setData({ values: each.values, types: each.types });
+                setData(handleData);
             }
-        });
-    }
+        } catch (e) {
+            console.log('[Error handleDataMonth] ', e);
+        }
+    }, [dataReadTime]);
+
+    const handleDataMonth = useCallback(() => {
+        setIndex(1);
+        try {
+            if (dataReadTime) {
+                let handleData = [];
+
+                for (const month in dataReadTime[thisYear]) {
+                    let sum = 0;
+
+                    for (const day in dataReadTime[thisYear][month]) {
+                        sum += dataReadTime[thisYear][month][day];
+                    }
+                    console.log('SUM NE ', sum, month);
+                    handleData.push({
+                        x: month,
+                        y: (sum / 60 / 60).toFixed(0),
+                    });
+                }
+
+                setData(handleData);
+            }
+        } catch (e) {
+            console.log('[Error handleDataMonth] ', e);
+        }
+    }, [dataReadTime]);
+
+    const handleDataDate = useCallback(() => {
+        setIndex(0);
+
+        try {
+            if (dataReadTime) {
+                let handleData = [];
+
+                if (dataReadTime[thisYear][thisMonth]) {
+                    for (const day in dataReadTime[thisYear][thisMonth]) {
+                        handleData.push({
+                            x: day,
+                            y: dataReadTime[thisYear][thisMonth][day] / 60 / 60,
+                        });
+                    }
+                    setData(handleData);
+                }
+            }
+        } catch (e) {
+            console.log('Error handle data date ', e);
+        }
+    }, [dataReadTime]);
 
     return (
-        <Block marginVertical={20} column justifyCenter>
+        <Block marginTop={40} column justifyCenter>
             <Block
                 style={styles.dateContainer}
                 row
                 justifyContent={'space-around'}
-                marginHorizontal={15}>
+                marginBottom={30}>
                 <TouchableOpacity
-                    style={[styles.itemChartContainer, styles.shadowColor]}
-                    onPress={handleClick}
+                    style={[
+                        styles.itemChartContainer,
+                        styles.shadowColor,
+                        index === 0
+                            ? { backgroundColor: themeNew.colors.green }
+                            : {
+                                  backgroundColor:
+                                      themeNew.colors.backgroundDark2,
+                              },
+                    ]}
+                    onPress={handleDataDate}
                     id="A">
-                    <Text color={themeNew.colors.textDark}>{t('day')}</Text>
+                    <Text fontType={'medium1'} color={themeNew.colors.textDark}>
+                        {t('day')}
+                    </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                    style={[styles.itemChartContainer, styles.shadowColor]}
-                    onPress={handleClick}
+                    style={[
+                        styles.itemChartContainer,
+                        styles.shadowColor,
+                        index === 1
+                            ? { backgroundColor: themeNew.colors.green }
+                            : {
+                                  backgroundColor:
+                                      themeNew.colors.backgroundDark2,
+                              },
+                    ]}
+                    onPress={handleDataMonth}
                     id="B">
-                    <Text color={themeNew.colors.textDark}>{t('month')}</Text>
+                    <Text fontType={'medium1'} color={themeNew.colors.textDark}>
+                        {t('month')}
+                    </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                    style={[styles.itemChartContainer, styles.shadowColor]}
-                    onPress={handleClick}
+                    style={[
+                        styles.itemChartContainer,
+                        styles.shadowColor,
+                        index === 2
+                            ? { backgroundColor: themeNew.colors.green }
+                            : {
+                                  backgroundColor:
+                                      themeNew.colors.backgroundDark2,
+                              },
+                    ]}
+                    onPress={handleDataYear}
                     id="C">
-                    <Text color={themeNew.colors.textDark}>{t('year')}</Text>
+                    <Text fontType={'medium1'} color={themeNew.colors.textDark}>
+                        {t('year')}
+                    </Text>
                 </TouchableOpacity>
             </Block>
 
-            {/* <VictoryChart theme={VictoryTheme.material}>
-        <VictoryBar
-          style={{data: {fill: '#0D7EF9', width: 15}}}
-          animate={{
-            duration: 3000,
-            onLoad: {
-              duration: 3000,
-            },
-          }}
-          // data={data2}
-          // x={data2.month}
-          // y={data2.time}
-        />
-      </VictoryChart> */}
-            {/* <Plot
-                data={[
-                    {
-                        type: 'bar',
-                        x: [1, 2, 3],
-                        y: [24, 15, 30],
-                    },
-                ]}
-                layout={{ width: 800, height: 500, title: 'Thời gian đọc' }}
-            /> */}
+            {data.length > 0 ? (
+                <VictoryChart
+                // style={{
+                //     parent: {
+                //     border: "1px solid #ccc"
+                //     },
+                //     background: {
+                //     fill: "pink"
+                //     }
+                // }}
+                >
+                    <VictoryLabel
+                        x={'40%'}
+                        y={10}
+                        style={styles.title}
+                        text={t('readtime')}
+                    />
+                    <VictoryLabel
+                        x={20}
+                        y={30}
+                        style={styles.labelOne}
+                        text={t('hours')}
+                    />
+                    <VictoryBar
+                        style={{
+                            data: { fill: '#0D7EF9', width: 10 },
+                        }}
+                        alignment="start"
+                        // animate={{
+                        //     duration: 3000,
+                        //     onLoad: {
+                        //         duration: 3000,
+                        //     },
+                        // }}
+                        animate={{
+                            onExit: {
+                                duration: 500,
+                                before: () => ({
+                                    _y: 0,
+                                    label: '',
+                                }),
+                            },
+                        }}
+                        x={'x'}
+                        y={'y'}
+                        data={data}
+                    />
+                </VictoryChart>
+            ) : (
+                <Block alignCenter justifyCenter>
+                    <EmptyIcon />
+                </Block>
+            )}
         </Block>
     );
 };
@@ -174,21 +236,29 @@ export default withNamespaces()(ChartMoreMy);
 
 const useStyle = makeStyles()(({ colors }) => ({
     shadowColor: {
-        shadowColor: colors.shadowDark,
+        shadowColor: colors.grey12,
         shadowOffset: {
             width: 0,
-            height: 3,
+            height: 2,
         },
-        shadowOpacity: 1.27,
+        shadowOpacity: 1,
         shadowRadius: 4.65,
-        elevation: 6,
+        elevation: 2,
     },
     itemChartContainer: {
-        width: 118,
+        width: '25%',
         height: 32,
         backgroundColor: colors.backgroundDark2,
         borderRadius: 6,
         justifyContent: 'center',
         alignItems: 'center',
+    },
+    title: {
+        fontSize: 16,
+        color: 'red',
+        fontFamily: 'Lato-Bold',
+    },
+    labelOne: {
+        fontFamily: 'Lato-Regular',
     },
 }));

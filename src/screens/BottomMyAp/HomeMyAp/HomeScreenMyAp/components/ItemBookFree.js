@@ -1,9 +1,11 @@
 import { useAppSelector } from '@hooks';
 import { routes } from '@navigation/routes';
 import { useNavigation } from '@react-navigation/native';
+import { isEmpty } from 'lodash';
 import React from 'react';
 import { withNamespaces } from 'react-i18next';
 import { Image, TouchableOpacity } from 'react-native';
+import FastImage from 'react-native-fast-image';
 import { makeStyles } from 'themeNew';
 
 const ItemBookFree = ({ item, t }) => {
@@ -21,12 +23,15 @@ const ItemBookFree = ({ item, t }) => {
                     item,
                 })
             }>
-            <Image
-                source={{
-                    uri: item.image || '',
-                }}
-                style={styles.image}
-            />
+            {!isEmpty(item.image) ? (
+                <FastImage
+                    style={styles.image}
+                    source={{
+                        uri: item.image,
+                        priority: FastImage.priority.normal,
+                    }}
+                />
+            ) : null}
         </TouchableOpacity>
     );
 };

@@ -1,5 +1,5 @@
 import { Block, Text, Evaluate } from '@components';
-import React from 'react';
+import React, { memo, useCallback, useMemo } from 'react';
 import { Image, TouchableOpacity, Animated, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { routes } from '@navigation/routes';
@@ -7,8 +7,10 @@ import { width, height } from '@utils/responsive';
 import { makeStyles, useTheme } from 'themeNew';
 import { useAppSelector } from '@hooks';
 import { withNamespaces } from 'react-i18next';
+import Icon from '@components/Icon';
+import { isEqual } from 'lodash';
+import FastImage from 'react-native-fast-image';
 
-const PADDING_ITEM = 15;
 const ITEM_WITH = width * 0.6;
 const SPACER_ITEM_SIZE = (width - ITEM_WITH) / 3;
 
@@ -16,6 +18,29 @@ const ItemMostBookRead = ({ item, index, scrollX, size, t }) => {
     const themeStore = useAppSelector(state => state.root.themeApp.theme);
     const theme = useTheme(themeStore);
     const styles = useStyle(themeStore);
+    let star = [];
+
+    const allBooks = useAppSelector(state => state.root.book.bookList);
+    const _renderStar = useCallback(() => {
+        for (let j = 1; j <= item?.evaluate; j++) {
+            star.push(
+                <Icon
+                    component={'AntDesign'}
+                    name="star"
+                    color={theme.colors.yellow}
+                    size={15}
+                />,
+            );
+        }
+        return star;
+    }, []);
+
+    const _renderView = useCallback(() => {
+        for (let i = 0; i <= allBooks.length; i++) {
+            let num = Math.floor(Math.random() * 100);
+            return num;
+        }
+    }, []);
 
     const inputRange = [
         (index - 2) * ITEM_WITH,
@@ -33,6 +58,7 @@ const ItemMostBookRead = ({ item, index, scrollX, size, t }) => {
     if (index === 0 || index === size - 1) {
         return <View style={{ width: SPACER_ITEM_SIZE + 20 }} />;
     }
+
     return (
         <TouchableOpacity
             style={styles.container}
@@ -41,6 +67,7 @@ const ItemMostBookRead = ({ item, index, scrollX, size, t }) => {
                 navigation.navigate(routes.DETAIL_BOOK_MY_AP, {
                     bookmark: true,
                     item: item,
+                    star: star.length,
                 })
             }>
             <Animated.View
@@ -63,14 +90,15 @@ const ItemMostBookRead = ({ item, index, scrollX, size, t }) => {
                     elevation: 9,
                 }}>
                 {/* <Block width={width / 2} marginRight={PADDING_ITEM}> */}
-                <Image
+                <FastImage
                     style={styles.image}
                     source={{
                         uri: item.image,
+                        priority: FastImage.priority.high,
                     }}
                 />
                 <Text
-                    color={theme.colors.textInBox}
+                    color={theme.colors.text}
                     marginHorizontal={10}
                     numberOfLines={1}
                     marginTop={10}
@@ -82,11 +110,17 @@ const ItemMostBookRead = ({ item, index, scrollX, size, t }) => {
                     marginBottom={10}
                     numberOfLines={1}
                     size={11}
+                    fontType="medium1"
                     color={theme.colors.textInBox}>
-                    {item.isPrice} {t('view')}
+                    {item?.view} {t('view')}
                 </Text>
-
-                <Evaluate sizeIcon={15} colorIcon={theme.colors.yellow} />
+                <Block row alignCenter>
+                    {_renderStar()}
+                    <Text color={theme.colors.textInBox} marginLeft={5}>
+                        {star.length}.0
+                    </Text>
+                </Block>
+                {/* <Evaluate sizeIcon={15} colorIcon={theme.colors.yellow} /> */}
                 {/* </Block> */}
             </Animated.View>
         </TouchableOpacity>
@@ -162,4 +196,8 @@ const useStyle = makeStyles()(({ colors }) => ({
     },
 }));
 
-export default withNamespaces()(ItemMostBookRead);
+export const areEqualMemo = (prevProps, nextProps) => {
+    return isEqual(prevProps, nextProps);
+};
+
+export default withNamespaces()(memo(ItemMostBookRead, areEqualMemo));

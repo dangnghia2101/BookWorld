@@ -16,9 +16,11 @@ export const authorAPI = createApi({
     }),
     endpoints: builder => ({
         getAllAuthor: builder.query<AuthorState[], string>({
-            query: () => ({
+            query: token => ({
                 url: `accounts/allAuthor`,
-                // Our tricky API always returns a 200, but sets an `isError` property when there is an error.
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
             }),
             async onQueryStarted(id, { dispatch, queryFulfilled }) {
                 try {
