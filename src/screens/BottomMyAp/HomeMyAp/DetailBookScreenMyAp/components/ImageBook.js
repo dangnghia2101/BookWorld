@@ -13,7 +13,7 @@ const ImageBook = ({ item, route }) => {
     const themeNew = useTheme(themeStore);
     const _renderStar = () => {
         let star = [];
-        for (let i = 0; i < item.star; i++) {
+        for (let i = 0; i < item?.item?.evaluate; i++) {
             star.push(
                 <Icon
                     component={'AntDesign'}
@@ -51,7 +51,7 @@ const ImageBook = ({ item, route }) => {
             {/* Star */}
             <Block row marginTop={5}>
                 {_renderStar()}
-                <Text marginLeft={5}>{item.star}.0</Text>
+                <Text marginLeft={5}>{item?.item?.evaluate}</Text>
             </Block>
         </Block>
     );

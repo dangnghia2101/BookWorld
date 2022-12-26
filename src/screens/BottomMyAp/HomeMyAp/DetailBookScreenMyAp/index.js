@@ -1,30 +1,24 @@
-import { Block, HeaderWithButton, Icon } from '@components';
-import {
-    useAppDispatch,
-    useAppSelector,
-    useCountDown,
-    useDebounce,
-} from '@hooks';
+import { Block, HeaderWithButton } from '@components';
+import IconView from '@components/Icon';
+import { useAppDispatch, useAppSelector, useCountDown } from '@hooks';
 import { useNavigation } from '@react-navigation/core';
 import { changeTimeReducer } from '@redux/reducerNew';
-import { timereadAPI, useGetAllChapterBookMutation } from '@redux/servicesNew';
-import { theme } from '@theme';
-import { makeStyles, useTheme } from 'themeNew';
-import { CountUpTime } from '@utils/helper';
-import CricleProgress from 'common/CircleProgress';
+import {
+    useGetAllChapterBookMutation,
+    useGetFavoriteBookQuery,
+    usePostSaveFavoriteBooksMutation,
+} from '@redux/servicesNew';
 import React, { useEffect, useState } from 'react';
 import {
     ScrollView,
     StyleSheet,
-    TouchableOpacity,
     ToastAndroid,
+    TouchableOpacity,
 } from 'react-native';
+import { useTheme } from 'themeNew';
 import ChapterBook from './components/ChapterBook';
 import ImageBook from './components/ImageBook';
 import IntroduceText from './components/IntroduceText';
-import IconView from '@components/Icon';
-import { usePostSaveFavoriteBooksMutation } from '@redux/servicesNew';
-import { useGetFavoriteBookQuery } from '@redux/servicesNew';
 
 const DetailBookScreenMyAp = ({ route }) => {
     const { bookmark, item, _isRead } = route.params;

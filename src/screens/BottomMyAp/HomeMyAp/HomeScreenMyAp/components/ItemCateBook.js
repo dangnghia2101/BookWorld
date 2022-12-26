@@ -62,11 +62,12 @@ const ItemCateBook = ({ item, t }) => {
                     }}
                 />
             </Block>
-            <Block justifyContent={'space-between'} marginLeft={15}>
-                <Block width={280}>
+            <Block justifyContent={'space-between'} marginLeft={15} flex>
+                <Block>
                     <Text
                         size={17}
-                        width="75%"
+                        // flexShrink={1}
+                        // width="75%"
                         fontType="bold1"
                         numberOfLines={2}
                         color={theme.colors.textInBox}>
