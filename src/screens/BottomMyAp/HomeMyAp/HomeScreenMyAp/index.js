@@ -252,7 +252,8 @@ const HomeScreenMyAp = ({ t }) => {
     return (
         <Container
             statusColor={theme.colors.background}
-            edges={['left', 'right']}>
+            edges={['left', 'right']}
+            style={{ marginTop: 40 }}>
             {/* <Block flex> */}
             <HeaderHome
                 name={myInfo?.name}
