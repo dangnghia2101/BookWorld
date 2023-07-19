@@ -67,15 +67,9 @@ export const bookAPI = createApi({
                 }
             },
         }),
-        getAllBookByCategory: builder.query<
-            BookState[],
-            { token: string; params: string }
-        >({
+        getAllBookByCategory: builder.query<BookState[], string>({
             query: actions => ({
-                url: `books/${actions.params}/getBookByIdCategory`,
-                headers: {
-                    Authorization: `Bearer ${actions.token}`,
-                },
+                url: `books/${actions}/getBookByIdCategory`,
             }),
             async onQueryStarted(id, { dispatch, queryFulfilled }) {
                 try {
@@ -92,11 +86,10 @@ export const bookAPI = createApi({
             transformResponse: (response: any) => response.data,
         }),
         getAllCategory: builder.query<BookState[], string>({
-            query: token => ({
+            query: () => ({
                 url: `categories/getAllCategories`,
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
+                validateStatus: (response, result) =>
+                    response.status === 200 && !result.isError, // Our tricky API always returns a 200, but sets an `isError` property when there is an error.
             }),
             async onQueryStarted(id, { dispatch, queryFulfilled }) {
                 try {

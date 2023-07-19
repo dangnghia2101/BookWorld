@@ -17,11 +17,10 @@ export const rankAPI = createApi({
     }),
     endpoints: builder => ({
         getCountTop10: builder.query<RankState[], string>({
-            query: token => ({
+            query: () => ({
                 url: `accounts/getCountTop10`,
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
+                validateStatus: (response, result) =>
+                    response.status === 200 && !result.isError, // Our tricky API always returns a 200, but sets an `isError` property when there is an error.
             }),
             async onQueryStarted(id, { dispatch, queryFulfilled }) {
                 try {
@@ -35,4 +34,4 @@ export const rankAPI = createApi({
     }),
 });
 
-export const { useGetCountTop10Query, useLazyGetCountTop10Query } = rankAPI;
+export const {useGetCountTop10Query, useLazyGetCountTop10Query} = rankAPI;

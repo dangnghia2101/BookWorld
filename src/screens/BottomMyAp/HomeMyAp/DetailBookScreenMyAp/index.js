@@ -1,24 +1,30 @@
-import { Block, HeaderWithButton } from '@components';
-import IconView from '@components/Icon';
-import { useAppDispatch, useAppSelector, useCountDown } from '@hooks';
+import { Block, HeaderWithButton, Icon } from '@components';
+import {
+    useAppDispatch,
+    useAppSelector,
+    useCountDown,
+    useDebounce,
+} from '@hooks';
 import { useNavigation } from '@react-navigation/core';
 import { changeTimeReducer } from '@redux/reducerNew';
-import {
-    useGetAllChapterBookMutation,
-    useGetFavoriteBookQuery,
-    usePostSaveFavoriteBooksMutation,
-} from '@redux/servicesNew';
+import { timereadAPI, useGetAllChapterBookMutation } from '@redux/servicesNew';
+import { theme } from '@theme';
+import { makeStyles, useTheme } from 'themeNew';
+import { CountUpTime } from '@utils/helper';
+import CricleProgress from 'common/CircleProgress';
 import React, { useEffect, useState } from 'react';
 import {
     ScrollView,
     StyleSheet,
-    ToastAndroid,
     TouchableOpacity,
+    ToastAndroid,
 } from 'react-native';
-import { useTheme } from 'themeNew';
 import ChapterBook from './components/ChapterBook';
 import ImageBook from './components/ImageBook';
 import IntroduceText from './components/IntroduceText';
+import IconView from '@components/Icon';
+import { usePostSaveFavoriteBooksMutation } from '@redux/servicesNew';
+import { useGetFavoriteBookQuery } from '@redux/servicesNew';
 
 const DetailBookScreenMyAp = ({ route }) => {
     const { bookmark, item, _isRead } = route.params;
@@ -26,10 +32,7 @@ const DetailBookScreenMyAp = ({ route }) => {
     const [isRead, setIsRead] = useState(_isRead || true);
     const [colorHeart, setColorHeart] = useState();
     const myInfo = useAppSelector(state => state.root.auth);
-    const { data } = useGetFavoriteBookQuery({
-        id: myInfo._id,
-        token: myInfo.token,
-    });
+    const { data } = useGetFavoriteBookQuery(myInfo._id);
 
     const themeStore = useAppSelector(state => state.root.themeApp.theme);
     const themeNew = useTheme(themeStore);
@@ -110,16 +113,13 @@ const DetailBookScreenMyAp = ({ route }) => {
 
     useEffect(() => {
         let flg = false;
-        try {
-            data?.data[0]?.favoriteBooks.map(itemFvr => {
-                if (itemFvr?.idBook._id == item?._id) {
-                    flg = true;
-                }
-            });
-            setColorHeart(flg);
-        } catch (e) {
-            console.log('[Error] getColorHeart ', e);
-        }
+        console.log('Get favorite book ', data);
+        data?.data[0]?.favoriteBooks.map(itemFvr => {
+            if (itemFvr.idBook._id == item._id) {
+                flg = true;
+            }
+        });
+        setColorHeart(flg);
     }, []);
 
     const favoriteIcon = () => {

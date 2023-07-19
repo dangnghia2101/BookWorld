@@ -45,10 +45,9 @@ const createFormData = (photo, name, users) => {
 };
 
 const ChatScreenMyApp = ({ t }) => {
-    const myInfo = useAppSelector(state => state.root.auth);
     const [searchPhrase, setSearchPhrase] = useState('');
     const [getRoomChat, { isSuccess, error }] = useLazyGetRoomChatQuery();
-    const { data: allAccount } = useGetAllAccountQuery({ token: myInfo.token });
+    const { data: allAccount } = useGetAllAccountQuery();
     const [imageUri, setImageUri] = useState({});
     const themeStore = useAppSelector(state => state.root.themeApp.theme);
     const { colors } = useTheme(themeStore);
@@ -69,6 +68,7 @@ const ChatScreenMyApp = ({ t }) => {
     const [dataGroups, setDataGroups] = useState([]);
     const [isRefresh, setRefresh] = useState(false);
 
+    const myInfo = useAppSelector(state => state.root.auth);
     const [createGroup] = useCreateGroupMutation();
 
     useEffect(() => {

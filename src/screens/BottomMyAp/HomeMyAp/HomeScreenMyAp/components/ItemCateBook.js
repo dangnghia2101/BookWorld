@@ -52,8 +52,15 @@ const ItemCateBook = ({ item, t }) => {
     };
 
     return (
-        <Block paddingHorizontal={10} marginTop={15} row>
-            <Block>
+        <Block
+            style={{ marginHorizontal: 20 }}
+            onPress={() =>
+                navigation.navigate(routes.DETAIL_BOOK_MY_AP, {
+                    bookmark: true,
+                    item,
+                })
+            }>
+            <Block width={width} marginRight={PADDING_ITEM} row marginTop={30}>
                 <FastImage
                     style={styles.image}
                     source={{
@@ -61,91 +68,98 @@ const ItemCateBook = ({ item, t }) => {
                         priority: FastImage.priority.normal,
                     }}
                 />
-            </Block>
-            <Block justifyContent={'space-between'} marginLeft={15} flex>
-                <Block>
+                <Block marginHorizontal={10} flex paddingLeft={10}>
                     <Text
                         size={17}
-                        // flexShrink={1}
-                        // width="75%"
+                        width="75%"
                         fontType="bold1"
                         numberOfLines={2}
                         color={theme.colors.textInBox}>
                         {item.name}
                     </Text>
-                </Block>
-                <Block marginTop={30} row>
-                    <Icon
-                        component={'Foundation'}
-                        name="page-multiple"
-                        color={theme.colors.textInBox}
-                        size={16}
-                    />
-                    <Text
-                        marginLeft={5}
-                        marginRight={20}
-                        size={14}
-                        fontType="regular1"
-                        color={theme.colors.textInBox}>
-                        {_renderDownload()}
+                    <Text size={14} color={theme.colors.textInBox}>
+                        {/* {item.name_author} */}
                     </Text>
 
-                    <Icon
-                        component={'Entypo'}
-                        name="eye"
-                        color={theme.colors.textInBox}
-                        size={16}
-                    />
-                    <Text
-                        marginLeft={5}
-                        marginRight={20}
-                        size={14}
-                        fontType="regular1"
-                        color={theme.colors.textInBox}>
-                        {_renderView()} view
-                    </Text>
-                </Block>
-                <Block row alignCenter>
-                    {_renderStar()}
-                    <Text color={theme.colors.textInBox} marginLeft={5}>
-                        {star.length}.0
-                    </Text>
-                </Block>
-                <Block row>
-                    <Button
-                        style={[
-                            styles.btnItemCate,
-                            { backgroundColor: theme.colors.primary },
-                        ]}
-                        onPress={() =>
-                            navigation.navigate(routes.DETAIL_BOOK_MY_AP, {
-                                item,
-                                star: star.length,
-                            })
-                        }>
-                        <Text size={12} fontType="bold" color="white">
-                            {t('readBook')}
+                    <Block row marginTop={5} alignCenter>
+                        <Icon
+                            component={'Foundation'}
+                            name="page-multiple"
+                            color={theme.colors.textInBox}
+                            size={16}
+                        />
+                        <Text
+                            marginLeft={5}
+                            marginRight={20}
+                            size={14}
+                            fontType="regular1"
+                            color={theme.colors.textInBox}>
+                            {_renderDownload()}
                         </Text>
-                    </Button>
-                    <Button
-                        onPress={() =>
-                            navigation.navigate(routes.DETAIL_BOOK_MY_AP, {
-                                item,
-                                _isRead: false,
-                                star: star.length,
-                            })
-                        }
-                        style={[
-                            styles.btnItemCate,
-                            {
-                                backgroundColor: theme.colors.black,
-                                marginLeft: 10,
-                            },
-                        ]}>
-                        <Text size={12} fontType="bold" color="white">
-                            {t('listenBook')}
+
+                        <Icon
+                            component={'Entypo'}
+                            name="eye"
+                            color={theme.colors.textInBox}
+                            size={16}
+                        />
+                        <Text
+                            marginLeft={5}
+                            marginRight={20}
+                            size={14}
+                            fontType="regular1"
+                            color={theme.colors.textInBox}>
+                            {_renderView()} view
                         </Text>
-                    </Button>
+                    </Block>
+
+                    <Block row alignCenter>
+                        {_renderStar()}
+                        <Text color={theme.colors.textInBox} marginLeft={5}>
+                            {star.length}.0
+                        </Text>
+                    </Block>
+
+                    <Block
+                        style={styles.container}
+                        row
+                        marginTop={10}
+                        alignCenter>
+                        <Button
+                            style={[
+                                styles.btnItemCate,
+                                { backgroundColor: theme.colors.primary },
+                            ]}
+                            onPress={() =>
+                                navigation.navigate(routes.DETAIL_BOOK_MY_AP, {
+                                    item,
+                                    star: star.length,
+                                })
+                            }>
+                            <Text size={12} fontType="bold" color="white">
+                                {t('readBook')}
+                            </Text>
+                        </Button>
+                        <Button
+                            onPress={() =>
+                                navigation.navigate(routes.DETAIL_BOOK_MY_AP, {
+                                    item,
+                                    _isRead: false,
+                                    star: star.length,
+                                })
+                            }
+                            style={[
+                                styles.btnItemCate,
+                                {
+                                    backgroundColor: theme.colors.black,
+                                    marginLeft: 10,
+                                },
+                            ]}>
+                            <Text size={12} fontType="bold" color="white">
+                                {t('listenBook')}
+                            </Text>
+                        </Button>
+                    </Block>
                 </Block>
             </Block>
         </Block>
@@ -156,7 +170,7 @@ export default withNamespaces()(ItemCateBook);
 
 const useStyles = makeStyles()(({ colors }) => ({
     container: {
-        // marginTop: '16%',
+        marginTop: '16%',
     },
     inputSection: {
         color: colors.white,

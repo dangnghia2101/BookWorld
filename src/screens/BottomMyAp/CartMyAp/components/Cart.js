@@ -14,10 +14,7 @@ import {
     TouchableOpacity,
 } from 'react-native';
 // import { theme } from '@theme';
-import BottomSheet, {
-    BottomSheetBackdrop,
-    BottomSheetScrollView,
-} from '@gorhom/bottom-sheet';
+import BottomSheet, { BottomSheetBackdrop } from '@gorhom/bottom-sheet';
 import { useAppSelector } from '@hooks';
 import { routes } from '@navigation/routes';
 import { useNavigation } from '@react-navigation/native';
@@ -350,80 +347,78 @@ const Cart = ({ t }) => {
                 snapPoints={snapPoints}
                 enablePanDownToClose={true}
                 backdropComponent={renderBackdrop}>
-                <BottomSheetScrollView>
-                    <Block
-                        paddingVertical={10}
-                        backgroundColor={theme.colors.background}>
-                        <Block row style={styles.Container1}>
-                            <Block backgroundColor={theme.colors.background}>
-                                <Image
-                                    style={styles.image1}
-                                    source={{ uri: cartItem?.image }}
-                                />
-                            </Block>
-                            <Block width={'53%'} marginTop={10}>
-                                <Text
-                                    fontType={'bold1'}
-                                    size={20}
-                                    color={theme.colors.textInBox}
-                                    style={styles.Name}>
-                                    {cartItem?.name}
-                                </Text>
-                                <Text
-                                    color={theme.colors.textInBox}
-                                    size={14}
-                                    numberOfLines={1}
-                                    marginTop={5}>
-                                    {cartItem.introduction}
-                                </Text>
-                                <Text fontType={'medium1'} style={styles.Price}>
-                                    {cartItem?.priceBook &&
-                                        cartItem?.priceBook
-                                            .toFixed(0)
-                                            .replace(
-                                                /(\d)(?=(\d{3})+(?!\d))/g,
-                                                '$1.',
-                                            )}{' '}
-                                    ₫
-                                </Text>
-                            </Block>
-                            <TouchableOpacity onPress={() => {}}>
-                                <Fontisto
-                                    name={'close-a'}
-                                    size={20}
-                                    color={theme.colors.textInBox}
-                                    style={styles.hide}
-                                />
-                            </TouchableOpacity>
-                        </Block>
-                        <Block
-                            marginTop={20}
-                            width={'100%'}
-                            height={1}
-                            backgroundColor={'#bdc3c7'}
-                            borderWidth={0.2}
-                            borderColor={'#bdc3c7'}
-                        />
-                        <Text
-                            marginVertical={10}
-                            marginLeft={30}
-                            style={styles.Name}
-                            size={20}
-                            color={theme.colors.textInBox}>
-                            {t('chapTer')}
-                        </Text>
-                        <Block bottom={10} paddingLeft={10} paddingBottom={10}>
-                            <FlatList
-                                style={styles.FlatList1}
-                                data={data}
-                                renderItem={renderChapterItem}
-                                keyExtractor={item => Math.random()}
-                                showsVerticalScrollIndicator={false}
-                                numColumns={numColumns}
+                <Block
+                    paddingVertical={10}
+                    backgroundColor={theme.colors.background}>
+                    <Block row style={styles.Container1}>
+                        <Block backgroundColor={theme.colors.background}>
+                            <Image
+                                style={styles.image1}
+                                source={{ uri: cartItem?.image }}
                             />
                         </Block>
+                        <Block width={'53%'} marginTop={10}>
+                            <Text
+                                fontType={'bold1'}
+                                size={20}
+                                color={theme.colors.textInBox}
+                                style={styles.Name}>
+                                {cartItem?.name}
+                            </Text>
+                            <Text
+                                color={theme.colors.textInBox}
+                                size={14}
+                                numberOfLines={1}
+                                marginTop={5}>
+                                {cartItem.introduction}
+                            </Text>
+                            <Text fontType={'medium1'} style={styles.Price}>
+                                {cartItem?.priceBook &&
+                                    cartItem?.priceBook
+                                        .toFixed(0)
+                                        .replace(
+                                            /(\d)(?=(\d{3})+(?!\d))/g,
+                                            '$1.',
+                                        )}{' '}
+                                ₫
+                            </Text>
+                        </Block>
+                        <TouchableOpacity onPress={() => {}}>
+                            <Fontisto
+                                name={'close-a'}
+                                size={20}
+                                color={theme.colors.textInBox}
+                                style={styles.hide}
+                            />
+                        </TouchableOpacity>
                     </Block>
-                </BottomSheetScrollView>
+                    <Block
+                        marginTop={20}
+                        width={'100%'}
+                        height={1}
+                        backgroundColor={'#bdc3c7'}
+                        borderWidth={0.2}
+                        borderColor={'#bdc3c7'}
+                    />
+                    <Text
+                        marginVertical={10}
+                        marginLeft={30}
+                        style={styles.Name}
+                        size={20}
+                        color={theme.colors.textInBox}>
+                        {t('chapTer')}
+                    </Text>
+                    <Block bottom={10} paddingLeft={10} paddingBottom={10}>
+                        <FlatList
+                            style={styles.FlatList1}
+                            data={data}
+                            renderItem={renderChapterItem}
+                            keyExtractor={item => Math.random()}
+                            showsVerticalScrollIndicator={false}
+                            numColumns={numColumns}
+                        />
+                    </Block>
+                </Block>
             </BottomSheet>
             <ModalPoup visible={visibleCart}>
                 <Block style={styles.clone}>

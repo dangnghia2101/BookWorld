@@ -21,8 +21,8 @@ const RoomChat = () => {
     const [messages, setMessages] = useState([]);
 
     useEffect(() => {
-        // socketRef.current = io(DOMAIN);
-        // socketRef.current.emit('add-user', myInfo._id);
+        socketRef.current = io(DOMAIN);
+        socketRef.current.emit('add-user', myInfo._id);
     }, []);
 
     //👇🏻 Runs whenever there is new trigger from the backend

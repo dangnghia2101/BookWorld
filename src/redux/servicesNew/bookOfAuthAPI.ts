@@ -22,16 +22,11 @@ export const bookOfAuthAPI = createApi({
         baseUrl: MAIN_API,
     }),
     endpoints: builder => ({
-        getBookOfAuthor: builder.query<
-            BookOfAuthState[],
-            { token: string; id: string }
-        >({
-            query: ({ id, token }) => {
+        getBookOfAuthor: builder.query<BookOfAuthState[], string>({
+            query: id => {
+                console.log('getBookOfAuthor');
                 return {
                     url: `books/${id}/getAllBookAuthor`,
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
                 };
             },
             transformResponse: (response: any) => response,
@@ -45,19 +40,16 @@ export const bookOfAuthAPI = createApi({
                 }
             },
         }),
-        getFavoriteBook: builder.query<
-            BookOfAuthState[],
-            { token: string; id: string }
-        >({
-            query: ({ token, id }) => ({
+        getFavoriteBook: builder.query<BookOfAuthState[], string>({
+            query: id => ({
                 url: `accounts/${id}/getFavoriteBooks`,
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
+                validateStatus: (response, result) =>
+                    response.status === 200 && !result.isError, // Our tricky API always returns a 200, but sets an `isError` property when there is an error.
             }),
             async onQueryStarted(id, { dispatch, queryFulfilled }) {
                 try {
                     const { data } = await queryFulfilled;
+                    console.log('++++++++++++++++++++++++++++++', data);
 
                     dispatch(saveFavoriteBookReducer({ data: data.data })); // Save data in store, using reducer
                 } catch (err) {
@@ -65,15 +57,11 @@ export const bookOfAuthAPI = createApi({
                 }
             },
         }),
-        getBookReaded: builder.query<
-            BookOfAuthState[],
-            { id: string; token: string }
-        >({
-            query: ({ id, token }) => ({
+        getBookReaded: builder.query<BookOfAuthState[], string>({
+            query: id => ({
                 url: `accounts/${id}getReadingBooks`,
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
+                validateStatus: (response, result) =>
+                    response.status === 200 && !result.isError, // Our tricky API always returns a 200, but sets an `isError` property when there is an error.
             }),
         }),
         postSaveFavoriteBooks: builder.mutation({

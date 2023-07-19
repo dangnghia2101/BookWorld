@@ -13,10 +13,7 @@ const ItemMoreMy = ({ props, t }) => {
     const [sumTimeRead, setSumTimeRead] = useState(0);
     const [sumBookRead, setSumBookRead] = useState(0);
     const myInfo = useAppSelector(state => state.root.auth);
-    const { data: dataReadTime } = useGetReadTimeBookQuery({
-        params: myInfo._id,
-        token: myInfo.token,
-    });
+    const { data: dataReadTime } = useGetReadTimeBookQuery(myInfo._id);
 
     useEffect(() => {
         try {

@@ -8,7 +8,10 @@ import { useAppSelector } from '@hooks';
 import { withNamespaces } from 'react-i18next';
 import { makeStyles, useTheme } from 'themeNew';
 
-import { useGetReadTimeBookQuery } from '@redux/servicesNew';
+import {
+    useGetReadTimeBookQuery,
+    useLazyGetReadTimeBookQuery,
+} from '@redux/servicesNew';
 import { MONTHS } from '@utils/constants';
 import { VictoryBar, VictoryChart, VictoryLabel } from 'victory-native';
 import EmptyIcon from '@assets/svgs/EmptyIcon';
@@ -20,10 +23,7 @@ const ChartMoreMy = props => {
     const [data, setData] = useState([]);
     const [index, setIndex] = useState(1);
     const myInfo = useAppSelector(state => state.root.auth);
-    const { data: dataReadTime } = useGetReadTimeBookQuery({
-        params: myInfo._id,
-        token: myInfo.token,
-    });
+    const { data: dataReadTime } = useGetReadTimeBookQuery(myInfo._id);
     //chay 1 lan
 
     const { t } = props;
@@ -214,7 +214,7 @@ const ChartMoreMy = props => {
                                 duration: 500,
                                 before: () => ({
                                     _y: 0,
-                                    label: '',
+                                    label: 'BYE',
                                 }),
                             },
                         }}

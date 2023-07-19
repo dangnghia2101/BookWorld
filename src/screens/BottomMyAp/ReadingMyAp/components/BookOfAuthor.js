@@ -7,14 +7,13 @@ import React, { useEffect } from 'react';
 import { withNamespaces } from 'react-i18next';
 import { useTheme } from 'themeNew';
 const BookOfAuthor = ({ t, idAuthor }) => {
-    const myInfo = useAppSelector(state => state.root.auth);
     const [getBookOfAuthor, { data }] = useLazyGetBookOfAuthorQuery();
 
     const themeStore = useAppSelector(state => state.root.themeApp.theme);
     const { colors } = useTheme(themeStore);
 
     useEffect(() => {
-        getBookOfAuthor({ id: idAuthor, token: myInfo.token });
+        getBookOfAuthor(idAuthor);
     }, []);
 
     return data?.data?.length > 0 ? (
